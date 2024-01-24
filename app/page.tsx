@@ -1,5 +1,5 @@
 import Link from "next/link"
-import prisma from "@/prisma/prisma"
+import { prisma } from "@/prisma/prisma"
 
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/types/prisma"
 import { siteConfig } from "@/config/site"

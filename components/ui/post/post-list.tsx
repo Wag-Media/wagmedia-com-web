@@ -1,6 +1,3 @@
-import prisma from "@/prisma/prisma"
-import { Post } from "@prisma/client"
-
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/types/prisma"
 
 import { PostListItem } from "./post-list-item"
