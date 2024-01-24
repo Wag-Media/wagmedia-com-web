@@ -237,7 +237,7 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
   const [rowSelection, setRowSelection] = React.useState({})
 
   const [pageIndex, setPageIndex] = React.useState(0)
-  const [pageSize, setPageSize] = React.useState(5)
+  const [pageSize, setPageSize] = React.useState(50)
 
   const table = useReactTable({
     data: payments,
