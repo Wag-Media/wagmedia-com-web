@@ -111,6 +111,20 @@ export const columns: ColumnDef<PaymentFull>[] = [
     },
   },
   {
+    id: "featured",
+    accessorFn: (payment) => payment.Post.isFeatured,
+    header: "Featured",
+    cell: ({ row }) => {
+      const post: Post & { user: User } = row.getValue("Post")
+
+      return (
+        <div className="flex flex-row items-center justify-center gap-2">
+          {post.isFeatured ? "⭐️" : "-"}
+        </div>
+      )
+    },
+  },
+  {
     id: "title",
     accessorFn: (payment) => payment.Post.title,
     header: "Title",
