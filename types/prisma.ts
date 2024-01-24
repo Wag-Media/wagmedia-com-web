@@ -11,3 +11,8 @@ export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
   payments: Payment[]
   user: User
 }
+
+export type PaymentFull = Payment & {
+  Post: PostWithTagsCategoriesReactionsPaymentsUser
+  reaction: ReactionWithUser
+}

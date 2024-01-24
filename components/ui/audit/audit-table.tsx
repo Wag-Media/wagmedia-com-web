@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Category, Payment, Post, Reaction, User } from "@prisma/client"
@@ -22,8 +22,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+import {
+  PaymentFull,
+  PostWithTagsCategoriesReactionsPaymentsUser,
+  ReactionWithUser,
+} from "@/types/prisma"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -43,7 +47,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-export const columns: ColumnDef<Payment>[] = [
+import { fuzzyFilter } from "./table-util"
+
+export const columns: ColumnDef<PaymentFull>[] = [
   {
     accessorKey: "createdAt",
     header: "Datetime",
@@ -57,8 +63,10 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
-    accessorKey: "Post",
+    id: "recipient",
+    accessorFn: (payment) => payment.Post.user.name,
     header: "Recipient",
+
     cell: ({ row }) => {
       const post: Post & { user: User } = row.getValue("Post")
       const user: User = post?.user
@@ -80,40 +88,32 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
-    accessorKey: "reaction",
-    header: "Payer",
-    cell: ({ row }) => {
-      const reaction: Reaction & { user: User } = row.getValue("reaction")
-      const user: User = reaction?.user
+    id: "director",
+    accessorFn: (payment) => payment.reaction.user.name,
+    header: "Director",
+    cell: ({ row, getValue }) => {
+      const user: User = row.original.reaction.user
 
       return (
         <div className="flex flex-row items-center justify-center gap-2">
-          {user.avatar && (
+          {user?.avatar && (
             <Image
               className="rounded-full"
-              src={user.avatar}
+              src={user?.avatar}
               width={30}
               height={30}
               alt={`${user.name}'s avatar`}
             />
           )}
-          <span>{user.name}</span>
+          <span>{user?.name}</span>
         </div>
       )
     },
   },
   {
-    accessorKey: "Post",
+    id: "title",
+    accessorFn: (payment) => payment.Post.title,
     header: "Title",
-    cell: ({ row }) => {
-      const post: Post & { user: User } = row.getValue("Post")
-
-      return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {post.title}
-        </div>
-      )
-    },
   },
   {
     accessorKey: "Post",
@@ -148,7 +148,7 @@ export const columns: ColumnDef<Payment>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Unit
-          <CaretSortIcon className="ml-2 h-4 w-4" />
+          <CaretSortIcon className="ml-2 size-4" />
         </Button>
       )
     },
@@ -228,19 +228,52 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 export function AuditTable({ payments }: { payments: Payment[] }) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
 
-  const [pageIndex, setPageIndex] = React.useState(0)
-  const [pageSize, setPageSize] = React.useState(50)
+  const [pageIndex, setPageIndex] = useState(0)
+  const [pageSize, setPageSize] = useState(50)
+
+  // filters
+  const [filteredPayments, setFilteredPayments] = useState(payments)
+  const [globalFilter, setGlobalFilter] = useState("")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      const start = new Date(startDate)
+      const end = new Date(endDate)
+      end.setHours(23, 59, 59, 999)
+      const filtered = payments.filter((payment) => {
+        const createdAt = new Date(payment.createdAt)
+        return createdAt >= start && createdAt <= end
+      })
+      setFilteredPayments(filtered)
+    } else if (startDate) {
+      const start = new Date(startDate)
+      const filtered = payments.filter((payment) => {
+        const createdAt = new Date(payment.createdAt)
+        return createdAt >= start
+      })
+      setFilteredPayments(filtered)
+    } else if (endDate) {
+      const end = new Date(endDate)
+      end.setHours(23, 59, 59, 999)
+      const filtered = payments.filter((payment) => {
+        const createdAt = new Date(payment.createdAt)
+        return createdAt <= end
+      })
+      setFilteredPayments(filtered)
+    } else {
+      setFilteredPayments(payments)
+    }
+  }, [startDate, endDate, payments])
 
   const table = useReactTable({
-    data: payments,
+    data: filteredPayments,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -250,7 +283,13 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyFilter,
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
     state: {
+      globalFilter,
       sorting,
       columnFilters,
       columnVisibility,
@@ -265,14 +304,30 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        {/* <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
+        <Input
+          placeholder="Filter all entries"
+          value={globalFilter}
+          onChange={(event) => {
+            console.log(event.target.value)
+            setGlobalFilter(event.target.value)
+          }}
           className="max-w-sm"
-        /> */}
+        />
+        <Input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          className="max-w-xs"
+          placeholder="Start Date"
+        />
+        <Input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          className="max-w-xs"
+          placeholder="End Date"
+        />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
