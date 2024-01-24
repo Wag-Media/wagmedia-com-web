@@ -21,6 +21,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { set } from "date-fns"
+import { DateRange } from "react-day-picker"
 
 import {
   PaymentFull,
@@ -47,6 +49,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
 import { fuzzyFilter } from "./table-util"
 
 export const columns: ColumnDef<PaymentFull>[] = [
@@ -327,19 +330,18 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
           }}
           className="max-w-sm"
         />
-        <Input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="max-w-xs"
-          placeholder="Start Date"
-        />
-        <Input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="max-w-xs"
-          placeholder="End Date"
+        <DatePickerWithRange
+          from={startDate}
+          to={endDate}
+          onChangeRange={(range: DateRange | undefined) => {
+            if (range && range.from && range.to) {
+              setStartDate(range.from.toISOString())
+              setEndDate(range.to.toISOString())
+            } else {
+              setStartDate("")
+              setEndDate("")
+            }
+          }}
         />
 
         <DropdownMenu>
