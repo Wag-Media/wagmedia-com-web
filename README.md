@@ -1,6 +1,6 @@
-# next-template
+# Wagmedia Communications Website
 
-A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
+A Next.js 14 website that plays together with wagmedia-com-bot
 
 ## Usage
 
