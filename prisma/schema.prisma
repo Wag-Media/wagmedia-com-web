@@ -1,0 +1,155 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Post {
+    id         String     @id
+    title      String
+    content    String?
+    userId     Int
+    user       User       @relation(fields: [userId], references: [id])
+    reactions  Reaction[]
+    categories Category[]
+    tags       Tag[]      @relation("PostTags")
+
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    isPublished Boolean  @default(false)
+    isFeatured  Boolean  @default(false)
+
+    link String? // Link to the original post, if applicable
+
+    // earnings associated with this post
+    earnings PostEarnings[]
+
+    // Payments directly associated with this post
+    payments Payment[] @relation(name: "PaymentPost")
+
+    // Payments associated with threads under this post
+    threadPayments Payment[] @relation(name: "PaymentThreadParent")
+}
+
+model PostEarnings {
+    id          Int    @id @default(autoincrement())
+    postId      String
+    post        Post   @relation(fields: [postId], references: [id])
+    totalAmount Float  @default(0)
+    unit        String // e.g., "DOT", "USD"
+
+    @@unique([postId, unit])
+}
+
+model User {
+    id        Int        @id @default(autoincrement())
+    discordId String     @unique
+    posts     Post[]
+    reactions Reaction[]
+    avatar    String?
+    bio       String?
+    name      String?
+    Payment   Payment[]
+}
+
+model Reaction {
+    id               Int       @id @default(autoincrement())
+    emojiId          String
+    emoji            Emoji     @relation(fields: [emojiId], references: [id])
+    userDiscordId    String
+    user             User      @relation(fields: [userDiscordId], references: [discordId])
+    postId           String
+    post             Post      @relation(fields: [postId], references: [id])
+    createdAt        DateTime  @default(now())
+    initiatesPayment Boolean   @default(false)
+    Payment          Payment[]
+
+    @@unique([postId, userDiscordId, emojiId])
+}
+
+model Category {
+    id           Int            @id @default(autoincrement())
+    name         String         @unique
+    posts        Post[]
+    emojiId      String         @unique
+    emoji        Emoji          @relation(fields: [emojiId], references: [id])
+    CategoryRule CategoryRule[]
+}
+
+model Emoji {
+    id String @id
+
+    name       String? // Name of the emoji, especially important for custom emojis
+    emojiChar  String? // For standard unicode emojis
+    discordId  String?  @unique // Unique ID for custom Discord emojis
+    isAnimated Boolean? // Whether the custom emoji is animated
+
+    reactions Reaction[]
+    category  Category?
+
+    reactionId   Int?
+    categoryId   Int?
+    PaymentRule  PaymentRule[]
+    CategoryRule CategoryRule[]
+}
+
+model Tag {
+    id    Int    @id @default(autoincrement())
+    name  String @unique
+    posts Post[] @relation("PostTags")
+}
+
+model LastProcessedPost {
+    channelId String   @id
+    postId    String
+    updatedAt DateTime @updatedAt
+}
+
+// A payment is a record of a power user paying for a post they reacted to
+model Payment {
+    id     Int    @id @default(autoincrement())
+    amount Float // e.g., 1.5
+    unit   String // e.g., "USD", "ETH", "DOT"
+    status String // e.g., "pending", "completed"
+
+    // Direct post associated with the payment
+    postId String
+    Post   Post   @relation(name: "PaymentPost", fields: [postId], references: [id])
+
+    // Parent post of the thread where the payment occurred
+    threadParentId String?
+    threadParent   Post?   @relation(name: "PaymentThreadParent", fields: [threadParentId], references: [id])
+
+    userId     Int
+    user       User     @relation(fields: [userId], references: [id])
+    reactionId Int
+    reaction   Reaction @relation(fields: [reactionId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([postId, userId, reactionId])
+}
+
+// Rules for how much to pay for a given reaction
+model PaymentRule {
+    id            Int    @id @default(autoincrement())
+    emojiId       String @unique
+    emoji         Emoji  @relation(fields: [emojiId], references: [id])
+    paymentAmount Float
+    paymentUnit   String
+
+    @@unique([paymentAmount, paymentUnit])
+}
+
+// Rules for which category a post belongs to
+model CategoryRule {
+    id         Int      @id @default(autoincrement())
+    emojiId    String   @unique
+    emoji      Emoji    @relation(fields: [emojiId], references: [id])
+    categoryId Int
+    category   Category @relation(fields: [categoryId], references: [id])
+}
