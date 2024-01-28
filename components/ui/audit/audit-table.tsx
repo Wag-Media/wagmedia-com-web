@@ -320,7 +320,7 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-4">
         <Input
           placeholder="Filter all entries"
           value={globalFilter}
@@ -328,7 +328,7 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
             console.log(event.target.value)
             setGlobalFilter(event.target.value)
           }}
-          className="max-w-sm"
+          className="w-64"
         />
         <DatePickerWithRange
           from={startDate}
