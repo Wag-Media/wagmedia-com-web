@@ -6,6 +6,10 @@ import { siteConfig } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
 import { PostList } from "@/components/ui/post/post-list"
 
+export const fetchCache = "force-no-store"
+export const revalidate = 0 // seconds
+export const dynamic = "force-dynamic"
+
 export default async function IndexPage() {
   const posts: PostWithTagsCategoriesReactionsPaymentsUser[] =
     await prisma.post.findMany({
