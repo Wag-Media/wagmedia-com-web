@@ -71,7 +71,7 @@ export const PostListItem = ({
           ))}
         </ul>
       </div>
-      {post.link && <Link href={post.link}>discord</Link>}
+      {post.discordLink && <Link href={post.discordLink}>discord</Link>}
     </div>
   )
 }

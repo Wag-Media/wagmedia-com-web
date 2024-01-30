@@ -195,9 +195,9 @@ export const columns: ColumnDef<PaymentFull>[] = [
 
       return (
         <div className="flex flex-row items-center justify-center gap-2">
-          {post.link ? (
+          {post.discordLink ? (
             <Link
-              href={post.link}
+              href={post.discordLink}
               target="_blank"
               rel="noreferrer"
               className="underline"
