@@ -2,8 +2,6 @@ import Link from "next/link"
 import { prisma } from "@/prisma/prisma"
 
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/types/prisma"
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
 import { PostList } from "@/components/ui/post/post-list"
 
 export const fetchCache = "force-no-store"

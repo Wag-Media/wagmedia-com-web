@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { Category, Post, Tag } from "@prisma/client"
 
@@ -10,6 +11,26 @@ export const PostListItem = ({
 }) => {
   return (
     <div className="flex w-1/2 flex-col gap-4 rounded-xl border border-white p-4 ">
+      {post.embedImageUrl && (
+        <>
+          {post.embedImageUrl.includes("discordapp") ? (
+            <Image
+              src={post.embedImageUrl}
+              alt={post.title}
+              width={400}
+              height={400}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={post.embedImageUrl}
+              alt={post.title}
+              width={400}
+              height={400}
+            />
+          )}
+        </>
+      )}
       <h2 className="font-bold">{post.title}</h2>
       <p className="text-sm">{post.content}</p>
       <div>
