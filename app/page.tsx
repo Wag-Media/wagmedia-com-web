@@ -4,6 +4,7 @@ import { prisma } from "@/prisma/prisma"
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/types/prisma"
 import { Ads } from "@/components/ui/ads"
 import { PostList } from "@/components/ui/post/post-list"
+import { PostTabs } from "@/components/ui/post/post-tabs"
 
 export const fetchCache = "force-no-store"
 export const revalidate = 0 // seconds
@@ -45,6 +46,7 @@ export default async function IndexPage() {
             Accessible news from the Polkadot ecosystem.
           </p>
         </div>
+        <PostTabs />
         <div className="flex gap-4">
           <PostList posts={posts} />
         </div>

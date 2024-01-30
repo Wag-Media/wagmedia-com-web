@@ -1,0 +1,25 @@
+.tab {
+    position: relative;
+    color: #000;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.75rem; /* 186.667% */
+    letter-spacing: 0.08906rem;
+    text-transform: uppercase;
+
+    &::after {
+        content: '';
+        display: block;
+        width: 2.18rem;
+        height: 3px;
+        background-color: transparent; /* or specify a color */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    &[data-state="active"]::after {
+        background-color: currentColor;
+    }
+}
