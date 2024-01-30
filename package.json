@@ -11,6 +11,7 @@
     "preview": "next build && next start",
     "typecheck": "tsc --noEmit",
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
