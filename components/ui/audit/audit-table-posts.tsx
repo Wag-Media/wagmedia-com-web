@@ -173,7 +173,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    header: () => <div className="text-right">Paid Amount</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"))
 
@@ -244,7 +244,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   },
 ]
 
-export function AuditTable({ payments }: { payments: Payment[] }) {
+export function AuditTablePosts({ postPayments }: { postPayments: Payment[] }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -254,7 +254,7 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
   const [pageSize, setPageSize] = useState(50)
 
   // filters
-  const [filteredPayments, setFilteredPayments] = useState(payments)
+  const [filteredPayments, setFilteredPayments] = useState(postPayments)
   const [globalFilter, setGlobalFilter] = useState("")
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
@@ -264,14 +264,14 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
       const start = new Date(startDate)
       const end = new Date(endDate)
       end.setHours(23, 59, 59, 999)
-      const filtered = payments.filter((payment) => {
+      const filtered = postPayments.filter((payment) => {
         const createdAt = new Date(payment.createdAt)
         return createdAt >= start && createdAt <= end
       })
       setFilteredPayments(filtered)
     } else if (startDate) {
       const start = new Date(startDate)
-      const filtered = payments.filter((payment) => {
+      const filtered = postPayments.filter((payment) => {
         const createdAt = new Date(payment.createdAt)
         return createdAt >= start
       })
@@ -279,15 +279,15 @@ export function AuditTable({ payments }: { payments: Payment[] }) {
     } else if (endDate) {
       const end = new Date(endDate)
       end.setHours(23, 59, 59, 999)
-      const filtered = payments.filter((payment) => {
+      const filtered = postPayments.filter((payment) => {
         const createdAt = new Date(payment.createdAt)
         return createdAt <= end
       })
       setFilteredPayments(filtered)
     } else {
-      setFilteredPayments(payments)
+      setFilteredPayments(postPayments)
     }
-  }, [startDate, endDate, payments])
+  }, [startDate, endDate, postPayments])
 
   const table = useReactTable({
     data: filteredPayments,

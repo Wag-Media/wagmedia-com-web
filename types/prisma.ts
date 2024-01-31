@@ -1,4 +1,12 @@
-import { Category, Payment, Post, Reaction, Tag, User } from "@prisma/client"
+import {
+  Category,
+  OddJob,
+  Payment,
+  Post,
+  Reaction,
+  Tag,
+  User,
+} from "@prisma/client"
 
 export type ReactionWithUser = Reaction & {
   user: User
@@ -14,5 +22,10 @@ export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
 
 export type PaymentFull = Payment & {
   Post: PostWithTagsCategoriesReactionsPaymentsUser
+  reaction: ReactionWithUser
+}
+
+export type PaymentOddjob = Payment & {
+  OddJob: OddJob
   reaction: ReactionWithUser
 }
