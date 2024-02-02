@@ -197,31 +197,31 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
       return <div className="text-right font-medium">{formatted}</div>
     },
   },
-  //   {
-  //     accessorKey: "OddJob",
-  //     header: "Link",
-  //     cell: ({ row }) => {
-  //       const oddjob: OddJob & { user: User } = row.getValue("Post")
-  //       const user: User = post?.user
+  {
+    accessorKey: "OddJob",
+    header: "Link",
+    cell: ({ row }) => {
+      const oddjob: OddJob & { user: User } = row.getValue("OddJob")
+      const user: User = oddjob?.user
 
-  //       return (
-  //         <div className="flex flex-row items-center justify-center gap-2">
-  //           {post.discordLink ? (
-  //             <Link
-  //               href={post.discordLink}
-  //               target="_blank"
-  //               rel="noreferrer"
-  //               className="underline"
-  //             >
-  //               discord
-  //             </Link>
-  //           ) : (
-  //             "?"
-  //           )}
-  //         </div>
-  //       )
-  //     },
-  //   },
+      return (
+        <div className="flex flex-row items-center justify-center gap-2">
+          {oddjob.discordLink ? (
+            <Link
+              href={oddjob.discordLink}
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              discord
+            </Link>
+          ) : (
+            "?"
+          )}
+        </div>
+      )
+    },
+  },
   {
     id: "actions",
     enableHiding: false,

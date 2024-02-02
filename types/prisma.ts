@@ -1,5 +1,6 @@
 import {
   Category,
+  Emoji,
   OddJob,
   Payment,
   Post,
@@ -12,10 +13,15 @@ export type ReactionWithUser = Reaction & {
   user: User
 }
 
+export type ReactionWithUserAndEmoji = Reaction & {
+  user: User
+  emoji: Emoji
+}
+
 export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
   tags: Tag[]
   categories: Category[]
-  reactions: ReactionWithUser[]
+  reactions: ReactionWithUserAndEmoji[]
   payments: Payment[]
   user: User
 }

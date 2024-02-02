@@ -17,6 +17,7 @@ export default async function PostPage({
       reactions: {
         include: {
           user: true,
+          emoji: true,
         },
       },
       payments: true,
@@ -91,8 +92,20 @@ export default async function PostPage({
         <ul>
           {post.reactions.map((reaction) => (
             <li key={reaction.id}>
-              {reaction.emojiId} at {reaction.createdAt.toDateString()} from{" "}
-              {reaction.user.name}
+              {reaction.emoji.url ? (
+                <Image
+                  src={reaction.emoji.url}
+                  alt={reaction.emoji.id}
+                  width={30}
+                  height={30}
+                  className="inline-block"
+                />
+              ) : (
+                <span className="align-middle text-[30px]">
+                  {reaction.emojiId}
+                </span>
+              )}{" "}
+              at {reaction.createdAt.toDateString()} from {reaction.user.name}
             </li>
           ))}
         </ul>
