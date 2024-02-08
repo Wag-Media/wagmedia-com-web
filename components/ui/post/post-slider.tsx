@@ -4,7 +4,6 @@ import * as React from "react"
 import { Post } from "@prisma/client"
 
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/types/prisma"
-import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
   CarouselContent,
