@@ -1,12 +1,16 @@
 .tab {
-    position: relative;
-    color: #000;
-    font-size: 0.9375rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 1.75rem; /* 186.667% */
-    letter-spacing: 0.08906rem;
-    text-transform: uppercase;
+    // position: relative;
+    // color: #000;
+    // font-size: 0.9375rem;
+    // font-style: normal;
+    // font-weight: 500;
+    // line-height: 1.75rem; /* 186.667% */
+    // letter-spacing: 0.08906rem;
+    // text-transform: uppercase;
+    color: #BFBEBE;
+    font-weight: normal;
+
+    font-size: 34px;
 
     &::after {
         content: '';
@@ -19,7 +23,10 @@
         left: 0;
     }
 
-    &[data-state="active"]::after {
-        background-color: currentColor;
+    &[data-state="active"] {
+        color: #000;
+        &::after {
+            background-color: currentColor;
+        }
     }
 }

@@ -1,25 +1,38 @@
 "use client"
 
 import {
+  Tab,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs/tabs"
 
-export function PostTabs({ selectedTab }: { selectedTab?: string }) {
+import { cn } from "../../../lib/utils"
+
+export function PostTabs({
+  tabs,
+  selectedTab,
+  className,
+}: {
+  tabs: Tab[]
+  selectedTab?: string
+  className?: string
+}) {
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue={tabs[0].label} className={cn("", className)}>
       <TabsList>
-        <TabsTrigger value="latest">Latest</TabsTrigger>
-        <TabsTrigger value="most-liked">Most Liked</TabsTrigger>
-        <TabsTrigger value="trending">Trending</TabsTrigger>
+        {tabs.map((tab) => (
+          <TabsTrigger value={tab.label} key={tab.label}>
+            {tab.label}
+          </TabsTrigger>
+        ))}
       </TabsList>
-      <TabsContent value="latest">
-        Make changes to your account here.
-      </TabsContent>
-      <TabsContent value="most-liked">Change your password here.</TabsContent>
-      <TabsContent value="trending">Change your password here.</TabsContent>
+      {tabs.map((tab) => (
+        <TabsContent value={tab.label} key={tab.label}>
+          {tab.content}
+        </TabsContent>
+      ))}
     </Tabs>
   )
 }

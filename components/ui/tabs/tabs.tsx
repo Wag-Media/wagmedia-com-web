@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils"
 
 import styles from "./tabs.module.scss"
 
+export type Tab = {
+  content: React.ReactElement | string
+  label: string
+}
+
 const Tabs = TabsPrimitive.Root
 
 const TabsList = React.forwardRef<

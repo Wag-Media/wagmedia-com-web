@@ -8,9 +8,9 @@ export function PostList({
   posts: PostWithTagsCategoriesReactionsPaymentsUser[]
 }) {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap">
       {posts.map((post: PostWithTagsCategoriesReactionsPaymentsUser) => (
-        <PostListItem key={post.id} post={post} />
+        <PostListItem key={post.id} post={post} className="ml-2 mb-2" />
       ))}
     </div>
   )
