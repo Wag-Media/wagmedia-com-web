@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { prisma } from "@/prisma/prisma"
-import { Tag } from "@prisma/client"
+import { Embed, Tag } from "@prisma/client"
 
 export default async function PostPage({
   params,
@@ -22,6 +22,7 @@ export default async function PostPage({
       },
       payments: true,
       user: true,
+      embeds: true,
     },
   })
 
@@ -33,9 +34,18 @@ export default async function PostPage({
     <article className="p-6">
       <h1 className="text-lg font-bold">{post.title}</h1>
       <p className="mb-4">{post.content}</p>
-      {post.embedImageUrl && (
-        <img src={post.embedImageUrl} alt="Embed Image" className="mb-4" />
-      )}
+
+      {post.embeds &&
+        post.embeds.length > 0 &&
+        post.embeds.map((embed: Embed) => (
+          <Image
+            src={embed.embedImage || ""}
+            alt="Embed Image"
+            className="mb-4"
+            width={800}
+            height={400}
+          />
+        ))}
       <div className="mb-4">
         <strong>Published:</strong> {post.createdAt.toLocaleDateString()}
       </div>
@@ -64,11 +74,13 @@ export default async function PostPage({
             Discord 🔗
           </a>
         )}
-        {post.contentUrl && (
-          <a href={post.contentUrl} className="mb-4 block">
-            Original Content 🔗
-          </a>
-        )}
+        {post.embeds &&
+          post.embeds.length > 0 &&
+          post.embeds.map((embed: Embed) => (
+            <a href={embed.embedUrl || ""} className="mb-4 block">
+              Original Content 🔗
+            </a>
+          ))}
       </div>
 
       {post.categories && post.categories.length > 0 && (
