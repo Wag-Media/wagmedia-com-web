@@ -36,6 +36,7 @@ export default async function IndexPage() {
         },
         payments: true,
         user: true,
+        embeds: true,
       },
     })
 

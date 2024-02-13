@@ -1,5 +1,6 @@
 import {
   Category,
+  Embed,
   Emoji,
   OddJob,
   Payment,
@@ -23,6 +24,7 @@ export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
   categories: Category[]
   reactions: ReactionWithUserAndEmoji[]
   payments: Payment[]
+  embeds: Embed[]
   user: User
 }
 

@@ -15,6 +15,8 @@ export const PostListItem = ({
   post: PostWithTagsCategoriesReactionsPaymentsUser
   className?: string
 }) => {
+  const firstEmbed = post.embeds?.[0] ?? null
+
   return (
     <article
       className={cn(
@@ -61,17 +63,18 @@ export const PostListItem = ({
           </ul>
         </div>
       </div>
-      {post.embedImageUrl && (
+
+      {firstEmbed && firstEmbed.embedUrl && firstEmbed.embedImage ? (
         <div
           className={`mb-4 bg-cover bg-center`}
           style={{
-            backgroundImage: `url(${post.embedImageUrl})`,
+            backgroundImage: `url(${firstEmbed.embedImage})`,
           }}
         >
           <Link href={`/post/${post.slug}`}>
-            {post.embedImageUrl.includes("discordapp") ? (
+            {firstEmbed.embedImage?.includes("discordapp") ? (
               <Image
-                src={post.embedImageUrl}
+                src={firstEmbed.embedImage}
                 alt={post.title}
                 width={400}
                 height={400}
@@ -80,7 +83,7 @@ export const PostListItem = ({
             ) : (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={post.embedImageUrl}
+                src={firstEmbed.embedImage}
                 alt={post.title}
                 width={400}
                 height={400}
@@ -88,6 +91,10 @@ export const PostListItem = ({
               />
             )}
           </Link>
+        </div>
+      ) : (
+        <div className="h-[20rem] mb-4 bg-gray-300 flex items-center justify-center text-2xl">
+          {post.categories[0]?.name}
         </div>
       )}
       <h2 className="mb-4 flex-1 font-bold">{post.title}</h2>
