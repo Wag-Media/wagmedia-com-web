@@ -21,7 +21,7 @@ export type ReactionWithUserAndEmoji = Reaction & {
 
 export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
   tags: Tag[]
-  categories: Category[]
+  categories: (Category & { emoji: Emoji })[]
   reactions: ReactionWithUserAndEmoji[]
   payments: Payment[]
   embeds: Embed[]

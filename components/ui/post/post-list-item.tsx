@@ -93,8 +93,20 @@ export const PostListItem = ({
           </Link>
         </div>
       ) : (
-        <div className="h-[20rem] mb-4 bg-gray-300 flex items-center justify-center text-2xl">
-          {post.categories[0]?.name}
+        <div className="h-[20rem] flex justify-center items-center text-gray-400 font-bold bg-slate-100">
+          {/* {post.categories[0]?.emoji?.url ? (
+            <Image
+              src={post.categories[0]?.emoji?.url}
+              alt={post.categories[0]?.emoji?.id}
+              width={400}
+              height={400}
+              className="inline-block object-cover"
+            />
+          ) : ( */}
+          <span className="align-middle text-[30px]">
+            {post.categories[0]?.name}
+          </span>
+          {/* )} */}
         </div>
       )}
       <h2 className="mb-4 flex-1 font-bold">{post.title}</h2>
