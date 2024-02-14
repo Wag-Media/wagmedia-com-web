@@ -15,7 +15,7 @@ export const PostListItem = ({
 }: {
   post: PostWithTagsCategoriesReactionsPaymentsUser
   className?: string
-  variant: "full" | "compact"
+  variant?: "full" | "compact"
 }) => {
   const firstEmbed = post.embeds?.[0] ?? null
 
