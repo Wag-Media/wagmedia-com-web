@@ -20,16 +20,11 @@ export function PostSlider({
   posts: PostWithTagsCategoriesReactionsPaymentsUser[]
 }) {
   return (
-    <Carousel className="w-full">
+    <Carousel className="">
       <CarouselContent>
         {posts.map((post, index) => (
-          <CarouselItem
-            key={index}
-            className="md:basis-1/2 lg:basis-1/2 xl:basis-1/3"
-          >
-            <div className="p-1">
-              <PostListItem post={post} className="lg:w-full 2xl:w-full" />
-            </div>
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2">
+            <PostListItem post={post} variant="full" />
           </CarouselItem>
         ))}
       </CarouselContent>

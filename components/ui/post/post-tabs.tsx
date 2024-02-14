@@ -21,7 +21,7 @@ export function PostTabs({
 }) {
   return (
     <Tabs defaultValue={tabs[0].label} className={cn("", className)}>
-      <TabsList>
+      <TabsList className="mb-4 sticky top-[4rem] self-start bg-background p-4">
         {tabs.map((tab) => (
           <TabsTrigger value={tab.label} key={tab.label}>
             {tab.label}

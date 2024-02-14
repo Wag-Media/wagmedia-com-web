@@ -10,7 +10,7 @@ export function PostList({
   return (
     <div className="flex flex-wrap">
       {posts.map((post: PostWithTagsCategoriesReactionsPaymentsUser) => (
-        <PostListItem key={post.id} post={post} className="ml-2 mb-2" />
+        <PostListItem key={post.id} post={post} />
       ))}
     </div>
   )

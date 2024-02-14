@@ -1,6 +1,6 @@
 .card {
-    max-width: 30rem;
-    border: 2px solid black;
+    min-width: 338px;
+    // border: 2px solid black;
     // background: linear-gradient(0deg, #E4E5EC 0%, #E4E5EC 100%), #FFF;
 
     // font-size: 1.375rem;
@@ -15,6 +15,13 @@
         // font-weight: 400;
         // line-height: 3rem; /* 109.091% */
         // letter-spacing: -0.1155rem;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 18px; /* 120% */
+        letter-spacing: -0.412px;
+        margin-bottom: 1rem; 
+        padding: 0;
     }
 
     h3 {
@@ -30,7 +37,7 @@
 }
 
 .image {
-    height: 20rem;
+    height: 12rem;
     width: 100%;
     object-fit: contain;
     position: relative;
