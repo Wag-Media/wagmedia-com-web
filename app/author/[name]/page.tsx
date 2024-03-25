@@ -6,6 +6,7 @@ import { getPostsByAuthor } from "@/data/dbPosts"
 import { DEMO_POSTS } from "@/data/posts"
 import { DEMO_CATEGORIES } from "@/data/taxonomies"
 import { PostDataType } from "@/data/types"
+import { prisma } from "@/prisma/prisma"
 import { GlobeAltIcon, ShareIcon } from "@heroicons/react/24/outline"
 
 import AccountActionDropdown from "@/components/AccountActionDropdown/AccountActionDropdown"
@@ -39,7 +40,7 @@ const FILTERS = [
 const TABS = ["Articles", "Favorites", "Saved"]
 
 const PageAuthor = async ({ params }: { params: { name: string } }) => {
-  const author = await prisma?.user.findFirst({
+  const author = await prisma.user.findFirst({
     where: {
       name: params.name,
     },
