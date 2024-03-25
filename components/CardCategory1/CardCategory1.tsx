@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import Link from "next/link"
-import { CategoryWithCount, TaxonomyType } from "@/data/types"
+import { CategoryWithCount } from "@/data/types"
 import { Category } from "@prisma/client"
 
 import NcImage from "@/components/NcImage/NcImage"

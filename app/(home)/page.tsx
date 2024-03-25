@@ -1,46 +1,33 @@
-import React from "react";
-import SectionLargeSlider from "@/app/(home)/SectionLargeSlider";
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
-import SectionSliderNewAuthors from "@/components/SectionSliderNewAthors/SectionSliderNewAuthors";
+import React from "react"
+import Image from "next/image"
+import { DEMO_AUTHORS } from "@/data/authors"
+import { getFeaturedPosts, getPosts } from "@/data/dbPosts"
 import {
   DEMO_POSTS,
   DEMO_POSTS_AUDIO,
   DEMO_POSTS_GALLERY,
   DEMO_POSTS_VIDEO,
-} from "@/data/posts";
-import { DEMO_CATEGORIES } from "@/data/taxonomies";
-import { DEMO_AUTHORS } from "@/data/authors";
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories/SectionSliderNewCategories";
-import SectionSliderPosts from "@/components/Sections/SectionSliderPosts";
-import SectionMagazine1 from "@/components/Sections/SectionMagazine1";
-import SectionAds from "@/components/Sections/SectionAds";
-import SectionMagazine7 from "@/components/Sections/SectionMagazine7";
-import SectionGridPosts from "@/components/Sections/SectionGridPosts";
-import SectionMagazine8 from "@/components/Sections/SectionMagazine8";
-import SectionMagazine9 from "@/components/Sections/SectionMagazine9";
-import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox";
-import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor";
-import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2";
-import SectionVideos from "@/components/Sections/SectionVideos";
-import SectionLatestPosts from "@/components/Sections/SectionLatestPosts";
-import SectionMagazine2 from "@/components/Sections/SectionMagazine2";
-import { getFeaturedPosts, getPosts } from "@/data/dbPosts";
-import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag";
-import SectionGridWagPosts from "@/components/Sections/SectionGridWagPosts";
-import SectionHero from "@/components/SectionHero/SectionHero";
-import rightImg from "@/images/hero-right.png";
-import Vector1 from "@/images/Vector1.png";
-import Image from "next/image";
-import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag";
-import { cn } from "@/utils/cn";
-import HeaderFilter from "@/components/Sections/HeaderFilter";
+} from "@/data/posts"
+import { cn } from "@/utils/cn"
 
-const MAGAZINE1_POSTS = DEMO_POSTS.filter((_, i) => i >= 8 && i < 16);
-const MAGAZINE2_POSTS = DEMO_POSTS.filter((_, i) => i >= 0 && i < 7);
+import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
+import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
+import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
+import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
+import SectionGridWagPosts from "@/components/Sections/SectionGridWagPosts"
+import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag"
+import SectionMagazine1 from "@/components/Sections/SectionMagazine1"
+import SectionMagazine2 from "@/components/Sections/SectionMagazine2"
+import SectionSliderPosts from "@/components/Sections/SectionSliderPosts"
+import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag"
+import SectionVideos from "@/components/Sections/SectionVideos"
+
+const MAGAZINE1_POSTS = DEMO_POSTS.filter((_, i) => i >= 8 && i < 16)
+const MAGAZINE2_POSTS = DEMO_POSTS.filter((_, i) => i >= 0 && i < 7)
 
 const PageHome = async ({}) => {
-  const posts = await getPosts();
-  const featuredPosts = await getFeaturedPosts();
+  const posts = await getPosts()
+  const featuredPosts = await getFeaturedPosts()
 
   return (
     <div className="nc-PageHome relative">
@@ -233,7 +220,7 @@ const PageHome = async ({}) => {
         <SectionVideos className="py-16 lg:py-28" />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PageHome;
+export default PageHome

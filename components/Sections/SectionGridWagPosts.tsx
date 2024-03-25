@@ -1,32 +1,34 @@
-"use client";
+"use client"
 
-import React, { FC, ReactNode, useState } from "react";
-import Card3 from "@/components/Card3/Card3";
-import Heading from "@/components/Heading/Heading";
-import { DEMO_POSTS } from "@/data/posts";
-import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import Card4 from "@/components/Card4/Card4";
-import Card7 from "@/components/Card7/Card7";
-import Card9 from "@/components/Card9/Card9";
-import Card10 from "@/components/Card10/Card10";
-import Card11 from "@/components/Card11/Card11";
-import Card14 from "@/components/Card14/Card14";
-import Card10V2 from "@/components/Card10/Card10V2";
-import Card15Podcast from "@/components/Card15Podcast/Card15Podcast";
-import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types";
-import Card11Wag from "../Card11/Card11Wag";
-import Nav from "../Nav/Nav";
-import NavItem from "../NavItem/NavItem";
-import Button from "../Button/Button";
-import { ArrowRightIcon } from "lucide-react";
+import React, { FC, ReactNode, useState } from "react"
+import { DEMO_POSTS } from "@/data/posts"
+// import Card15Podcast from "@/components/Card15Podcast/Card15Podcast";
+import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
+import { ArrowRightIcon } from "lucide-react"
+
+import ButtonPrimary from "@/components/Button/ButtonPrimary"
+import Card3 from "@/components/Card3/Card3"
+import Card4 from "@/components/Card4/Card4"
+import Card7 from "@/components/Card7/Card7"
+import Card9 from "@/components/Card9/Card9"
+import Card10 from "@/components/Card10/Card10"
+import Card10V2 from "@/components/Card10/Card10V2"
+import Card11 from "@/components/Card11/Card11"
+import Card14 from "@/components/Card14/Card14"
+import Heading from "@/components/Heading/Heading"
+
+import Button from "../Button/Button"
+import Card11Wag from "../Card11/Card11Wag"
+import Nav from "../Nav/Nav"
+import NavItem from "../NavItem/NavItem"
 
 export interface SectionGridWagPostsProps {
-  posts: PostWithTagsCategoriesReactionsPaymentsUser[];
-  className?: string;
-  gridClass?: string;
-  heading?: ReactNode;
-  subHeading?: ReactNode;
-  headingIsCenter?: boolean;
+  posts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  className?: string
+  gridClass?: string
+  heading?: ReactNode
+  subHeading?: ReactNode
+  headingIsCenter?: boolean
   postCardName?:
     | "card3"
     | "card4"
@@ -36,7 +38,7 @@ export interface SectionGridWagPostsProps {
     | "card10V2"
     | "card11"
     | "card14"
-    | "card15Podcast";
+    | "card15Podcast"
 }
 
 const SectionGridWagPosts: FC<SectionGridWagPostsProps> = ({
@@ -49,7 +51,7 @@ const SectionGridWagPosts: FC<SectionGridWagPostsProps> = ({
   headingIsCenter,
 }) => {
   const renderCard = (post: PostWithTagsCategoriesReactionsPaymentsUser) => {
-    return <Card11Wag key={post.id} post={post} />;
+    return <Card11Wag key={post.id} post={post} />
     // switch (postCardName) {
     //   case "card3":
     //     return (
@@ -80,17 +82,17 @@ const SectionGridWagPosts: FC<SectionGridWagPostsProps> = ({
     //   default:
     //     return null;
     // }
-  };
+  }
 
-  const tabs = ["Latest", "Most Reactions", "Trending"];
-  const [tabActive, setTabActive] = useState<string>(tabs[0]);
+  const tabs = ["Latest", "Most Reactions", "Trending"]
+  const [tabActive, setTabActive] = useState<string>(tabs[0])
 
   const handleClickTab = (item: string) => {
     if (item === tabActive) {
-      return;
+      return
     }
-    setTabActive(item);
-  };
+    setTabActive(item)
+  }
 
   return (
     <div className={`nc-SectionGridPosts relative ${className}`}>
@@ -124,7 +126,7 @@ const SectionGridWagPosts: FC<SectionGridWagPostsProps> = ({
         <ButtonPrimary>Show me more</ButtonPrimary>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SectionGridWagPosts;
+export default SectionGridWagPosts

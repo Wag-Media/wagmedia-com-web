@@ -1,15 +1,15 @@
-import CardCategory1 from "@/components/CardCategory1/CardCategory1";
-import WidgetHeading1 from "@/components/WidgetHeading1/WidgetHeading1";
-import { DEMO_CATEGORIES } from "@/data/taxonomies";
-import { TaxonomyType } from "@/data/types";
-import React, { FC } from "react";
+import React, { FC } from "react"
+import { DEMO_CATEGORIES } from "@/data/taxonomies"
+import { CategoryWithCount, TaxonomyType } from "@/data/types"
 
-const categoriesDemo: TaxonomyType[] = DEMO_CATEGORIES.filter(
-  (_, i) => i > 7 && i < 13
-);
+import CardCategory1 from "@/components/CardCategory1/CardCategory1"
+import WidgetHeading1 from "@/components/WidgetHeading1/WidgetHeading1"
+
+const categoriesDemo: CategoryWithCount[] = []
+
 export interface WidgetCategoriesProps {
-  className?: string;
-  categories?: TaxonomyType[];
+  className?: string
+  categories?: CategoryWithCount[]
 }
 
 const WidgetCategories: FC<WidgetCategoriesProps> = ({
@@ -30,14 +30,14 @@ const WidgetCategories: FC<WidgetCategoriesProps> = ({
             <CardCategory1
               className="p-4 xl:p-5 hover:bg-neutral-200 dark:hover:bg-neutral-700"
               key={category.id}
-              taxonomy={category}
+              category={category}
               size="normal"
             />
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default WidgetCategories;
+export default WidgetCategories

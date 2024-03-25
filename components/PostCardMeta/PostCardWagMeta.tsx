@@ -1,16 +1,17 @@
-import React, { FC } from "react";
-import Avatar from "@/components/Avatar/Avatar";
+import React, { FC } from "react"
+import Link from "next/link"
 import {
   PostDataType,
   PostWithTagsCategoriesReactionsPaymentsUser,
-} from "@/data/types";
-import Link from "next/link";
+} from "@/data/types"
+
+import Avatar from "@/components/Avatar/Avatar"
 
 export interface PostCardWagProps {
-  className?: string;
-  meta: Pick<PostWithTagsCategoriesReactionsPaymentsUser, "user" | "createdAt">;
-  hiddenAvatar?: boolean;
-  avatarSize?: string;
+  className?: string
+  meta: Pick<PostWithTagsCategoriesReactionsPaymentsUser, "user" | "createdAt">
+  hiddenAvatar?: boolean
+  avatarSize?: string
 }
 
 const PostCardWagMeta: FC<PostCardWagProps> = ({
@@ -19,7 +20,7 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
   hiddenAvatar = false,
   avatarSize = "h-7 w-7 text-sm",
 }) => {
-  const { user, createdAt } = meta;
+  const { user, createdAt } = meta
 
   return (
     <div
@@ -29,7 +30,7 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
         href={`/author/${user.name}`}
         className="relative flex items-center space-x-2 rtl:space-x-reverse"
       >
-        {!hiddenAvatar && (
+        {!hiddenAvatar && user.avatar && user.name && (
           <Avatar
             radius="rounded-full"
             sizeClass={avatarSize}
@@ -52,7 +53,7 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
         </span>
       </>
     </div>
-  );
-};
+  )
+}
 
-export default PostCardWagMeta;
+export default PostCardWagMeta

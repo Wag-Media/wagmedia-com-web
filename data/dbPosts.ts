@@ -1,6 +1,5 @@
 import { prisma } from "@/prisma/prisma"
 
-import page from "../app/(others)/dashboard/billing-address/page"
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "./types"
 
 export async function getPosts(): Promise<

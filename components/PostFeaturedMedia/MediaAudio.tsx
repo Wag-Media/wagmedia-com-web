@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { PostDataType } from "@/data/types"
 
-import ButtonPlayMusicPlayer from "@/components/ButtonPlayMusicPlayer"
+// import ButtonPlayMusicPlayer from "@/components/ButtonPlayMusicPlayer"
 
 export interface MediaAudioProps {
   post: PostDataType

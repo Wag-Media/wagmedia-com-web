@@ -29,9 +29,9 @@ export default async function PageTag({
 }: {
   params: { name: string }
 }) {
-  const tag = await getTagByName(params.name);
+  const tag = await getTagByName(params.name)
   const categories = await getCategories()
-  const tags = 
+  // const tags =
 
   if (!tag || !tag.name) {
     return {

@@ -4,8 +4,6 @@ import { CustomLink } from "@/data/types"
 import Logo from "@/components/Logo/Logo"
 import SocialsList1 from "@/components/SocialsList1/SocialsList1"
 
-import MusicPlayer from "../MusicPlayer/MusicPlayer"
-
 export interface WidgetFooterMenu {
   id: string
   title: string

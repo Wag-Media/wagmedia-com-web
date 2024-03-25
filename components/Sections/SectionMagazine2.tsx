@@ -1,8 +1,10 @@
-import React, { FC } from "react";
-import Card2 from "@/components/Card2/Card2";
-import { SectionMagazine1Props } from "./SectionMagazine1";
-import HeaderFilter from "./HeaderFilter";
-import Card11 from "@/components/Card11/Card11";
+import React, { FC } from "react"
+
+import Card2 from "@/components/Card2/Card2"
+import Card11 from "@/components/Card11/Card11"
+
+import HeaderFilter from "./HeaderFilter"
+import { SectionMagazine1Props } from "./SectionMagazine1"
 
 export interface SectionMagazine2Props extends SectionMagazine1Props {}
 
@@ -23,7 +25,7 @@ const SectionMagazine2: FC<SectionMagazine2Props> = ({
             .map((item, index) => {
               return (
                 <Card11 ratio="aspect-w-5 aspect-h-3" key={index} post={item} />
-              );
+              )
             })}
         </div>
         <div className="lg:col-span-2">
@@ -35,12 +37,12 @@ const SectionMagazine2: FC<SectionMagazine2Props> = ({
             .map((item, index) => {
               return (
                 <Card11 ratio="aspect-w-5 aspect-h-3" key={index} post={item} />
-              );
+              )
             })}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SectionMagazine2;
+export default SectionMagazine2

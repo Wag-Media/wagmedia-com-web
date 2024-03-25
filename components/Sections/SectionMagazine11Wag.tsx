@@ -1,20 +1,18 @@
-import Badge from "@/components/Badge/Badge";
-import Card18 from "@/components/Card18/Card18";
-import Heading from "@/components/Heading/Heading";
-import { DEMO_POSTS_NEWS } from "@/data/posts";
-import { DEMO_CATEGORIES } from "@/data/taxonomies";
-import { PostDataType, TaxonomyType, TwMainColor } from "@/data/types";
-import { ArrowRightIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
-import React, { FC } from "react";
-import { getCategoriesWithPosts } from "@/data/dbCategories";
-import Card11Wag from "../Card11/Card11Wag";
+import React, { FC } from "react"
+import Link from "next/link"
+import { getCategoriesWithPosts } from "@/data/dbCategories"
+import { ArrowRightIcon } from "@heroicons/react/24/solid"
 
-type expectedCategoryType = Awaited<ReturnType<typeof getCategoriesWithPosts>>;
+import Badge from "@/components/Badge/Badge"
+import Heading from "@/components/Heading/Heading"
+
+import Card11Wag from "../Card11/Card11Wag"
+
+type expectedCategoryType = Awaited<ReturnType<typeof getCategoriesWithPosts>>
 
 export interface SectionMagazine11Props {
-  className?: string;
-  categories?: expectedCategoryType;
+  className?: string
+  categories?: expectedCategoryType
 }
 
 const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
@@ -22,7 +20,7 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
   className = "",
 }) => {
   const renderListByCat = (category: expectedCategoryType[number]) => {
-    const posts = category.posts;
+    const posts = category.posts
 
     return (
       <div key={category.id} className={`flex flex-col space-y-4`}>
@@ -64,8 +62,8 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
           </a>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className={`nc-SectionMagazine11 relative ${className}`}>
@@ -76,7 +74,7 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
         {categories.map((cate, i) => renderListByCat(cate))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SectionMagazine11Wag;
+export default SectionMagazine11Wag
