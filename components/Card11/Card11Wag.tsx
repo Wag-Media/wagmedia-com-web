@@ -1,26 +1,28 @@
-"use client";
+"use client"
 
-import React, { FC, useState } from "react";
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction";
+import React, { FC, useState } from "react"
+import Link from "next/link"
 import {
   PostDataType,
   PostWithTagsCategoriesReactionsPaymentsUser,
-} from "@/data/types";
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList";
-import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment";
-import PostCardMeta from "@/components/PostCardMeta/PostCardMeta";
-import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia";
-import Link from "next/link";
-import PostFeaturedWagMedia from "../PostFeaturedMedia/PostFeaturedWagMedia";
-import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta";
-import PostCardLikeAndCommentWag from "../PostCardLikeAndComment/PostCardLikeAndCommentWag";
-import CategoryBadgeListWag from "../CategoryBadgeList/CategoryBadgeListWag";
+} from "@/data/types"
+
+import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
+import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment"
+import PostCardMeta from "@/components/PostCardMeta/PostCardMeta"
+import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction"
+import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia"
+
+import CategoryBadgeListWag from "../CategoryBadgeList/CategoryBadgeListWag"
+import PostCardLikeAndCommentWag from "../PostCardLikeAndComment/PostCardLikeAndCommentWag"
+import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta"
+import PostFeaturedWagMedia from "../PostFeaturedMedia/PostFeaturedWagMedia"
 
 export interface Card11Props {
-  className?: string;
-  post: PostWithTagsCategoriesReactionsPaymentsUser;
-  ratio?: string;
-  hiddenAuthor?: boolean;
+  className?: string
+  post: PostWithTagsCategoriesReactionsPaymentsUser
+  ratio?: string
+  hiddenAuthor?: boolean
 }
 
 const Card11Wag: FC<Card11Props> = ({
@@ -43,13 +45,13 @@ const Card11Wag: FC<Card11Props> = ({
     discordLink,
     user,
     earnings,
-  } = post;
+  } = post
 
-  const [isHover, setIsHover] = useState(false);
+  const [isHover, setIsHover] = useState(false)
 
   return (
     <div
-      className={`nc-Card11 shadow-sm border border-gray-100 dark:border-none relative flex flex-col group rounded-lg overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
+      className={`nc-Card11 shadow-sm border border-gray-200 dark:border-gray-700  relative flex flex-col group rounded-lg overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       //
@@ -84,7 +86,7 @@ const Card11Wag: FC<Card11Props> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Card11Wag;
+export default Card11Wag

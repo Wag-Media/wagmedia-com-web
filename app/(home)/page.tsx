@@ -25,6 +25,8 @@ import SectionVideos from "@/components/Sections/SectionVideos"
 const MAGAZINE1_POSTS = DEMO_POSTS.filter((_, i) => i >= 8 && i < 16)
 const MAGAZINE2_POSTS = DEMO_POSTS.filter((_, i) => i >= 0 && i < 7)
 
+export const revalidate = 30 // seconds
+
 const PageHome = async ({}) => {
   const posts = await getPosts()
   const featuredPosts = await getFeaturedPosts()
