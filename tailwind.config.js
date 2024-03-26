@@ -1,5 +1,18 @@
 const { fontFamily } = require("tailwindcss/defaultTheme")
 
+// Custom color with css variable color in __theme_color.scss
+function customColors(cssVar) {
+  return ({ opacityVariable, opacityValue }) => {
+    if (opacityValue !== undefined) {
+      return `rgba(var(${cssVar}), ${opacityValue})`
+    }
+    if (opacityVariable !== undefined) {
+      return `rgba(var(${cssVar}), var(${opacityVariable}, 1))`
+    }
+    return `rgb(var(${cssVar}))`
+  }
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -22,6 +35,16 @@ module.exports = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          50: customColors("--c-primary-50"),
+          100: customColors("--c-primary-100"),
+          200: customColors("--c-primary-200"),
+          300: customColors("--c-primary-300"),
+          400: customColors("--c-primary-400"),
+          500: customColors("--c-primary-500"),
+          6000: customColors("--c-primary-600"),
+          700: customColors("--c-primary-700"),
+          800: customColors("--c-primary-800"),
+          900: customColors("--c-primary-900"),
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -48,6 +71,10 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      boxShadow: {
+        black: "0 0 0 2px rgba(218,102,123,1), 6px 6px 0 0 rgba(218,102,123,1)",
+        white: "0 35px 60px -15px rgba(255, 255, 255, 0.1)",
+      },
       borderRadius: {
         lg: `var(--radius)`,
         md: `calc(var(--radius) - 2px)`,
@@ -72,5 +99,10 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 }
