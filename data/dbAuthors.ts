@@ -62,4 +62,5 @@ export async function getAuthors() {
       ),
     }))
     .sort((a, b) => b.totalEarnings - a.totalEarnings) // Sort authors by total earnings in descending order
+    .slice(0, 10) // Get the top 10 authors
 }
