@@ -1,9 +1,11 @@
-import React, { FC } from "react";
+"use client"
+
+import React, { FC } from "react"
 
 export interface NavProps {
-  containerClassName?: string;
-  className?: string;
-  children: React.ReactNode;
+  containerClassName?: string
+  className?: string
+  children: React.ReactNode
 }
 
 const Nav: FC<NavProps> = ({
@@ -15,7 +17,7 @@ const Nav: FC<NavProps> = ({
     <nav className={`nc-Nav ${containerClassName}`} data-nc-id="Nav">
       <ul className={`flex  ${className}`}>{children}</ul>
     </nav>
-  );
-};
+  )
+}
 
-export default Nav;
+export default Nav

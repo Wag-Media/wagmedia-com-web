@@ -2,9 +2,15 @@ import { prisma } from "@/prisma/prisma"
 
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "./types"
 
-export async function getPosts(): Promise<
-  PostWithTagsCategoriesReactionsPaymentsUser[]
-> {
+export async function getPosts({
+  skip = 0,
+  take = 12,
+  search,
+}: {
+  skip?: number
+  take?: number
+  search?: string
+}): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
   const posts = await prisma.post.findMany({
     where: {
       isPublished: true,
@@ -32,10 +38,22 @@ export async function getPosts(): Promise<
       embeds: true,
       earnings: true,
     },
-    take: 12,
+    take,
+    skip,
+  })
+  return posts
+}
+
+export async function getTotalPostCount(): Promise<number> {
+  const totalPostCount = await prisma.post.count({
+    where: {
+      isPublished: true,
+      isDeleted: false,
+      isFeatured: false,
+    },
   })
 
-  return posts
+  return totalPostCount
 }
 
 export async function getFeaturedPosts(): Promise<
