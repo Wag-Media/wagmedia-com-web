@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
+import Loading from "@/components/Button/Loading"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import { fetchPosts } from "@/app/actions/fetchPosts"
 
@@ -50,10 +51,9 @@ export function PostGridDisplay({
         ))}
       </div>
       <div className="mt-20 flex items-center justify-center">
-        post.length: {posts.length}, totalPostCount: {totalPostCount}
         {!isLoadMoreDisabled && (
           <ButtonPrimary onClick={loadMorePosts} disabled={isLoading}>
-            {isLoading ? "Loading..." : "Show me more"}
+            Show me more {isLoading && <Loading className="ml-2" />}
           </ButtonPrimary>
         )}
       </div>
