@@ -2,7 +2,7 @@ import React from "react"
 
 import { cn } from "@/lib/utils"
 
-const Loading = ({ className }: { className: string }) => {
+const Loading = ({ className }: { className?: string }) => {
   return (
     <svg
       className={cn("animate-spin h-5 w-5", className)}
