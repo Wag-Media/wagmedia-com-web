@@ -1,11 +1,12 @@
-import React, { FC } from "react";
-import rightImgDemo from "@/images/BecomeAnAuthorImg.png";
-import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import Image, { StaticImageData } from "next/image";
+import React, { FC } from "react"
+import Image, { StaticImageData } from "next/image"
+import rightImgDemo from "@/images/BecomeAnAuthorImg.png"
+
+import ButtonPrimary from "@/components/Button/ButtonPrimary"
 
 export interface SectionBecomeAnAuthorProps {
-  className?: string;
-  rightImg?: string | StaticImageData;
+  className?: string
+  rightImg?: string | StaticImageData
 }
 
 const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
@@ -18,15 +19,15 @@ const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
     >
       <div className="flex-shrink-0 mb-14 lg:mb-0 lg:mr-10 lg:w-2/5">
         <span className="text-xs uppercase tracking-wider font-medium text-neutral-400">
-          supper change your planning powers
+          Become an author
         </span>
         <h2 className="font-semibold text-3xl sm:text-4xl mt-3">
-          Become an author and share your great stories
+          Become an author and share news and articles on Polkadot
         </h2>
         <span className="block mt-8 text-neutral-500 dark:text-neutral-400">
           Become an author you can earn extra income by writing articles. Read
-          and share new perspectives on just about any topic. Everyone’s
-          welcome.
+          and share new perspectives on just about any Polkadot related topic.
+          Everyone&apos;s welcome.
         </span>
         <ButtonPrimary className="mt-8">Become an author</ButtonPrimary>
       </div>
@@ -38,7 +39,7 @@ const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SectionBecomeAnAuthor;
+export default SectionBecomeAnAuthor

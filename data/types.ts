@@ -14,6 +14,8 @@ import {
   User,
 } from "@prisma/client"
 
+import { totalEarnings } from "../utils/totalPostEarnings"
+
 export type ReactionWithUser = Reaction & {
   user: User
 }
@@ -21,6 +23,12 @@ export type ReactionWithUser = Reaction & {
 export type ReactionWithUserAndEmoji = Reaction & {
   user: User
   emoji: Emoji
+}
+
+export type UserWithPosts = User & {
+  posts: Post[]
+  totalEarnings: number
+  postCount: number
 }
 
 export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {

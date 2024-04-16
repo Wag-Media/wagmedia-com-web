@@ -1,6 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import { DEMO_AUTHORS } from "@/data/authors"
+import { getAuthors } from "@/data/dbAuthors"
 import { getFeaturedPosts, getPosts } from "@/data/dbPosts"
 import {
   DEMO_POSTS,
@@ -13,6 +14,7 @@ import { cn } from "@/utils/cn"
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
+import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 import SectionGridWagPosts from "@/components/Sections/SectionGridWagPosts"
 import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag"
@@ -30,6 +32,8 @@ export const revalidate = 30 // seconds
 const PageHome = async ({}) => {
   const posts = await getPosts()
   const featuredPosts = await getFeaturedPosts()
+  const authors = await getAuthors()
+  console.log(authors)
 
   return (
     <div className="nc-PageHome relative">
@@ -129,16 +133,21 @@ const PageHome = async ({}) => {
           posts={DEMO_POSTS?.filter((_, i) => i < 3)}
         /> */}
 
-        <SectionLatestWagPosts className="pb-16 lg:pb-28" posts={posts} />
+        {/* <SectionLatestWagPosts className="pb-16 lg:pb-28" posts={posts} />
 
-        <SectionMagazine1 className="py-16 lg:py-28" posts={MAGAZINE1_POSTS} />
+        <SectionMagazine1 className="py-16 lg:py-28" posts={MAGAZINE1_POSTS} /> */}
 
-        <div className="relative pb-16">
+        <div className="relative pb-16 px-4 md:px-8 lg:px-12">
           <BackgroundSection />
-          <SectionGridAuthorBox
+          {/* <SectionGridAuthorBox
             className="py-8 lg:py-16"
             authors={DEMO_AUTHORS.filter((_, i) => i < 10)}
+          /> */}
+          <SectionGridAuthorBoxWag
+            className="py-8 lg:py-16"
+            authors={authors}
           />
+          <SectionBecomeAnAuthor className="" />
         </div>
 
         {/* <SectionSliderNewCategories
@@ -194,18 +203,18 @@ const PageHome = async ({}) => {
           />
         </div> */}
 
-        <div className="relative py-16">
+        {/* <div className="relative py-16">
           <BackgroundSection />
           <SectionBecomeAnAuthor />
-        </div>
+        </div> */}
 
-        <SectionMagazine2
+        {/* <SectionMagazine2
           className="py-16 lg:py-24"
           heading="Life styles 🎨 "
           posts={MAGAZINE2_POSTS}
-        />
+        /> */}
 
-        <div className="relative py-16">
+        {/* <div className="relative py-16">
           <BackgroundSection />
           <SectionSliderPosts
             postCardName="card11"
@@ -215,11 +224,11 @@ const PageHome = async ({}) => {
               (p, i) => i > 3 && i < 25 && p.postType === "standard"
             )}
           />
-        </div>
+        </div> */}
 
         <SectionSubscribe2 className="pt-16 lg:pt-28" />
 
-        <SectionVideos className="py-16 lg:py-28" />
+        {/* <SectionVideos className="py-16 lg:py-28" /> */}
       </div>
     </div>
   )
