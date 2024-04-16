@@ -1,8 +1,8 @@
-import React from "react"
+import React, { Suspense } from "react"
 import Image from "next/image"
 import { DEMO_AUTHORS } from "@/data/authors"
 import { getAuthors } from "@/data/dbAuthors"
-import { getFeaturedPosts, getPosts } from "@/data/dbPosts"
+import { getFeaturedPosts, getPosts, getTotalPostCount } from "@/data/dbPosts"
 import {
   DEMO_POSTS,
   DEMO_POSTS_AUDIO,
@@ -11,12 +11,12 @@ import {
 } from "@/data/posts"
 import { cn } from "@/utils/cn"
 
+import PostGrid from "@/components/ui/post-grid/PostGrid"
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
-import SectionGridWagPosts from "@/components/Sections/SectionGridWagPosts"
 import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag"
 import SectionMagazine1 from "@/components/Sections/SectionMagazine1"
 import SectionMagazine2 from "@/components/Sections/SectionMagazine2"
@@ -24,13 +24,31 @@ import SectionSliderPosts from "@/components/Sections/SectionSliderPosts"
 import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag"
 import SectionVideos from "@/components/Sections/SectionVideos"
 
+import { fetchPosts } from "../actions/fetchPosts"
+
 const MAGAZINE1_POSTS = DEMO_POSTS.filter((_, i) => i >= 8 && i < 16)
 const MAGAZINE2_POSTS = DEMO_POSTS.filter((_, i) => i >= 0 && i < 7)
 
 export const revalidate = 30 // seconds
 
-const PageHome = async ({}) => {
-  const posts = await getPosts()
+const PageHome = async ({
+  searchParams,
+}: {
+  searchParams: { search?: string; page?: string }
+}) => {
+  const search = searchParams?.search || ""
+  const currentPage = Number(searchParams?.page) || 1
+
+  const promiseTotalPostCount = getTotalPostCount()
+  const promisePosts = fetchPosts({
+    search,
+  })
+
+  const [posts, totalPostCount] = await Promise.all([
+    promisePosts,
+    promiseTotalPostCount,
+  ])
+
   const featuredPosts = await getFeaturedPosts()
   const authors = await getAuthors()
 
@@ -87,7 +105,8 @@ const PageHome = async ({}) => {
               Collective Impact
             </h2>
             <span className="block text-base xl:text-lg text-neutral-6000 dark:text-neutral-400">
-              WagMedia is shaping the Future of Blockchain Media Creation
+              WagMedia is shaping the Future of Blockchain Media Creation on
+              Polkadot and Kusama
             </span>
           </div>
           <SectionSliderPostsWag
@@ -114,15 +133,16 @@ const PageHome = async ({}) => {
             // btnText="Getting started"
             subHeading="Shaping the Future of Blockchain Media Creation"
           /> */}
-
-          <SectionGridWagPosts
-            className="pb-16 lg:pb-28 pt-16"
-            postCardName="card11"
-            heading="Explore our latest posts"
-            subHeading="Discover 1129 Polkadot related posts"
-            posts={posts}
-            gridClass="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostGrid
+              posts={posts}
+              totalPostCount={totalPostCount}
+              currentPage={currentPage}
+              search={search}
+              className="pb-16 lg:pb-28 pt-16"
+              heading="Explore our latest posts"
+            />
+          </Suspense>
         </div>
       </div>
 

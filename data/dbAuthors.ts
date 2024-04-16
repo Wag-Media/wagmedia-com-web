@@ -7,6 +7,7 @@ export async function getAuthors() {
     where: {
       posts: {
         some: {
+          isPublished: true,
           earnings: {
             some: {},
           },
