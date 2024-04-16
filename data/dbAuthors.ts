@@ -18,6 +18,7 @@ export async function getAuthors() {
       name: true,
       avatar: true,
       bio: true,
+      discordId: true,
       posts: {
         select: {
           id: true, // Select post id for counting

@@ -33,7 +33,6 @@ const PageHome = async ({}) => {
   const posts = await getPosts()
   const featuredPosts = await getFeaturedPosts()
   const authors = await getAuthors()
-  console.log(authors)
 
   return (
     <div className="nc-PageHome relative">

@@ -24,8 +24,8 @@ const CardAuthorBoxWag: FC<CardAuthorBoxProps> = ({
       <Avatar
         sizeClass="w-20 h-20 text-2xl"
         radius="rounded-full"
-        imgUrl={avatar}
-        userName={name}
+        imgUrl={avatar || "/img/default-avatar.png"}
+        userName={name || "Anonymous"}
       />
       <div className="mt-3">
         <h2 className={`text-sm sm:text-base font-medium`}>
