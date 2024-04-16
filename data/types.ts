@@ -26,7 +26,6 @@ export type ReactionWithUserAndEmoji = Reaction & {
 }
 
 export type UserWithPosts = User & {
-  posts: Post[]
   totalEarnings: number
   postCount: number
 }
