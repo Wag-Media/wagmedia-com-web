@@ -13,6 +13,7 @@ import { cn } from "@/utils/cn"
 
 import PostGrid from "@/components/ui/post-grid/PostGrid"
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
+import Heading from "@/components/Heading/Heading"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
@@ -24,7 +25,6 @@ import SectionSliderPosts from "@/components/Sections/SectionSliderPosts"
 import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag"
 import SectionVideos from "@/components/Sections/SectionVideos"
 
-import { fetchPosts } from "../actions/fetchPosts"
 import SectionLargeSlider from "./SectionLargeSlider"
 import SectionLargeSliderWag from "./SectionLargeSliderWag"
 
@@ -41,17 +41,6 @@ const PageHome = async ({
   const search = searchParams?.search || ""
   const currentPage = Number(searchParams?.page) || 1
 
-  const promiseTotalPostCount = getTotalPostCount()
-  const promisePosts = fetchPosts({
-    search,
-  })
-
-  const [posts, totalPostCount] = await Promise.all([
-    promisePosts,
-    promiseTotalPostCount,
-  ])
-
-  const featuredPosts = await getFeaturedPosts()
   const authors = await getAuthors()
 
   return (
@@ -73,19 +62,24 @@ const PageHome = async ({
               Polkadot and Kusama
             </span>
           </div> */}
-        <SectionLargeSliderWag
-          className="pt-10 pb-16 md:py-16 lg:pb-28 lg:pt-20"
-          posts={featuredPosts}
-        />
-        <SectionSliderPostsWag
+        <div className="pt-10 pb-16 md:py-16 lg:pb-28 lg:pt-20">
+          <Heading
+            desc="WagMedia is collectively shaping the Future of Blockchain Media Creation on
+              Polkadot and Kusama"
+          >
+            Decentralized Media, Collective Impact
+          </Heading>
+          <Suspense fallback={<>Loading...</>}>
+            <SectionLargeSliderWag />
+          </Suspense>
+        </div>
+        {/* <SectionSliderPostsWag
           postCardName="card11"
           heading="Prominent Posts"
           posts={featuredPosts}
-        />
+        /> */}
         <Suspense fallback={<div>Loading...</div>}>
           <PostGrid
-            posts={posts}
-            totalPostCount={totalPostCount}
             currentPage={currentPage}
             search={search}
             className="pb-16 lg:pb-28 pt-16"
