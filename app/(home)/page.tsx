@@ -25,10 +25,6 @@ import SectionSliderPosts from "@/components/Sections/SectionSliderPosts"
 import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag"
 import SectionVideos from "@/components/Sections/SectionVideos"
 
-<<<<<<< HEAD
-import { fetchPosts } from "../actions/fetchPosts"
-=======
->>>>>>> staging
 import SectionLargeSlider from "./SectionLargeSlider"
 import SectionLargeSliderWag from "./SectionLargeSliderWag"
 
