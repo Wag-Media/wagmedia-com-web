@@ -1,20 +1,16 @@
+"use client"
+
 import React, { useEffect } from "react"
 
-const SubstackWidget = () => {
+const SubstackWidget = ({ className }: { className?: string }) => {
   useEffect(() => {
     // Define the CustomSubstackWidget on the window object
     //@ts-ignore
     window.CustomSubstackWidget = {
-      substackUrl: "akileshio.substack.com",
+      substackUrl: "wagmediaweekly.substack.com",
       placeholder: "example@gmail.com",
       buttonText: "Subscribe",
-      theme: "custom",
-      colors: {
-        primary: "#FFFFFF",
-        input: "#334155",
-        email: "#FFFFFF",
-        text: "#000000",
-      },
+      theme: "purple",
     }
 
     // Create a new script element
@@ -33,7 +29,7 @@ const SubstackWidget = () => {
     }
   }, [])
 
-  return <div id="custom-substack-embed"></div>
+  return <div id="custom-substack-embed" className={className}></div>
 }
 
 export default SubstackWidget

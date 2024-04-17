@@ -7,6 +7,8 @@ import Badge from "@/components/Badge/Badge"
 import ButtonCircle from "@/components/Button/ButtonCircle"
 import Input from "@/components/Input/Input"
 
+import SubstackWidget from "../SubstackWidget/SubstrackWidget"
+
 export interface SectionSubscribe2Props {
   className?: string
 }
@@ -36,7 +38,8 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
             </span>
           </li>
         </ul>
-        <form className="mt-10 relative max-w-sm">
+        <SubstackWidget className="mt-8" />
+        {/* <form className="mt-10 relative max-w-sm">
           <Input
             required
             aria-required
@@ -49,7 +52,7 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
           >
             <ArrowRightIcon className="w-5 h-5 rtl:rotate-180" />
           </ButtonCircle>
-        </form>
+        </form> */}
       </div>
       <div className="flex-grow">
         <Image

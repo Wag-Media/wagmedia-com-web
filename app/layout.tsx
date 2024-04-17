@@ -1,6 +1,7 @@
 import "@/styles/globals.scss"
 import "@/styles/index.scss"
 import { Forum, Gabarito, Josefin_Sans, Laila } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
 import { GeistSans } from "geist/font/sans"
 
 import Footer from "@/components/Footer/Footer"
@@ -60,6 +61,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </div>
+        <Analytics />
       </body>
     </html>
   )
