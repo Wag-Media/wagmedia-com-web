@@ -15,8 +15,6 @@ import { revalidate } from "../../../app/(home)/page"
 import { PostGridDisplay } from "./PostGridDisplay"
 
 export interface PostGridProps {
-  posts: PostWithTagsCategoriesReactionsPaymentsUser[]
-  totalPostCount?: number
   currentPage?: number
   search?: string
   className?: string
@@ -25,9 +23,7 @@ export interface PostGridProps {
   headingIsCenter?: boolean
 }
 
-export function PostGrid({
-  posts,
-  totalPostCount = 0,
+export default async function PostGrid({
   search,
   currentPage = 0,
   className = "",
@@ -35,6 +31,11 @@ export function PostGrid({
   heading,
   headingIsCenter,
 }: PostGridProps) {
+  const posts = await fetchPosts({
+    search,
+  })
+  const totalPostCount = await getTotalPostCount()
+
   const tabs = ["Latest", "Most Reactions", "Trending"]
   // const [tabActive, setTabActive] = useState<string>(tabs[0])
 
@@ -54,9 +55,6 @@ export function PostGrid({
 
   return (
     <div className={`nc-SectionGridPosts relative ${className}`}>
-      <Heading desc={subHeading} isCenter={headingIsCenter} className="mb-8">
-        {heading}
-      </Heading>
       <div className="flex justify-between mb-4">
         <Nav
           className="sm:space-x-2 rtl:space-x-reverse"
@@ -78,5 +76,3 @@ export function PostGrid({
     </div>
   )
 }
-
-export default PostGrid

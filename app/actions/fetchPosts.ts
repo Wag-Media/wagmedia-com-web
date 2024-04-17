@@ -1,6 +1,6 @@
 "use server"
 
-import { getPosts } from "@/data/dbPosts"
+import { getFeaturedPosts, getPosts } from "@/data/dbPosts"
 
 export const fetchPosts = async ({
   page = 0,
@@ -16,5 +16,10 @@ export const fetchPosts = async ({
     take: pageSize,
     search,
   })
+  return posts
+}
+
+export const fetchFeaturedPosts = async () => {
+  const posts = await getFeaturedPosts()
   return posts
 }
