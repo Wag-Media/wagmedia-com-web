@@ -25,6 +25,8 @@ import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag"
 import SectionVideos from "@/components/Sections/SectionVideos"
 
 import { fetchPosts } from "../actions/fetchPosts"
+import SectionLargeSlider from "./SectionLargeSlider"
+import SectionLargeSliderWag from "./SectionLargeSliderWag"
 
 const MAGAZINE1_POSTS = DEMO_POSTS.filter((_, i) => i >= 8 && i < 16)
 const MAGAZINE2_POSTS = DEMO_POSTS.filter((_, i) => i >= 0 && i < 7)
@@ -71,6 +73,10 @@ const PageHome = async ({
               Polkadot and Kusama
             </span>
           </div> */}
+        <SectionLargeSliderWag
+          className="pt-10 pb-16 md:py-16 lg:pb-28 lg:pt-20"
+          posts={featuredPosts}
+        />
         <SectionSliderPostsWag
           postCardName="card11"
           heading="Prominent Posts"
