@@ -16,16 +16,6 @@ export async function getAuthor(name: string) {
 
 export async function getAuthors() {
   const authors = await prisma.user.findMany({
-    where: {
-      posts: {
-        some: {
-          isPublished: true,
-          earnings: {
-            some: {},
-          },
-        },
-      },
-    },
     select: {
       id: true,
       name: true,
@@ -33,6 +23,10 @@ export async function getAuthors() {
       bio: true,
       discordId: true,
       posts: {
+        where: {
+          isPublished: true,
+          isDeleted: false,
+        },
         select: {
           id: true, // Select post id for counting
           title: true,
@@ -59,6 +53,8 @@ export async function getAuthors() {
       },
     },
   })
+
+  console.log("authors", authors)
 
   return authors
     .map(
