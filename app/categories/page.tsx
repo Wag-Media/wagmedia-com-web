@@ -1,9 +1,13 @@
-import { getCategories, getCategoriesWithPosts } from "@/data/dbCategories"
+import {
+  getCategories,
+  getCategoriesWithPosts,
+  getEnglishCategories,
+} from "@/data/dbCategories"
 
 import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
 
 export default async function PageCategories() {
-  const categories = await getCategories()
+  const categories = await getEnglishCategories()
   const categoriesWithPosts = await getCategoriesWithPosts(categories)
 
   return (
