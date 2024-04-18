@@ -6,7 +6,7 @@ import { PostAuthorType, UserWithPosts } from "@/data/types"
 import Avatar from "@/components/Avatar/Avatar"
 
 export interface SingleAuthorProps {
-  author?: UserWithPosts
+  author: UserWithPosts
 }
 
 const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
