@@ -1,6 +1,14 @@
 import Image from "next/image"
+import Link from "next/link"
 import { prisma } from "@/prisma/prisma"
 import { Embed, Tag } from "@prisma/client"
+
+import CategoryBadgeListWag from "@/components/CategoryBadgeList/CategoryBadgeListWag"
+import PostMeta2 from "@/components/PostMeta2/PostMeta2"
+import PostMeta2Wag from "@/components/PostMeta2/PostMeta2Wag"
+
+import SingleMetaAction2 from "../SingleMetaAction2"
+import SingleTitle from "../SingleTitle"
 
 export default async function PostPage({
   params,
@@ -30,12 +38,40 @@ export default async function PostPage({
     return <div>No post found.</div>
   }
 
-  return (
-    <article className="p-6">
-      <h1 className="text-lg font-bold">{post.title}</h1>
-      <p className="mb-4">{post.content}</p>
+  const { title } = post
 
-      {post.embeds &&
+  return (
+    <article className={`nc-PageSingle pt-8 lg:pt-16`}>
+      <header className="rounded-xl">
+        <div className="max-w-screen-md mx-auto">
+          <div className={`nc-SingleHeader`}>
+            <div className="space-y-5">
+              <CategoryBadgeListWag
+                itemClass="!px-3"
+                categories={post.categories}
+              />
+              <SingleTitle title={title} />
+
+              <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
+              <div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5 rtl:space-x-reverse">
+                <PostMeta2Wag
+                  size="large"
+                  className="leading-none flex-shrink-0"
+                  hiddenCategories
+                  avatarRounded="rounded-full shadow-inner"
+                  author={post.user}
+                  date={post.createdAt}
+                  categories={post.categories}
+                />
+                <SingleMetaAction2 />
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <p className="mb-4 whitespace-break-spaces">{post.content}</p>
+
+      {/* {post.embeds &&
         post.embeds.length > 0 &&
         post.embeds.map((embed: Embed) => (
           <Image
@@ -45,7 +81,7 @@ export default async function PostPage({
             width={800}
             height={400}
           />
-        ))}
+        ))} */}
       <div className="mb-4">
         <strong>Published:</strong> {post.createdAt.toLocaleDateString()}
       </div>
@@ -53,7 +89,7 @@ export default async function PostPage({
         {post.isPublished ? "Published" : "Draft"}
         {post.isFeatured && <span> | Featured</span>}
       </div>
-      <div className="pb-4">
+      {/* <div className="pb-4">
         <h3 className="font-bold">Author:</h3>
         {post.user.avatar && (
           <Image
@@ -65,7 +101,7 @@ export default async function PostPage({
           />
         )}
         <span>{post.user.name}</span>
-      </div>
+      </div> */}
 
       <div className="pb-4">
         <h3 className="font-bold">Links</h3>
@@ -83,24 +119,27 @@ export default async function PostPage({
           ))}
       </div>
 
-      {post.categories && post.categories.length > 0 && (
-        <div className="mb-4">
-          <strong>Categories:</strong>{" "}
-          {post.categories.map((category) => category.name).join(", ")}
-        </div>
-      )}
       {post.tags && post.tags.length > 0 && (
         <div>
           <h3 className="font-bold">Tags</h3>
-          <ul className="flex flex-row flex-wrap gap-4">
-            {post.tags.map((tag: Tag) => (
-              <li key={tag.id}>#{tag.name}</li>
+          <div className="max-w-screen-md mx-auto flex flex-wrap">
+            {post.tags.map((tag) => (
+              <Link
+                className={`nc-Tag inline-block bg-white hover:bg-neutral-50 text-sm text-neutral-600 dark:text-neutral-300 py-2 px-3 rounded-lg md:py-2.5 md:px-4 dark:bg-neutral-900 no-underline`}
+                href={`/tag/${tag.name}`}
+              >
+                #{`${tag.name}`}
+                {/* <span className="text-xs font-normal">
+                  {" "}
+                  ({tag._count})
+                </span> */}
+              </Link>
             ))}
-          </ul>
+          </div>
         </div>
       )}
       <div>
-        <b>Reactions:</b>
+        <h3 className="font-bold">Reactions</h3>
         <ul>
           {post.reactions.map((reaction) => (
             <li key={reaction.id}>

@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { getTags } from "@/data/dbTags"
-import { TaxonomyType } from "@/data/types"
+import { TagWithCount, TaxonomyType } from "@/data/types"
 
 import CardCategory1 from "@/components/CardCategory1/CardCategory1"
 import CardCategory2 from "@/components/CardCategory2/CardCategory2"
@@ -47,7 +47,7 @@ export async function SectionSliderNewCategoriesWag({
   return (
     <div className={`nc-SectionSliderNewCategoriesWag ${className}`}>
       <Heading desc={subHeading}>Top trending topics of the month</Heading>
-      <TagsSlider data={categories} itemPerRow={itemPerRow} />
+      <TagsSlider<TagWithCount> data={categories} itemPerRow={itemPerRow} />
     </div>
   )
 }
