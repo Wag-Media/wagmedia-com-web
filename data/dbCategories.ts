@@ -4,6 +4,27 @@ import { Category } from "@prisma/client"
 import { getPostsByCategoryId } from "./dbPosts"
 import { CategoryWithCount } from "./types"
 
+export async function getEnglishCategories(): Promise<CategoryWithCount[]> {
+  const categories = await prisma.category.findMany({
+    where: {
+      OR: [
+        { name: { not: "Non Anglo" } },
+        { name: { not: "Translations" } },
+        { name: { not: "Newsletter" } },
+        { name: { not: "Dubbing" } },
+      ],
+    },
+    include: {
+      emoji: true,
+      _count: {
+        select: { posts: true },
+      },
+    },
+  })
+
+  return categories.filter((category) => category._count.posts > 0)
+}
+
 export async function getCategories(): Promise<CategoryWithCount[]> {
   const categories = await prisma.category.findMany({
     include: {
