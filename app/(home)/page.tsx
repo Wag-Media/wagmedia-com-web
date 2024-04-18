@@ -17,6 +17,7 @@ import Heading from "@/components/Heading/Heading"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
+import { SectionSliderNewCategoriesWag } from "@/components/SectionSliderNewCategories/SectionSliderNewCategoriesWag"
 // import SectionSliderNewCategories from "@/components/SectionSliderNewCategories/SectionSliderNewCategories"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag"
@@ -116,13 +117,9 @@ const PageHome = async ({
           <SectionBecomeAnAuthor className="" />
         </div>
 
-        {/* <SectionSliderNewCategoriesWag
-          className="py-16 lg:py-28"
-          heading="Top trending topics"
-          subHeading="Discover 233 topics"
-          categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
-          categoryCardType="card5"
-        /> */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <SectionSliderNewCategoriesWag className="py-16 lg:py-28" />
+        </Suspense>
       </div>
 
       <div className="container ">

@@ -5,8 +5,19 @@ import { TagWithCount } from "./types"
 export async function getTags(): Promise<TagWithCount[]> {
   const tags = await prisma.tag.findMany({
     include: {
+      posts: {
+        where: {
+          isPublished: true,
+          isDeleted: false,
+        },
+      },
       _count: {
         select: { posts: true },
+      },
+    },
+    orderBy: {
+      posts: {
+        _count: "desc", // Order by the count of posts descending
       },
     },
   })
