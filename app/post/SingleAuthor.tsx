@@ -9,7 +9,7 @@ export interface SingleAuthorProps {
   author?: UserWithPosts
 }
 
-const SingleAuthor: FC<SingleAuthorProps> = ({ author = DEMO_AUTHORS[1] }) => {
+const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
   const { name, avatar, totalEarnings, postCount, bio } = author
   const href = `/author/${name}`
 
