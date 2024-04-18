@@ -1,19 +1,5 @@
-import Image from "next/image"
-import Link from "next/link"
-import { prisma } from "@/prisma/prisma"
-import { Embed, Tag } from "@prisma/client"
-
 import { Skeleton } from "@/components/ui/skeleton"
-import CategoryBadgeListWag from "@/components/CategoryBadgeList/CategoryBadgeListWag"
-import NcImage from "@/components/NcImage/NcImage"
-import PostMeta2 from "@/components/PostMeta2/PostMeta2"
-import PostMeta2Wag from "@/components/PostMeta2/PostMeta2Wag"
-import { WagImage } from "@/components/WagImage/WagImage"
 
-import SingleAuthor from "../SingleAuthor"
-import SingleContent from "../SingleContent"
-import SingleMetaAction2 from "../SingleMetaAction2"
-import SingleRelatedPosts from "../SingleRelatedPosts"
 import SingleTitle from "../SingleTitle"
 
 export async function SinglePostSkeleton({ title }: { title: string }) {

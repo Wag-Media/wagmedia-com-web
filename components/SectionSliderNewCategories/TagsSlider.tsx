@@ -1,7 +1,9 @@
 "use client"
 
 import React, { FC, ReactNode, useEffect, useState } from "react"
+import { TagWithCount } from "@/data/types"
 import { variants } from "@/utils/animationVariants"
+import { Tag } from "@prisma/client"
 import { AnimatePresence, MotionConfig, motion } from "framer-motion"
 import { useSwipeable } from "react-swipeable"
 import { useWindowSize } from "react-use"
@@ -9,14 +11,12 @@ import { useWindowSize } from "react-use"
 import NextBtn from "@/components/NextPrev/NextBtn"
 import PrevBtn from "@/components/NextPrev/PrevBtn"
 
-import CardCategory5 from "../CardCategory5/CardCategory5"
 import CardCategory5Wag from "../CardCategory5/CardCategory5Wag"
 
-export interface TagsSliderProps<T> {
+export interface TagsSliderProps {
   className?: string
   itemPerRow?: number
-  data: T[]
-  renderItem?: (item: T, indx: number) => ReactNode
+  data: TagWithCount[]
   arrowBtnClass?: string
 }
 
@@ -25,7 +25,7 @@ export default function TagsSlider<T>({
   itemPerRow = 5,
   data,
   arrowBtnClass = "top-1/2 -translate-y-1/2",
-}: TagsSliderProps<T>) {
+}: TagsSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(0)
   const [numberOfItems, setNumberOfitem] = useState(0)

@@ -10,7 +10,6 @@ import PostMeta2Wag from "@/components/PostMeta2/PostMeta2Wag"
 import { WagImage } from "@/components/WagImage/WagImage"
 
 import SingleAuthor from "../SingleAuthor"
-import SingleContent from "../SingleContent"
 import SingleMetaAction2 from "../SingleMetaAction2"
 import SingleRelatedPosts from "../SingleRelatedPosts"
 import SingleTitle from "../SingleTitle"

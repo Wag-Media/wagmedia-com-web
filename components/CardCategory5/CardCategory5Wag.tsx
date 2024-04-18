@@ -24,7 +24,7 @@ const CardCategory5Wag: FC<CardCategory5WagProps> = ({
   return (
     <Link
       href={href}
-      className={`nc-CardCategory5Wag relative block group p-4 border border-slate-300 rounded-lg flex items-center justify-center text-center ${className}`}
+      className={`nc-CardCategory5Wag relative block group p-4 border border-slate-300 rounded-lg items-center text-center ${className}`}
     >
       <TagIcon width={40} height={40} className="mr-2" />
       <div>

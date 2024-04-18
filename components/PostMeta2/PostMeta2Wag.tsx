@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import Link from "next/link"
 import { DEMO_POSTS } from "@/data/posts"
 import { CategoryWithCount, PostDataType } from "@/data/types"
-import { User } from "@prisma/client"
+import { Category, User } from "@prisma/client"
 
 import Avatar from "@/components/Avatar/Avatar"
 
@@ -16,7 +16,7 @@ export interface PostMeta2WagProps {
   avatarRounded?: string
   author: User
   date: Date
-  categories: CategoryWithCount[]
+  categories: Category[]
 }
 
 const PostMeta2Wag: FC<PostMeta2WagProps> = ({
@@ -46,8 +46,8 @@ const PostMeta2Wag: FC<PostMeta2WagProps> = ({
               ? "h-6 w-6 text-sm"
               : "h-10 w-10 sm:h-11 sm:w-11 text-xl"
           }
-          imgUrl={author.avatar}
-          userName={author.name}
+          imgUrl={author.avatar || "/img/default-avatar.png"}
+          userName={author.name || "Anonymous"}
         />
       </Link>
       <div className="ms-3">
@@ -62,7 +62,11 @@ const PostMeta2Wag: FC<PostMeta2WagProps> = ({
               <div className="ms-0">
                 <span className="text-xs">🏷 </span>
                 {categories.map((cat, index) => (
-                  <Link key={cat.id} href={cat.href} className="font-semibold">
+                  <Link
+                    key={cat.id}
+                    href={`/category/name`}
+                    className="font-semibold"
+                  >
                     {cat.name}
                     {index < categories.length - 1 && <span>, </span>}
                   </Link>

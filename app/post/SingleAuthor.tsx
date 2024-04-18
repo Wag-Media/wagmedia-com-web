@@ -1,24 +1,20 @@
-import React, { FC } from "react"
+import React from "react"
 import Link from "next/link"
-import { DEMO_AUTHORS } from "@/data/authors"
-import { PostAuthorType, UserWithPosts } from "@/data/types"
+import { UserWithPosts } from "@/data/types"
+import { User } from "@prisma/client"
 
 import Avatar from "@/components/Avatar/Avatar"
 
-export interface SingleAuthorProps {
-  author: UserWithPosts
-}
-
-const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
-  const { name, avatar, totalEarnings, postCount, bio } = author
+export function SingleAuthor({ author }: { author: User }) {
+  const { name, avatar, bio } = author
   const href = `/author/${name}`
 
   return (
     <div className="nc-SingleAuthor flex">
       <Link href={href}>
         <Avatar
-          imgUrl={avatar}
-          userName={name}
+          imgUrl={avatar || "/img/default-avatar.png"}
+          userName={name || "Anonymous"}
           sizeClass="h-12 w-12 text-lg sm:text-xl sm:h-24 sm:w-24"
         />
       </Link>
