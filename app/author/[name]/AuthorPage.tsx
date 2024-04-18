@@ -45,11 +45,9 @@ export async function AuthorPage({ name }: { name: string }) {
 
   return (
     <div className={`nc-PageAuthor `}>
-}
       {/* HEADER */}
       <div className="w-full">
         <div className="relative w-full h-40 md:h-60 2xl:h-72">
-            { author?.banner ?
           <NcImage
             alt=""
             containerClassName="absolute inset-0"
@@ -58,7 +56,7 @@ export async function AuthorPage({ name }: { name: string }) {
             className="object-cover w-full h-full"
             fill
             priority
-          /> : <div className={`absolute w-full h-full bg-[${author.accentColor}]`} style={{background: author.accentColor}}></div> }
+          />
         </div>
         <div className="container -mt-10 lg:-mt-16">
           <div className="relative bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 p-5 lg:p-8 rounded-lg md:rounded-[40px] shadow-xl flex flex-col md:flex-row">
