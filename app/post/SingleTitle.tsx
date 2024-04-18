@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import React, { FC } from "react"
 
 export interface SingleTitleProps {
-  title: string;
-  className?: string;
-  mainClass?: string;
+  title: string
+  className?: string
+  mainClass?: string
 }
 
 const SingleTitle: FC<SingleTitleProps> = ({
@@ -15,7 +15,7 @@ const SingleTitle: FC<SingleTitleProps> = ({
     <h1 className={className + " " + mainClass + " max-w-4xl "} title={title}>
       {title}
     </h1>
-  );
-};
+  )
+}
 
-export default SingleTitle;
+export default SingleTitle

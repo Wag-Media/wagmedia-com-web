@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="">
-        <div className="bg-[#fff] text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
+        <div className="text-base text-neutral-900 dark:text-neutral-200">
           <SiteHeader />
           {children}
           <Footer />

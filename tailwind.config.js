@@ -84,6 +84,20 @@ module.exports = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
+        blob: {
+          0: {
+            transform: "translate(0, 0) scale(1)",
+          },
+          "33%": {
+            transform: "translate(-10%, -10%) scale(0.8)",
+          },
+          "66%": {
+            transform: "translate(-20%, 5%) scale(1.4)",
+          },
+          "100%": {
+            transform: "translate(0, 0) scale(1)",
+          },
+        },
         "accordion-down": {
           from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -96,6 +110,7 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        blob: "blob 7s infinite",
       },
     },
   },

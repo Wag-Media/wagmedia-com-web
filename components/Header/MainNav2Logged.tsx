@@ -27,7 +27,8 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         </div>
 
         <div className="mx-4 hidden flex-[2] justify-center lg:flex">
-          <NavigationWag />
+          <NavigationWag className="z-10 h-16 p-3 mt-2" />
+          {/* <div className="absolute rounded-full top-full -translate-y-full left-1/2 -translate-x-1/2 bg-[#E6007A] w-[50vh] h-[50vh]" /> */}
         </div>
 
         <div className="flex flex-1 items-center justify-end text-slate-700 dark:text-slate-100">
@@ -35,7 +36,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
           {/* <NotifyDropdown /> */}
           <SwitchDarkMode />
           <button
-            className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
+            className={`flex h-12 w-12 backdrop-blur-md bg-background/60 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
           >
             <span className="sr-only">Enable dark mode</span>
             <DiscordIcon size={38} />
@@ -48,7 +49,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   }
 
   return (
-    <div className="nc-MainNav2Logged relative z-10 bg-white/80 dark:bg-neutral-900/50 lg:bg-white/50 lg:backdrop-blur-md">
+    <div className="nc-MainNav2Logged relative z-10">
       <div className="container ">{renderContent()}</div>
     </div>
   )
