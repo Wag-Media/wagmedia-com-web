@@ -7,10 +7,11 @@ import { CategoryWithCount } from "./types"
 export async function getEnglishCategories(): Promise<CategoryWithCount[]> {
   const categories = await prisma.category.findMany({
     where: {
-      OR: [
+      AND: [
         { name: { not: "Non Anglo" } },
         { name: { not: "Translations" } },
         { name: { not: "Newsletter" } },
+        { emojiId: { not: "Newsletter" } },
         { name: { not: "Dubbing" } },
       ],
     },
