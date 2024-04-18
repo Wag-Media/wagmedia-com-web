@@ -1,7 +1,9 @@
 "use client"
 
 import React, { FC, ReactNode, useEffect, useState } from "react"
+import { TagWithCount } from "@/data/types"
 import { variants } from "@/utils/animationVariants"
+import { Tag } from "@prisma/client"
 import { AnimatePresence, MotionConfig, motion } from "framer-motion"
 import { useSwipeable } from "react-swipeable"
 import { useWindowSize } from "react-use"
@@ -9,21 +11,21 @@ import { useWindowSize } from "react-use"
 import NextBtn from "@/components/NextPrev/NextBtn"
 import PrevBtn from "@/components/NextPrev/PrevBtn"
 
-export interface MySliderProps<T> {
+import CardCategory5Wag from "../CardCategory5/CardCategory5Wag"
+
+export interface TagsSliderProps {
   className?: string
   itemPerRow?: number
-  data: T[]
-  renderItem?: (item: T, indx: number) => ReactNode
+  data: TagWithCount[]
   arrowBtnClass?: string
 }
 
-export default function MySlider<T>({
+export default function TagsSlider<T>({
   className = "",
   itemPerRow = 5,
   data,
-  renderItem = () => <div></div>,
   arrowBtnClass = "top-1/2 -translate-y-1/2",
-}: MySliderProps<T>) {
+}: TagsSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(0)
   const [numberOfItems, setNumberOfitem] = useState(0)
@@ -76,7 +78,7 @@ export default function MySlider<T>({
   const isRTL = document.querySelector("html")?.getAttribute("dir") === "rtl"
 
   return (
-    <div className={`nc-MySlider ${className}`}>
+    <div className={`nc-TagsSlider ${className}`}>
       <MotionConfig
         transition={{
           x: { type: "spring", stiffness: 300, damping: 30 },
@@ -84,7 +86,7 @@ export default function MySlider<T>({
         }}
       >
         <div className={`relative flow-root`} {...handlers}>
-          <div className={`flow-root overflow-hidden rounded-xl`}>
+          <div className={`flow-root overflow-hidden`}>
             <motion.ul
               initial={false}
               className="relative whitespace-nowrap -mx-2 xl:-mx-4 "
@@ -110,7 +112,7 @@ export default function MySlider<T>({
                       width: `calc(1/${numberOfItems} * 100%)`,
                     }}
                   >
-                    {renderItem(item, indx)}
+                    <CardCategory5Wag key={indx} tag={item} />
                   </motion.li>
                 ))}
               </AnimatePresence>

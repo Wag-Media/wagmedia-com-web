@@ -1,24 +1,26 @@
-"use client";
+"use client"
 
-import { Popover, Transition } from "@/app/headlessui";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import React, { FC, Fragment, useState } from "react";
-import { Route } from "@/routers/types";
-import Link from "next/link";
-import NcImage from "../NcImage/NcImage";
+import React, { FC, Fragment, useState } from "react"
+import Link from "next/link"
+import { Route } from "@/routers/types"
+import { ChevronDownIcon } from "@heroicons/react/24/solid"
+
+import { Popover, Transition } from "@/app/headlessui"
+
+import NcImage from "../NcImage/NcImage"
 
 export interface NavItemType {
-  id: string;
-  name: string;
-  href: Route;
-  targetBlank?: boolean;
-  children?: NavItemType[];
-  type?: "dropdown" | "megaMenu" | "none";
-  isNew?: boolean;
+  id: string
+  name: string
+  href: Route
+  targetBlank?: boolean
+  children?: NavItemType[]
+  type?: "dropdown" | "megaMenu" | "none"
+  isNew?: boolean
 }
 
 export interface NavigationItemProps {
-  menuItem: NavItemType;
+  menuItem: NavItemType
 }
 
 const recentPosts = [
@@ -46,27 +48,27 @@ const recentPosts = [
     description:
       "Optio cum necessitatibus dolor voluptatum provident commodi et.",
   },
-];
+]
 
 const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
-  const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([]);
+  const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([])
 
   const onMouseEnterMenu = (id: string) => {
-    setMenuCurrentHovers((state) => [...state, id]);
-  };
+    setMenuCurrentHovers((state) => [...state, id])
+  }
 
   const onMouseLeaveMenu = (id: string) => {
     setMenuCurrentHovers((state) => {
       return state.filter((item, index) => {
-        return item !== id && index < state.indexOf(id);
-      });
-    });
-  };
+        return item !== id && index < state.indexOf(id)
+      })
+    })
+  }
 
   // ===================== MENU MEGAMENU =====================
   const renderMegaMenu = (menu: NavItemType) => {
     if (!menu.children) {
-      return null;
+      return null
     }
 
     return (
@@ -144,8 +146,8 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
           </div>
         </div>
       </li>
-    );
-  };
+    )
+  }
 
   const renderMegaMenuNavlink = (item: NavItemType) => {
     return (
@@ -159,12 +161,12 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
           {item.name}
         </Link>
       </li>
-    );
-  };
+    )
+  }
 
   // ===================== MENU DROPDOW =====================
   const renderDropdownMenu = (menuDropdown: NavItemType) => {
-    const isHover = menuCurrentHovers.includes(menuDropdown.id);
+    const isHover = menuCurrentHovers.includes(menuDropdown.id)
     return (
       <Popover
         as="li"
@@ -191,10 +193,10 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                 static
                 className="sub-menu absolute transform z-10 w-56 top-full left-0"
               >
-                <ul className="rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1">
+                <ul className="rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative dark:bg-neutral-900 py-4 grid space-y-1">
                   {menuDropdown.children?.map((i) => {
                     if (i.type) {
-                      return renderDropdownMenuNavlinkHasChild(i);
+                      return renderDropdownMenuNavlinkHasChild(i)
                     } else {
                       return (
                         <li
@@ -203,7 +205,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                         >
                           {renderDropdownMenuNavlink(i)}
                         </li>
-                      );
+                      )
                     }
                   })}
                 </ul>
@@ -212,11 +214,11 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
           </>
         )}
       </Popover>
-    );
-  };
+    )
+  }
 
   const renderDropdownMenuNavlinkHasChild = (item: NavItemType) => {
-    const isHover = menuCurrentHovers.includes(item.id);
+    const isHover = menuCurrentHovers.includes(item.id)
     return (
       <Popover
         as="li"
@@ -247,13 +249,13 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
                 <ul className="rounded-xl shadow-lg ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-10 text-sm relative bg-white dark:bg-neutral-900 py-4 grid space-y-1">
                   {item.children?.map((i) => {
                     if (i.type) {
-                      return renderDropdownMenuNavlinkHasChild(i);
+                      return renderDropdownMenuNavlinkHasChild(i)
                     } else {
                       return (
                         <li key={i.id} className="px-2">
                           {renderDropdownMenuNavlink(i)}
                         </li>
-                      );
+                      )
                     }
                   })}
                 </ul>
@@ -262,8 +264,8 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
           </>
         )}
       </Popover>
-    );
-  };
+    )
+  }
 
   const renderDropdownMenuNavlink = (item: NavItemType) => {
     return (
@@ -281,8 +283,8 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
           />
         )}
       </Link>
-    );
-  };
+    )
+  }
 
   // ===================== MENU MAIN MENU =====================
   const renderMainItem = (item: NavItemType) => {
@@ -303,19 +305,19 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
           )}
         </Link>
       </div>
-    );
-  };
+    )
+  }
 
   switch (menuItem.type) {
     case "dropdown":
-      return renderDropdownMenu(menuItem);
+      return renderDropdownMenu(menuItem)
     case "megaMenu":
-      return renderMegaMenu(menuItem);
+      return renderMegaMenu(menuItem)
     default:
       return (
         <li className="menu-item flex-shrink-0">{renderMainItem(menuItem)}</li>
-      );
+      )
   }
-};
+}
 
-export default NavigationItem;
+export default NavigationItem

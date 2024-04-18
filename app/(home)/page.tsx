@@ -17,6 +17,7 @@ import Heading from "@/components/Heading/Heading"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
+import { SectionSliderNewCategoriesWag } from "@/components/SectionSliderNewCategories/SectionSliderNewCategoriesWag"
 // import SectionSliderNewCategories from "@/components/SectionSliderNewCategories/SectionSliderNewCategories"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag"
@@ -64,8 +65,8 @@ const PageHome = async ({
               Polkadot and Kusama
             </span>
           </div> */}
-        <div className="pt-10 pb-16 md:py-16 lg:pb-28 lg:pt-20">
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-cyan-600 mb-4">
+        <div className="relative">
+          {/* <h2 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-cyan-600 mb-4">
             Decentralized Media,
             <br />
             Collective Impact
@@ -73,7 +74,20 @@ const PageHome = async ({
           <span className="block mb-8 lg:mb-16 text-base xl:text-lg text-neutral-6000 dark:text-neutral-400">
             WagMedia is shaping the Future of Blockchain Media Creation on
             Polkadot and Kusama
-          </span>
+          </span> */}
+
+          <div className="py-10 md:py-12 lg:py-16 text-center mt-4 z-10 relative">
+            <h1 className="text-4xl lg:text-[4.4vw] lg:leading-[4.4vw] font-extrabold text-transparent bg-clip-text bg-primary mb-4 drop-shadow-[4px_4px_#E6007A,4px_-4px_#f2f]">
+              Decentralized Media, Collective Impact
+            </h1>
+            <p className="block mb-8 lg:mb-16 text-base xl:text-lg text-neutral-600 dark:text-neutral-400">
+              WagMedia is shaping the Future of Blockchain Media Creation on
+              Polkadot and Kusama
+            </p>
+          </div>
+          <div className="absolute mix-blend-multiply stroke-green-200 filter blur-3xl  rounded-full bg-purple-300 w-3/12 h-4/6 top-1/2 -left-0 animate-blob delay-1000 opacity-50"></div>
+          {/* <div className="absolute mix-blend-multiply stroke-green-200 filter blur-3xl rounded-full bg-yellow-300 w-5/12 h-72 top-12 left-1/4 animate-blob delay-700 opacity-50"></div> */}
+          <div className="absolute mix-blend-multiply stroke-green-200 filter blur-3xl rounded-full bg-pink-400 w-1/2 h-72 top-1/4 -right-10 animate-blob opacity-50"></div>
           <Suspense fallback={<>Loading...</>}>
             <SectionLargeSliderWag />
           </Suspense>
@@ -116,13 +130,9 @@ const PageHome = async ({
           <SectionBecomeAnAuthor className="" />
         </div>
 
-        {/* <SectionSliderNewCategoriesWag
-          className="py-16 lg:py-28"
-          heading="Top trending topics"
-          subHeading="Discover 233 topics"
-          categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
-          categoryCardType="card5"
-        /> */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <SectionSliderNewCategoriesWag className="py-16 lg:py-28" />
+        </Suspense>
       </div>
 
       <div className="container ">
