@@ -34,6 +34,7 @@ model Post {
     // Payments directly associated with this post
     payments Payment[] @relation(name: "PaymentPost")
 
+    parentPostId   String? // Foreign key for Post
     // Payments associated with threads under this post
     threadPayments Payment[] @relation(name: "PaymentThreadParent")
 }
@@ -82,14 +83,17 @@ model ContentEarnings {
 }
 
 model User {
-    id        Int        @id @default(autoincrement())
-    discordId String     @unique
-    posts     Post[]
-    reactions Reaction[]
-    avatar    String?
-    bio       String?
-    name      String?
-    Payment   Payment[]
+    id               Int        @id @default(autoincrement())
+    discordId        String     @unique
+    posts            Post[]
+    reactions        Reaction[]
+    avatar           String?
+    avatarDecoration String?
+    banner           String?
+    accentColor      String?
+    bio              String?
+    name             String?
+    Payment          Payment[]
 
     oddjobsposted  OddJob[] @relation(name: "PostedUser")
     oddjobsmanaged OddJob[] @relation(name: "ManagerUser")
