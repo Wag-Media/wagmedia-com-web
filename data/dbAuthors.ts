@@ -20,6 +20,9 @@ export async function getAuthors() {
       id: true,
       name: true,
       avatar: true,
+      avatarDecoration: true,
+      banner: true,
+      accentColor: true,
       bio: true,
       discordId: true,
       posts: {
@@ -53,8 +56,6 @@ export async function getAuthors() {
       },
     },
   })
-
-  console.log("authors", authors)
 
   return authors
     .map(

@@ -63,12 +63,15 @@ const PageHome = async ({
             </span>
           </div> */}
         <div className="pt-10 pb-16 md:py-16 lg:pb-28 lg:pt-20">
-          <Heading
-            desc="WagMedia is collectively shaping the Future of Blockchain Media Creation on
-              Polkadot and Kusama"
-          >
-            Decentralized Media, Collective Impact
-          </Heading>
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-purple-400 to-cyan-600 mb-4">
+            Decentralized Media,
+            <br />
+            Collective Impact
+          </h2>
+          <span className="block mb-8 lg:mb-16 text-base xl:text-lg text-neutral-6000 dark:text-neutral-400">
+            WagMedia is shaping the Future of Blockchain Media Creation on
+            Polkadot and Kusama
+          </span>
           <Suspense fallback={<>Loading...</>}>
             <SectionLargeSliderWag />
           </Suspense>
