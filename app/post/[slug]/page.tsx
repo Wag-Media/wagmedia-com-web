@@ -14,6 +14,7 @@ import SingleContent from "../SingleContent"
 import SingleMetaAction2 from "../SingleMetaAction2"
 import SingleTitle from "../SingleTitle"
 import { SinglePostContent } from "./SinglePostContent"
+import { SinglePostSkeleton } from "./SinglePostSkeleton"
 
 export default async function PostPage({
   params,
@@ -29,9 +30,9 @@ export default async function PostPage({
     .join(" ")
 
   return (
-    <Suspense fallback={<>Loading Post ...</>}>
-      {calculatedTitle}
+    <Suspense fallback={<SinglePostSkeleton title={calculatedTitle} />}>
       <SinglePostContent slug={slug} />
+      {/* <SinglePostSkeleton title={calculatedTitle} /> */}
     </Suspense>
   )
 }

@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react"
 
 import SingleContent from "./SingleContent"
-import SingleHeader from "./SingleHeader"
 import SingleRelatedPosts from "./SingleRelatedPosts"
 
 const layout = ({ children }: { children: ReactNode }) => {

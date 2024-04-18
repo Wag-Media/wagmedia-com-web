@@ -7,12 +7,8 @@ import { ArrowUpIcon } from "@heroicons/react/24/solid"
 import useIntersectionObserver from "@/hooks/useIntersectionObserver"
 import PostCardCommentBtn from "@/components/PostCardCommentBtn/PostCardCommentBtn"
 import PostCardLikeAction from "@/components/PostCardLikeAction/PostCardLikeAction"
-import Tag from "@/components/Tag/Tag"
 
 import SingleAuthor from "./SingleAuthor"
-import SingleCommentForm from "./SingleCommentForm"
-import SingleCommentLists from "./SingleCommentLists"
-import SingleContentDemo from "./SingleContentDemo"
 
 const demoTags = DEMO_TAGS.filter((_, i) => i < 9)
 
