@@ -32,16 +32,16 @@ const SectionSliderNewCategoriesWag: FC<SectionSliderNewCategoriesWagProps> = ({
   const renderCard = (item: TaxonomyType, index: number) => {
     const topIndex = index < 3 ? `#${index + 1}` : undefined
     switch (categoryCardType) {
-      case "card1":
-        return <CardCategory1 key={index} taxonomy={item} />
-      case "card2":
-        return <CardCategory2 key={index} index={topIndex} taxonomy={item} />
-      case "card3":
-        return <CardCategory3 key={index} taxonomy={item} />
-      case "card4":
-        return <CardCategory4 key={index} index={topIndex} taxonomy={item} />
-      case "card5":
-        return <CardCategory5 key={index} taxonomy={item} />
+      // case "card1":
+      //   return <CardCategory1 key={index} taxonomy={item} />
+      // case "card2":
+      //   return <CardCategory2 key={index} index={topIndex} taxonomy={item} />
+      // case "card3":
+      //   return <CardCategory3 key={index} taxonomy={item} />
+      // case "card4":
+      //   return <CardCategory4 key={index} index={topIndex} taxonomy={item} />
+      // case "card5":
+      //   return <CardCategory5 key={index} taxonomy={item} />
       default:
         return null
     }

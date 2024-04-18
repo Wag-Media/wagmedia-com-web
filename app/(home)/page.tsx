@@ -1,5 +1,4 @@
 import React, { Suspense } from "react"
-import Image from "next/image"
 import { DEMO_AUTHORS } from "@/data/authors"
 import { getAuthors } from "@/data/dbAuthors"
 import { getFeaturedPosts, getPosts, getTotalPostCount } from "@/data/dbPosts"
@@ -18,7 +17,7 @@ import Heading from "@/components/Heading/Heading"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories/SectionSliderNewCategories"
+// import SectionSliderNewCategories from "@/components/SectionSliderNewCategories/SectionSliderNewCategories"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag"
 import SectionMagazine1 from "@/components/Sections/SectionMagazine1"
@@ -27,7 +26,7 @@ import SectionSliderPosts from "@/components/Sections/SectionSliderPosts"
 import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag"
 import SectionVideos from "@/components/Sections/SectionVideos"
 
-import SectionSliderNewCategoriesWag from "../../components/SectionSliderNewCategories/SectionSliderNewCategoriesWag"
+// import SectionSliderNewCategoriesWag from "../../components/SectionSliderNewCategories/SectionSliderNewCategoriesWag"
 import SectionLargeSlider from "./SectionLargeSlider"
 import SectionLargeSliderWag from "./SectionLargeSliderWag"
 
@@ -117,13 +116,13 @@ const PageHome = async ({
           <SectionBecomeAnAuthor className="" />
         </div>
 
-        <SectionSliderNewCategoriesWag
+        {/* <SectionSliderNewCategoriesWag
           className="py-16 lg:py-28"
           heading="Top trending topics"
           subHeading="Discover 233 topics"
           categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
           categoryCardType="card5"
-        />
+        /> */}
       </div>
 
       <div className="container ">
