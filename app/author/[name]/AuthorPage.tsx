@@ -60,7 +60,7 @@ export async function AuthorPage({ name }: { name: string }) {
             />
           ) : (
             <div
-              className={`absolute w-full h-full bg-[${author.accentColor}]`}
+              className={`absolute w-full h-full`}
               style={{ background: author?.accentColor }}
             />
           )}
