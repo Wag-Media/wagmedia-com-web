@@ -9,6 +9,7 @@ import {
   DEMO_POSTS_GALLERY,
   DEMO_POSTS_VIDEO,
 } from "@/data/posts"
+import { DEMO_CATEGORIES } from "@/data/taxonomies"
 import { cn } from "@/utils/cn"
 
 import PostGrid from "@/components/ui/post-grid/PostGrid"
@@ -17,6 +18,7 @@ import Heading from "@/components/Heading/Heading"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
+import SectionSliderNewCategories from "@/components/SectionSliderNewCategories/SectionSliderNewCategories"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 import SectionLatestWagPosts from "@/components/Sections/SectionLatestPostsWag"
 import SectionMagazine1 from "@/components/Sections/SectionMagazine1"
@@ -25,6 +27,7 @@ import SectionSliderPosts from "@/components/Sections/SectionSliderPosts"
 import SectionSliderPostsWag from "@/components/Sections/SectionSliderPostsWag"
 import SectionVideos from "@/components/Sections/SectionVideos"
 
+import SectionSliderNewCategoriesWag from "../../components/SectionSliderNewCategories/SectionSliderNewCategoriesWag"
 import SectionLargeSlider from "./SectionLargeSlider"
 import SectionLargeSliderWag from "./SectionLargeSliderWag"
 
@@ -113,6 +116,14 @@ const PageHome = async ({
           />
           <SectionBecomeAnAuthor className="" />
         </div>
+
+        <SectionSliderNewCategoriesWag
+          className="py-16 lg:py-28"
+          heading="Top trending topics"
+          subHeading="Discover 233 topics"
+          categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
+          categoryCardType="card5"
+        />
       </div>
 
       <div className="container ">
