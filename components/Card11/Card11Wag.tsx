@@ -68,8 +68,8 @@ const Card11Wag: FC<Card11Props> = ({
         <CategoryBadgeListWag categories={categories} />
       </span>
 
-      <div className="p-4 flex flex-col space-y-3">
-        <div className="relative">
+      <div className="p-4 flex flex-col space-y-3 h-full">
+        <div className="relative flex-1">
           <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
           <PostCardWagMeta meta={{ ...post }} />
 
