@@ -38,11 +38,13 @@ export async function SinglePostContent({ slug }: { slug: string }) {
     return <div>No post found.</div>
   }
 
-  const { title, user } = post
+  const { title, user, embeds } = post
+  const firstEmbed = embeds?.[0] ?? null
+  const featuredImage = firstEmbed?.embedImage
 
   return (
     <div className={`nc-PageSingle pt-8 lg:pt-16`}>
-      <article className={`nc-PageSingle pt-8 lg:pt-16 space-y-10`}>
+      <article className={`nc-PageSingle pt-8 lg:pt-16 space-y-10 px-4`}>
         <header className="rounded-xl">
           <div className="max-w-screen-md mx-auto">
             <div className={`nc-SingleHeader`}>
@@ -75,6 +77,16 @@ export async function SinglePostContent({ slug }: { slug: string }) {
           className="prose lg:prose-lg !max-w-screen-md mx-auto dark:prose-invert"
           // ref={contentRef}
         >
+          {/* FEATURED IMAGE */}
+          <WagImage
+            alt="single"
+            containerClassName=""
+            className="rounded-xl w-full"
+            image={featuredImage}
+            width={1260}
+            height={750}
+            sizes="(max-width: 1024px) 100vw, 1280px"
+          />
           <p className="mb-4 whitespace-break-spaces">{post.content}</p>
 
           <h3 className="font-bold">Embeds</h3>

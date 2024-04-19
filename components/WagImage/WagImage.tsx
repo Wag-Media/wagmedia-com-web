@@ -14,7 +14,6 @@ export function WagImage({
     return (
       <div className={containerClassName}>
         <Image
-          fill
           src={image}
           sizes="(max-width: 600px) 480px, 800px"
           alt={props.alt}
