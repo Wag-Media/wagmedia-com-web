@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { prisma } from "@/prisma/prisma"
 import { Embed, Tag } from "@prisma/client"
+import { Tweet } from "react-tweet"
 
 import CategoryBadgeListWag from "@/components/CategoryBadgeList/CategoryBadgeListWag"
 import NcImage from "@/components/NcImage/NcImage"
@@ -13,6 +14,8 @@ import SingleAuthor from "../SingleAuthor"
 import SingleMetaAction2 from "../SingleMetaAction2"
 import SingleRelatedPosts from "../SingleRelatedPosts"
 import SingleTitle from "../SingleTitle"
+import { SinglePostEmbeds } from "./SinglePostEmbeds"
+import { getEmbedType, removeSocialMediaEmbeds } from "./util"
 
 export async function SinglePostContent({ slug }: { slug: string }) {
   const post = await prisma.post.findUnique({
@@ -41,6 +44,12 @@ export async function SinglePostContent({ slug }: { slug: string }) {
   const { title, user, embeds } = post
   const firstEmbed = embeds?.[0] ?? null
   const featuredImage = firstEmbed?.embedImage
+  const embedType = getEmbedType(firstEmbed.embedUrl)
+
+  let tweetId: string | undefined = ""
+  if (embedType === "twitter") {
+    tweetId = firstEmbed.embedUrl?.split("/").pop()
+  }
 
   return (
     <div className={`nc-PageSingle pt-8 lg:pt-16`}>
@@ -74,37 +83,31 @@ export async function SinglePostContent({ slug }: { slug: string }) {
         </header>
         <div
           id="single-entry-content"
-          className="prose lg:prose-lg !max-w-screen-md mx-auto dark:prose-invert"
+          className="!max-w-screen-md mx-auto"
           // ref={contentRef}
         >
           {/* FEATURED IMAGE */}
-          <WagImage
-            alt="single"
-            containerClassName=""
-            className="rounded-xl w-full"
-            image={featuredImage}
-            width={1260}
-            height={750}
-            sizes="(max-width: 1024px) 100vw, 1280px"
-          />
-          <p className="mb-4 whitespace-break-spaces">{post.content}</p>
+          {featuredImage && (
+            <>
+              {!embedType && (
+                <WagImage
+                  alt="single"
+                  containerClassName=""
+                  className="rounded-xl w-full my-8"
+                  image={featuredImage}
+                  width={1260}
+                  height={750}
+                  sizes="(max-width: 1024px) 100vw, 1280px"
+                />
+              )}
+              {embedType && <SinglePostEmbeds embeds={[firstEmbed]} />}
+            </>
+          )}
+          <p className="mb-4 whitespace-break-spaces prose lg:prose-lg  dark:prose-invert">
+            {removeSocialMediaEmbeds(post.content)}
+          </p>
 
-          <h3 className="font-bold">Embeds</h3>
-          {post.embeds &&
-            post.embeds.length > 0 &&
-            post.embeds.map((embed: Embed) => (
-              <>
-                {embed.embedImage ? (
-                  <WagImage
-                    image={embed.embedImage || ""}
-                    alt="Embed Image"
-                    className="mb-4"
-                    width={800}
-                    height={400}
-                  />
-                ) : null}
-              </>
-            ))}
+          <SinglePostEmbeds embeds={embeds?.slice(1)} />
           <div className="mb-4">
             <strong>Published:</strong> {post.createdAt.toLocaleDateString()}
           </div>
