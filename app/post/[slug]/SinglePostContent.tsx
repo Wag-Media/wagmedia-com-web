@@ -44,7 +44,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
 
   return (
     <div className={`nc-PageSingle pt-8 lg:pt-16`}>
-      <article className={`nc-PageSingle pt-8 lg:pt-16 space-y-10`}>
+      <article className={`nc-PageSingle pt-8 lg:pt-16 space-y-10 px-4`}>
         <header className="rounded-xl">
           <div className="max-w-screen-md mx-auto">
             <div className={`nc-SingleHeader`}>
