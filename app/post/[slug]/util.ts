@@ -1,5 +1,17 @@
 export type EmbedType = "twitter" | "instagram" | "youtube"
 
+export function linkTextsToAnchorTags(text: string): string {
+  // Patterns to match URLs
+  const urlPattern =
+    /((https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))/gi
+
+  // Replace URLs with anchor tags
+  return text.replace(
+    urlPattern,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  )
+}
+
 export function removeSocialMediaEmbeds(text: string): string {
   // Patterns to match social media URLs/embeds
   const patterns = [

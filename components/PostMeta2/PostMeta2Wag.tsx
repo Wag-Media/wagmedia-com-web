@@ -79,10 +79,6 @@ const PostMeta2Wag: FC<PostMeta2WagProps> = ({
           <span className="text-neutral-700 dark:text-neutral-300">
             {date.toDateString()}
           </span>
-          <span className="mx-2 font-semibold">·</span>
-          <span className="text-neutral-700 dark:text-neutral-300">
-            {/* {readingTime} min read */}
-          </span>
         </div>
       </div>
     </div>
