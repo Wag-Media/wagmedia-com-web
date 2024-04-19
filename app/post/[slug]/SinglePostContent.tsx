@@ -15,7 +15,12 @@ import SingleMetaAction2 from "../SingleMetaAction2"
 import SingleRelatedPosts from "../SingleRelatedPosts"
 import SingleTitle from "../SingleTitle"
 import { SinglePostEmbeds } from "./SinglePostEmbeds"
-import { getEmbedType, removeSocialMediaEmbeds } from "./util"
+import { SinglePostReactions } from "./SinglePostReactions"
+import {
+  getEmbedType,
+  linkTextsToAnchorTags,
+  removeSocialMediaEmbeds,
+} from "./util"
 
 export async function SinglePostContent({ slug }: { slug: string }) {
   const post = await prisma.post.findUnique({
@@ -32,6 +37,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
         },
       },
       payments: true,
+      earnings: true,
       user: true,
       embeds: true,
     },
@@ -41,10 +47,10 @@ export async function SinglePostContent({ slug }: { slug: string }) {
     return <div>No post found.</div>
   }
 
-  const { title, user, embeds } = post
+  const { title, user, embeds, earnings, reactions } = post
   const firstEmbed = embeds?.[0] ?? null
   const featuredImage = firstEmbed?.embedImage
-  const embedType = getEmbedType(firstEmbed.embedUrl)
+  const embedType = getEmbedType(firstEmbed?.embedUrl)
 
   let tweetId: string | undefined = ""
   if (embedType === "twitter") {
@@ -75,7 +81,10 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                     date={post.createdAt}
                     categories={post.categories}
                   />
-                  <SingleMetaAction2 />
+                  <SingleMetaAction2
+                    earnings={earnings}
+                    reactions={reactions}
+                  />
                 </div>
               </div>
             </div>
@@ -103,18 +112,20 @@ export async function SinglePostContent({ slug }: { slug: string }) {
               {embedType && <SinglePostEmbeds embeds={[firstEmbed]} />}
             </>
           )}
-          <p className="mb-4 whitespace-break-spaces prose lg:prose-lg  dark:prose-invert">
-            {removeSocialMediaEmbeds(post.content)}
-          </p>
+          <div
+            className="mb-4 whitespace-break-spaces prose lg:prose-lg dark:prose-invert"
+            dangerouslySetInnerHTML={{
+              __html: removeSocialMediaEmbeds(
+                linkTextsToAnchorTags(post.content)
+              ),
+            }}
+          />
 
           <SinglePostEmbeds embeds={embeds?.slice(1)} />
-          <div className="mb-4">
-            <strong>Published:</strong> {post.createdAt.toLocaleDateString()}
-          </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             {post.isPublished ? "Published" : "Draft"}
             {post.isFeatured && <span> | Featured</span>}
-          </div>
+          </div> */}
           {/* <div className="pb-4">
         <h3 className="font-bold">Author:</h3>
         {post.user.avatar && (
@@ -165,30 +176,10 @@ export async function SinglePostContent({ slug }: { slug: string }) {
             </div>
           )}
           <div>
-            <h3 className="font-bold">Reactions</h3>
-            <ul>
-              {post.reactions.map((reaction) => (
-                <li key={reaction.id}>
-                  {reaction.emoji.url ? (
-                    <Image
-                      src={reaction.emoji.url}
-                      alt={reaction.emoji.id}
-                      width={30}
-                      height={30}
-                      className="inline-block !m-0 p-0"
-                    />
-                  ) : (
-                    <span className="align-middle text-[30px]">
-                      {reaction.emojiId}
-                    </span>
-                  )}{" "}
-                  at {reaction.createdAt.toDateString()} from{" "}
-                  {reaction.user.name}
-                </li>
-              ))}
-            </ul>
+            <h3 className="font-bold mb-2">Reactions</h3>
+            <SinglePostReactions reactions={post.reactions} />
           </div>
-          <div>
+          {/* <div>
             <b>Payments:</b>
             <ul>
               {post.payments.map((payment) => (
@@ -198,7 +189,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </div>
       </article>
       <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700 my-8"></div>

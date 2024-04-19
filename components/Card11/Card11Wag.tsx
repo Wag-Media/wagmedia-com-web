@@ -63,24 +63,28 @@ const Card11Wag: FC<Card11Props> = ({
           <PostFeaturedWagMedia post={post} isHover={isHover} />
         </div>
       </div>
-      <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
+
       <span className="absolute top-3 inset-x-3 z-10">
         <CategoryBadgeListWag categories={categories} />
       </span>
 
       <div className="p-4 flex flex-col space-y-3">
-        <PostCardWagMeta meta={{ ...post }} />
+        <div className="relative">
+          <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
+          <PostCardWagMeta meta={{ ...post }} />
 
-        <h3 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100">
-          <span className="line-clamp-2" title={title}>
-            {title}
-          </span>
-        </h3>
+          <h3 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100">
+            <span className="line-clamp-2" title={title}>
+              {title}
+            </span>
+          </h3>
+        </div>
         <div className="flex items-end justify-between mt-auto">
           <PostCardLikeAndCommentWag
             className="relative"
             likeCount={reactions.length}
             earnings={earnings}
+            reactions={reactions}
           />
           {/* <PostCardSaveAction className="relative" /> */}
         </div>
