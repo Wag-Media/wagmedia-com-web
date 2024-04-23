@@ -16,6 +16,7 @@ export async function getPosts({
       isPublished: true,
       isDeleted: false,
       isFeatured: false,
+      contentType: "article",
     },
     orderBy: {
       createdAt: "desc",
