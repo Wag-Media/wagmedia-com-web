@@ -17,7 +17,7 @@ const CardCategory1: FC<CardCategory1Props> = ({
   category,
 }) => {
   if (!category) return null
-  const { _count, name } = category
+  const { postsCount, name } = category
   const href = `/category/${name}`
   // const thumbnail = category?.thumbnail
 
@@ -49,7 +49,7 @@ const CardCategory1: FC<CardCategory1Props> = ({
             size === "large" ? "text-sm" : "text-xs"
           } block mt-[2px] text-neutral-500 dark:text-neutral-400`}
         >
-          {_count.posts} Articles
+          {postsCount} Articles
         </span>
       </div>
     </Link>

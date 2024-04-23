@@ -20,8 +20,8 @@ const navMenuItems: NavItemType[] = [
   },
   {
     id: "3",
-    name: "Finders",
-    href: "/finders",
+    name: "News",
+    href: "/news",
   },
   {
     id: "4",

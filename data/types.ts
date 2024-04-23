@@ -41,9 +41,7 @@ export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
 }
 
 export type CategoryWithCount = Category & {
-  _count: {
-    posts: number
-  }
+  postsCount: number
 }
 
 export type TagWithCount = Tag & {

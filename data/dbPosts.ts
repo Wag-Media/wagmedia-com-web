@@ -131,12 +131,14 @@ export async function getPostsByAuthor(
 }
 
 export async function getPostsByCategoryId(
-  categoryId: number
+  categoryId: number,
+  contentType: "article" | "news" = "article"
 ): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
   const posts = await prisma.post.findMany({
     where: {
       isPublished: true,
       isDeleted: false,
+      contentType,
       categories: {
         some: {
           id: categoryId,

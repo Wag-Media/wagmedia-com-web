@@ -13,11 +13,15 @@ type expectedCategoryType = Awaited<ReturnType<typeof getCategoriesWithPosts>>
 export interface SectionMagazine11Props {
   className?: string
   categories?: expectedCategoryType
+  heading?: string
+  desc?: string
 }
 
 const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
   categories = [],
   className = "",
+  heading = "Explore all Polkadot Article Categories",
+  desc = "Polkadot Ecosystem Articles grouped by Category",
 }) => {
   const renderListByCat = (category: expectedCategoryType[number]) => {
     const posts = category.posts
@@ -67,8 +71,8 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
 
   return (
     <div className={`nc-SectionMagazine11 relative ${className}`}>
-      <Heading as="h1" desc={"Polkadot Ecosystem Posts grouped by Category"}>
-        Explore all Polkadot News Categories
+      <Heading as="h1" desc={desc}>
+        {heading}
       </Heading>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-4 md:gap-7">
         {categories.map((cate, i) => renderListByCat(cate))}
