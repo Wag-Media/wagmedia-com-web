@@ -18,7 +18,7 @@ export const siteConfig = {
       href: "/",
     },
     {
-      title: "Finders",
+      title: "News",
       href: "/",
     },
     {

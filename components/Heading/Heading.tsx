@@ -1,10 +1,10 @@
-import React, { HTMLAttributes, ReactNode, createElement } from "react";
+import React, { HTMLAttributes, ReactNode, createElement } from "react"
 
 export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
-  fontClass?: string;
-  desc?: ReactNode;
-  isCenter?: boolean;
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  fontClass?: string
+  desc?: ReactNode
+  isCenter?: boolean
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
 }
 
 const Heading: React.FC<HeadingProps> = ({
@@ -21,7 +21,7 @@ const Heading: React.FC<HeadingProps> = ({
     >
       <div
         className={
-          isCenter ? "text-center w-full max-w-2xl mx-auto " : "max-w-2xl"
+          isCenter ? "text-center w-full max-w-2xl mx-auto " : "max-w-3xl"
         }
       >
         {createElement(
@@ -39,7 +39,7 @@ const Heading: React.FC<HeadingProps> = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Heading;
+export default Heading
