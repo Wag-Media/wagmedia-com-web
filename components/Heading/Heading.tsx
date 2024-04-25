@@ -21,11 +21,7 @@ const Heading: React.FC<HeadingProps> = ({
     >
       <div
         className={
-<<<<<<< HEAD
-          isCenter ? "text-center w-full max-w-2xl mx-auto " : "max-w-3xl"
-=======
           isCenter ? "text-center w-full max-w-3xl mx-auto " : "max-w-5xl"
->>>>>>> staging
         }
       >
         {createElement(
