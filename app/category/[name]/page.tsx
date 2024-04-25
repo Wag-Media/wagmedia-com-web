@@ -1,7 +1,11 @@
 import React, { FC } from "react"
 import Image from "next/image"
 import { DEMO_AUTHORS } from "@/data/authors"
-import { getCategories, getCategoryByName } from "@/data/dbCategories"
+import {
+  getCategories,
+  getCategoryByName,
+  getCategoryWithArticlesAndNews,
+} from "@/data/dbCategories"
 import { getPostsByCategoryId } from "@/data/dbPosts"
 import { DEMO_POSTS } from "@/data/posts"
 import { DEMO_CATEGORIES, DEMO_TAGS } from "@/data/taxonomies"
@@ -11,7 +15,6 @@ import ArchiveFilterListBox from "@/components/ArchiveFilterListBox/ArchiveFilte
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import ButtonSecondary from "@/components/Button/ButtonSecondary"
-import Card11 from "@/components/Card11/Card11"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import ModalCategories from "@/components/ModalCategories"
 import ModalTags from "@/components/ModalTags"
@@ -31,13 +34,15 @@ export default async function PageCategory({
   const category = await getCategoryByName(params.name)
   const categories = await getCategories()
 
-  if (!category || !category.name) {
+  const _category = await getCategoryWithArticlesAndNews(params.name)
+
+  if (!category || !category.name || !_category) {
     return {
       notFound: true,
     }
   }
 
-  const posts = await getPostsByCategoryId(category.id)
+  const { posts, articles, news } = _category
 
   const FILTERS = [
     { name: "Most Recent" },
@@ -64,7 +69,10 @@ export default async function PageCategory({
             <h2 className="inline-block align-middle text-5xl font-semibold md:text-7xl my-4">
               {category.name}
             </h2>
-            <span className="block text-xl">{posts.length} Posts</span>
+            <span className="block text-xl">
+              {articles?.length} Articles and {news?.length} News with the
+              Category <b>{category.name}</b>
+            </span>
           </div>
         </div>
       </div>
@@ -82,14 +90,20 @@ export default async function PageCategory({
               <ArchiveFilterListBox lists={FILTERS} />
             </div>
           </div>
-
           {/* LOOP ITEMS */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
-            {posts?.map((post) => (
+          <h3 className="text-xl font-semibold mt-4">Articles</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
+            {articles?.map((post) => (
               <Card11Wag key={post.id} post={post} />
             ))}
           </div>
-
+          <h3 className="text-xl font-semibold mt-4">News</h3>
+          <pre className="text-xs">{JSON.stringify(news, null, 2)}</pre>
+          {/* <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
+            {news?.map((post) => (
+              <Card11 key={post.id} post={post} />
+            ))}
+          </div> */}
           {/* PAGINATIONS */}
           <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
             <Pagination />

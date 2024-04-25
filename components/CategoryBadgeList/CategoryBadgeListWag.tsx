@@ -12,7 +12,7 @@ export interface CategoryBadgeListWagProps {
 }
 
 const CategoryBadgeListWag: FC<CategoryBadgeListWagProps> = ({
-  className = "flex flex-wrap gap-2",
+  className = "flex flex-wrap gap-[0.15rem]",
   itemClass,
   categories,
 }) => {

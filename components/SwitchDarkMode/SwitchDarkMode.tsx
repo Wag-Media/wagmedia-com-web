@@ -1,14 +1,16 @@
-"use client";
+"use client"
 
-import React from "react";
-import { MoonIcon } from "@heroicons/react/24/solid";
-import { SunIcon } from "@heroicons/react/24/outline";
-import { useThemeMode } from "@/hooks/useThemeMode";
+import React from "react"
+import { SunIcon } from "@heroicons/react/24/outline"
+import { MoonIcon } from "@heroicons/react/24/solid"
+
+import { useThemeMode } from "@/hooks/useThemeMode"
+
 export interface SwitchDarkModeProps {
-  className?: string;
+  className?: string
 }
 const SwitchDarkMode: React.FC<SwitchDarkModeProps> = ({ className = "" }) => {
-  const { _toogleDarkMode, isDarkMode, toDark, toLight } = useThemeMode();
+  const { _toogleDarkMode, isDarkMode, toDark, toLight } = useThemeMode()
 
   return (
     <button
@@ -17,12 +19,12 @@ const SwitchDarkMode: React.FC<SwitchDarkModeProps> = ({ className = "" }) => {
     >
       <span className="sr-only">Enable dark mode</span>
       {isDarkMode ? (
-        <MoonIcon className="w-7 h-7" aria-hidden="true" />
+        <MoonIcon className="w-5 h-5" aria-hidden="true" />
       ) : (
-        <SunIcon className="w-7 h-7" aria-hidden="true" />
+        <SunIcon className="w-5 h-5" aria-hidden="true" />
       )}
     </button>
-  );
-};
+  )
+}
 
-export default SwitchDarkMode;
+export default SwitchDarkMode

@@ -20,6 +20,7 @@ import {
   getEmbedType,
   linkTextsToAnchorTags,
   removeSocialMediaEmbeds,
+  replaceAuthorLinks,
 } from "./util"
 
 export async function SinglePostContent({ slug }: { slug: string }) {
@@ -56,6 +57,10 @@ export async function SinglePostContent({ slug }: { slug: string }) {
   if (embedType === "twitter") {
     tweetId = firstEmbed.embedUrl?.split("/").pop()
   }
+
+  let content = removeSocialMediaEmbeds(linkTextsToAnchorTags(post.content))
+
+  content = await replaceAuthorLinks(content)
 
   return (
     <div className={`nc-PageSingle pt-8 lg:pt-16`}>
@@ -115,9 +120,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
           <div
             className="mb-4 whitespace-break-spaces prose lg:prose-lg dark:prose-invert"
             dangerouslySetInnerHTML={{
-              __html: removeSocialMediaEmbeds(
-                linkTextsToAnchorTags(post.content)
-              ),
+              __html: content,
             }}
           />
 
@@ -143,15 +146,15 @@ export async function SinglePostContent({ slug }: { slug: string }) {
           <div className="pb-4">
             <h3 className="font-bold">Links</h3>
             {post.discordLink && (
-              <a href={post.discordLink} className="mb-4 block">
-                Discord 🔗
+              <a href={post.discordLink} className="block underline">
+                🔗 Discord
               </a>
             )}
             {post.embeds &&
               post.embeds.length > 0 &&
               post.embeds.map((embed: Embed) => (
-                <a href={embed.embedUrl || ""} className="mb-4 block">
-                  Original Content 🔗
+                <a href={embed.embedUrl || ""} className="block underline">
+                  🔗 Original Content
                 </a>
               ))}
           </div>

@@ -66,7 +66,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
     <div className="flex items-center space-x-2 w-full justify-between">
       <HoverCard openDelay={0}>
         <HoverCardTrigger>
-          <div className="flex items-center gap-2 text-xs cursor-default rounded-full shadow-sm p-2 border">
+          <div className="flex items-center gap-2 text-xs cursor-default rounded-full">
             <ThumbsUp size={20} strokeWidth={1} />
             {likeCount}
           </div>
@@ -102,7 +102,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
         </HoverCardContent>
       </HoverCard>
       {total && parseFloat(total) > 0 && (
-        <div className="flex items-center gap-2 text-xs cursor-default rounded-full shadow-sm p-2 border">
+        <div className="flex items-center gap-2 text-xs cursor-default rounded-full">
           <Coins strokeWidth={1} size={20} />
           {total}
         </div>

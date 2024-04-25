@@ -1,12 +1,20 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
+import {
+  PostWithTagsCategoriesReactionsPaymentsUser,
+  TypePostOrder,
+} from "@/data/types"
+import { ArrowRightIcon } from "lucide-react"
 
+import Button from "@/components/Button/Button"
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import Loading from "@/components/Button/Loading"
 import Card11Wag from "@/components/Card11/Card11Wag"
+import Nav from "@/components/Nav/Nav"
 import { fetchPosts } from "@/app/actions/fetchPosts"
+
+import { cn } from "../../../utils/cn"
 
 export function PostGridDisplay({
   initialPosts,
@@ -19,6 +27,7 @@ export function PostGridDisplay({
   const [posts, setPosts] =
     useState<PostWithTagsCategoriesReactionsPaymentsUser[]>(initialPosts)
   const [currentPage, setCurrentPage] = useState(0) // Start from page 0 for correct API offset calculation
+  const [orderBy, setOrderBy] = useState<TypePostOrder>("latest") // Start from page 0 for correct API offset calculation
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadMoreDisabled, setIsLoadMoreDisabled] = useState(
     initialPosts.length < pageSize
@@ -32,20 +41,71 @@ export function PostGridDisplay({
       page: currentPage + 1,
       pageSize: pageSize, // Correct parameter if API expects pageSize instead of take
       search: "", // Pass any actual search criteria needed
+      orderBy,
     })
 
     setCurrentPage(currentPage + 1)
     setPosts((prev) => [...prev, ...newPosts])
     setIsLoading(false)
-  }, [currentPage, isLoading, isLoadMoreDisabled])
+  }, [currentPage, isLoading, isLoadMoreDisabled, orderBy])
 
   useEffect(() => {
     setIsLoadMoreDisabled(posts.length >= totalPostCount)
   }, [posts, totalPostCount])
 
+  const tabs: { id: TypePostOrder; label: string }[] = [
+    { id: "latest", label: "Latest" },
+    { id: "reactions", label: "Most Reactions" },
+    // { id: "earnings", label: "Earnings" },
+  ]
+
+  const handleClickTab = async (id: TypePostOrder) => {
+    console
+    if (id === orderBy) {
+      return
+    }
+    setOrderBy(id)
+    setIsLoading(true)
+    const newPosts = await fetchPosts({
+      page: 0,
+      pageSize: pageSize, // Correct parameter if API expects pageSize instead of take
+      search: "", // Pass any actual search criteria needed
+      orderBy: id,
+    })
+    setPosts([...newPosts])
+    setIsLoading(false)
+  }
+
   return (
     <div className="mt-8">
-      <div className="grid gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
+      <div className="flex justify-between mb-4">
+        <Nav
+          className=""
+          containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base"
+        >
+          {tabs.map(({ id, label }, index) => (
+            // <NavItem key={index}>{item}</NavItem>
+            <div
+              className={cn(
+                "py-2 !mr-4 font-semibold border-b-2 rounded-none cursor-pointer",
+                {
+                  "border-black": id === orderBy,
+                  "border-transparent": id !== orderBy,
+                }
+              )}
+              key={index}
+              onClick={() => handleClickTab(id)}
+            >
+              {label}
+            </div>
+          ))}
+        </Nav>
+        <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
+          <span>View all</span>
+          <ArrowRightIcon className="ms-3 w-6 h-6 rtl:rotate-180" />
+        </Button>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
         {posts.map((post, index) => (
           <Card11Wag key={index} post={post} />
         ))}

@@ -1,13 +1,14 @@
-import React, { FC } from "react";
-import NcImage from "@/components/NcImage/NcImage";
-import { TaxonomyType, TwMainColor } from "@/data/types";
-import Badge from "@/components/Badge/Badge";
-import Link from "next/link";
+import React, { FC } from "react"
+import Link from "next/link"
+import { TaxonomyType, TwMainColor } from "@/data/types"
+
+import Badge from "@/components/Badge/Badge"
+import NcImage from "@/components/NcImage/NcImage"
 
 export interface CardCategory2Props {
-  className?: string;
-  taxonomy: TaxonomyType;
-  index?: string;
+  className?: string
+  taxonomy: TaxonomyType
+  index?: string
 }
 
 const CardCategory2: FC<CardCategory2Props> = ({
@@ -15,7 +16,7 @@ const CardCategory2: FC<CardCategory2Props> = ({
   taxonomy,
   index,
 }) => {
-  const { count, name, href = "/", thumbnail, color } = taxonomy;
+  const { count, name, href = "/", thumbnail, color } = taxonomy
   return (
     <Link
       href={href}
@@ -45,7 +46,7 @@ const CardCategory2: FC<CardCategory2Props> = ({
         </span>
       </div>
     </Link>
-  );
-};
+  )
+}
 
-export default CardCategory2;
+export default CardCategory2

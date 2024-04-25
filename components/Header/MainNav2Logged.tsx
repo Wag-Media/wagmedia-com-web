@@ -32,16 +32,17 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         </div>
 
         <div className="flex flex-1 items-center justify-end text-slate-700 dark:text-slate-100">
-          <SearchModal />
-          {/* <NotifyDropdown /> */}
-          <SwitchDarkMode />
-          <button
-            className={`flex h-12 w-12 backdrop-blur-md bg-background/60 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
-          >
-            <span className="sr-only">Enable dark mode</span>
-            <DiscordIcon size={38} />
-          </button>
-
+          <div className="flex rounded-full bg-background/60 backdrop-blur-md h-16 p-3">
+            <SearchModal />
+            {/* <NotifyDropdown /> */}
+            <SwitchDarkMode />
+            <button
+              className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
+            >
+              <span className="sr-only">Enable dark mode</span>
+              <DiscordIcon size={25} />
+            </button>
+          </div>
           {/* <AvatarDropdown /> */}
         </div>
       </div>

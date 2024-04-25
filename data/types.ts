@@ -132,3 +132,5 @@ export type TwMainColor =
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number
 }
+
+export type TypePostOrder = "latest" | "reactions" | "earnings"

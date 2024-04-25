@@ -1,16 +1,33 @@
 import { prisma } from "@/prisma/prisma"
+import { totalEarnings } from "@/utils/totalPostEarnings"
+import orderBy from "lodash"
+import _ from "lodash"
 
-import { PostWithTagsCategoriesReactionsPaymentsUser } from "./types"
+import {
+  PostWithTagsCategoriesReactionsPaymentsUser,
+  TypePostOrder,
+} from "./types"
 
 export async function getPosts({
   skip = 0,
   take = 12,
   search,
+  orderBy,
 }: {
   skip?: number
   take?: number
   search?: string
+  orderBy?: TypePostOrder
 }): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
+  const order =
+    orderBy === "reactions"
+      ? { reactions: { _count: "desc" } }
+      : orderBy === "earnings"
+      ? {
+          payments: { _count: "desc" },
+        }
+      : { createdAt: "desc" }
+
   const posts = await prisma.post.findMany({
     where: {
       isPublished: true,
@@ -18,9 +35,7 @@ export async function getPosts({
       isFeatured: false,
       contentType: "article",
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: order as any,
     include: {
       tags: true,
       categories: {
@@ -37,7 +52,19 @@ export async function getPosts({
       payments: true,
       user: true,
       embeds: true,
-      earnings: true,
+      earnings: {
+        where: {
+          unit: {
+            equals: "DOT",
+          },
+        },
+        orderBy: {
+          totalAmount: "desc",
+        },
+      },
+      _count: {
+        select: { reactions: true, payments: true },
+      },
     },
     take,
     skip,
@@ -205,6 +232,46 @@ export async function getPostsByTagId(
       embeds: true,
       earnings: true,
     },
+  })
+
+  return posts
+}
+
+export async function getNewsletterPosts(): Promise<
+  PostWithTagsCategoriesReactionsPaymentsUser[]
+> {
+  const posts = await prisma.post.findMany({
+    where: {
+      isPublished: true,
+      isDeleted: false,
+      categories: {
+        some: {
+          name: "Newsletter",
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      tags: true,
+      categories: {
+        include: {
+          emoji: true,
+        },
+      },
+      reactions: {
+        include: {
+          user: true,
+          emoji: true,
+        },
+      },
+      payments: true,
+      user: true,
+      embeds: true,
+      earnings: true,
+    },
+    take: 3,
   })
 
   return posts
