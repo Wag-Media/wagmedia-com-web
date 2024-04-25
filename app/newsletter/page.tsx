@@ -1,8 +1,3 @@
-import {
-  getCategories,
-  getCategoriesWithPosts,
-  getNonEnglishCategories,
-} from "@/data/dbCategories"
 import { getNewsletterPosts } from "@/data/dbPosts"
 
 import PostGrid from "@/components/ui/post-grid/PostGrid"
