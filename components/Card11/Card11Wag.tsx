@@ -20,7 +20,7 @@ export interface Card11Props {
 }
 
 const Card11Wag: FC<Card11Props> = ({
-  className = "h-full",
+  className = "",
   post,
   hiddenAuthor = false,
   ratio = "aspect-w-16 aspect-h-9",
@@ -68,7 +68,7 @@ const Card11Wag: FC<Card11Props> = ({
           <PostCardWagMeta meta={{ ...post }} />
 
           <h3 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100">
-            <span className="line-clamp-2" title={title}>
+            <span className="line-clamp-2 h-12" title={title}>
               {title}
             </span>
           </h3>

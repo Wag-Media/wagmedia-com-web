@@ -7,6 +7,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid"
 
 import { Popover, Transition } from "@/app/headlessui"
 
+import { cn } from "../../lib/utils"
 import NcImage from "../NcImage/NcImage"
 
 export interface NavItemType {
@@ -17,10 +18,12 @@ export interface NavItemType {
   children?: NavItemType[]
   type?: "dropdown" | "megaMenu" | "none"
   isNew?: boolean
+  active?: boolean
 }
 
 export interface NavigationItemProps {
   menuItem: NavItemType
+  active?: boolean
 }
 
 const recentPosts = [
@@ -50,7 +53,7 @@ const recentPosts = [
   },
 ]
 
-const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
+const NavigationItem: FC<NavigationItemProps> = ({ menuItem, active }) => {
   const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([])
 
   const onMouseEnterMenu = (id: string) => {
@@ -287,11 +290,17 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
   }
 
   // ===================== MENU MAIN MENU =====================
-  const renderMainItem = (item: NavItemType) => {
+  const renderMainItem = (item: NavItemType, active?: boolean) => {
     return (
       <div className="h-20 flex-shrink-0 flex items-center">
         <Link
-          className="inline-flex items-center text-sm lg:text-[15px] font-medium text-slate-700 dark:text-slate-300 py-2.5 px-4 xl:px-5 rounded-full hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          className={cn(
+            "inline-flex items-center text-sm lg:text-[15px] font-medium text-slate-700 dark:text-slate-300 py-2.5 px-4 xl:px-5 rounded-full hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-200",
+            {
+              "bg-black text-white dark:bg-white dark:text-black hover:bg-black hover:text-white hover:dark:bg-white hover:dark:text-black":
+                active,
+            }
+          )}
           href={{
             pathname: item.href || undefined,
           }}
@@ -315,7 +324,9 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem }) => {
       return renderMegaMenu(menuItem)
     default:
       return (
-        <li className="menu-item flex-shrink-0">{renderMainItem(menuItem)}</li>
+        <li className="menu-item flex-shrink-0">
+          {renderMainItem(menuItem, active)}
+        </li>
       )
   }
 }
