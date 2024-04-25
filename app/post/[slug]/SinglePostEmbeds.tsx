@@ -1,14 +1,18 @@
 "use client"
 
 import { Embed } from "@prisma/client"
-import { InstagramEmbed, YouTubeEmbed } from "react-social-media-embed"
+import {
+  InstagramEmbed,
+  TikTokEmbed,
+  YouTubeEmbed,
+} from "react-social-media-embed"
 import { Tweet } from "react-tweet"
 
 import { getEmbedType } from "./util"
 
 export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
   return (
-    <div className="nc-SinglePostEmbeds overflow-hidden my-8">
+    <div className="nc-SinglePostEmbeds overflow-hidden">
       {/* <>{JSON.stringify(embeds, null, 2)}</> */}
       {embeds.map((embed, index) => {
         const embedType = getEmbedType(embed.embedUrl)

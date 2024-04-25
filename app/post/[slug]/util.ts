@@ -1,6 +1,6 @@
 import { getAuthor, getAuthorsByIds } from "@/data/dbAuthors"
 
-export type EmbedType = "twitter" | "instagram" | "youtube"
+export type EmbedType = "twitter" | "instagram" | "youtube" | "vimeo" | "tiktok"
 
 export function linkTextsToAnchorTags(text: string): string {
   // Patterns to match URLs
@@ -21,6 +21,9 @@ export function removeSocialMediaEmbeds(text: string): string {
     /https?:\/\/(www\.)?youtu\.be\/[a-zA-Z0-9_-]+\S*/gi, // YouTube shortened links
     /https?:\/\/(www\.)?youtube\.com\/watch\?v=[a-zA-Z0-9_-]+\S*/gi, // YouTube watch links
     /https?:\/\/(www\.)?instagram\.com\/p\/[a-zA-Z0-9_-]+\S*/gi, // Instagram post links
+    /https?:\/\/(www\.)?instagram\.com\/tv\/[a-zA-Z0-9_-]+\S*/gi, // Instagram TV links
+    /https?:\/\/(www\.)?vimeo\.com\/[a-zA-Z0-9_-]+\S*/gi, // Vimeo links
+    /https?:\/\/(www\.)?tiktok\.com\/[a-zA-Z0-9_@-]+\S*/gi, // TikTok links
   ]
 
   // Iterate over each pattern and replace it with an empty string
@@ -38,6 +41,9 @@ export function getEmbedType(url: string | null): EmbedType | null {
 
   if (url.includes("instagram.com")) return "instagram"
   if (url.includes("youtube.com" || url.includes("youtu.be"))) return "youtube"
+  if (url.includes("vimeo.com")) return "vimeo"
+  if (url.includes("tiktok.com")) return "tiktok"
+
   return null
 }
 
