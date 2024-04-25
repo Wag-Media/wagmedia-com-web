@@ -7,12 +7,6 @@ import {
   PostWithTagsCategoriesReactionsPaymentsUser,
 } from "@/data/types"
 
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
-import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment"
-import PostCardMeta from "@/components/PostCardMeta/PostCardMeta"
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction"
-import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia"
-
 import CategoryBadgeListWag from "../CategoryBadgeList/CategoryBadgeListWag"
 import PostCardLikeAndCommentWag from "../PostCardLikeAndComment/PostCardLikeAndCommentWag"
 import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta"
@@ -51,7 +45,7 @@ const Card11Wag: FC<Card11Props> = ({
 
   return (
     <div
-      className={`nc-Card11 shadow-sm border border-gray-200 dark:border-gray-700  relative flex flex-col group rounded-lg overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
+      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-xl overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       //

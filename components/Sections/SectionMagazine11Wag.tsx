@@ -6,6 +6,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid"
 import Badge from "@/components/Badge/Badge"
 import Heading from "@/components/Heading/Heading"
 
+import Button from "../Button/Button"
 import Card11Wag from "../Card11/Card11Wag"
 
 type expectedCategoryType = Awaited<ReturnType<typeof getCategoriesWithPosts>>
@@ -29,14 +30,15 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
     return (
       <div key={category.id} className={`flex flex-col space-y-4`}>
         {category.name && (
-          <Heading desc={`${posts.length} posts`} className="mb-0">
-            {category.name}
-          </Heading>
+          <>
+            <h2 className="text-3xl font-bold mb-0">{category.name}</h2>
+            <p className="pt-0 mt-0">{`${posts.length} posts`}</p>
+          </>
         )}
         {posts[0] && <Card11Wag post={posts[0]} />}
         <ul className="space-y-3">
           {posts
-            .filter((_, i) => i > 0 && i < 4)
+            .filter((_, i) => i > 0 && i < 5)
             .map((post) => (
               <li key={post.id}>
                 <h2 className="nc-card-title flex items-start font-medium space-x-4 rtl:space-x-reverse">
@@ -56,14 +58,11 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
               </li>
             ))}
         </ul>
-        <div className="flex items-center justify-between">
-          <a
-            href={`/category/${category.name}`}
-            className="flex items-center text-neutral-500"
-          >
+        <div className="flex items-center justify-between !mt-8 !mb-8">
+          <Button href={`/category/${category.name}`}>
             <span>See all {category.name} Articles</span>
             <ArrowRightIcon className="ms-1.5 w-3 h-3" />
-          </a>
+          </Button>
         </div>
       </div>
     )

@@ -85,6 +85,67 @@ export async function getCategories(
   return filteredCategories
 }
 
+export async function getCategoryWithArticlesAndNews(name: string) {
+  const category = await prisma.category.findUnique({
+    where: {
+      name,
+    },
+    include: {
+      emoji: true,
+      _count: {
+        select: { posts: true },
+      },
+      posts: {
+        where: {
+          isPublished: true,
+          isDeleted: false,
+          OR: [
+            {
+              contentType: ContentType.article,
+            },
+            {
+              contentType: ContentType.news,
+            },
+          ],
+        },
+        include: {
+          tags: true,
+          categories: {
+            include: {
+              emoji: true,
+            },
+          },
+          reactions: {
+            include: {
+              user: true,
+              emoji: true,
+            },
+          },
+          payments: true,
+          user: true,
+          embeds: true,
+          earnings: true,
+        },
+      },
+    },
+  })
+
+  if (!category) {
+    return null
+  }
+
+  return {
+    ...category,
+    postsCount: category.posts.length,
+    articles: category.posts.filter(
+      (post) => post.contentType === ContentType.article
+    ),
+    news: category.posts.filter(
+      (post) => post.contentType === ContentType.news
+    ),
+  }
+}
+
 export async function getCategoriesWithPosts(
   categories: Category[],
   contentType: "article" | "news" = "article"

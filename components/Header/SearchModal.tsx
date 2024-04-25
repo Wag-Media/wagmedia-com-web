@@ -1,47 +1,47 @@
-"use client";
+"use client"
 
-import { FC, Fragment, ReactNode, useState } from "react";
-import { Combobox, Dialog, Transition } from "@headlessui/react";
+import { FC, Fragment, ReactNode, useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { DEMO_AUTHORS } from "@/data/authors"
+import { DEMO_POSTS } from "@/data/posts"
+import { DEMO_CATEGORIES } from "@/data/taxonomies"
+import { Combobox, Dialog, Transition } from "@headlessui/react"
 import {
+  ClockIcon,
   ExclamationTriangleIcon,
   HashtagIcon,
   LifebuoyIcon,
-  ClockIcon,
   MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
-import Image from "next/image";
-import { DEMO_AUTHORS } from "@/data/authors";
-import { DEMO_CATEGORIES } from "@/data/taxonomies";
-import { DEMO_POSTS } from "@/data/posts";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+} from "@heroicons/react/24/outline"
 
-const categories = DEMO_CATEGORIES.filter((_, i) => i < 9);
-const posts = DEMO_POSTS.filter((_, i) => i < 5);
-const authors = DEMO_AUTHORS.filter((_, i) => i < 9);
+const categories = DEMO_CATEGORIES.filter((_, i) => i < 9)
+const posts = DEMO_POSTS.filter((_, i) => i < 5)
+const authors = DEMO_AUTHORS.filter((_, i) => i < 9)
 
 function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(" ")
 }
 
 interface Props {
-  renderTrigger?: () => ReactNode;
+  renderTrigger?: () => ReactNode
 }
 
 const SearchModal: FC<Props> = ({ renderTrigger }) => {
-  const [open, setOpen] = useState(false);
-  const [rawQuery, setRawQuery] = useState("a");
+  const [open, setOpen] = useState(false)
+  const [rawQuery, setRawQuery] = useState("a")
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const query = rawQuery.toLowerCase().replace(/^[#>]/, "");
+  const query = rawQuery.toLowerCase().replace(/^[#>]/, "")
 
   const filteredPosts =
     rawQuery === "#"
       ? posts
       : query === "" || rawQuery.startsWith(">")
       ? []
-      : posts.filter((project) => project.title.toLowerCase().includes(query));
+      : posts.filter((project) => project.title.toLowerCase().includes(query))
 
   const filteredProjects =
     rawQuery === "#"
@@ -50,49 +50,44 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
       ? []
       : categories.filter((project) =>
           project.name.toLowerCase().includes(query)
-        );
+        )
 
   const filteredUsers =
     rawQuery === ">"
       ? authors
       : query === "" || rawQuery.startsWith("#")
       ? []
-      : authors.filter((user) =>
-          user.displayName.toLowerCase().includes(query)
-        );
+      : authors.filter((user) => user.displayName.toLowerCase().includes(query))
 
   return (
     <>
-      <div onClick={() => setOpen(true)} className="cursor-pointer">
-        {renderTrigger ? (
-          renderTrigger()
-        ) : (
-          <button className="flex w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none items-center justify-center">
-            <svg
-              width={22}
-              height={22}
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M22 22L20 20"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-        )}
-      </div>
+      <button
+        className="flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl"
+        onClick={() => setOpen(true)}
+      >
+        <svg
+          width={18}
+          height={18}
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M22 22L20 20"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
 
       <Transition.Root
         show={open}
@@ -131,15 +126,15 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                 className="block mx-auto max-w-2xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
                 as="form"
                 onSubmit={(e) => {
-                  e.preventDefault();
-                  router.push("/search");
-                  setOpen(false);
+                  e.preventDefault()
+                  router.push("/search")
+                  setOpen(false)
                 }}
               >
                 <Combobox
                   onChange={(item: any) => {
-                    router.push(item.href);
-                    setOpen(false);
+                    router.push(item.href)
+                    setOpen(false)
                   }}
                   name="searchpallet"
                 >
@@ -360,7 +355,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
         </Dialog>
       </Transition.Root>
     </>
-  );
-};
+  )
+}
 
-export default SearchModal;
+export default SearchModal

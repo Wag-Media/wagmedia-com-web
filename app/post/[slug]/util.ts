@@ -1,3 +1,5 @@
+import { getAuthor, getAuthorsByIds } from "@/data/dbAuthors"
+
 export type EmbedType = "twitter" | "instagram" | "youtube"
 
 export function linkTextsToAnchorTags(text: string): string {
@@ -37,4 +39,31 @@ export function getEmbedType(url: string | null): EmbedType | null {
   if (url.includes("instagram.com")) return "instagram"
   if (url.includes("youtube.com" || url.includes("youtu.be"))) return "youtube"
   return null
+}
+
+export async function replaceAuthorLinks(text: string): Promise<string> {
+  // Patterns to match author URLs
+
+  //should match <@813444371159842876>
+  const authorPattern = /<@(\d+)>/gi
+
+  const allAuthrorIds = text
+    .match(authorPattern)
+    ?.map((id) => id.replace("<@", "").replace(">", ""))
+  if (!allAuthrorIds) return text
+
+  const authors = await getAuthorsByIds(allAuthrorIds)
+  if (!authors) return text
+
+  console.log("authors", authors)
+
+  //replace each author with a link to their profile
+  authors.forEach((author) => {
+    text = text.replace(
+      new RegExp(`<@${author.discordId}>`, "gi"),
+      `<a href="/author/${author.name}" className="no-underline"><img src="${author.avatar}" alt="${author.name}" class="w-5 h-5 rounded-full !p-0 !m-0 !mr-1 inline" />${author.name}</a>`
+    )
+  })
+
+  return text
 }

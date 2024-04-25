@@ -21,13 +21,13 @@ const Heading: React.FC<HeadingProps> = ({
     >
       <div
         className={
-          isCenter ? "text-center w-full max-w-2xl mx-auto " : "max-w-3xl"
+          isCenter ? "text-center w-full max-w-3xl mx-auto " : "max-w-5xl"
         }
       >
         {createElement(
           as,
           {
-            className: "text-2xl md:text-3xl lg:text-4xl font-semibold",
+            className: "text-xl md:text-4xl lg:text-5xl font-bold",
             ...args,
           },
           children || `Section Heading`
