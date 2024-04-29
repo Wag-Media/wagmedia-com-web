@@ -196,12 +196,12 @@ export async function SinglePostContent({ slug }: { slug: string }) {
         </div>
       </article>
       <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700 my-8"></div>
-      <div className="max-w-screen-md mx-auto my-4 ">
+      <div className="max-w-screen-md mx-auto my-4 mb-12 ">
         <SingleAuthor author={user} />
       </div>
 
       {/* RELATED POSTS */}
-      <SingleRelatedPosts />
+      {/* <SingleRelatedPosts /> */}
     </div>
   )
 }
