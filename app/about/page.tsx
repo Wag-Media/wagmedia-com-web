@@ -2,19 +2,14 @@
 
 import React from "react"
 import Image from "next/image"
-import Link from "next/link"
-import rightImg from "@/images/about-hero-right.png"
+import rightImg from "@/public/wagmedia-about.jpeg"
 import { YouTubeEmbed } from "react-social-media-embed"
 
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
 import BgGlassmorphism from "@/components/BgGlassmorphism/BgGlassmorphism"
 import Button from "@/components/Button/Button"
 import Heading from "@/components/Heading/Heading"
-import SectionHero from "@/components/SectionHero/SectionHero"
-import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 
 import SectionFounder from "./SectionFounder"
-import SectionStatistic from "./SectionStatistic"
 
 const PageAbout = ({}) => {
   return (

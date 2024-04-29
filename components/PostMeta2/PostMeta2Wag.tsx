@@ -36,7 +36,7 @@ const PostMeta2Wag: FC<PostMeta2WagProps> = ({
       } ${className}`}
     >
       <Link
-        href={`/author/${author.name}`}
+        href={`/creator/${author.name}`}
         className="flex items-center space-x-2 rtl:space-x-reverse"
       >
         <Avatar
@@ -52,7 +52,10 @@ const PostMeta2Wag: FC<PostMeta2WagProps> = ({
       </Link>
       <div className="ms-3">
         <div className="flex items-center">
-          <Link href={`/author/${author.name}`} className="block font-semibold">
+          <Link
+            href={`/creator/${author.name}`}
+            className="block font-semibold"
+          >
             {author.name}
           </Link>
 
