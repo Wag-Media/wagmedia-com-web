@@ -18,7 +18,7 @@ const CardAuthorBoxWag: FC<CardAuthorBoxProps> = ({
 
   return (
     <Link
-      href={`/author/${name}`}
+      href={`/creator/${name}`}
       className={`nc-CardAuthorBox flex flex-col items-center justify-center text-center px-3 py-5 sm:px-6 sm:py-7 rounded-lg bg-white dark:bg-neutral-900 ${className}`}
     >
       <Avatar

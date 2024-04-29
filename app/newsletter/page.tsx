@@ -14,7 +14,7 @@ export default async function PageCategories() {
     <div className="container relative py-16 lg:py-24">
       <Heading
         className="max-w-xl"
-        desc="🎉 With the WagMedia Newsletter you will get the latest news and updates on Polkadot directly to your inbox."
+        desc="🎉 Thanks for reading WagMedia Weekly! Subscribe for free to receive new posts and support our work."
       >
         WagMedia Newsletter
       </Heading>

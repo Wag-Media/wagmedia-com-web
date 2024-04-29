@@ -23,7 +23,7 @@ const CardAuthor2Wag: FC<CardAuthor2WagProps> = ({
   const { name, avatar } = author
   return (
     <Link
-      href={`/author/${name}`}
+      href={`/creator/${name}`}
       className={`nc-CardAuthor2 relative inline-flex items-center ${className}`}
     >
       <Avatar

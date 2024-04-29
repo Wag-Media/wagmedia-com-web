@@ -21,20 +21,20 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
       <div className="flex-shrink-0 mb-14 lg:mb-0 lg:me-10 lg:w-2/5">
         <h2 className="font-semibold text-4xl">Never Miss Any News 🎉</h2>
         <span className="block mt-6 text-neutral-500 dark:text-neutral-400">
-          With the WagMedia Newsletter you will get the latest news and updates
-          on Polkadot directly to your inbox.
+          Thanks for reading WagMedia Weekly! Subscribe for free to receive new
+          posts and support our work.
         </span>
         <ul className="space-y-5 mt-10">
           <li className="flex items-center space-x-4 rtl:space-x-reverse">
             <Badge name="01" />
             <span className="font-medium text-neutral-700 dark:text-neutral-300">
-              Stay up to date with the latest news
+              Stay up to date with the latest news from the Polkadot Ecosystem
             </span>
           </li>
           <li className="flex items-center space-x-4 rtl:space-x-reverse">
             <Badge color="red" name="02" />
             <span className="font-medium text-neutral-700 dark:text-neutral-300">
-              Special offers and promotions
+              Subscribe on Substack to receive emails
             </span>
           </li>
         </ul>

@@ -58,6 +58,21 @@ export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
           )
         }
 
+        if (embedType === "tiktok" && embed.embedUrl) {
+          return (
+            <div
+              key={index}
+              className="nc-SinglePostEmbeds__tiktok overflow-hidden w-full"
+            >
+              <TikTokEmbed
+                url={embed.embedUrl}
+                width="100%"
+                style={{ maxWidth: "600px" }}
+              />
+            </div>
+          )
+        }
+
         return null
       })}
     </div>
