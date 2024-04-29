@@ -27,7 +27,7 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
       className={`nc-PostCardWag inline-flex items-center flex-wrap text-neutral-800 dark:text-neutral-200 ${className}`}
     >
       <Link
-        href={`/author/${user.name}`}
+        href={`/creator/${user.name}`}
         className="relative flex items-center space-x-2 rtl:space-x-reverse"
       >
         {!hiddenAvatar && user.avatar && user.name && (
