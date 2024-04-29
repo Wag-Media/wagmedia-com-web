@@ -1,6 +1,8 @@
 import React from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { CustomLink } from "@/data/types"
+import securedBy from "@/public/securedbypolkadot-unbounded.png"
 
 import { siteConfig } from "@/config/site"
 import Logo from "@/components/Logo/Logo"
@@ -90,25 +92,35 @@ const Footer: React.FC = () => {
 
       {/* footer */}
       <div className="nc-Footer relative py-8 lg:py-16 border-t border-neutral-200 dark:border-neutral-700">
-        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 items-center">
-          <div className="col-span-1 md:col-span-1">
+        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 lg:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 items-center">
+          <div className="col-span-1 lg:col-span-1">
             <Logo />
           </div>
-          <div className="col-span-3 md:col-span-3">
+          <div className="col-span-3 lg:col-span-3">
             <p className="text-neutral-500 dark:text-neutral-400 max-w-md">
               WagMedia is a decentralized media platform that allows creators to
               earn cryptocurrency for their content.
             </p>
+            <Image
+              src={securedBy}
+              alt="secured by polkadot"
+              className="w-full max-w-lg mt-4 dark:invert"
+            />
           </div>
-          <div className="col-span-1 md:col-span-1">
-            <nav className="flex space-x-3 text-md text-neutral-6000 dark:text-neutral-300 flex items-center space-x-3 lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end">
+          <div className="col-span-3 lg:col-span-1">
+            <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 flex items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
               {siteConfig.navMenuItems.map((item, index) => (
-                <Link key={index} href={item.href}>
+                <Link
+                  key={index}
+                  href={item.href}
+                  className="block mr-3 lg:mr-0"
+                >
                   {item.name}
                 </Link>
               ))}
             </nav>
           </div>
+
           {/* {widgetMenus.map(renderWidgetMenuItem)} */}
         </div>
       </div>
