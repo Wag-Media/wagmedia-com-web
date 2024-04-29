@@ -14,6 +14,7 @@ import { cn } from "@/utils/cn"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
+import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import Heading from "@/components/Heading/Heading"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox/SectionGridAuthorBox"
@@ -123,7 +124,11 @@ const PageHome = async ({
             className="py-8 lg:py-16"
             authors={authors}
           />
-          <SectionBecomeAnAuthor className="" />
+          <SectionBecomeAnAuthor className="">
+            <ButtonPrimary className="mt-8" href="/about#join">
+              Join WagMedia
+            </ButtonPrimary>
+          </SectionBecomeAnAuthor>
         </div>
 
         <Suspense fallback={<div>Loading...</div>}>

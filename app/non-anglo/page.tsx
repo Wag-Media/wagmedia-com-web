@@ -15,8 +15,6 @@ import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
 export default async function PageNonAnglo() {
   const categories = await getNonAngloOverview()
 
-  console.log(countries)
-
   let languageCategories: Record<
     string,
     { id: number; _count: { posts: number }; name: string; posts: any[] }
@@ -38,7 +36,6 @@ export default async function PageNonAnglo() {
       }
 
       const language = countries[countryCode][1]
-      console.log(flag, language)
 
       if (!languageCategories[countryName]) {
         languageCategories[countryName] = {
