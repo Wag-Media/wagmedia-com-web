@@ -7,7 +7,7 @@ import Avatar from "@/components/Avatar/Avatar"
 
 export function SingleAuthor({ author }: { author: User }) {
   const { name, avatar, bio } = author
-  const href = `/author/${name}`
+  const href = `/creator/${name}`
 
   return (
     <div className="nc-SingleAuthor flex">
