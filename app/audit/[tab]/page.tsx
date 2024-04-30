@@ -27,6 +27,12 @@ export default async function AuditPage({
       postId: {
         not: null,
       },
+      // createdAt: {
+      //   gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 30), // 30 days
+      // },
+    },
+    orderBy: {
+      createdAt: "desc",
     },
     include: {
       user: true,

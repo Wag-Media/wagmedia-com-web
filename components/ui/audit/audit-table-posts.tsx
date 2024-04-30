@@ -61,6 +61,7 @@ interface RowType {
 
 export const columns: ColumnDef<RowType>[] = [
   {
+    id: "createdAt",
     accessorFn: (row) => {
       return row.payments[0].createdAt
     },
@@ -270,7 +271,12 @@ export const columns: ColumnDef<RowType>[] = [
 ]
 
 export function AuditTablePosts({ postPayments }: { postPayments: RowType[] }) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: "createdAt",
+      desc: true, // `false` for ascending, `true` for descending
+    },
+  ])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
