@@ -1,3 +1,4 @@
+import { OddJobWithUser } from "@/data/types"
 import {
   Category,
   Embed,
@@ -34,6 +35,6 @@ export type PaymentFull = Payment & {
 }
 
 export type PaymentOddjob = Payment & {
-  OddJob: OddJob
+  OddJob: OddJobWithUser
   reaction: ReactionWithUser
 }

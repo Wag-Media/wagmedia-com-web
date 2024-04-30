@@ -277,6 +277,7 @@ export function AuditTablePosts({ postPayments }: { postPayments: RowType[] }) {
       desc: true, // `false` for ascending, `true` for descending
     },
   ])
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
