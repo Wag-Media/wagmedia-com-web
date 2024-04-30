@@ -45,6 +45,25 @@ export type PostWithUserAndCategories = Post & {
   categories: Category[]
 }
 
+export type OddJobWithUser = OddJob & {
+  User: User
+}
+
+export type OddJobWithUserAndManager = OddJob & {
+  User: User
+  manager: User
+}
+
+export type OddJobWithUserAndCategories = OddJob & {
+  User: User
+  categories: Category[]
+}
+
+export type OddJobWithUserAndReactions = OddJob & {
+  user: User
+  reactions: ReactionWithUserAndEmoji[]
+}
+
 export type PostWithReactions = Post & {
   reactions: ReactionWithUserAndEmoji[]
 }
@@ -69,7 +88,7 @@ export type PaymentFull = Payment & {
 }
 
 export type PaymentOddjob = Payment & {
-  OddJob: OddJob
+  OddJob: OddJobWithUserAndManager
   reaction: ReactionWithUser
 }
 

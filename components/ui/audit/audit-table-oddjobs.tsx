@@ -3,33 +3,40 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { OddJobWithUserAndCategories, PaymentOddjob } from "@/data/types"
 import { Category, OddJob, Payment, Post, Reaction, User } from "@prisma/client"
 import {
+  CaretDownIcon,
+  CaretLeftIcon,
   CaretSortIcon,
+  CaretUpIcon,
   ChevronDownIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons"
 import {
   ColumnDef,
   ColumnFiltersState,
+  GroupingState,
   SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getGroupedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 import { set } from "date-fns"
+import { get } from "lodash"
 import { DateRange } from "react-day-picker"
 
 import {
   PaymentFull,
-  PaymentOddjob,
   PostWithTagsCategoriesReactionsPaymentsUser,
   ReactionWithUser,
 } from "@/types/prisma"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -50,42 +57,43 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { dynamic } from "../../../app/audit/[tab]/page"
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
 import { fuzzyFilter } from "./table-util"
 
 export const columns: ColumnDef<PaymentOddjob>[] = [
   {
-    accessorKey: "createdAt",
+    id: "postId",
+    accessorFn: (payment) => payment.oddJobId,
+  },
+  {
+    id: "createdAt",
+    accessorFn: (row) => {
+      return row.createdAt
+    },
     header: "Datetime",
-    cell: ({ row }) => {
-      const payment: Payment = row.original
+    cell: (props) => {
+      const datetime = props.getValue() as Date
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {payment.createdAt.toUTCString()}
+        <div className="flex flex-row items-center gap-2">
+          {datetime.toUTCString()}
         </div>
       )
+    },
+    aggregationFn: (leafRows, childRows) => {
+      return childRows[0].original.createdAt
     },
   },
   {
     id: "recipient",
-    accessorFn: (payment) => payment.oddJobId,
+    accessorFn: (payment) => payment.OddJob.User.name,
     header: "Recipient",
-
-    cell: ({ row }) => {
-      const post: OddJob & { user: User | null } = row.getValue("OddJob")
-      const user: User | null = post?.user
-
-      if (!user) {
-        return (
-          <div className="flex flex-row items-center justify-center gap-2">
-            ?
-          </div>
-        )
-      }
+    cell: ({ row, getValue }) => {
+      const user: User = row.original.OddJob.User
 
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {user.avatar && (
+        <div className="flex flex-row items-center gap-2">
+          {user && user.avatar && (
             <Image
               className="h-8 rounded-full"
               src={user.avatar}
@@ -94,54 +102,88 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
               alt={`${user.name}'s avatar`}
             />
           )}
-          <span>{user.name}</span>
+          {user && <span>{user.name}</span>}
         </div>
       )
     },
   },
   {
     id: "director",
-    accessorFn: (payment) => payment.reaction.user.name,
     header: "Director",
+    accessorFn: (payment) => payment.OddJob.manager.name,
     cell: ({ row, getValue }) => {
-      const user: User = row.original.reaction.user
+      const user: User = row.original.OddJob.manager
 
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {user?.avatar && (
+        <div className="flex flex-row items-center gap-2">
+          {user && user.avatar && (
             <Image
-              className="rounded-full"
-              src={user?.avatar}
+              className="h-8 rounded-full"
+              src={user.avatar}
               width={30}
               height={30}
               alt={`${user.name}'s avatar`}
             />
           )}
-          <span>{user?.name}</span>
+          {user && <span>{user.name}</span>}
         </div>
       )
     },
   },
   {
     id: "description",
-    accessorFn: (payment) => payment.OddJob.description,
     header: "Description",
+    accessorFn: (row) => {
+      return row.OddJob.description
+    },
+
+    cell: ({ getValue, row, renderValue }) => {
+      const description = getValue<string>()
+
+      return (
+        <div className="flex flex-row items-center gap-2">{description}</div>
+      )
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const description = childRows[0].original.OddJob.description
+      return description
+    },
   },
   {
     id: "role",
     accessorFn: (payment) => payment.OddJob.role,
     header: "Role",
+    aggregationFn: (leafRows, childRows) => {
+      const role = childRows[0].original.OddJob.role
+      return role
+    },
   },
   {
     id: "timeline",
     accessorFn: (payment) => payment.OddJob.timeline,
     header: "Timeline",
+    aggregationFn: (leafRows, childRows) => {
+      const timeline = childRows[0].original.OddJob.timeline
+      return timeline
+    },
   },
   {
     id: "agreedPayment",
     accessorFn: (payment) =>
       `${payment.OddJob.requestedAmount} ${payment.OddJob.requestedUnit}`,
     header: "Agreed Payment",
+    cell: ({ row }) => {
+      const payment: PaymentOddjob = row.original
+      return (
+        <div className="flex flex-row items-center gap-2">
+          {payment.OddJob.requestedAmount} {payment.OddJob.requestedUnit}
+        </div>
+      )
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const payment = childRows[0].original
+      return `${payment.OddJob.requestedAmount} ${payment.OddJob.requestedUnit}`
+    },
   },
   //   {
   //     accessorKey: "Post",
@@ -168,91 +210,95 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   //     ),
   //   },
   {
-    accessorKey: "unit",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Unit
-          <CaretSortIcon className="ml-2 size-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="uppercase">{row.getValue("unit")}</div>,
-  },
-  {
     accessorKey: "amount",
-    header: () => <div className="text-right">Paid Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
+    header: () => <div className="text-right w-full">Paid Amount</div>,
+    // cell: ({ row }) => {
+    //   const amount = parseFloat(row.getValue("amount"))
 
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: row.getValue("unit"),
-      }).format(amount)
+    //   // Format the amount as a dollar amount
+    //   const formatted = new Intl.NumberFormat("en-US", {
+    //     style: "currency",
+    //     currency: row.getValue("unit"),
+    //   }).format(amount)
 
-      return <div className="text-right font-medium">{formatted}</div>
+    //   return <div className="text-right font-medium">{formatted}</div>
+    // },
+    cell: ({ row, getValue }) => {
+      const amount = getValue<number>()
+      return <div className="text-right">{amount.toFixed(2)}</div>
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const amount = childRows.reduce(
+        (acc, row) => acc + row.original.amount,
+        0
+      )
+      return amount
     },
   },
   {
-    accessorKey: "OddJob",
-    header: "Link",
-    cell: ({ row }) => {
-      const oddjob: OddJob & { user: User } = row.getValue("OddJob")
-      const user: User = oddjob?.user
-
-      return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {oddjob.discordLink ? (
-            <Link
-              href={oddjob.discordLink}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              discord
-            </Link>
-          ) : (
-            "?"
-          )}
-        </div>
-      )
+    accessorKey: "unit",
+    header: "Paid Unit",
+    aggregationFn: (leafRows, childRows) => {
+      const unit = childRows[0].original.unit
+      return unit
     },
   },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original
+  // {
+  //   accessorKey: "OddJob",
+  //   header: "Link",
+  //   cell: ({ row }) => {
+  //     const oddjob: OddJob & { user: User } = row.getValue("OddJob")
+  //     const user: User = oddjob?.user
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(payment.id.toString())
-              }
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
+  //     return (
+  //       <div className="flex flex-row items-center justify-center gap-2">
+  //         {oddjob.discordLink ? (
+  //           <Link
+  //             href={oddjob.discordLink}
+  //             target="_blank"
+  //             rel="noreferrer"
+  //             className="underline"
+  //           >
+  //             discord
+  //           </Link>
+  //         ) : (
+  //           "?"
+  //         )}
+  //       </div>
+  //     )
+  //   },
+  // },
+  // {
+  //   id: "actions",
+  //   enableHiding: false,
+  //   cell: ({ row }) => {
+  //     const payment = row.original
+
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <DotsHorizontalIcon className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //           <DropdownMenuItem
+  //             onClick={() =>
+  //               navigator.clipboard.writeText(payment.id.toString())
+  //             }
+  //           >
+  //             Copy payment ID
+  //           </DropdownMenuItem>
+  //           <DropdownMenuSeparator />
+  //           <DropdownMenuItem>View customer</DropdownMenuItem>
+  //           <DropdownMenuItem>View payment details</DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     )
+  //   },
+  // },
 ]
 
 export function AuditTableOddjobs({
@@ -260,9 +306,27 @@ export function AuditTableOddjobs({
 }: {
   oddjobPayments: Payment[]
 }) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: "createdAt",
+      desc: true, // `false` for ascending, `true` for descending
+    },
+  ])
+  const [grouping, setGrouping] = useState<GroupingState>(["postId"])
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    postId: false,
+    createdAt: true,
+    recipient: true,
+    director: true,
+    description: true,
+    role: true,
+    timeline: true,
+    agreedPayment: true,
+    unit: true,
+    amount: true,
+  })
   const [rowSelection, setRowSelection] = useState({})
 
   const [pageIndex, setPageIndex] = useState(0)
@@ -317,12 +381,15 @@ export function AuditTableOddjobs({
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: fuzzyFilter,
+    onGroupingChange: setGrouping,
+    getGroupedRowModel: getGroupedRowModel(),
     filterFns: {
       fuzzy: fuzzyFilter,
     },
     state: {
       globalFilter,
       sorting,
+      grouping,
       columnFilters,
       columnVisibility,
       rowSelection,
@@ -333,11 +400,15 @@ export function AuditTableOddjobs({
     },
   })
 
+  const uniqueOddjobIds = new Set(
+    oddjobPayments.map((payment) => payment.oddJobId)
+  )
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder={`Filter all ${oddjobPayments.length} entries`}
+          placeholder={`Filter all ${uniqueOddjobIds.size} entries`}
           value={globalFilter}
           onChange={(event) => {
             console.log(event.target.value)
@@ -393,13 +464,34 @@ export function AuditTableOddjobs({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+                    <TableHead
+                      key={header.id}
+                      className={cn({
+                        "cursor-pointer": header.column.getCanSort(),
+                      })}
+                      onClick={header.column.getToggleSortingHandler()}
+                      title={
+                        header.column.getCanSort()
+                          ? header.column.getNextSortingOrder() === "asc"
+                            ? "Sort ascending"
+                            : header.column.getNextSortingOrder() === "desc"
+                            ? "Sort descending"
+                            : "Clear sort"
+                          : undefined
+                      }
+                    >
+                      {header.isPlaceholder ? null : (
+                        <div className="flex flex-row">
+                          {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
+                          {{
+                            asc: <CaretUpIcon className="ml-2 size-4" />,
+                            desc: <CaretDownIcon className="ml-2 size-4" />,
+                          }[header.column.getIsSorted() as string] ?? null}
+                        </div>
+                      )}
                     </TableHead>
                   )
                 })}

@@ -88,6 +88,7 @@ export default async function AuditPage({
       OddJob: {
         include: {
           User: true,
+          manager: true,
         },
       },
       reaction: {
