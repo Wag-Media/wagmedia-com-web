@@ -92,7 +92,7 @@ const Footer: React.FC = () => {
 
       {/* footer */}
       <div className="nc-Footer relative py-8 lg:py-16 border-t border-neutral-200 dark:border-neutral-700">
-        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 lg:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 items-center">
+        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 lg:grid-cols-5 lg:gap-x-10 items-center">
           <div className="col-span-1 lg:col-span-1">
             <Logo />
           </div>
@@ -108,7 +108,7 @@ const Footer: React.FC = () => {
             />
           </div>
           <div className="col-span-3 lg:col-span-1">
-            <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 flex items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
+            <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
               {siteConfig.navMenuItems.map((item, index) => (
                 <Link
                   key={index}

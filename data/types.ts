@@ -40,6 +40,11 @@ export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
   earnings: ContentEarnings[]
 }
 
+export type PostWithUserAndCategories = Post & {
+  user: User
+  categories: Category[]
+}
+
 export type PostWithReactions = Post & {
   reactions: ReactionWithUserAndEmoji[]
 }
@@ -54,8 +59,12 @@ export type TagWithCount = Tag & {
   }
 }
 
+export type PaymentWithUser = Payment & {
+  user: User
+}
+
 export type PaymentFull = Payment & {
-  Post: PostWithTagsCategoriesReactionsPaymentsUser
+  Post: PostWithTagsCategoriesReactionsPaymentsUser | null
   reaction: ReactionWithUser
 }
 

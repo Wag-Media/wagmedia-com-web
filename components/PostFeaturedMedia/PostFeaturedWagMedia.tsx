@@ -105,8 +105,9 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
               sizes="(max-width: 600px) 480px, 800px"
             />
           ) : (
-            // eslint-disable-next-line @next/next/no-img-element
             <div>
+              {/* @ts-ignore */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={featuredImage}
                 alt={title}
