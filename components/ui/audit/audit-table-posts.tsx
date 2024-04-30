@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { PaymentWithUser, PostWithUserAndCategories } from "@/data/types"
 import { Category, Payment, Post, Reaction, User } from "@prisma/client"
 import {
   CaretSortIcon,
@@ -29,6 +30,7 @@ import {
   PostWithTagsCategoriesReactionsPaymentsUser,
   ReactionWithUser,
 } from "@/types/prisma"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -52,31 +54,39 @@ import {
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
 import { fuzzyFilter } from "./table-util"
 
-export const columns: ColumnDef<PaymentFull>[] = [
+interface RowType {
+  payments: PaymentWithUser[]
+  post: PostWithUserAndCategories | null
+}
+
+export const columns: ColumnDef<RowType>[] = [
   {
-    accessorKey: "createdAt",
+    accessorFn: (row) => {
+      return row.payments[0].createdAt
+    },
     header: "Datetime",
-    cell: ({ row }) => {
-      const payment: Payment = row.original
+    cell: (props) => {
+      const datetime = props.getValue() as Date
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {payment.createdAt.toUTCString()}
+        <div className="flex flex-row items-center gap-2">
+          {datetime.toUTCString()}
         </div>
       )
     },
   },
   {
     id: "recipient",
-    accessorFn: (payment) => payment.Post.user.name,
     header: "Recipient",
-
+    accessorFn: (row) => {
+      return row.post?.user.name
+    },
     cell: ({ row }) => {
-      const post: Post & { user: User } = row.getValue("Post")
-      const user: User = post?.user
+      const post = row.original.post
+      const user = post?.user
 
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {user.avatar && (
+        <div className="flex flex-row items-center gap-2">
+          {user && user.avatar && (
             <Image
               className="h-8 rounded-full"
               src={user.avatar}
@@ -85,20 +95,25 @@ export const columns: ColumnDef<PaymentFull>[] = [
               alt={`${user.name}'s avatar`}
             />
           )}
-          <span>{user.name}</span>
+          {user && <span>{user.name}</span>}
         </div>
       )
     },
   },
   {
     id: "director",
-    accessorFn: (payment) => payment.reaction.user.name,
     header: "Director",
+    accessorFn: (row) => {
+      const payment = row.payments[0]
+      const user: User = payment.user
+      return user.name
+    },
     cell: ({ row, getValue }) => {
-      const user: User = row.original.reaction.user
+      const payment: PaymentWithUser = row.original.payments[0]
+      const user: User = payment.user
 
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
+        <div className="flex flex-row items-center gap-2">
           {user?.avatar && (
             <Image
               className="rounded-full"
@@ -115,37 +130,37 @@ export const columns: ColumnDef<PaymentFull>[] = [
   },
   {
     id: "featured",
-    accessorFn: (payment) => payment.Post.isFeatured,
     header: "Featured",
+    accessorFn: (row) => {
+      return row.post?.isFeatured ? "featured" : ""
+    },
     cell: ({ row }) => {
-      const post: Post & { user: User } = row.getValue("Post")
+      const post = row.original.post
 
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {post.isFeatured ? "⭐️" : "-"}
+        <div className="flex flex-row items-center gap-2">
+          {post?.isFeatured ? "⭐️" : "-"}
         </div>
       )
     },
   },
   {
     id: "title",
-    accessorFn: (payment) => payment.Post.title,
+    accessorFn: (row) => {
+      return row.post?.title
+    },
     header: "Title",
   },
   {
-    accessorKey: "Post",
     header: "Categories",
-    cell: ({ row }) => {
-      const post: Post & { categories: Category[] } = row.getValue("Post")
+    accessorFn: (row) => {
+      return row.post?.categories?.map((category) => category.name).join(", ")
+    },
+    cell: (props) => {
+      const categories = props.getValue() as string
 
       return (
-        <div className="flex flex-row items-center justify-center gap-2">
-          {post.categories.map((category: Category) => (
-            <span key={category.id} className="capitalize">
-              {category.name}
-            </span>
-          ))}
-        </div>
+        <div className="flex flex-row items-center gap-2">{categories}</div>
       )
     },
   },
@@ -156,48 +171,58 @@ export const columns: ColumnDef<PaymentFull>[] = [
   //       <div className="capitalize">{row.getValue("status")}</div>
   //     ),
   //   },
-  {
-    accessorKey: "unit",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Unit
-          <CaretSortIcon className="ml-2 size-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="uppercase">{row.getValue("unit")}</div>,
-  },
+  // {
+  //   accessorKey: "unit",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Unit
+  //         <CaretSortIcon className="ml-2 size-4" />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => <div className="uppercase">{row.getValue("unit")}</div>,
+  // },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right">Paid Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
+    header: "Paid Amount",
+    accessorFn: (row) => {
+      return row.payments.reduce((acc, payment) => acc + payment.amount, 0)
+    },
+    // sortingFn: (a, b) => {
+    //   console.log("aaa", a)
+    //   console.log("bbb", b)
+    //   return a - b
+    // },
+    cell: ({ row, getValue }) => {
+      const payments = row.original.payments
+      const amount = getValue() as number
+      const unit = payments[0].unit
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: row.getValue("unit"),
+        currency: unit,
       }).format(amount)
 
-      return <div className="text-right font-medium">{formatted}</div>
+      return <div className=" font-medium">{formatted}</div>
     },
   },
   {
     accessorKey: "Post",
     header: "Link",
     cell: ({ row }) => {
-      const post: Post & { user: User } = row.getValue("Post")
-      const user: User = post?.user
+      const post = row.original.post
+      const user = post?.user
 
       return (
         <div className="flex flex-row items-center justify-center gap-2">
-          {post.discordLink ? (
+          {post?.discordLink ? (
             <Link
-              href={post.discordLink}
+              href={post?.discordLink}
               target="_blank"
               rel="noreferrer"
               className="underline"
@@ -211,40 +236,40 @@ export const columns: ColumnDef<PaymentFull>[] = [
       )
     },
   },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original
+  // {
+  //   id: "actions",
+  //   enableHiding: false,
+  //   cell: ({ row }) => {
+  //     const payment = row.original
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(payment.id.toString())
-              }
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <DotsHorizontalIcon className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //           <DropdownMenuItem
+  //             onClick={() =>
+  //               navigator.clipboard.writeText(payment.id.toString())
+  //             }
+  //           >
+  //             Copy payment ID
+  //           </DropdownMenuItem>
+  //           <DropdownMenuSeparator />
+  //           <DropdownMenuItem>View customer</DropdownMenuItem>
+  //           <DropdownMenuItem>View payment details</DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     )
+  //   },
+  // },
 ]
 
-export function AuditTablePosts({ postPayments }: { postPayments: Payment[] }) {
+export function AuditTablePosts({ postPayments }: { postPayments: RowType[] }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -259,28 +284,30 @@ export function AuditTablePosts({ postPayments }: { postPayments: Payment[] }) {
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
 
+  // console.log("postPayments", postPayments)
+
   useEffect(() => {
     if (startDate && endDate) {
       const start = new Date(startDate)
       const end = new Date(endDate)
       end.setHours(23, 59, 59, 999)
-      const filtered = postPayments.filter((payment) => {
-        const createdAt = new Date(payment.createdAt)
+      const filtered = postPayments.filter((row) => {
+        const createdAt = new Date(row.payments[0].createdAt)
         return createdAt >= start && createdAt <= end
       })
       setFilteredPayments(filtered)
     } else if (startDate) {
       const start = new Date(startDate)
-      const filtered = postPayments.filter((payment) => {
-        const createdAt = new Date(payment.createdAt)
+      const filtered = postPayments.filter((row) => {
+        const createdAt = new Date(row.payments[0].createdAt)
         return createdAt >= start
       })
       setFilteredPayments(filtered)
     } else if (endDate) {
       const end = new Date(endDate)
       end.setHours(23, 59, 59, 999)
-      const filtered = postPayments.filter((payment) => {
-        const createdAt = new Date(payment.createdAt)
+      const filtered = postPayments.filter((row) => {
+        const createdAt = new Date(row.payments[0].createdAt)
         return createdAt <= end
       })
       setFilteredPayments(filtered)
@@ -322,7 +349,7 @@ export function AuditTablePosts({ postPayments }: { postPayments: Payment[] }) {
     <div className="w-full">
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder="Filter all entries"
+          placeholder={`Filter all ${postPayments.length} entries`}
           value={globalFilter}
           onChange={(event) => {
             console.log(event.target.value)
@@ -378,13 +405,34 @@ export function AuditTablePosts({ postPayments }: { postPayments: Payment[] }) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+                    <TableHead
+                      key={header.id}
+                      className={cn({
+                        "cursor-pointer": header.column.getCanSort(),
+                      })}
+                      onClick={header.column.getToggleSortingHandler()}
+                      title={
+                        header.column.getCanSort()
+                          ? header.column.getNextSortingOrder() === "asc"
+                            ? "Sort ascending"
+                            : header.column.getNextSortingOrder() === "desc"
+                            ? "Sort descending"
+                            : "Clear sort"
+                          : undefined
+                      }
+                    >
+                      {header.isPlaceholder ? null : (
+                        <>
+                          {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
+                          {{
+                            asc: " ↑",
+                            desc: " ↓",
+                          }[header.column.getIsSorted() as string] ?? null}
+                        </>
+                      )}
                     </TableHead>
                   )
                 })}

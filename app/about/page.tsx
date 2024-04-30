@@ -99,6 +99,7 @@ const PageAbout = ({}) => {
                       </i>{" "}
                       to reach out and register your reward addresses.
                       <span className="mt-4 block">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           alt=""
                           loading="lazy"
@@ -119,6 +120,7 @@ const PageAbout = ({}) => {
                       </strong>
                       <div className="text-center flex justify-center">
                         <span className="mt-4 block max-w-[300px]">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             alt=""
                             loading="lazy"

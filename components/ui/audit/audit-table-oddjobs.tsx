@@ -337,7 +337,7 @@ export function AuditTableOddjobs({
     <div className="w-full">
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder="Filter all entries"
+          placeholder={`Filter all ${oddjobPayments.length} entries`}
           value={globalFilter}
           onChange={(event) => {
             console.log(event.target.value)

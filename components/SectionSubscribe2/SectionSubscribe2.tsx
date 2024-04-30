@@ -7,7 +7,7 @@ import Badge from "@/components/Badge/Badge"
 import ButtonCircle from "@/components/Button/ButtonCircle"
 import Input from "@/components/Input/Input"
 
-import SubstackWidget from "../SubstackWidget/SubstrackWidget"
+import SubstackWidget from "../SubstackWidget/SubstackWidget"
 
 export interface SectionSubscribe2Props {
   className?: string
@@ -18,7 +18,7 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
     <div
       className={`nc-SectionSubscribe2 relative flex mb-12 flex-col lg:flex-row items-center ${className}`}
     >
-      <div className="flex-shrink-0 mb-14 lg:mb-0 lg:me-10 lg:w-2/5">
+      <div className="shrink-0 mb-14 lg:mb-0 lg:me-10 lg:w-2/5">
         <h2 className="font-semibold text-4xl">Never Miss Any News 🎉</h2>
         <span className="block mt-6 text-neutral-500 dark:text-neutral-400">
           Thanks for reading WagMedia Weekly! Subscribe for free to receive new
