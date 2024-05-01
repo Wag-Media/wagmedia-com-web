@@ -89,6 +89,7 @@ export default async function AuditPage({
         include: {
           User: true,
           manager: true,
+          attachments: true,
         },
       },
       reaction: {
@@ -126,14 +127,16 @@ export default async function AuditPage({
           </a>
         ))}
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
-        {params.tab === "posts" && (
+      {params.tab === "posts" && (
+        <Suspense fallback={<div>Loading...</div>}>
           <AuditTablePosts postPayments={groupedPaymentsArray} />
-        )}
-        {params.tab === "management" && (
+        </Suspense>
+      )}
+      {params.tab === "management" && (
+        <Suspense fallback={<div>Loading...</div>}>
           <AuditTableOddjobs oddjobPayments={oddjobPayments} />
-        )}
-      </Suspense>
+        </Suspense>
+      )}
 
       {/* <h2 className="">{params.tab}</h2>
 

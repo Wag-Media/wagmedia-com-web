@@ -217,7 +217,6 @@ export const columns: ColumnDef<RowType>[] = [
     header: "Link",
     cell: ({ row }) => {
       const post = row.original.post
-      const user = post?.user
 
       return (
         <div className="flex flex-row items-center justify-center gap-2">

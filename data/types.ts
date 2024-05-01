@@ -2,6 +2,7 @@ import { SVGProps } from "react"
 import { StaticImageData } from "next/image"
 import { Route } from "@/routers/types"
 import {
+  Attachment,
   Category,
   ContentEarnings,
   Embed,
@@ -49,9 +50,10 @@ export type OddJobWithUser = OddJob & {
   User: User
 }
 
-export type OddJobWithUserAndManager = OddJob & {
+export type OddJobWithUserAndManagerAndAttachments = OddJob & {
   User: User
   manager: User
+  attachments: Attachment[]
 }
 
 export type OddJobWithUserAndCategories = OddJob & {
@@ -88,7 +90,7 @@ export type PaymentFull = Payment & {
 }
 
 export type PaymentOddjob = Payment & {
-  OddJob: OddJobWithUserAndManager
+  OddJob: OddJobWithUserAndManagerAndAttachments
   reaction: ReactionWithUser
 }
 

@@ -4,7 +4,16 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { OddJobWithUserAndCategories, PaymentOddjob } from "@/data/types"
-import { Category, OddJob, Payment, Post, Reaction, User } from "@prisma/client"
+import { DiscordIcon } from "@/images/icons"
+import {
+  Attachment,
+  Category,
+  OddJob,
+  Payment,
+  Post,
+  Reaction,
+  User,
+} from "@prisma/client"
 import {
   CaretDownIcon,
   CaretLeftIcon,
@@ -59,6 +68,8 @@ import {
 
 import { dynamic } from "../../../app/audit/[tab]/page"
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
+import AttachmentLink from "./attachment-link"
+import FileViewer from "./file-viewer"
 import { fuzzyFilter } from "./table-util"
 
 export const columns: ColumnDef<PaymentOddjob>[] = [
@@ -92,7 +103,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
       const user: User = row.original.OddJob.User
 
       return (
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           {user && user.avatar && (
             <Image
               className="h-8 rounded-full"
@@ -115,7 +126,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
       const user: User = row.original.OddJob.manager
 
       return (
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           {user && user.avatar && (
             <Image
               className="h-8 rounded-full"
@@ -241,6 +252,71 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
     aggregationFn: (leafRows, childRows) => {
       const unit = childRows[0].original.unit
       return unit
+    },
+  },
+  {
+    id: "invoices",
+    header: "Invoices",
+    accessorFn: (payment) => payment.OddJob.attachments.map((a) => a.name),
+    cell: ({ row, getValue }) => {
+      const attachments = getValue<Attachment[]>()
+
+      return (
+        <div className="flex flex-row items-center justify-center gap-2">
+          {attachments?.map((attachment, index) => (
+            // <Link
+            //   key={index}
+            //   href={attachment.url}
+            //   target="_blank"
+            //   rel="noreferrer"
+            //   className="underline"
+            // >
+            //   {`invoice ${index + 1}`}
+            //   {JSON.stringify(attachment.url)}
+            // </Link>
+            // <AttachmentLink key={index} attachment={attachment} />
+            <FileViewer
+              key={index}
+              mimeType={attachment.mimeType}
+              byteArray={attachment.data as unknown as string}
+            >
+              <span className="underline">📄 {index + 1}</span>
+            </FileViewer>
+          ))}
+        </div>
+      )
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const attachments = childRows[0].original.OddJob.attachments
+      return attachments
+    },
+  },
+  {
+    id: "link",
+    header: "Link",
+    accessorFn: (payment) => payment.OddJob.discordLink,
+    aggregationFn: (leafRows, childRows) => {
+      const discordLink = childRows[0].original.OddJob.discordLink
+      return discordLink
+    },
+    cell: ({ row, getValue }) => {
+      const discordLink = getValue<string>()
+      return (
+        <div className="flex flex-row items-center justify-center gap-2">
+          {discordLink ? (
+            <Link
+              href={discordLink}
+              target="_blank"
+              rel="noreferrer"
+              className="underline text-gray-500"
+            >
+              <DiscordIcon />
+            </Link>
+          ) : (
+            "?"
+          )}
+        </div>
+      )
     },
   },
   // {
@@ -411,7 +487,6 @@ export function AuditTableOddjobs({
           placeholder={`Filter all ${uniqueOddjobIds.size} entries`}
           value={globalFilter}
           onChange={(event) => {
-            console.log(event.target.value)
             setGlobalFilter(event.target.value)
           }}
           className="w-64"

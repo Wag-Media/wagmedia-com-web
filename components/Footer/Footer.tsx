@@ -2,11 +2,16 @@ import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { CustomLink } from "@/data/types"
-import securedBy from "@/public/securedbypolkadot-unbounded.png"
+import polkadotBlack from "@/public/Polkadot_Logo_Horizontal_Pink_Black.png"
+import polkadotWhite from "@/public/Polkadot_Logo_Horizontal_Pink_White.png"
 
 import { siteConfig } from "@/config/site"
+import { fontUnbounded } from "@/lib/fonts"
 import Logo from "@/components/Logo/Logo"
 import SocialsList1 from "@/components/SocialsList1/SocialsList1"
+
+import { cn } from "../../lib/utils"
+import { Icons } from "../icons"
 
 export interface WidgetFooterMenu {
   id: string
@@ -101,11 +106,15 @@ const Footer: React.FC = () => {
               WagMedia is a decentralized media platform that allows creators to
               earn cryptocurrency for their content.
             </p>
-            <Image
-              src={securedBy}
-              alt="secured by polkadot"
-              className="w-full max-w-lg mt-4 dark:invert"
-            />
+            <Link
+              href="https://polkadot.network/"
+              className="flex items-center mt-2"
+            >
+              <span className={cn(fontUnbounded.className, "text-4xl")}>
+                Powered by
+              </span>
+              <Icons.polkadotLogo className="h-20 w-auto" />
+            </Link>
           </div>
           <div className="col-span-3 lg:col-span-1">
             <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
