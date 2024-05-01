@@ -11,14 +11,14 @@ export const metadata = {
   metadataBase: new URL("https://thewagmedia.com/"),
   title: {
     template: "%s | WagMedia Polkadot News Platform",
-    default: "Home",
+    default: "WagMedia Polkadot News Platform",
   },
   description: "Decentralized news and updates for Polkadot and Kusama",
   generator: "Next.js",
   applicationName: "WagMedia Web App",
   referrer: "origin-when-cross-origin",
   keywords: ["Polkadot", "Latest", "News", "Kusama"],
-  creator: "Niklas Plessing",
+  creator: "@niftesty",
   publisher: "Polkadot Community",
   formatDetection: {
     email: false,
