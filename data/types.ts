@@ -50,22 +50,10 @@ export type OddJobWithUser = OddJob & {
   User: User
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-export type OddJobWithUserAndManager = OddJob & {
-  User: User
-  manager: User
-=======
-=======
->>>>>>> staging
 export type OddJobWithUserAndManagerAndAttachments = OddJob & {
   User: User
   manager: User
   attachments: Attachment[]
-<<<<<<< HEAD
->>>>>>> staging
-=======
->>>>>>> staging
 }
 
 export type OddJobWithUserAndCategories = OddJob & {
@@ -102,15 +90,7 @@ export type PaymentFull = Payment & {
 }
 
 export type PaymentOddjob = Payment & {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  OddJob: OddJobWithUserAndManager
-=======
   OddJob: OddJobWithUserAndManagerAndAttachments
->>>>>>> staging
-=======
-  OddJob: OddJobWithUserAndManagerAndAttachments
->>>>>>> staging
   reaction: ReactionWithUser
 }
 
