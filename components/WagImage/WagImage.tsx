@@ -3,6 +3,7 @@ import Image from "next/image"
 export function WagImage({
   image,
   containerClassName = "",
+  containerStyle = {},
   ...props
 }: {
   image: string | undefined | null
@@ -12,7 +13,7 @@ export function WagImage({
 
   if (image.includes("discordapp")) {
     return (
-      <div className={containerClassName}>
+      <div className={containerClassName} style={containerStyle}>
         <Image
           src={image}
           sizes="(max-width: 600px) 480px, 800px"
@@ -23,7 +24,7 @@ export function WagImage({
     )
   } else {
     return (
-      <div className={containerClassName}>
+      <div className={containerClassName} style={containerStyle}>
         <img
           src={image}
           alt={props.alt}

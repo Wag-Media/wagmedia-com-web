@@ -78,6 +78,7 @@ export async function getTotalPostCount(): Promise<number> {
       isPublished: true,
       isDeleted: false,
       isFeatured: false,
+      contentType: "article",
     },
   })
 

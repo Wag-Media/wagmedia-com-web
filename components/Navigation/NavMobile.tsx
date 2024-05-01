@@ -1,24 +1,39 @@
-"use client";
+"use client"
 
-import React from "react";
-import ButtonClose from "@/components/ButtonClose/ButtonClose";
-import Logo from "@/components/Logo/Logo";
-import { Disclosure } from "@/app/headlessui";
-import { NavItemType } from "./NavigationItem";
-import { NAVIGATION_DEMO_2 } from "@/data/navigation";
-import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import SocialsList from "@/components/SocialsList/SocialsList";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import SwitchDarkMode from "@/components/SwitchDarkMode/SwitchDarkMode";
-import Link from "next/link";
+import React from "react"
+import Link from "next/link"
+import { NAVIGATION_DEMO_2 } from "@/data/navigation"
+import { DiscordIcon } from "@/images/icons"
+import { ChevronDownIcon } from "@heroicons/react/24/solid"
+import _ from "lodash"
+
+import { siteConfig } from "@/config/site"
+import ButtonPrimary from "@/components/Button/ButtonPrimary"
+import ButtonClose from "@/components/ButtonClose/ButtonClose"
+import Logo from "@/components/Logo/Logo"
+import SocialsList from "@/components/SocialsList/SocialsList"
+import SwitchDarkMode from "@/components/SwitchDarkMode/SwitchDarkMode"
+import { Disclosure } from "@/app/headlessui"
+
+import { NavItemType } from "./NavigationItem"
+
+const randomId = _.uniqueId
 
 export interface NavMobileProps {
-  data?: NavItemType[];
-  onClickClose?: () => void;
+  data?: NavItemType[]
+  onClickClose?: () => void
 }
 
+const NAV: NavItemType[] = [
+  {
+    id: randomId(),
+    href: "/",
+    name: "Home",
+  },
+]
+
 const NavMobile: React.FC<NavMobileProps> = ({
-  data = NAVIGATION_DEMO_2,
+  data = siteConfig.navMenuItems,
   onClickClose,
 }) => {
   const _renderMenuChild = (
@@ -69,8 +84,8 @@ const NavMobile: React.FC<NavMobileProps> = ({
           </Disclosure>
         ))}
       </ul>
-    );
-  };
+    )
+  }
 
   const _renderItem = (item: NavItemType, index: number) => {
     return (
@@ -112,8 +127,8 @@ const NavMobile: React.FC<NavMobileProps> = ({
           <Disclosure.Panel>{_renderMenuChild(item)}</Disclosure.Panel>
         )}
       </Disclosure>
-    );
-  };
+    )
+  }
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -139,8 +154,8 @@ const NavMobile: React.FC<NavMobileProps> = ({
           strokeLinejoin="round"
         />
       </svg>
-    );
-  };
+    )
+  }
 
   const renderSearchForm = () => {
     return (
@@ -159,21 +174,29 @@ const NavMobile: React.FC<NavMobileProps> = ({
         </div>
         <input type="submit" hidden value="" />
       </form>
-    );
-  };
+    )
+  }
 
   return (
     <div className="overflow-y-auto w-full h-screen py-2 transition transform shadow-lg ring-1 dark:ring-neutral-700 bg-white dark:bg-neutral-900 divide-y-2 divide-neutral-100 dark:divide-neutral-800">
       <div className="py-6 px-5">
-        <Logo />
+        <div className="w-24 h-24">
+          <Logo />
+        </div>
         <div className="flex flex-col mt-5 text-slate-600 dark:text-slate-300 text-sm">
           <span>
-            Discover the most outstanding articles on all topics of life. Write
-            your stories and share them
+            WagMedia is shaping the Future of Blockchain Media Creation on
+            Polkadot and Kusama
           </span>
 
           <div className="flex justify-between items-center mt-4">
-            <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" />
+            {/* <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" /> */}
+            <button
+              className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
+            >
+              <span className="sr-only">Enable dark mode</span>
+              <DiscordIcon size={25} />
+            </button>
             <span className="block">
               <SwitchDarkMode className="bg-neutral-100 dark:bg-neutral-800" />
             </span>
@@ -183,24 +206,13 @@ const NavMobile: React.FC<NavMobileProps> = ({
           <ButtonClose onClick={onClickClose} />
         </span>
 
-        <div className="mt-5">{renderSearchForm()}</div>
+        {/* <div className="mt-5">{renderSearchForm()}</div> */}
       </div>
       <ul className="flex flex-col py-6 px-2 space-y-1 rtl:space-x-reverse">
         {data.map(_renderItem)}
       </ul>
-      <div className="flex items-center justify-between py-6 px-5 space-x-2 rtl:space-x-reverse">
-        <ButtonPrimary className="!px-10 relative">
-          Buy this template
-          <a
-            href="https://themeforest.net/item/ncmaz-blog-news-magazine-nextjs-template/44412092"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute inset-0"
-          ></a>
-        </ButtonPrimary>
-      </div>
     </div>
-  );
-};
+  )
+}
 
-export default NavMobile;
+export default NavMobile

@@ -45,7 +45,7 @@
     "geist": "^1.2.2",
     "lodash": "^4.17.21",
     "lucide-react": "0.105.0-alpha.4",
-    "next": "^14.2.1",
+    "next": "^14.2.3",
     "next-themes": "^0.2.1",
     "prisma": "^5.12.1",
     "react": "^18.2.0",
@@ -58,7 +58,7 @@
     "react-tweet": "^3.2.1",
     "react-use": "^17.5.0",
     "sass": "^1.70.0",
-    "sharp": "^0.31.3",
+    "sharp": "^0.33.3",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6"
   },

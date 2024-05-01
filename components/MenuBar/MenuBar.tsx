@@ -1,20 +1,22 @@
-"use client";
-import React, { useState, Fragment, useEffect } from "react";
-import { Transition } from "@/app/headlessui";
-import NavMobile from "@/components/Navigation/NavMobile";
-import { usePathname } from "next/navigation";
+"use client"
+
+import React, { Fragment, useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+
+import NavMobile from "@/components/Navigation/NavMobile"
+import { Transition } from "@/app/headlessui"
 
 export interface MenuBarProps {}
 const MenuBar: React.FC<MenuBarProps> = () => {
-  const [isVisable, setIsVisable] = useState(false);
-  const pathname = usePathname();
+  const [isVisable, setIsVisable] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    setIsVisable(false);
-  }, [pathname]);
+    setIsVisable(false)
+  }, [pathname])
 
-  const handleOpenMenu = () => setIsVisable(true);
-  const handleCloseMenu = () => setIsVisable(false);
+  const handleOpenMenu = () => setIsVisable(true)
+  const handleCloseMenu = () => setIsVisable(false)
 
   const renderContent = () => {
     return (
@@ -54,16 +56,16 @@ const MenuBar: React.FC<MenuBarProps> = () => {
           </Transition.Child>
         </div>
       </Transition>
-    );
-  };
+    )
+  }
 
   return (
     <div>
       <button
         onClick={() => {
-          setIsVisable(!isVisable);
+          setIsVisable(!isVisable)
         }}
-        className="p-2.5 rounded-lg text-neutral-700 dark:text-neutral-300 focus:outline-none flex items-center justify-center"
+        className="pr-2.5 rounded-lg text-neutral-700 dark:text-neutral-300 focus:outline-none flex items-center justify-center"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +83,7 @@ const MenuBar: React.FC<MenuBarProps> = () => {
 
       {renderContent()}
     </div>
-  );
-};
+  )
+}
 
-export default MenuBar;
+export default MenuBar

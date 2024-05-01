@@ -12,6 +12,12 @@ import _ from "lodash"
 import { getPostFlag } from "@/lib/utils"
 import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
 
+export const metadata = {
+  title: "Non-Anglo",
+  description:
+    "Content in languages other than English: Spanish, French, Chinese, etc.",
+}
+
 export default async function PageNonAnglo() {
   const categories = await getNonAngloOverview()
 

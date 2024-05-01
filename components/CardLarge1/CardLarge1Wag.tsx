@@ -13,6 +13,7 @@ import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCard
 import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction"
 import PostTypeFeaturedIcon from "@/components/PostTypeFeaturedIcon/PostTypeFeaturedIcon"
 
+import { cn } from "../../lib/utils"
 import CardAuthor2Wag from "../CardAuthor2/CardAuthor2Wag"
 import CategoryBadgeListWag from "../CategoryBadgeList/CategoryBadgeListWag"
 import { WagImage } from "../WagImage/WagImage"
@@ -99,8 +100,11 @@ const CardLarge1Wag: FC<CardLarge1WagProps> = ({
 
           <WagImage
             image={featuredImage}
-            containerClassName="aspect-w-16 aspect-h-12 sm:aspect-h-9 md:aspect-h-14 lg:aspect-h-10 2xl:aspect-h-9 relative"
-            className="absolute inset-0 object-cover rounded-lg"
+            containerClassName={cn(
+              "aspect-w-16 aspect-h-12 sm:aspect-h-9 md:aspect-h-14 lg:aspect-h-10 2xl:aspect-h-9 relative rounded-lg"
+            )}
+            containerStyle={{ backgroundImage: `url(${featuredImage})` }}
+            className="absolute inset-0 object-contain rounded-lg backdrop-blur-lg"
             fill
             priority
             alt={title}
