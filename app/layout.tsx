@@ -8,6 +8,7 @@ import Footer from "@/components/Footer/Footer"
 import SiteHeader from "@/components/SiteHeader"
 
 export const metadata = {
+  metadataBase: new URL("https://thewagmedia.com/"),
   title: {
     template: "%s | WagMedia Polkadot News Platform",
     default: "Home",
