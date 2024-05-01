@@ -8,6 +8,11 @@ import { ContentType } from "@prisma/client"
 
 import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
 
+export const metadata = {
+  title: "News Categories",
+  description: "Explore all Polkadot News Categories",
+}
+
 export default async function PageNews() {
   const categories = await getCategoryOverview(ContentType.news)
 

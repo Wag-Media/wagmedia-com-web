@@ -8,21 +8,23 @@ import Footer from "@/components/Footer/Footer"
 import SiteHeader from "@/components/SiteHeader"
 
 export const metadata = {
-  title: "WagMedia - Polkadot Media Platform",
-  description: "Decentralized media platform for Polkadot and Kusama",
+  title: {
+    template: "%s | WagMedia Polkadot News Platform",
+    default: "Home",
+  },
+  description: "Decentralized news and updates for Polkadot and Kusama",
+  generator: "Next.js",
+  applicationName: "WagMedia Web App",
+  referrer: "origin-when-cross-origin",
+  keywords: ["Polkadot", "Latest", "News", "Kusama"],
+  creator: "Niklas Plessing",
+  publisher: "Polkadot Community",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
 }
-
-// const poppins = Poppins({
-//   subsets: ["latin"],
-//   display: "swap",
-//   weight: ["300", "400", "500", "600", "700"],
-// });
-
-// const geistSans = GeistSans({
-//   subsets: ["latin"],
-//   display: "swap",
-//   weight: ["400", "500", "600", "700"],
-// });
 
 export default function RootLayout({
   children,

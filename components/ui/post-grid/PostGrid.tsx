@@ -56,7 +56,8 @@ export default async function PostGrid({
     <div className={`nc-SectionGridPosts relative ${className}`}>
       <h2 className="text-5xl font-bold mt-8">Explore our latest Articles</h2>
       <p className="mt-3 text-gray-500 text-lg">
-        Discover ... Polkadot related articles by our community
+        Discover <Suspense fallback="...">{totalPostCount}</Suspense> Polkadot
+        related articles by our community authors
       </p>
       <PostGridDisplay initialPosts={posts} totalPostCount={totalPostCount} />
     </div>
