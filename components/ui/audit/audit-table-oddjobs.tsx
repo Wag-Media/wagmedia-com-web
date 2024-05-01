@@ -4,10 +4,6 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { OddJobWithUserAndCategories, PaymentOddjob } from "@/data/types"
-<<<<<<< HEAD
-import { Category, OddJob, Payment, Post, Reaction, User } from "@prisma/client"
-import {
-=======
 import { DiscordIcon } from "@/images/icons"
 import {
   Attachment,
@@ -19,7 +15,6 @@ import {
   User,
 } from "@prisma/client"
 import {
->>>>>>> staging
   CaretDownIcon,
   CaretLeftIcon,
   CaretSortIcon,
@@ -108,11 +103,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
       const user: User = row.original.OddJob.User
 
       return (
-<<<<<<< HEAD
-        <div className="flex flex-row items-center gap-2">
-=======
         <div className="flex flex-col items-center gap-2">
->>>>>>> staging
           {user && user.avatar && (
             <Image
               className="h-8 rounded-full"
@@ -135,11 +126,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
       const user: User = row.original.OddJob.manager
 
       return (
-<<<<<<< HEAD
-        <div className="flex flex-row items-center gap-2">
-=======
         <div className="flex flex-col items-center gap-2">
->>>>>>> staging
           {user && user.avatar && (
             <Image
               className="h-8 rounded-full"
@@ -265,8 +252,6 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
     aggregationFn: (leafRows, childRows) => {
       const unit = childRows[0].original.unit
       return unit
-<<<<<<< HEAD
-=======
     },
   },
   {
@@ -332,7 +317,6 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
           )}
         </div>
       )
->>>>>>> staging
     },
   },
   // {

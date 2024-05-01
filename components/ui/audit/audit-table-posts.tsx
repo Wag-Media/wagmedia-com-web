@@ -217,10 +217,6 @@ export const columns: ColumnDef<RowType>[] = [
     header: "Link",
     cell: ({ row }) => {
       const post = row.original.post
-<<<<<<< HEAD
-      const user = post?.user
-=======
->>>>>>> staging
 
       return (
         <div className="flex flex-row items-center justify-center gap-2">
@@ -280,10 +276,6 @@ export function AuditTablePosts({ postPayments }: { postPayments: RowType[] }) {
       desc: true, // `false` for ascending, `true` for descending
     },
   ])
-<<<<<<< HEAD
-=======
-
->>>>>>> staging
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
