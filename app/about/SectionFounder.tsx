@@ -16,7 +16,7 @@ const FOUNDER_DEMO: People[] = [
   {
     id: "1",
     name: `Ikhaled`,
-    job: "ikhaled will be responsible for the general admin, Website development as Product owner and tester, and the translation program. He continues his duties as the administrator of WM, and was one of the original directors to run WM. Also an active member of the Kusama Kingdom.",
+    job: "ikhaled will be responsible for the general admin, Website development as Product owner and tester, and the translation program. He continues his duties as the administrator of WM, and was one of the original directors to run WM. Also an active member of the Kingdom Ventures.",
     avatar:
       "https://pbs.twimg.com/profile_images/1562871751729635330/5nNfm2H0_400x400.jpg",
     twitter: "https://twitter.com/ikhaled28",
@@ -32,7 +32,7 @@ const FOUNDER_DEMO: People[] = [
   {
     id: "3",
     name: `Vampsy`,
-    job: "Vampsy will manage the treasury as well as do the monthly reporting. He is a member of the Kusama Kingdom and an economist.",
+    job: "Vampsy will manage the treasury as well as do the monthly reporting. He is a member of the Kingdom Ventures and an economist.",
     avatar:
       "https://pbs.twimg.com/profile_images/1494805284837109761/PxFyrn89_400x400.jpg",
     twitter: "https://twitter.com/vampsyfear",
@@ -40,7 +40,7 @@ const FOUNDER_DEMO: People[] = [
   {
     id: "2",
     name: `Dodow`,
-    job: "Dodow will run the sourced news finders program, as well as be the chief editor of the WM newsletter. He was one of the original directors elevated to run WM. Also a member of ChaosDAO and Kusama Kingdom.",
+    job: "Dodow will run the sourced news finders program, as well as be the chief editor of the WM newsletter. He was one of the original directors elevated to run WM. Also a member of ChaosDAO and Kingdom Ventures.",
     avatar:
       "https://pbs.twimg.com/profile_images/1578419481612898304/GSTua3JI_400x400.jpg",
     twitter: "https://twitter.com/fashionistawong",
