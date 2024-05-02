@@ -25,7 +25,7 @@ export const siteConfig = {
     {
       id: "3",
       name: "News",
-      href: "/news",
+      href: "/polkadot-news",
     },
     {
       id: "4",
