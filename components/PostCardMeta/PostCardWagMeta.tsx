@@ -47,9 +47,8 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
           ·
         </span>
         <span className="text-neutral-500 dark:text-neutral-400 font-normal">
-          {createdAt.getUTCDate()}{" "}
           {createdAt.toLocaleString("default", { month: "long" })}{" "}
-          {createdAt.getFullYear()}
+          {createdAt.getDate()}, {createdAt.getFullYear()}
         </span>
       </>
     </div>
