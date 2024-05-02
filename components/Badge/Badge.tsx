@@ -17,38 +17,51 @@ const Badge: FC<BadgeProps> = ({
   href,
 }) => {
   const getColorClass = (hasHover = true) => {
-    switch (color) {
-      case "pink":
+    switch (name) {
+      case "OpenGov":
         return `text-pink-800 bg-pink-100/50 ${
           hasHover ? "hover:bg-pink-800/50" : ""
         }`
-      case "red":
+      case "DeFi":
         return `text-red-800 bg-red-100/50 ${
           hasHover ? "hover:bg-red-800/50" : ""
         }`
-      case "gray":
+      case "NFT":
         return `text-gray-800 bg-gray-100/50 ${
           hasHover ? "hover:bg-gray-800/50" : ""
         }`
-      case "green":
+      case "Parachain":
         return `text-green-800 bg-green-100/50 ${
           hasHover ? "hover:bg-green-800/50" : ""
         }`
-      case "purple":
+      case "Paraverse":
         return `text-purple-800 bg-purple-100/50 ${
           hasHover ? "hover:bg-purple-800/50" : ""
         }`
-      case "indigo":
+      case "Newsletter":
         return `text-indigo-800 bg-indigo-100/50 ${
           hasHover ? "hover:bg-indigo-800/50" : ""
         }`
-      case "yellow":
+      case "Non Anglo":
+      case "Translations":
         return `text-yellow-800 bg-yellow-100/50 ${
           hasHover ? "hover:bg-yellow-800/50" : ""
         }`
-      case "blue":
+      case "Technical Analysis":
         return `text-blue-800 bg-blue-100/50 ${
           hasHover ? "hover:bg-blue-800/50" : ""
+        }`
+      case "Bounty":
+        return `text-orange-800 bg-orange-100/50 ${
+          hasHover ? "hover:bg-orange-800/50" : ""
+        }`
+      case "Tutorials":
+        return `text-teal-800 bg-teal-100/50 ${
+          hasHover ? "hover:bg-teal-800/50" : ""
+        }`
+      case "Video":
+        return `text-lime-800 bg-lime-100/50 ${
+          hasHover ? "hover:bg-lime-800/50" : ""
         }`
       default:
         return `text-pink-800 bg-pink-100/50 ${
@@ -68,9 +81,7 @@ const Badge: FC<BadgeProps> = ({
       {name}
     </Link>
   ) : (
-    <span
-      className={`${CLASSES} backdrop-blur-sm text-white border bg-black/20`}
-    >
+    <span className={`${CLASSES} backdrop-blur-sm ${getColorClass()}`}>
       {name}
     </span>
   )

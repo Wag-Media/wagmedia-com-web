@@ -16,6 +16,7 @@ import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import ButtonSecondary from "@/components/Button/ButtonSecondary"
 import Card11Wag from "@/components/Card11/Card11Wag"
+import Heading from "@/components/Heading/Heading"
 import ModalCategories from "@/components/ModalCategories"
 import ModalTags from "@/components/ModalTags"
 import Pagination from "@/components/Pagination/Pagination"
@@ -92,13 +93,22 @@ export default async function PageCategory({
             </div> */}
           </div>
           {/* LOOP ITEMS */}
-          <h3 className="text-3xl font-semibold mt-4">Articles</h3>
+          <Heading
+            desc={`Read decentralized articles on Polkadot ${category.name} written by our community creators`}
+          >
+            {category.name} Articles
+          </Heading>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
             {articles?.map((post) => (
               <Card11Wag key={post.id} post={post} />
             ))}
           </div>
-          <h3 className="text-3xl font-semibold mt-12">News</h3>
+          <Heading
+            desc={`Read decentralized news on Polkadot ${category.name}, collected from the web by our community finders`}
+            className="mt-12"
+          >
+            {category.name} News
+          </Heading>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
             {news?.map((post) => (
               <Card11Wag key={post.id} post={post} />
