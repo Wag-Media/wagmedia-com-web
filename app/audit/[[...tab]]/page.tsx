@@ -30,84 +30,6 @@ export default async function AuditPage({
   const selectedTab: string = params.tab ? params.tab[0] : "posts"
   console.log("selectedTab:", selectedTab)
 
-  const postPayments = await prisma.payment.findMany({
-    where: {
-      postId: {
-        not: null,
-      },
-      // createdAt: {
-      //   gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 30), // 30 days
-      // },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      user: true,
-      Post: {
-        include: {
-          user: true,
-          categories: true,
-        },
-      },
-      reaction: {
-        include: {
-          user: true,
-        },
-      },
-    },
-  })
-
-  interface GroupedData {
-    [postId: string]: {
-      payments: PaymentWithUser[]
-      post: PostWithUserAndCategories | null
-    }
-  }
-
-  const groupedByPostId: GroupedData = {}
-
-  postPayments.forEach((payment) => {
-    if (payment) {
-      const postId = payment.postId
-      if (postId) {
-        if (!groupedByPostId[postId]) {
-          groupedByPostId[postId] = {
-            post: payment.Post,
-            payments: [],
-          }
-        }
-        groupedByPostId[postId].payments.push(payment)
-      }
-    }
-  })
-
-  // Convert grouped data into an array for the UI component
-  const groupedPaymentsArray = Object.values(groupedByPostId).flat()
-
-  const oddjobPayments = await prisma.payment.findMany({
-    where: {
-      oddJobId: {
-        not: null,
-      },
-    },
-    include: {
-      user: true,
-      OddJob: {
-        include: {
-          User: true,
-          manager: true,
-          attachments: true,
-        },
-      },
-      reaction: {
-        include: {
-          user: true,
-        },
-      },
-    },
-  })
-
   // console.log("groupedByPostId", groupedByPostId)
 
   const tabs = ["Posts", "Management"]
@@ -122,7 +44,6 @@ export default async function AuditPage({
 
   return (
     <div>
-      <Heading desc="See where all the payments go">Audit</Heading>
       <div className="mb-12">
         {tabs.map((tab) => (
           <a
@@ -142,13 +63,13 @@ export default async function AuditPage({
         ))}
       </div>
       {selectedTab === "posts" && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <AuditTablePosts postPayments={groupedPaymentsArray} />
+        <Suspense fallback={<div>Loading Audit Data...</div>}>
+          <AuditTablePosts />
         </Suspense>
       )}
       {selectedTab === "management" && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <AuditTableOddjobs oddjobPayments={oddjobPayments} />
+        <Suspense fallback={<div>Loading Audit Data...</div>}>
+          <AuditTableOddjobs />
         </Suspense>
       )}
 
