@@ -1,0 +1,17 @@
+import { cn } from "@/lib/utils"
+import Heading from "@/components/Heading/Heading"
+
+export default function PricingLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+      <div className="w-full p-8">
+        <Heading desc="See where all WagMedia payments go">Audit</Heading>
+        {children}
+      </div>
+    </section>
+  )
+}
