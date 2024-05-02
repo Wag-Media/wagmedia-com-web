@@ -66,7 +66,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { dynamic } from "../../../app/audit/[tab]/page"
+import { dynamic } from "../../../app/audit/[[...tab]]/page"
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
 import AttachmentLink from "./attachment-link"
 import FileViewer from "./file-viewer"

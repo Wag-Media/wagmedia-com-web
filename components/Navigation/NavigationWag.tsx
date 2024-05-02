@@ -18,11 +18,13 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
       className={`nc-Navigation rounded-full bg-background/60 backdrop-blur-md items-center flex ${className}`}
     >
       {siteConfig.navMenuItems.map((item) => (
-        <NavigationItem
-          key={item.id}
-          menuItem={item}
-          active={item.href === pathname}
-        />
+        <>
+          <NavigationItem
+            key={item.id}
+            menuItem={item}
+            active={pathname.includes(item.href)}
+          />
+        </>
       ))}
     </ul>
   )

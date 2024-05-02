@@ -25,8 +25,11 @@ export const metadata = {
 export default async function AuditPage({
   params,
 }: {
-  params: { tab: string }
+  params: { tab: string[] }
 }) {
+  const selectedTab: string = params.tab ? params.tab[0] : "posts"
+  console.log("selectedTab:", selectedTab)
+
   const postPayments = await prisma.payment.findMany({
     where: {
       postId: {
@@ -105,11 +108,16 @@ export default async function AuditPage({
     },
   })
 
-  console.log("groupedByPostId", groupedByPostId)
+  // console.log("groupedByPostId", groupedByPostId)
 
   const tabs = ["Posts", "Management"]
-  if (!tabs.map((t) => t.toLowerCase()).includes(params.tab)) {
-    return <div>Invalid tab</div>
+
+  if (!selectedTab) {
+    return <div>params:{JSON.stringify(params)} Invalid tab</div>
+  }
+
+  if (!tabs.map((t) => t.toLowerCase()).includes(selectedTab)) {
+    return <div>params:{JSON.stringify(params)} Invalid tab yo</div>
   }
 
   return (
@@ -123,8 +131,9 @@ export default async function AuditPage({
             className={cn(
               "py-2 !mr-4 text-3xl font-semibold border-b-4 rounded-none cursor-pointer",
               {
-                "border-black": tab.toLowerCase() === params.tab,
-                "border-transparent": tab.toLowerCase() !== params.tab,
+                "border-black dark:border-white":
+                  tab.toLowerCase() === selectedTab,
+                "border-transparent": tab.toLowerCase() !== selectedTab,
               }
             )}
           >
@@ -132,18 +141,18 @@ export default async function AuditPage({
           </a>
         ))}
       </div>
-      {params.tab === "posts" && (
+      {selectedTab === "posts" && (
         <Suspense fallback={<div>Loading...</div>}>
           <AuditTablePosts postPayments={groupedPaymentsArray} />
         </Suspense>
       )}
-      {params.tab === "management" && (
+      {selectedTab === "management" && (
         <Suspense fallback={<div>Loading...</div>}>
           <AuditTableOddjobs oddjobPayments={oddjobPayments} />
         </Suspense>
       )}
 
-      {/* <h2 className="">{params.tab}</h2>
+      {/* <h2 className="">{selectedTab}</h2>
 
 
 

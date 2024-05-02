@@ -30,7 +30,7 @@ export const siteConfig = {
     {
       id: "4",
       name: "Audit",
-      href: "/audit/posts",
+      href: "/audit",
     },
     {
       id: "5",
@@ -57,7 +57,7 @@ export const siteConfig = {
     },
     {
       title: "Audit",
-      href: "/audit/posts",
+      href: "/audit",
     },
     {
       title: "About",
