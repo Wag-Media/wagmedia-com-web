@@ -19,9 +19,11 @@ import { cn } from "../../../utils/cn"
 export function PostGridDisplay({
   initialPosts,
   totalPostCount,
+  contentType = "article",
 }: {
   initialPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
   totalPostCount: number
+  contentType?: "article" | "news"
 }) {
   const pageSize = 12
   const [posts, setPosts] =
@@ -42,6 +44,7 @@ export function PostGridDisplay({
       pageSize: pageSize, // Correct parameter if API expects pageSize instead of take
       search: "", // Pass any actual search criteria needed
       orderBy,
+      contentType,
     })
 
     setCurrentPage(currentPage + 1)
@@ -71,6 +74,7 @@ export function PostGridDisplay({
       pageSize: pageSize, // Correct parameter if API expects pageSize instead of take
       search: "", // Pass any actual search criteria needed
       orderBy: id,
+      contentType,
     })
     setPosts([...newPosts])
     setIsLoading(false)
@@ -100,10 +104,10 @@ export function PostGridDisplay({
             </div>
           ))}
         </Nav>
-        <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
+        {/* <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
           <span>View all</span>
           <ArrowRightIcon className="ms-3 w-6 h-6 rtl:rotate-180" />
-        </Button>
+        </Button> */}
       </div>
       <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
         {posts.map((post, index) => (

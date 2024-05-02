@@ -3,6 +3,11 @@ import { Suspense } from "react"
 import { SinglePostContent } from "./SinglePostContent"
 import { SinglePostSkeleton } from "./SinglePostSkeleton"
 
+export const metadata = {
+  title: "News Categories",
+  description: "Explore all Polkadot News Categories",
+}
+
 export default async function PostPage({
   params,
 }: {

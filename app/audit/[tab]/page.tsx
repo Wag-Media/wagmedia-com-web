@@ -17,6 +17,11 @@ export const fetchCache = "force-no-store"
 export const revalidate = 0 // seconds
 export const dynamic = "force-dynamic"
 
+export const metadata = {
+  title: "Audit",
+  description: "See where all WagMedia payments go",
+}
+
 export default async function AuditPage({
   params,
 }: {
