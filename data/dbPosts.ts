@@ -13,11 +13,13 @@ export async function getPosts({
   take = 12,
   search,
   orderBy,
+  contentType = "article",
 }: {
   skip?: number
   take?: number
   search?: string
   orderBy?: TypePostOrder
+  contentType?: "article" | "news"
 }): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
   const order =
     orderBy === "reactions"
@@ -33,7 +35,7 @@ export async function getPosts({
       isPublished: true,
       isDeleted: false,
       isFeatured: false,
-      contentType: "article",
+      contentType,
     },
     orderBy: order as any,
     include: {
@@ -72,13 +74,15 @@ export async function getPosts({
   return posts
 }
 
-export async function getTotalPostCount(): Promise<number> {
+export async function getTotalPostCount(
+  contentType: any = "article"
+): Promise<number> {
   const totalPostCount = await prisma.post.count({
     where: {
       isPublished: true,
       isDeleted: false,
       isFeatured: false,
-      contentType: "article",
+      contentType,
     },
   })
 
@@ -272,7 +276,6 @@ export async function getNewsletterPosts(): Promise<
       embeds: true,
       earnings: true,
     },
-    take: 3,
   })
 
   return posts

@@ -7,6 +7,11 @@ import {
 
 import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
 
+export const metadata = {
+  title: "Article Categories",
+  description: "Explore all Polkadot Article Categories",
+}
+
 export default async function PageCategories() {
   const categories = await getCategoryOverview()
 

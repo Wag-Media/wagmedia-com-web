@@ -24,10 +24,10 @@ export default async function PostGridSkeleton() {
             </div>
           ))}
         </Nav>
-        <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
+        {/* <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
           <span>View all</span>
           <ArrowRightIcon className="ms-3 w-6 h-6 rtl:rotate-180" />
-        </Button>
+        </Button> */}
       </div>
       <div className="mt-8">
         <div className="grid gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">

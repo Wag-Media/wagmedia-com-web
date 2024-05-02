@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import Image from "next/image"
 import rightImg from "@/public/wagmedia-about.jpeg"
@@ -8,8 +6,14 @@ import { YouTubeEmbed } from "react-social-media-embed"
 import BgGlassmorphism from "@/components/BgGlassmorphism/BgGlassmorphism"
 import Button from "@/components/Button/Button"
 import Heading from "@/components/Heading/Heading"
+import { YouTubeEmbedDisplay } from "@/components/YouTubeEmbed"
 
 import SectionFounder from "./SectionFounder"
+
+export const metadata = {
+  title: "About",
+  description: "About WagMedia and how to join the community.",
+}
 
 const PageAbout = ({}) => {
   return (
@@ -190,7 +194,7 @@ const PageAbout = ({}) => {
                 Watch this Video Tutorial on how to join
               </h3>
               {/* <Image className="w-full" src={rightImg} alt="" /> */}
-              <YouTubeEmbed
+              <YouTubeEmbedDisplay
                 url="https://www.youtube.com/watch?v=zfznEfzjGPA"
                 width="100%"
                 height="100%"
@@ -198,7 +202,7 @@ const PageAbout = ({}) => {
               />
 
               <h3 className="text-xl mb-6 mt-12">What is WagMedia?</h3>
-              <YouTubeEmbed
+              <YouTubeEmbedDisplay
                 url="https://www.youtube.com/watch?v=MLZmbo-ZsHk"
                 width="100%"
                 height="100%"

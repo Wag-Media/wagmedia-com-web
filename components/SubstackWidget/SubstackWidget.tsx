@@ -10,7 +10,13 @@ const SubstackWidget = ({ className }: { className?: string }) => {
       substackUrl: "wagmediaweekly.substack.com",
       placeholder: "example@gmail.com",
       buttonText: "Subscribe",
-      theme: "purple",
+      theme: "custom",
+      colors: {
+        primary: "#e6007a",
+        input: "#fff",
+        email: "#000",
+        text: "#000",
+      },
     }
 
     // Create a new script element

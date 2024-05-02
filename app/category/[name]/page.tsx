@@ -23,8 +23,9 @@ import SectionGridCategoryBox from "@/components/SectionGridCategoryBox/SectionG
 import SectionSliderNewAuthors from "@/components/SectionSliderNewAthors/SectionSliderNewAuthors"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 
-// Tag and category have same data type - we will use one demo data
-const posts: PostDataType[] = DEMO_POSTS.filter((_, i) => i < 16)
+export const metadata = {
+  title: "Category Page",
+}
 
 export default async function PageCategory({
   params,
@@ -82,23 +83,27 @@ export default async function PageCategory({
         <div>
           <div className="flex flex-col sm:justify-between sm:flex-row">
             <div className="flex space-x-2.5 rtl:space-x-reverse">
-              <ModalCategories categories={categories} />
-              <ModalTags tags={DEMO_TAGS} />
+              {/* <ModalCategories categories={categories} /> */}
+              {/* <ModalTags tags={DEMO_TAGS} /> */}
             </div>
             <div className="block my-4 border-b w-full border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end">
               <ArchiveFilterListBox lists={FILTERS} />
-            </div>
+            </div> */}
           </div>
           {/* LOOP ITEMS */}
-          <h3 className="text-xl font-semibold mt-4">Articles</h3>
+          <h3 className="text-3xl font-semibold mt-4">Articles</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
             {articles?.map((post) => (
               <Card11Wag key={post.id} post={post} />
             ))}
           </div>
-          <h3 className="text-xl font-semibold mt-4">News</h3>
-          <pre className="text-xs">{JSON.stringify(news, null, 2)}</pre>
+          <h3 className="text-3xl font-semibold mt-12">News</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
+            {news?.map((post) => (
+              <Card11Wag key={post.id} post={post} />
+            ))}
+          </div>
           {/* <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
             {news?.map((post) => (
               <Card11 key={post.id} post={post} />
@@ -106,14 +111,14 @@ export default async function PageCategory({
           </div> */}
           {/* PAGINATIONS */}
           <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-            <Pagination />
-            <ButtonPrimary>Show me more</ButtonPrimary>
+            {/* <Pagination /> */}
+            {/* <ButtonPrimary>Show me more</ButtonPrimary> */}
           </div>
         </div>
 
         {/* MORE SECTIONS */}
         {/* === SECTION 5 === */}
-        <div className="relative py-16">
+        {/* <div className="relative py-16">
           <BackgroundSection />
           <SectionGridCategoryBox
             categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
@@ -121,17 +126,17 @@ export default async function PageCategory({
           <div className="text-center mx-auto mt-10 md:mt-16">
             <ButtonSecondary loading>Show me more</ButtonSecondary>
           </div>
-        </div>
+        </div> */}
 
         {/* === SECTION 5 === */}
-        <SectionSliderNewAuthors
+        {/* <SectionSliderNewAuthors
           heading="Top elite authors"
           subHeading="Discover our elite writers"
           authors={DEMO_AUTHORS.filter((_, i) => i < 10)}
-        />
+        /> */}
 
         {/* SUBCRIBES */}
-        <SectionSubscribe2 />
+        {/* <SectionSubscribe2 /> */}
       </div>
     </div>
   )

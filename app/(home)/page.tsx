@@ -11,6 +11,7 @@ import {
 import { DEMO_CATEGORIES } from "@/data/taxonomies"
 import { cn } from "@/utils/cn"
 
+import NewsGrid from "@/components/ui/post-grid/NewsGrid"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
@@ -131,8 +132,16 @@ const PageHome = async ({
           </SectionBecomeAnAuthor>
         </div>
 
-        <Suspense fallback={<div>Loading...</div>}>
+        {/* <Suspense fallback={<div>Loading...</div>}>
           <SectionSliderNewCategoriesWag className="py-16 lg:py-28" />
+        </Suspense> */}
+        <Suspense fallback={<PostGridSkeleton />}>
+          <NewsGrid
+            currentPage={currentPage}
+            search={search}
+            className="pb-16 lg:pb-28 pt-16"
+            heading="Explore our latest posts"
+          />
         </Suspense>
       </div>
 
