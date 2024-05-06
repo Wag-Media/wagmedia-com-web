@@ -24,13 +24,13 @@ const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
           BECOME A CONTENT CREATOR
         </span>
         <h2 className="font-semibold text-3xl sm:text-4xl mt-3">
-          Become a Content Creator by joining WagMedia and share news and
-          articles about Polkadot and its ecosystem projects.
+          Join WagMedia to evolve your journey as a content creator by sharing
+          news and creating content about the Polkadot ecosystem.
         </h2>
         <span className="block mt-8 text-neutral-500 dark:text-neutral-400">
-          Become a Content Creator by joining WagMedia. You can earn rewards by
-          writing articles, and sharing news. Read and share new perspectives on
-          just about any Polkadot related topic. Everyone&apos;s welcome.
+          You can earn rewards with your contribution to our various programs
+          and bounties. Read and share new perspectives on just about any
+          Polkadot related topic. We welcome genuine participants at any level.
         </span>
         {children}
       </div>

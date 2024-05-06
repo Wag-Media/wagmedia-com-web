@@ -75,12 +75,18 @@ const PageHome = async ({
           </span> */}
 
           <div className="py-10 md:py-12 lg:py-12 text-center mt-4 z-10 relative">
-            <h1 className="text-4xl md:text-[4.4vw] md:leading-[4.4vw] font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-fuchsia-600 to-pink-600 bg-clip-text text-transparent mb-4 drop-shadow-[4px_4px_#E6007A,4px_-4px_#f2f]">
-              Decentralized Media<br></br> Collective Impact
+            <h1 className="text-4xl md:text-[6.4vw] md:leading-[4.4vw] font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-fuchsia-600 to-pink-600 bg-clip-text text-transparent mb-4 drop-shadow-[4px_4px_#E6007A,4px_-4px_#f2f]">
+              WagMedia
+              <br />
+              <span className="text-4xl">
+                Decentralized Media Incubation Hub
+              </span>
             </h1>
             <p className="block mb-8 lg:mb-16 text-xl text-gray-500">
-              WagMedia is shaping the Future of Blockchain Media Creation on
-              Polkadot and Kusama
+              WagMedia decentralizes the story of Dotsama by incentivizing
+              stakeholders to curate, share, create,
+              <br /> and promote content of all languages in an open and
+              transparent manner.
             </p>
           </div>
           {/* <div className="absolute mix-blend-multiply stroke-green-200 stroke filter blur-3xl  rounded-full bg-purple-300 w-3/12 h-4/6 top-1/2 -left-0 animate-blob delay-1000 opacity-50"></div> */}

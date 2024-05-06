@@ -26,7 +26,7 @@ const CategoryBadgeListWag: FC<CategoryBadgeListWagProps> = ({
           <Badge
             className={itemClass}
             key={index}
-            name={item.name}
+            name={item.name === "Non Anglo" ? "Non-Anglo" : item.name}
             // href={item.href}
             // color={item.color as any}
           />
