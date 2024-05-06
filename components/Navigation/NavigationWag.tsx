@@ -10,7 +10,6 @@ interface Props {
 }
 
 const NavigationWag: FC<Props> = ({ className = "flex" }) => {
-  const router = useRouter()
   const pathname = usePathname()
 
   return (

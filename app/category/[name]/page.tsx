@@ -25,7 +25,11 @@ import SectionGridCategoryBox from "@/components/SectionGridCategoryBox/SectionG
 import SectionSliderNewAuthors from "@/components/SectionSliderNewAthors/SectionSliderNewAuthors"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 
-import { NonAngloCategoryTitle, isCategoryNameLanguage } from "./util"
+import {
+  NonAngloCategoryTitle,
+  capitalizeFirstLetter,
+  isCategoryNameLanguage,
+} from "./util"
 
 export const metadata = {
   title: "Category Page",
@@ -84,7 +88,7 @@ export default async function PageCategory({
             </h2>
             <span className="block text-xl">
               {articles?.length} Articles{" "}
-              {news?.length ? `and {news?.length} News` : null}
+              {news?.length ? `and ${news?.length} News ` : null}
               with the Category <b>{category.name}</b>
             </span>
           </div>
@@ -112,7 +116,7 @@ export default async function PageCategory({
                   isLanguage ? `in ${category.name}` : `${category.name}`
                 } written by our community creators`}
               >
-                {category.name} Articles
+                {capitalizeFirstLetter(category.name)} Articles
               </Heading>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
                 {articles?.map((post) => (
