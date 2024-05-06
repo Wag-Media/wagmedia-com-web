@@ -259,9 +259,11 @@ export async function getCategories(
 }
 
 export async function getCategoryWithArticlesAndNews(name: string) {
+  const decodedName = decodeURIComponent(name)
+
   const category = await prisma.category.findUnique({
     where: {
-      name,
+      name: decodedName,
     },
     include: {
       emoji: true,

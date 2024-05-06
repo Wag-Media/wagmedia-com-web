@@ -41,7 +41,7 @@ export default async function NewsGrid({
   return (
     <div className={`nc-SectionGridPosts relative ${className}`}>
       <h2 className="text-5xl font-bold mt-8">
-        What's the news and updates about the Polkadot ecosystem?
+        What&apos;s the news and updates about the Polkadot ecosystem?
       </h2>
       <p className="mt-3 text-gray-500 text-lg">
         Explore <Suspense fallback="...">{totalPostCount}</Suspense> Polkadot

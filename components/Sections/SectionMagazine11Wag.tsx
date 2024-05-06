@@ -39,6 +39,8 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
     const posts = category.posts
     const postsCount = category._count?.posts
 
+    const categoryHref = `/category/${encodeURIComponent(category.name)}`
+
     return (
       <div key={category.id} className={`flex flex-col space-y-4`}>
         {category.name && (
@@ -83,7 +85,7 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
         </div>
         <div className="flex items-center justify-between !mt-8 !mb-8">
           {/* @ts-ignore */}
-          <Button href={category.link ?? `/category/${category.name}`}>
+          <Button href={categoryHref}>
             <span>
               See all {category.name}{" "}
               {contentType === ContentType.article ? "Articles" : "News"}

@@ -24,7 +24,7 @@ const FOUNDER_DEMO: People[] = [
   {
     id: "4",
     name: `Goku`,
-    job: "Goku will lead the content program and shall be supported by sub-directors who are already evaluating content. He is a senior Polkadot Ambassador, a member of ChaosDAO, and the existing director of the Paraverse Content Creators Unit.",
+    job: "Goku leads the general content program, including bounties. He has been involved with the Polkadot community for a long time and also serves as one of the seven members on Polkadot’s social media editorial board.",
     avatar:
       "https://pbs.twimg.com/profile_images/1636615722267729920/Mjw-Wdzj_400x400.jpg",
     twitter: "https://twitter.com/0xgoku_",
@@ -32,7 +32,7 @@ const FOUNDER_DEMO: People[] = [
   {
     id: "3",
     name: `Vampsy`,
-    job: "Vampsy will analyze the data on WagMedia's content production and payouts, and publish a monthly report. He is a PhD economist and member of Kingdom Ventures.",
+    job: "Vampsy will analyze the data on WagMedia's content production and payouts, and publish a monthly report. He is a PhD economist, specializing in game theory and market design, and member of Kingdom Ventures.",
     avatar:
       "https://pbs.twimg.com/profile_images/1494805284837109761/PxFyrn89_400x400.jpg",
     twitter: "https://twitter.com/vampsyfear",
@@ -42,7 +42,7 @@ const FOUNDER_DEMO: People[] = [
     name: `Dodow`,
     job: "Dodow will run the sourced news finders program, as well as be the chief editor of the WM newsletter. He was one of the original directors elevated to run WM. Also a member of ChaosDAO and Kingdom Ventures.",
     avatar:
-      "https://pbs.twimg.com/profile_images/1578419481612898304/GSTua3JI_400x400.jpg",
+      "https://cdn.discordapp.com/attachments/1205836446309679144/1237078821589487616/image.png?ex=663a56ee&is=6639056e&hm=dae89bf6736a8cbe413fe8651d8cb983815288dd708e01e94ecd50e44d0b82c1&",
     twitter: "https://twitter.com/fashionistawong",
   },
 ]
