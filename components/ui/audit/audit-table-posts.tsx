@@ -32,32 +32,7 @@ export async function AuditTablePosts() {
     },
   })
 
-  interface GroupedData {
-    [postId: string]: {
-      payments: PaymentWithUser[]
-      post: PostWithUserAndCategories | null
-    }
-  }
+  if (!postPayments) return null
 
-  const groupedByPostId: GroupedData = {}
-
-  postPayments.forEach((payment) => {
-    if (payment) {
-      const postId = payment.postId
-      if (postId) {
-        if (!groupedByPostId[postId]) {
-          groupedByPostId[postId] = {
-            post: payment.Post,
-            payments: [],
-          }
-        }
-        groupedByPostId[postId].payments.push(payment)
-      }
-    }
-  })
-
-  // Convert grouped data into an array for the UI component
-  const groupedPaymentsArray = Object.values(groupedByPostId).flat()
-
-  return <AuditTablePostsDisplay postPayments={groupedPaymentsArray} />
+  return <AuditTablePostsDisplay postPayments={postPayments} />
 }

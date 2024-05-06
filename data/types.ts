@@ -85,8 +85,9 @@ export type PaymentWithUser = Payment & {
 }
 
 export type PaymentFull = Payment & {
-  Post: PostWithTagsCategoriesReactionsPaymentsUser | null
-  reaction: ReactionWithUser
+  Post: PostWithUserAndCategories | null
+  reaction: ReactionWithUser | null
+  user: User | null
 }
 
 export type PaymentOddjob = Payment & {

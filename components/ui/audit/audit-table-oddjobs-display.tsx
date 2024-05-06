@@ -40,11 +40,6 @@ import { set } from "date-fns"
 import { get } from "lodash"
 import { DateRange } from "react-day-picker"
 
-import {
-  PaymentFull,
-  PostWithTagsCategoriesReactionsPaymentsUser,
-  ReactionWithUser,
-} from "@/types/prisma"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -223,17 +218,6 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   {
     accessorKey: "amount",
     header: () => <div className="text-right w-full">Paid Amount</div>,
-    // cell: ({ row }) => {
-    //   const amount = parseFloat(row.getValue("amount"))
-
-    //   // Format the amount as a dollar amount
-    //   const formatted = new Intl.NumberFormat("en-US", {
-    //     style: "currency",
-    //     currency: row.getValue("unit"),
-    //   }).format(amount)
-
-    //   return <div className="text-right font-medium">{formatted}</div>
-    // },
     cell: ({ row, getValue }) => {
       const amount = getValue<number>()
       return <div className="text-right">{amount.toFixed(2)}</div>

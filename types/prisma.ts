@@ -28,13 +28,3 @@ export type PostWithTagsCategoriesReactionsPaymentsUser = Post & {
   embeds: Embed[]
   user: User
 }
-
-export type PaymentFull = Payment & {
-  Post: PostWithTagsCategoriesReactionsPaymentsUser
-  reaction: ReactionWithUser
-}
-
-export type PaymentOddjob = Payment & {
-  OddJob: OddJobWithUser
-  reaction: ReactionWithUser
-}
