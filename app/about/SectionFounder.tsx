@@ -32,7 +32,7 @@ const FOUNDER_DEMO: People[] = [
   {
     id: "3",
     name: `Vampsy`,
-    job: "Vampsy will manage the treasury as well as do the monthly reporting. He is a member of the Kingdom Ventures and an economist.",
+    job: "Vampsy will analyze the data on WagMedia's content production and payouts, and publish a monthly report. He is a PhD economist and member of Kingdom Ventures.",
     avatar:
       "https://pbs.twimg.com/profile_images/1494805284837109761/PxFyrn89_400x400.jpg",
     twitter: "https://twitter.com/vampsyfear",
@@ -51,8 +51,8 @@ const SectionFounder = () => {
   return (
     <div className="nc-SectionFounder relative">
       <Heading
-        desc="We’re impartial and independent, and every day we create distinctive,
-          world-class programmes and content"
+        desc="Impartial and independent, we strive to lead the way in achieving our mission of decentralizing the story of Dotsama.
+        "
       >
         ⛱ WagMedia Team
       </Heading>

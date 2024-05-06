@@ -40,7 +40,6 @@ export default async function PageNonAnglo() {
       }
 
       const countryCode = code(flag)
-
       const countryName = name(flag)
 
       if (!countryName || !countryCode) {
@@ -84,8 +83,8 @@ export default async function PageNonAnglo() {
       <SectionMagazine11Wag
         categories={allCategories}
         className="py-16 lg:py-24"
-        heading="Explore all Polkadot Non-English Content"
-        desc="Read all the original native articles, translations, and dubbed content from WagMedia's native contributors."
+        heading="Explore curated non-Anglo Polkadot content"
+        desc="Check out all the original non-Anglo content, translations, and dubbed content from our diverse contributors."
       />
     </div>
   )

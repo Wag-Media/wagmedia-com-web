@@ -81,7 +81,7 @@ export default async function PageCategory({
           /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-neutral-400">
-              {isLanguage && "Non Anglo "}Category
+              {isLanguage && "Non-Anglo "}Category
             </span>
             <h2 className="inline-block align-middle text-5xl font-semibold md:text-7xl my-4">
               {title}

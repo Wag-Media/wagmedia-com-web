@@ -103,8 +103,8 @@ const Footer: React.FC = () => {
           </div>
           <div className="col-span-3 lg:col-span-3">
             <p className="text-neutral-500 dark:text-neutral-400 max-w-md">
-              WagMedia is a decentralized media platform that allows creators to
-              earn cryptocurrency for their content.
+              WagMedia is a decentralized media initiative that offers the
+              platform for creators to earn tokens for their content.
             </p>
             <Link
               href="https://polkadot.network/"

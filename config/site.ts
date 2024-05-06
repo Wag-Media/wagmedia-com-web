@@ -14,7 +14,7 @@ export const siteConfig = {
     },
     {
       id: "1",
-      name: "Non Anglo",
+      name: "Non-Anglo",
       href: "/non-anglo",
     },
     {

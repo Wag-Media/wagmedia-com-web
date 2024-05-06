@@ -22,8 +22,8 @@ export default async function PageNews() {
       <SectionMagazine11Wag
         categories={categories}
         className="py-16 lg:py-24"
-        heading="Explore all Polkadot News Categories"
-        desc="Polkadot Ecosystem News grouped by Category"
+        heading="Explore all the Polkadot News uncovered from our finders program"
+        desc="Polkadot Ecosystem news grouped by category"
         contentType={ContentType.news}
       />
     </div>

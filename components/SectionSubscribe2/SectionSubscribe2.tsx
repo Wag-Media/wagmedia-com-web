@@ -19,10 +19,13 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
       className={`nc-SectionSubscribe2 relative flex mb-12 flex-col lg:flex-row items-center ${className}`}
     >
       <div className="shrink-0 mb-14 lg:mb-0 lg:me-10 lg:w-2/5">
-        <h2 className="font-semibold text-4xl">Never Miss Any News 🎉</h2>
+        <h2 className="font-semibold text-4xl">Don't miss out! 🎉</h2>
         <span className="block mt-6 text-neutral-500 dark:text-neutral-400">
           Thanks for reading WagMedia Weekly! Subscribe for free to receive new
-          posts and support our work.
+          posts and support our work = this was probably taken from Substack, I
+          was a bit lazy and used their generic button. That said, the context
+          only applies to substack. I suggest removing it, as the two points
+          below cover it.
         </span>
         <ul className="space-y-5 mt-10">
           <li className="flex items-center space-x-4 rtl:space-x-reverse">

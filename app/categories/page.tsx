@@ -22,8 +22,8 @@ export default async function PageCategories() {
       <SectionMagazine11Wag
         categories={categories}
         className="py-16 lg:py-24"
-        heading="Explore all Polkadot Articles"
-        desc="Dive into our extensive range of categories to deepen your understanding of Polkadot technology"
+        heading="Explore curated Polkadot content"
+        desc="Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Polkadot."
       />
     </div>
   )

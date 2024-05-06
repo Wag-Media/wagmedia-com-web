@@ -20,7 +20,7 @@ export default async function PageCategories() {
     <div className="container relative py-16 lg:py-24">
       <Heading
         className="max-w-xl"
-        desc="🎉 Thanks for reading WagMedia Weekly! Subscribe for free to receive new posts and support our work."
+        desc="🎉 Catch up on the latest updates as well as our captivating stories."
       >
         WagMedia Newsletter
       </Heading>
