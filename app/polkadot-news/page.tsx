@@ -24,6 +24,7 @@ export default async function PageNews() {
         className="py-16 lg:py-24"
         heading="Explore all Polkadot News Categories"
         desc="Polkadot Ecosystem News grouped by Category"
+        contentType={ContentType.news}
       />
     </div>
   )

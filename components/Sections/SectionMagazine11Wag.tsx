@@ -5,6 +5,7 @@ import {
   getCategoryOverview,
 } from "@/data/dbCategories"
 import { ArrowRightIcon } from "@heroicons/react/24/solid"
+import { ContentType } from "@prisma/client"
 
 import { getPostFlag, postHasFlag } from "@/lib/utils"
 import Badge from "@/components/Badge/Badge"
@@ -20,6 +21,7 @@ export interface SectionMagazine11Props {
   categories?: expectedCategoryType
   heading?: string
   desc?: string
+  contentType?: ContentType
 }
 
 const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
@@ -27,6 +29,7 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
   className = "",
   heading = "Explore all Polkadot Article Categories",
   desc = "Polkadot Ecosystem Articles grouped by Category",
+  contentType = ContentType.article,
 }) => {
   const renderListByCat = (
     category: expectedCategoryType[number] & {
@@ -81,7 +84,10 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
         <div className="flex items-center justify-between !mt-8 !mb-8">
           {/* @ts-ignore */}
           <Button href={category.link ?? `/category/${category.name}`}>
-            <span>See all {category.name} Articles</span>
+            <span>
+              See all {category.name}{" "}
+              {contentType === ContentType.article ? "Articles" : "News"}
+            </span>
             <ArrowRightIcon className="ms-1.5 w-3 h-3" />
           </Button>
         </div>
