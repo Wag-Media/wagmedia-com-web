@@ -79,7 +79,8 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
           </ul>
         </div>
         <div className="flex items-center justify-between !mt-8 !mb-8">
-          <Button href={`/category/${category.name}`}>
+          {/* @ts-ignore */}
+          <Button href={category.link ?? `/category/${category.name}`}>
             <span>See all {category.name} Articles</span>
             <ArrowRightIcon className="ms-1.5 w-3 h-3" />
           </Button>

@@ -23,7 +23,13 @@ export default async function PageNonAnglo() {
 
   let languageCategories: Record<
     string,
-    { id: number; _count: { posts: number }; name: string; posts: any[] }
+    {
+      id: number
+      _count: { posts: number }
+      name: string
+      posts: any[]
+      link?: string
+    }
   > = {}
   categories.forEach((category) => {
     category.posts.forEach((post) => {
@@ -41,11 +47,16 @@ export default async function PageNonAnglo() {
         return
       }
 
-      const language = countries[countryCode][1]
+      let language = countries[countryCode][1]
+
+      if (language === "Czech Republic") {
+        language = "Czech"
+      }
 
       if (!languageCategories[countryName]) {
         languageCategories[countryName] = {
-          name: `${flag} ${language} Articles`,
+          name: `${flag} ${language}`,
+          link: `/category/${language.toLowerCase()}`,
           posts: [],
           id: -1,
           _count: {

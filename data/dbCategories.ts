@@ -1,6 +1,9 @@
 import { prisma } from "@/prisma/prisma"
 import { Category, ContentType } from "@prisma/client"
+import { code, countries, name } from "country-emoji"
 import _, { filter, orderBy } from "lodash"
+
+import { getPostFlag } from "@/lib/utils"
 
 import { getPostsByCategoryId } from "./dbPosts"
 import { CategoryWithCount } from "./types"
@@ -26,6 +29,13 @@ export async function getCategoryOverview(
               isPublished: true,
               isDeleted: false,
               contentType,
+              categories: {
+                none: {
+                  name: {
+                    in: nonAngloCategories,
+                  },
+                },
+              },
             },
           },
         },
@@ -307,6 +317,42 @@ export async function getCategoryWithArticlesAndNews(name: string) {
       (post) => post.contentType === ContentType.news
     ),
   }
+}
+
+function flagMatchesLanguage(flag: string, language: string) {
+  const countryCode = code(flag)
+  const countryName = name(flag)
+
+  if (!countryName || !countryCode) {
+    return false
+  }
+
+  let languageName = countries[countryCode][1]
+
+  if (languageName === "Czech Republic") {
+    languageName = "Czech"
+  }
+
+  return languageName.toLowerCase() === language.toLowerCase()
+}
+
+export async function getLanguageWithArticlesAndNews(name: string) {
+  const category = await getCategoryWithArticlesAndNews("Non Anglo")
+
+  const language = {
+    ...category,
+    name,
+    articles: category?.articles.filter((article) => {
+      const flag = getPostFlag(article)
+      return flag && flagMatchesLanguage(flag, name)
+    }),
+    news: category?.news.filter((news) => {
+      const flag = getPostFlag(news)
+      return flag && flagMatchesLanguage(flag, name)
+    }),
+  }
+
+  return language
 }
 
 export async function getCategoriesWithPosts(

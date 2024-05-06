@@ -5,6 +5,7 @@ import {
   getCategories,
   getCategoryByName,
   getCategoryWithArticlesAndNews,
+  getLanguageWithArticlesAndNews,
 } from "@/data/dbCategories"
 import { getPostsByCategoryId } from "@/data/dbPosts"
 import { DEMO_POSTS } from "@/data/posts"
@@ -24,6 +25,8 @@ import SectionGridCategoryBox from "@/components/SectionGridCategoryBox/SectionG
 import SectionSliderNewAuthors from "@/components/SectionSliderNewAthors/SectionSliderNewAuthors"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 
+import { NonAngloCategoryTitle, isCategoryNameLanguage } from "./util"
+
 export const metadata = {
   title: "Category Page",
 }
@@ -33,18 +36,22 @@ export default async function PageCategory({
 }: {
   params: { name: string }
 }) {
-  const category = await getCategoryByName(params.name)
-  const categories = await getCategories()
+  const isLanguage = isCategoryNameLanguage(params.name)
 
-  const _category = await getCategoryWithArticlesAndNews(params.name)
+  let category
 
-  if (!category || !category.name || !_category) {
-    return {
-      notFound: true,
-    }
+  // as language is not a real category, we need to handle it differently
+  if (isLanguage) {
+    category = await getLanguageWithArticlesAndNews(params.name)
+  } else {
+    category = await getCategoryWithArticlesAndNews(params.name)
   }
 
-  const { posts, articles, news } = _category
+  if (!category || !category.name || !category) {
+    return <>not found</>
+  }
+
+  const { posts, articles, news } = category
 
   const FILTERS = [
     { name: "Most Recent" },
@@ -53,6 +60,8 @@ export default async function PageCategory({
     { name: "Most Discussed" },
     { name: "Most Viewed" },
   ]
+
+  const title = NonAngloCategoryTitle(category.name)
 
   return (
     <div className={`nc-PageArchive`}>
@@ -67,13 +76,16 @@ export default async function PageCategory({
             sizes="(max-width: 1280px) 100vw, 1536px"
           /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-neutral-400">Category</span>
+            <span className="text-neutral-400">
+              {isLanguage && "Non Anglo "}Category
+            </span>
             <h2 className="inline-block align-middle text-5xl font-semibold md:text-7xl my-4">
-              {category.name}
+              {title}
             </h2>
             <span className="block text-xl">
-              {articles?.length} Articles and {news?.length} News with the
-              Category <b>{category.name}</b>
+              {articles?.length} Articles{" "}
+              {news?.length ? `and {news?.length} News` : null}
+              with the Category <b>{category.name}</b>
             </span>
           </div>
         </div>
@@ -93,27 +105,37 @@ export default async function PageCategory({
             </div> */}
           </div>
           {/* LOOP ITEMS */}
-          <Heading
-            desc={`Read decentralized articles on Polkadot ${category.name} written by our community creators`}
-          >
-            {category.name} Articles
-          </Heading>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
-            {articles?.map((post) => (
-              <Card11Wag key={post.id} post={post} />
-            ))}
-          </div>
-          <Heading
-            desc={`Read decentralized news on Polkadot ${category.name}, collected from the web by our community finders`}
-            className="mt-12"
-          >
-            {category.name} News
-          </Heading>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
-            {news?.map((post) => (
-              <Card11Wag key={post.id} post={post} />
-            ))}
-          </div>
+          {!articles?.length ? null : (
+            <>
+              <Heading
+                desc={`Read decentralized articles on Polkadot ${
+                  isLanguage ? `in ${category.name}` : `${category.name}`
+                } written by our community creators`}
+              >
+                {category.name} Articles
+              </Heading>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
+                {articles?.map((post) => (
+                  <Card11Wag key={post.id} post={post} />
+                ))}
+              </div>
+            </>
+          )}
+          {!news?.length ? null : (
+            <>
+              <Heading
+                desc={`Read decentralized news on Polkadot ${category.name}, collected from the web by our community finders`}
+                className="mt-12"
+              >
+                {category.name} News
+              </Heading>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-4 lg:mt-4">
+                {news?.map((post) => (
+                  <Card11Wag key={post.id} post={post} />
+                ))}
+              </div>
+            </>
+          )}
           {/* <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
             {news?.map((post) => (
               <Card11 key={post.id} post={post} />

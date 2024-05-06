@@ -10,10 +10,11 @@ import SiteHeader from "@/components/SiteHeader"
 export const metadata = {
   metadataBase: new URL("https://thewagmedia.com/"),
   title: {
-    template: "%s | WagMedia Polkadot News Platform",
+    template: "%s | WagMedia Polkadot Articles and News",
     default: "WagMedia Polkadot News Platform",
   },
-  description: "Decentralized news and updates for Polkadot and Kusama",
+  description:
+    "Frictionless Decentralized Content Creation Platform For Polkadot",
   generator: "Next.js",
   applicationName: "WagMedia Web App",
   referrer: "origin-when-cross-origin",

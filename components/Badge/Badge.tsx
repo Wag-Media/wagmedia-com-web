@@ -43,6 +43,9 @@ const Badge: FC<BadgeProps> = ({
           hasHover ? "hover:bg-indigo-800/50" : ""
         }`
       case "Non Anglo":
+        return `text-amber-800 bg-amber-100/50 ${
+          hasHover ? "hover:bg-amber-800/50" : ""
+        }`
       case "Translations":
         return `text-yellow-800 bg-yellow-100/50 ${
           hasHover ? "hover:bg-yellow-800/50" : ""
