@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { PaymentWithUser, PostWithUserAndCategories } from "@/data/types"
+import {
+  PaymentFull,
+  PaymentWithUser,
+  PostWithUserAndCategories,
+} from "@/data/types"
 import { Category, Payment, Post, Reaction, User } from "@prisma/client"
 import {
   CaretSortIcon,
@@ -13,11 +17,13 @@ import {
 import {
   ColumnDef,
   ColumnFiltersState,
+  GroupingState,
   SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getGroupedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -25,11 +31,6 @@ import {
 import { set } from "date-fns"
 import { DateRange } from "react-day-picker"
 
-import {
-  PaymentFull,
-  PostWithTagsCategoriesReactionsPaymentsUser,
-  ReactionWithUser,
-} from "@/types/prisma"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -54,16 +55,15 @@ import {
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
 import { fuzzyFilter } from "./table-util"
 
-interface RowType {
-  payments: PaymentWithUser[]
-  post: PostWithUserAndCategories | null
-}
-
-export const columns: ColumnDef<RowType>[] = [
+export const columns: ColumnDef<PaymentFull>[] = [
+  {
+    id: "postId",
+    accessorFn: (payment) => payment.postId,
+  },
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.payments[0].createdAt
+      return row.createdAt
     },
     header: "Datetime",
     cell: (props) => {
@@ -74,19 +74,19 @@ export const columns: ColumnDef<RowType>[] = [
         </div>
       )
     },
+    aggregationFn: (leafRows, childRows) => {
+      return childRows[0].original.createdAt
+    },
   },
   {
     id: "recipient",
+    accessorFn: (payment) => payment.Post?.user.name,
     header: "Recipient",
-    accessorFn: (row) => {
-      return row.post?.user.name
-    },
-    cell: ({ row }) => {
-      const post = row.original.post
-      const user = post?.user
+    cell: ({ row, getValue }) => {
+      const user: User | undefined = row.original.Post?.user
 
       return (
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           {user && user.avatar && (
             <Image
               className="h-8 rounded-full"
@@ -104,20 +104,17 @@ export const columns: ColumnDef<RowType>[] = [
   {
     id: "director",
     header: "Director",
-    accessorFn: (row) => {
-      const payment = row.payments[0]
-      const user: User = payment.user
-      return user.name
+    accessorFn: (payment) => {
+      return payment.user?.name
     },
     cell: ({ row, getValue }) => {
-      const payment: PaymentWithUser = row.original.payments[0]
-      const user: User = payment.user
+      const user: User | null = row.original.user
 
       return (
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           {user?.avatar && (
             <Image
-              className="rounded-full"
+              className="h-8 rounded-full"
               src={user?.avatar}
               width={30}
               height={30}
@@ -133,10 +130,10 @@ export const columns: ColumnDef<RowType>[] = [
     id: "featured",
     header: "Featured",
     accessorFn: (row) => {
-      return row.post?.isFeatured ? "featured" : ""
+      return row.Post?.isFeatured ? "featured ⭐️" : ""
     },
     cell: ({ row }) => {
-      const post = row.original.post
+      const post = row.original.Post
 
       return (
         <div className="flex flex-row items-center gap-2">
@@ -148,14 +145,27 @@ export const columns: ColumnDef<RowType>[] = [
   {
     id: "title",
     accessorFn: (row) => {
-      return row.post?.title
+      return row.Post?.title
+    },
+    cell: ({ getValue, row, renderValue }) => {
+      const title = getValue<string>()
+
+      return <div className="flex flex-row items-center gap-2">{title}</div>
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const title = childRows[0].original.Post?.title
+      return title
     },
     header: "Title",
   },
   {
     header: "Categories",
     accessorFn: (row) => {
-      return row.post?.categories?.map((category) => category.name).join(", ")
+      return row.Post?.categories?.map((category) => category.name).join(", ")
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const categories = childRows[0].original.Post?.categories
+      return categories?.map((category) => category.name).join(", ")
     },
     cell: (props) => {
       const categories = props.getValue() as string
@@ -165,58 +175,51 @@ export const columns: ColumnDef<RowType>[] = [
       )
     },
   },
-  //   {
-  //     accessorKey: "status",
-  //     header: "Status",
-  //     cell: ({ row }) => (
-  //       <div className="capitalize">{row.getValue("status")}</div>
-  //     ),
-  //   },
   // {
-  //   accessorKey: "unit",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Unit
-  //         <CaretSortIcon className="ml-2 size-4" />
-  //       </Button>
-  //     )
-  //   },
-  //   cell: ({ row }) => <div className="uppercase">{row.getValue("unit")}</div>,
+  //   accessorKey: "status",
+  //   header: "Status",
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">{row.getValue("status")}</div>
+  //   ),
   // },
   {
-    accessorKey: "amount",
-    header: "Paid Amount",
-    accessorFn: (row) => {
-      return row.payments.reduce((acc, payment) => acc + payment.amount, 0)
+    accessorKey: "unit",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Unit
+          <CaretSortIcon className="ml-2 size-4" />
+        </Button>
+      )
     },
-    // sortingFn: (a, b) => {
-    //   console.log("aaa", a)
-    //   console.log("bbb", b)
-    //   return a - b
-    // },
+    aggregationFn: (leafRows, childRows) => {
+      return childRows[0].original.unit
+    },
+    cell: ({ row }) => <div className="uppercase">{row.getValue("unit")}</div>,
+  },
+  {
+    accessorKey: "amount",
+    header: () => <div className="text-right w-full">Paid Amount</div>,
     cell: ({ row, getValue }) => {
-      const payments = row.original.payments
-      const amount = getValue() as number
-      const unit = payments[0].unit
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: unit,
-      }).format(amount)
-
-      return <div className=" font-medium">{formatted}</div>
+      const amount = getValue<number>()
+      return <div className="text-right">{amount.toFixed(2)}</div>
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const amount = childRows.reduce(
+        (acc, row) => acc + row.original.amount,
+        0
+      )
+      return amount
     },
   },
   {
     accessorKey: "Post",
     header: "Link",
     cell: ({ row }) => {
-      const post = row.original.post
+      const post = row.original.Post
 
       return (
         <div className="flex flex-row items-center justify-center gap-2">
@@ -272,7 +275,7 @@ export const columns: ColumnDef<RowType>[] = [
 export function AuditTablePostsDisplay({
   postPayments,
 }: {
-  postPayments: RowType[]
+  postPayments: PaymentFull[]
 }) {
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -281,8 +284,23 @@ export function AuditTablePostsDisplay({
     },
   ])
 
+  const [grouping, setGrouping] = useState<GroupingState>(["postId"])
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    postId: false,
+    createdAt: true,
+    recipient: true,
+    director: true,
+    featured: false,
+    title: true,
+    categories: true,
+    status: true,
+    unit: true,
+    amount: true,
+    link: true,
+    actions: true,
+  })
   const [rowSelection, setRowSelection] = useState({})
 
   const [pageIndex, setPageIndex] = useState(0)
@@ -302,14 +320,14 @@ export function AuditTablePostsDisplay({
       const end = new Date(endDate)
       end.setHours(23, 59, 59, 999)
       const filtered = postPayments.filter((row) => {
-        const createdAt = new Date(row.payments[0].createdAt)
+        const createdAt = new Date(row.createdAt)
         return createdAt >= start && createdAt <= end
       })
       setFilteredPayments(filtered)
     } else if (startDate) {
       const start = new Date(startDate)
       const filtered = postPayments.filter((row) => {
-        const createdAt = new Date(row.payments[0].createdAt)
+        const createdAt = new Date(row.createdAt)
         return createdAt >= start
       })
       setFilteredPayments(filtered)
@@ -317,7 +335,7 @@ export function AuditTablePostsDisplay({
       const end = new Date(endDate)
       end.setHours(23, 59, 59, 999)
       const filtered = postPayments.filter((row) => {
-        const createdAt = new Date(row.payments[0].createdAt)
+        const createdAt = new Date(row.createdAt)
         return createdAt <= end
       })
       setFilteredPayments(filtered)
@@ -339,12 +357,15 @@ export function AuditTablePostsDisplay({
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: fuzzyFilter,
+    onGroupingChange: setGrouping,
+    getGroupedRowModel: getGroupedRowModel(),
     filterFns: {
       fuzzy: fuzzyFilter,
     },
     state: {
       globalFilter,
       sorting,
+      grouping,
       columnFilters,
       columnVisibility,
       rowSelection,
@@ -355,11 +376,13 @@ export function AuditTablePostsDisplay({
     },
   })
 
+  const uniquePostIds = new Set(postPayments.map((payment) => payment.postId))
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder={`Filter all ${postPayments.length} entries`}
+          placeholder={`Filter all ${uniquePostIds.size} entries`}
           value={globalFilter}
           onChange={(event) => {
             console.log(event.target.value)
@@ -481,8 +504,13 @@ export function AuditTablePostsDisplay({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
+          Showing{" "}
+          {Math.min(
+            table.getFilteredRowModel().rows.length,
+            uniquePostIds.size
+          )}{" "}
+          row(s).
         </div>
         <div className="space-x-2">
           <Button

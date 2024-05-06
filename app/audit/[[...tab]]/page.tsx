@@ -1,20 +1,11 @@
 import { Suspense } from "react"
-import {
-  PaymentFull,
-  PaymentWithUser,
-  PostWithUserAndCategories,
-} from "@/data/types"
-import { prisma } from "@/prisma/prisma"
-import { Payment, Post } from "@prisma/client"
 
-import { PaymentOddjob } from "@/types/prisma"
 import { cn } from "@/lib/utils"
 import { AuditTableOddjobs } from "@/components/ui/audit/audit-table-oddjobs"
 import { AuditTablePosts } from "@/components/ui/audit/audit-table-posts"
-import Heading from "@/components/Heading/Heading"
 
 export const fetchCache = "force-no-store"
-export const revalidate = 0 // seconds
+export const revalidate = 10 // seconds
 export const dynamic = "force-dynamic"
 
 export const metadata = {
