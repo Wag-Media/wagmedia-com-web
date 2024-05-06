@@ -1,13 +1,14 @@
-"use client";
-import React, { FC } from "react";
+"use client"
+
+import React, { FC } from "react"
 
 export interface NextPrevProps {
-  className?: string;
-  btnClassName?: string;
-  onClickNext?: () => void;
-  onClickPrev?: () => void;
-  onlyNext?: boolean;
-  onlyPrev?: boolean;
+  className?: string
+  btnClassName?: string
+  onClickNext?: () => void
+  onClickPrev?: () => void
+  onlyNext?: boolean
+  onlyPrev?: boolean
 }
 
 const NextPrev: FC<NextPrevProps> = ({
@@ -18,7 +19,7 @@ const NextPrev: FC<NextPrevProps> = ({
   onlyNext = false,
   onlyPrev = false,
 }) => {
-  const [focus, setFocus] = React.useState<"left" | "right">("right");
+  const [focus, setFocus] = React.useState<"left" | "right">("right")
 
   return (
     <div
@@ -28,12 +29,10 @@ const NextPrev: FC<NextPrevProps> = ({
         <button
           className={`${btnClassName} ${
             !onlyPrev ? "mr-2" : ""
-          } border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center ${
-            focus === "left" ? "border-2" : ""
-          }`}
+          } border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center border-2`}
           onClick={(e) => {
-            e.preventDefault();
-            onClickPrev();
+            e.preventDefault()
+            onClickPrev()
           }}
           title="Prev"
           onMouseEnter={() => setFocus("left")}
@@ -64,12 +63,10 @@ const NextPrev: FC<NextPrevProps> = ({
       )}
       {!onlyPrev && (
         <button
-          className={`${btnClassName}  border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center ${
-            focus === "right" ? "border-2" : ""
-          }`}
+          className={`${btnClassName}  border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center border-2`}
           onClick={(e) => {
-            e.preventDefault();
-            onClickNext();
+            e.preventDefault()
+            onClickNext()
           }}
           title="Next"
           onMouseEnter={() => setFocus("right")}
@@ -99,7 +96,7 @@ const NextPrev: FC<NextPrevProps> = ({
         </button>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default NextPrev;
+export default NextPrev
