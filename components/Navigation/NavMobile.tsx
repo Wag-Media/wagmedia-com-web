@@ -192,7 +192,9 @@ const NavMobile: React.FC<NavMobileProps> = ({
               className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
             >
               <span className="sr-only">Enable dark mode</span>
-              <DiscordIcon size={25} />
+              <Link href={siteConfig.links.discord}>
+                <DiscordIcon size={25} />
+              </Link>
             </button>
             <span className="block">
               <SwitchDarkMode className="bg-neutral-100 dark:bg-neutral-800" />

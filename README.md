@@ -1,11 +1,11 @@
 # Wagmedia Communications Website
 
-A Next.js 14 website that plays together with wagmedia-com-bot
+A Next.js 14 website that plays together with [wagmedia-com-bot](https://github.com/Wag-Media/wagmedia-com-bot)
 
 ## Usage
 
 ```bash
-npx create-next-app -e https://github.com/shadcn/next-template
+npm run dev
 ```
 
 ## Features
