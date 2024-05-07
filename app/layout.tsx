@@ -11,7 +11,7 @@ export const metadata = {
   metadataBase: new URL("https://thewagmedia.com/"),
   title: {
     template: "%s | WagMedia Polkadot Articles and News",
-    default: "WagMedia Polkadot News Platform",
+    default: "WagMedia Polkadot Articles and News",
   },
   description:
     "Frictionless Decentralized Content Creation Platform For Polkadot",
