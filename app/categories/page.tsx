@@ -1,11 +1,6 @@
-import {
-  getCategories,
-  getCategoriesWithPosts,
-  getCategoryOverview,
-  getEnglishCategories,
-} from "@/data/dbCategories"
+import { getCategoryOverview } from "@/data/dbCategories"
 
-import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
+import CategoryOverview from "@/components/Sections/CategoryOverview"
 
 export const metadata = {
   title: "Article Categories",
@@ -15,13 +10,11 @@ export const metadata = {
 export default async function PageCategories() {
   const categories = await getCategoryOverview()
 
-  // const categoriesWithPosts = await getCategoriesWithPosts(categories)
-
   return (
     <div className="container relative">
-      <SectionMagazine11Wag
+      <CategoryOverview
         categories={categories}
-        className="py-16 lg:py-24"
+        className="py-4 md:py-8 lg:py-20"
         heading="Explore curated Polkadot content"
         desc="Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Polkadot."
       />

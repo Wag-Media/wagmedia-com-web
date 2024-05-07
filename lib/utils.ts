@@ -8,7 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export function postHasFlag(post: PostWithReactions) {
   // Check if the post has a flag emoji in its reactions
-  console.log("post.reactions", post.reactions)
   return post.reactions.some((reaction) => isCountryFlag(reaction.emoji.id))
 }
 

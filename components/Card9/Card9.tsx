@@ -1,18 +1,18 @@
-import React, { FC } from "react";
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction";
-import { PostDataType } from "@/data/types";
-import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment";
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList";
-import PostTypeFeaturedIcon from "@/components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
-import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia";
-import Link from "next/link";
-import Image from "next/image";
+import React, { FC } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { PostDataType } from "@/data/types"
+
+import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
+import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction"
+import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia"
+import PostTypeFeaturedIcon from "@/components/PostTypeFeaturedIcon/PostTypeFeaturedIcon"
 
 export interface Card9Props {
-  className?: string;
-  ratio?: string;
-  post: PostDataType;
-  hoverClass?: string;
+  className?: string
+  ratio?: string
+  post: PostDataType
+  hoverClass?: string
 }
 
 const Card9: FC<Card9Props> = ({
@@ -22,7 +22,7 @@ const Card9: FC<Card9Props> = ({
   hoverClass = "",
 }) => {
   const { title, href, featuredImage, categories, author, date, postType } =
-    post;
+    post
 
   const renderMeta = () => {
     return (
@@ -42,15 +42,15 @@ const Card9: FC<Card9Props> = ({
           </Link>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div
       className={`nc-Card9 relative flex flex-col group rounded-lg overflow-hidden z-0 ${hoverClass} ${className}`}
     >
       <div className="absolute inset-x-0 top-0 p-3 flex items-center justify-between transition-all opacity-0 z-[-1] group-hover:opacity-100 group-hover:z-10 duration-300">
-        <PostCardLikeAndComment className="relative" />
+        {/* <PostCardLikeAndComment className="relative" /> */}
         <PostCardSaveAction hidenReadingTime className="relative" />
       </div>
       <div className={`flex items-start relative w-full ${ratio}`}></div>
@@ -88,7 +88,7 @@ const Card9: FC<Card9Props> = ({
         {renderMeta()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Card9;
+export default Card9

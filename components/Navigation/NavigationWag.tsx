@@ -1,9 +1,8 @@
-import React, { FC, use } from "react"
-import { usePathname, useRouter } from "next/navigation"
-import { NAVIGATION_DEMO_2 } from "@/data/navigation"
+import React, { FC } from "react"
+import { usePathname } from "next/navigation"
 
 import { siteConfig } from "../../config/site"
-import NavigationItem, { NavItemType } from "./NavigationItem"
+import NavigationItem from "./NavigationItem"
 
 interface Props {
   className?: string

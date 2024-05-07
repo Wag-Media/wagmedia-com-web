@@ -1,28 +1,13 @@
 import React, { FC } from "react"
-import Image from "next/image"
-import { DEMO_AUTHORS } from "@/data/authors"
-import { getCategories, getCategoryByName } from "@/data/dbCategories"
-import { getPostsByCategoryId, getPostsByTagId } from "@/data/dbPosts"
+import { getCategories } from "@/data/dbCategories"
+import { getPostsByTagId } from "@/data/dbPosts"
 import { getTagByName } from "@/data/dbTags"
 import { DEMO_POSTS } from "@/data/posts"
-import { DEMO_CATEGORIES, DEMO_TAGS } from "@/data/taxonomies"
 import { PostDataType } from "@/data/types"
 
 import ArchiveFilterListBox from "@/components/ArchiveFilterListBox/ArchiveFilterListBox"
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
-import ButtonSecondary from "@/components/Button/ButtonSecondary"
-import Card11 from "@/components/Card11/Card11"
 import Card11Wag from "@/components/Card11/Card11Wag"
-import ModalCategories from "@/components/ModalCategories"
-import ModalTags from "@/components/ModalTags"
-import Pagination from "@/components/Pagination/Pagination"
-import SectionGridCategoryBox from "@/components/SectionGridCategoryBox/SectionGridCategoryBox"
-import SectionSliderNewAuthors from "@/components/SectionSliderNewAthors/SectionSliderNewAuthors"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
-
-// Tag and category have same data type - we will use one demo data
-const posts: PostDataType[] = DEMO_POSTS.filter((_, i) => i < 16)
 
 export default async function PageTag({
   params,
@@ -41,13 +26,13 @@ export default async function PageTag({
 
   const posts = await getPostsByTagId(tag.id)
 
-  const FILTERS = [
-    { name: "Most Recent" },
-    { name: "Curated by Admin" },
-    { name: "Most Appreciated" },
-    { name: "Most Discussed" },
-    { name: "Most Viewed" },
-  ]
+  // const FILTERS = [
+  //   { name: "Most Recent" },
+  //   { name: "Curated by Admin" },
+  //   { name: "Most Appreciated" },
+  //   { name: "Most Discussed" },
+  //   { name: "Most Viewed" },
+  // ]
 
   return (
     <div className={`nc-PageArchive`}>
@@ -62,7 +47,7 @@ export default async function PageTag({
             sizes="(max-width: 1280px) 100vw, 1536px"
           /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-neutral-400">Category</span>
+            <span className="text-neutral-400">Tag</span>
             <h2 className="inline-block align-middle text-5xl font-semibold md:text-7xl my-4">
               {tag.name}
             </h2>
@@ -80,9 +65,9 @@ export default async function PageTag({
               {/* <ModalTags tags={DEMO_TAGS} /> */}
             </div>
             <div className="block my-4 border-b w-full border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end">
               <ArchiveFilterListBox lists={FILTERS} />
-            </div>
+            </div> */}
           </div>
 
           {/* LOOP ITEMS */}
@@ -93,15 +78,15 @@ export default async function PageTag({
           </div>
 
           {/* PAGINATIONS */}
-          <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
+          {/* <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
             <Pagination />
             <ButtonPrimary>Show me more</ButtonPrimary>
-          </div>
+          </div> */}
         </div>
 
         {/* MORE SECTIONS */}
         {/* === SECTION 5 === */}
-        <div className="relative py-16">
+        {/* <div className="relative py-16">
           <BackgroundSection />
           <SectionGridCategoryBox
             categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
@@ -109,14 +94,14 @@ export default async function PageTag({
           <div className="text-center mx-auto mt-10 md:mt-16">
             <ButtonSecondary loading>Show me more</ButtonSecondary>
           </div>
-        </div>
+        </div> */}
 
         {/* === SECTION 5 === */}
-        <SectionSliderNewAuthors
+        {/* <SectionSliderNewAuthors
           heading="Top elite authors"
           subHeading="Discover our elite writers"
           authors={DEMO_AUTHORS.filter((_, i) => i < 10)}
-        />
+        /> */}
 
         {/* SUBCRIBES */}
         <SectionSubscribe2 />

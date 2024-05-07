@@ -2,11 +2,6 @@ import React, { FC } from "react"
 import { getTags } from "@/data/dbTags"
 import { TagWithCount, TaxonomyType } from "@/data/types"
 
-import CardCategory1 from "@/components/CardCategory1/CardCategory1"
-import CardCategory2 from "@/components/CardCategory2/CardCategory2"
-import CardCategory3 from "@/components/CardCategory3/CardCategory3"
-import CardCategory4 from "@/components/CardCategory4/CardCategory4"
-import CardCategory5 from "@/components/CardCategory5/CardCategory5"
 import Heading from "@/components/Heading/Heading"
 
 import MySlider from "../MySlider"

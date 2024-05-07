@@ -1,12 +1,12 @@
-import React, { FC } from "react";
-import PostCardCommentBtn from "@/components/PostCardCommentBtn/PostCardCommentBtn";
-import PostCardLikeAction from "@/components/PostCardLikeAction/PostCardLikeAction";
+import React, { FC } from "react"
+
+import PostCardCommentBtn from "@/components/PostCardCommentBtn/PostCardCommentBtn"
 
 export interface PostCardLikeAndCommentProps {
-  className?: string;
-  itemClass?: string;
-  hiddenCommentOnMobile?: boolean;
-  useOnSinglePage?: boolean;
+  className?: string
+  itemClass?: string
+  hiddenCommentOnMobile?: boolean
+  useOnSinglePage?: boolean
 }
 
 const PostCardLikeAndComment: FC<PostCardLikeAndCommentProps> = ({
@@ -19,7 +19,7 @@ const PostCardLikeAndComment: FC<PostCardLikeAndCommentProps> = ({
     <div
       className={`nc-PostCardLikeAndComment flex items-center space-x-2 rtl:space-x-reverse ${className}`}
     >
-      <PostCardLikeAction className={itemClass} />
+      {/* <PostCardLikeAction className={itemClass} /> */}
       <PostCardCommentBtn
         className={`${
           hiddenCommentOnMobile ? "hidden sm:flex" : "flex"
@@ -27,7 +27,7 @@ const PostCardLikeAndComment: FC<PostCardLikeAndCommentProps> = ({
         isATagOnSingle={useOnSinglePage}
       />
     </div>
-  );
-};
+  )
+}
 
-export default PostCardLikeAndComment;
+export default PostCardLikeAndComment

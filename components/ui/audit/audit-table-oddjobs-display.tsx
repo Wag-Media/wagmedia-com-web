@@ -36,8 +36,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { set } from "date-fns"
-import { get } from "lodash"
 import { DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
@@ -466,7 +464,7 @@ export function AuditTableOddjobsDisplay({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-4">
+      <div className="flex items-center py-4 gap-4 flex-wrap">
         <Input
           placeholder={`Filter all ${uniqueOddjobIds.size} entries`}
           value={globalFilter}

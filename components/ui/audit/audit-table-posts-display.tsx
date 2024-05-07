@@ -312,8 +312,6 @@ export function AuditTablePostsDisplay({
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
 
-  // console.log("postPayments", postPayments)
-
   useEffect(() => {
     if (startDate && endDate) {
       const start = new Date(startDate)
@@ -380,12 +378,11 @@ export function AuditTablePostsDisplay({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-4">
+      <div className="flex items-center py-4 gap-4 flex-wrap">
         <Input
           placeholder={`Filter all ${uniquePostIds.size} entries`}
           value={globalFilter}
           onChange={(event) => {
-            console.log(event.target.value)
             setGlobalFilter(event.target.value)
           }}
           className="w-64"

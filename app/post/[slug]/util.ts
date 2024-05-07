@@ -49,8 +49,6 @@ export function getEmbedType(url: string | null): EmbedType | null {
 
 export async function replaceAuthorLinks(text: string): Promise<string> {
   // Patterns to match author URLs
-
-  //should match <@813444371159842876>
   const authorPattern = /<@(\d+)>/gi
 
   const allAuthrorIds = text
@@ -60,8 +58,6 @@ export async function replaceAuthorLinks(text: string): Promise<string> {
 
   const authors = await getAuthorsByIds(allAuthrorIds)
   if (!authors) return text
-
-  console.log("authors", authors)
 
   //replace each author with a link to their profile
   authors.forEach((author) => {

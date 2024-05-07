@@ -2,16 +2,13 @@
 
 import React from "react"
 import Link from "next/link"
-import { NAVIGATION_DEMO_2 } from "@/data/navigation"
 import { DiscordIcon } from "@/images/icons"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 import _ from "lodash"
 
 import { siteConfig } from "@/config/site"
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import ButtonClose from "@/components/ButtonClose/ButtonClose"
 import Logo from "@/components/Logo/Logo"
-import SocialsList from "@/components/SocialsList/SocialsList"
 import SwitchDarkMode from "@/components/SwitchDarkMode/SwitchDarkMode"
 import { Disclosure } from "@/app/headlessui"
 

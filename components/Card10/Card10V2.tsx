@@ -1,20 +1,20 @@
-"use client";
-import React, { FC, useState } from "react";
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction";
-import { PostDataType } from "@/data/types";
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList";
-import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia";
-import PostCardMetaV2 from "@/components/PostCardMeta/PostCardMetaV2";
-import Link from "next/link";
+"use client"
+
+import React, { FC, useState } from "react"
+import Link from "next/link"
+import { PostDataType } from "@/data/types"
+
+import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
+import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia"
 
 export interface Card10V2Props {
-  className?: string;
-  post: PostDataType;
+  className?: string
+  post: PostDataType
 }
 
 const Card10V2: FC<Card10V2Props> = ({ className = "h-full", post }) => {
-  const { href, categories } = post;
-  const [isHover, setIsHover] = useState(false);
+  const { href, categories } = post
+  const [isHover, setIsHover] = useState(false)
 
   return (
     <div
@@ -34,14 +34,14 @@ const Card10V2: FC<Card10V2Props> = ({ className = "h-full", post }) => {
       </div>
       <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4 rtl:space-x-reverse">
         <CategoryBadgeList categories={categories} />
-        <PostCardSaveAction />
+        {/* <PostCardSaveAction /> */}
       </div>
 
-      <div className="space-y-2.5 mt-4 px-4">
+      {/* <div className="space-y-2.5 mt-4 px-4">
         <PostCardMetaV2 meta={post} />
-      </div>
+      </div> */}
     </div>
-  );
-};
+  )
+}
 
-export default Card10V2;
+export default Card10V2

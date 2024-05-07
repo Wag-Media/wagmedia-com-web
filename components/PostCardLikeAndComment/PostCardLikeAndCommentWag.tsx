@@ -4,11 +4,7 @@ import { ReactionWithUserAndEmoji } from "@/data/types"
 import { ContentEarnings } from "@prisma/client"
 import { Coins, ThumbsUp } from "lucide-react"
 
-import PostCardCommentBtn from "@/components/PostCardCommentBtn/PostCardCommentBtn"
-import PostCardLikeAction from "@/components/PostCardLikeAction/PostCardLikeAction"
-
 import { totalEarnings } from "../../utils/totalPostEarnings"
-import PostCardLikeActionWag from "../PostCardLikeAction/PostCardLikeActionWag"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
 
 export interface PostCardLikeAndCommentWagProps {

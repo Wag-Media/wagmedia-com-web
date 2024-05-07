@@ -14,11 +14,7 @@ const PageAuthor = async ({ params }: { params: { name: string } }) => {
     }
   }
 
-  return (
-    <Suspense fallback={<>Loading Author {params.name} ...</>}>
-      <AuthorPage name={params.name} />
-    </Suspense>
-  )
+  return <AuthorPage name={params.name} />
 }
 
 export default PageAuthor

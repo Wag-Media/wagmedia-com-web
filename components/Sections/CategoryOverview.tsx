@@ -1,9 +1,6 @@
 import React, { FC } from "react"
 import Link from "next/link"
-import {
-  getCategoriesWithPosts,
-  getCategoryOverview,
-} from "@/data/dbCategories"
+import { getCategoryOverview } from "@/data/dbCategories"
 import { ArrowRightIcon } from "@heroicons/react/24/solid"
 import { ContentType } from "@prisma/client"
 
@@ -24,7 +21,7 @@ export interface SectionMagazine11Props {
   contentType?: ContentType
 }
 
-const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
+const CategoryOverview: FC<SectionMagazine11Props> = ({
   categories = [],
   className = "",
   heading = "Explore all Polkadot Article Categories",
@@ -111,4 +108,4 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
   )
 }
 
-export default SectionMagazine11Wag
+export default CategoryOverview

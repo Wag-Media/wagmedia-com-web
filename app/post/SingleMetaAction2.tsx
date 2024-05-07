@@ -3,14 +3,8 @@
 import React, { FC } from "react"
 import { ReactionWithUserAndEmoji } from "@/data/types"
 import { ContentEarnings, Reaction } from "@prisma/client"
-import { rankItem } from "@tanstack/match-sorter-utils"
 
-import NcBookmark from "@/components/NcBookmark/NcBookmark"
-import NcDropDown from "@/components/NcDropDown/NcDropDown"
-import PostActionDropdown from "@/components/PostActionDropdown/PostActionDropdown"
-import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment"
 import PostCardLikeAndCommentWag from "@/components/PostCardLikeAndComment/PostCardLikeAndCommentWag"
-import { SOCIALS_DATA } from "@/components/SocialsShare/SocialsShare"
 
 export interface SingleMetaAction2Props {
   className?: string

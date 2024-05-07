@@ -1,20 +1,17 @@
-import React, { FC } from "react";
-import NcImage from "@/components/NcImage/NcImage";
-import PostCardMeta from "@/components/PostCardMeta/PostCardMeta";
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction";
-import {
-  PostDataType,
-  PostWithTagsCategoriesReactionsPaymentsUser,
-} from "@/data/types";
-import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment";
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList";
-import PostTypeFeaturedIcon from "@/components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
-import Link from "next/link";
-import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta";
+import React, { FC } from "react"
+import Link from "next/link"
+import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
+
+import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
+import NcImage from "@/components/NcImage/NcImage"
+import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment"
+import PostTypeFeaturedIcon from "@/components/PostTypeFeaturedIcon/PostTypeFeaturedIcon"
+
+import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta"
 
 export interface CardPostProps {
-  className?: string;
-  post: PostWithTagsCategoriesReactionsPaymentsUser;
+  className?: string
+  post: PostWithTagsCategoriesReactionsPaymentsUser
 }
 
 export const CardPost: FC<CardPostProps> = ({ className = "h-full", post }) => {
@@ -31,10 +28,10 @@ export const CardPost: FC<CardPostProps> = ({ className = "h-full", post }) => {
     createdAt,
     discordLink,
     user,
-  } = post;
+  } = post
 
-  const firstEmbed = post.embeds?.[0] ?? null;
-  const featuredImage = firstEmbed?.embedImage;
+  const firstEmbed = post.embeds?.[0] ?? null
+  const featuredImage = firstEmbed?.embedImage
 
   return (
     <div
@@ -96,5 +93,5 @@ export const CardPost: FC<CardPostProps> = ({ className = "h-full", post }) => {
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}

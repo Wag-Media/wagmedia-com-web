@@ -13,7 +13,6 @@ import { getEmbedType } from "./util"
 export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
   return (
     <div className="nc-SinglePostEmbeds overflow-hidden">
-      {/* <>{JSON.stringify(embeds, null, 2)}</> */}
       {embeds.map((embed, index) => {
         const embedType = getEmbedType(embed.embedUrl)
 
