@@ -67,9 +67,9 @@ const PageAbout = ({}) => {
           >
             🥳 How to Join
           </h2>
-          <div className="flex flex-col lg:flex-row space-y-14 lg:space-y-0 items-start relative text-center lg:text-left">
+          <div className="flex flex-col lg:flex-row space-y-14 lg:space-y-0 items-start relative text-center lg:text-left justify-between">
             <div className="w-screen max-w-full xl:max-w-lg space-y-5 lg:space-y-7">
-              <ol className="list-decimal ml-4 space-y-2 flex flex-col [&amp;>li]:gap-[1ch] [counter-reset:list-decimal] [&amp;>li]:flex [&amp;>li]:flex-row [&amp;>li>.bullet]:tabular-nums [&amp;>li>.bullet]:whitespace-nowrap [&amp;>li>.bullet]:list-decimal [&amp;>li>.bullet]:before:h-[1lh] [&amp;>li>.bullet]:before:leading-[inherit] [&amp;>li>.bullet]:before:flex [&amp;>li>.bullet]:text-dark/6 [&amp;>li>div_div]:mt-0 dark:[&amp;>li>.bullet]:text-light/6 max-w-3xl w-full mx-auto decoration-primary/6 page-api-block:ml-0">
+              <ol className="list-decimal ml-4 space-y-2 flex flex-col [&amp;>li]:gap-[1ch] [counter-reset:list-decimal] [&amp;>li]:flex [&amp;>li]:flex-row [&amp;>li>.bullet]:tabular-nums [&amp;>li>.bullet]:whitespace-nowrap [&amp;>li>.bullet]:list-decimal [&amp;>li>.bullet]:before:h-[1lh] [&amp;>li>.bullet]:before:leading-[inherit] [&amp;>li>.bullet]:before:flex [&amp;>li>.bullet]:text-dark/6 [&amp;>li>div_div]:mt-0 dark:[&amp;>li>.bullet]:text-light/6 max-w-3xl w-full mx-auto decoration-primary/6 page-api-block:ml-0 text-left">
                 <li value="1" className="leading-normal">
                   <div
                     data-value="1"
@@ -189,7 +189,7 @@ const PageAbout = ({}) => {
                 </li>
               </ol>
             </div>
-            <div className="flex-grow text-right flex justify-right flex-col lg:ml-48 w-full">
+            <div className="flex-grow text-right flex justify-right flex-col lg:ml-48 w-full max-w-md">
               <h3 className="text-xl mb-6">
                 Watch this Video Tutorial on how to join
               </h3>
