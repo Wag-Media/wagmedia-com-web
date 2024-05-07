@@ -1,17 +1,18 @@
-"use client";
-import React, { FC, useState } from "react";
-import NcImage from "@/components/NcImage/NcImage";
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction";
-import { PostDataType } from "@/data/types";
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList";
-import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia";
-import CardAuthor2 from "@/components/CardAuthor2/CardAuthor2";
-import Link from "next/link";
+"use client"
+
+import React, { FC, useState } from "react"
+import Link from "next/link"
+import { PostDataType } from "@/data/types"
+
+import CardAuthor2 from "@/components/CardAuthor2/CardAuthor2"
+import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
+import NcImage from "@/components/NcImage/NcImage"
+import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia"
 
 export interface Card10V3Props {
-  className?: string;
-  post: PostDataType;
-  galleryType?: 1 | 2;
+  className?: string
+  post: PostDataType
+  galleryType?: 1 | 2
 }
 
 const Card10V3: FC<Card10V3Props> = ({
@@ -28,11 +29,11 @@ const Card10V3: FC<Card10V3Props> = ({
     author,
     date,
     readingTime,
-  } = post;
-  const [isHover, setIsHover] = useState(false);
+  } = post
+  const [isHover, setIsHover] = useState(false)
 
   const renderGallery2 = () => {
-    if (!galleryImgs) return null;
+    if (!galleryImgs) return null
     return (
       <div className="w-full h-full grid grid-rows-2 gap-2">
         <div className="grid grid-cols-3 gap-2 ">
@@ -68,11 +69,11 @@ const Card10V3: FC<Card10V3Props> = ({
           />
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const renderGallery = () => {
-    if (!galleryImgs) return null;
+    if (!galleryImgs) return null
     return (
       <div className="w-full h-full grid grid-cols-3 gap-2">
         <div className="grid ">
@@ -110,8 +111,8 @@ const Card10V3: FC<Card10V3Props> = ({
           />
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div
@@ -137,7 +138,7 @@ const Card10V3: FC<Card10V3Props> = ({
       </div>
       <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4 rtl:space-x-reverse">
         <CategoryBadgeList categories={categories} />
-        <PostCardSaveAction />
+        {/* <PostCardSaveAction /> */}
       </div>
 
       <div className="space-y-2.5 mt-4 px-4">
@@ -155,7 +156,7 @@ const Card10V3: FC<Card10V3Props> = ({
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Card10V3;
+export default Card10V3

@@ -1,16 +1,9 @@
-import { count } from "console"
-import {
-  getCategories,
-  getCategoriesWithPosts,
-  getNonAngloOverview,
-  getNonEnglishCategories,
-} from "@/data/dbCategories"
-import { continents, languages } from "countries-list"
+import { getNonAngloOverview } from "@/data/dbCategories"
 import { code, countries, name } from "country-emoji"
 import _ from "lodash"
 
 import { getPostFlag } from "@/lib/utils"
-import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
+import CategoryOverview from "@/components/Sections/CategoryOverview"
 
 export const metadata = {
   title: "Non-Anglo",
@@ -80,9 +73,9 @@ export default async function PageNonAnglo() {
 
   return (
     <div className="container relative">
-      <SectionMagazine11Wag
+      <CategoryOverview
         categories={allCategories}
-        className="py-16 lg:py-24"
+        className="py-4 md:py-8 lg:py-20"
         heading="Explore curated non-Anglo Polkadot content"
         desc="Check out all the original non-Anglo content, translations, and dubbed content from our diverse contributors."
       />

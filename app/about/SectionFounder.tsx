@@ -12,7 +12,7 @@ export interface People {
   twitter: string
 }
 
-const FOUNDER_DEMO: People[] = [
+const TEAM: People[] = [
   {
     id: "1",
     name: `Ikhaled`,
@@ -57,7 +57,7 @@ const SectionFounder = () => {
         ⛱ WagMedia Team
       </Heading>
       <div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
-        {FOUNDER_DEMO.map((item) => (
+        {TEAM.map((item) => (
           <div key={item.id} className="max-w-sm">
             <Link href={item.twitter}>
               <NcImage

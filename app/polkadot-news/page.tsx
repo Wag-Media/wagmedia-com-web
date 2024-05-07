@@ -1,12 +1,7 @@
-import {
-  getCategories,
-  getCategoriesWithPosts,
-  getCategoryOverview,
-  getNonEnglishCategories,
-} from "@/data/dbCategories"
+import { getCategoryOverview } from "@/data/dbCategories"
 import { ContentType } from "@prisma/client"
 
-import SectionMagazine11Wag from "@/components/Sections/SectionMagazine11Wag"
+import CategoryOverview from "@/components/Sections/CategoryOverview"
 
 export const metadata = {
   title: "Polkadot News",
@@ -19,7 +14,7 @@ export default async function PageNews() {
 
   return (
     <div className="container relative">
-      <SectionMagazine11Wag
+      <CategoryOverview
         categories={categories}
         className="py-16 lg:py-24"
         heading="Explore all the Polkadot News uncovered from our finders program"

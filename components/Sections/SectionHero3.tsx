@@ -1,19 +1,20 @@
-import React, { FC } from "react";
-import { PostDataType } from "@/data/types";
-import NcImage from "@/components/NcImage/NcImage";
-import ButtonSecondary from "@/components/Button/ButtonSecondary";
-import Card5 from "@/components/Card5/Card5";
-import Button from "@/components/Button/ButtonSecondary";
-import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import React, { FC } from "react"
+import { PostDataType } from "@/data/types"
+import { ArrowRightIcon } from "@heroicons/react/24/solid"
+
+import ButtonSecondary from "@/components/Button/ButtonSecondary"
+// import Card5 from "@/components/Card5/Card5";
+import Button from "@/components/Button/ButtonSecondary"
+import NcImage from "@/components/NcImage/NcImage"
 
 export interface SectionHero3Props {
-  posts: PostDataType[];
-  className?: string;
+  posts: PostDataType[]
+  className?: string
 }
 
 const SectionHero3: FC<SectionHero3Props> = ({ posts, className = "" }) => {
   const renderMain = () => {
-    const { featuredImage, title, desc, href } = posts[0];
+    const { featuredImage, title, desc, href } = posts[0]
     return (
       <div className="aspect-h-8 aspect-w-8 sm:aspect-w-10 lg:aspect-w-16 ">
         <NcImage
@@ -41,30 +42,30 @@ const SectionHero3: FC<SectionHero3Props> = ({ posts, className = "" }) => {
           </div>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const renderSubPosts = () => {
-    const subPosts = posts.filter((_, i) => i >= 1 && i < 4);
+    const subPosts = posts.filter((_, i) => i >= 1 && i < 4)
     return (
       <div className="lg:px-14 xl:px-20 2xl:px-28 grid sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8 transform mt-6 md:-mt-20">
-        {subPosts.map((post) => (
+        {/* {subPosts.map((post) => (
           <Card5
             className="bg-white dark:bg-neutral-800 shadow-2xl rounded-lg"
             key={post.id}
             post={post}
           />
-        ))}
+        ))} */}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className={`nc-SectionHero3 ${className}`}>
       {posts.length && renderMain()}
       {posts.length > 1 && renderSubPosts()}
     </div>
-  );
-};
+  )
+}
 
-export default SectionHero3;
+export default SectionHero3

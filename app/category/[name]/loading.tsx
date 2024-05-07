@@ -38,8 +38,7 @@ export default function Loading() {
               {/* <ModalTags tags={DEMO_TAGS} /> */}
             </div>
             <div className="block my-4 border-b w-full border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
-            {/* <div className="flex justify-end"
-            >
+            {/* <div className="flex justify-end">
               <ArchiveFilterListBox lists={FILTERS} />
             </div> */}
           </div>

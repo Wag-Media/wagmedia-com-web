@@ -1,17 +1,19 @@
-"use client";
+"use client"
 
-import React, { FC, useEffect, useRef } from "react";
-import NcModal from "@/components/NcModal/NcModal";
-import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import { PostAuthorType } from "@/data/types";
-import { DEMO_AUTHORS } from "@/data/authors";
-import ButtonThird from "../Button/ButtonThird";
+import React, { FC, useEffect, useRef } from "react"
+import { DEMO_AUTHORS } from "@/data/authors"
+import { PostAuthorType } from "@/data/types"
 
-const authorDemo = DEMO_AUTHORS[0];
+import ButtonPrimary from "@/components/Button/ButtonPrimary"
+import NcModal from "@/components/NcModal/NcModal"
+
+import ButtonThird from "../Button/ButtonThird"
+
+const authorDemo = DEMO_AUTHORS[0]
 export interface ModalHideAuthorProps {
-  auhthor?: PostAuthorType;
-  show: boolean;
-  onCloseModalHideAuthor: () => void;
+  auhthor?: PostAuthorType
+  show: boolean
+  onCloseModalHideAuthor: () => void
 }
 
 const ModalHideAuthor: FC<ModalHideAuthorProps> = ({
@@ -19,22 +21,22 @@ const ModalHideAuthor: FC<ModalHideAuthorProps> = ({
   show,
   onCloseModalHideAuthor,
 }) => {
-  const textareaRef = useRef(null);
+  const textareaRef = useRef(null)
 
   const handleClickSubmitForm = () => {
-    console.log({ auhthor: auhthor.id });
-  };
+    console.log({ auhthor: auhthor.id })
+  }
 
   useEffect(() => {
     if (show) {
       setTimeout(() => {
-        const element: HTMLTextAreaElement | null = textareaRef.current;
+        const element: HTMLTextAreaElement | null = textareaRef.current
         if (element) {
-          (element as HTMLTextAreaElement).focus();
+          ;(element as HTMLTextAreaElement).focus()
         }
-      }, 400);
+      }, 400)
     }
-  }, [show]);
+  }, [show])
 
   const renderContent = () => {
     return (
@@ -59,12 +61,12 @@ const ModalHideAuthor: FC<ModalHideAuthorProps> = ({
           </ButtonThird>
         </div>
       </form>
-    );
-  };
+    )
+  }
 
   const renderTrigger = () => {
-    return null;
-  };
+    return null
+  }
 
   return (
     <NcModal
@@ -75,7 +77,7 @@ const ModalHideAuthor: FC<ModalHideAuthorProps> = ({
       renderTrigger={renderTrigger}
       modalTitle=""
     />
-  );
-};
+  )
+}
 
-export default ModalHideAuthor;
+export default ModalHideAuthor

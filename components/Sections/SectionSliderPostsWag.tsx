@@ -1,28 +1,30 @@
-"use client";
+"use client"
 
-import React, { FC } from "react";
-import Heading from "@/components/Heading/Heading";
-import Card4 from "@/components/Card4/Card4";
-import Card7 from "@/components/Card7/Card7";
+import React, { FC } from "react"
+// import Card4 from "@/components/Card4/Card4";
+// import Card7 from "@/components/Card7/Card7";
 import {
   PostDataType,
   PostWithTagsCategoriesReactionsPaymentsUser,
-} from "@/data/types";
-import Card9 from "@/components/Card9/Card9";
-import Card10 from "@/components/Card10/Card10";
-import Card11 from "@/components/Card11/Card11";
-import Card10V2 from "@/components/Card10/Card10V2";
-import MySlider from "@/components/MySlider";
-import { CardPost } from "../CardPost/CardPost";
-import Card11Wag from "../Card11/Card11Wag";
+} from "@/data/types"
+
+import Card9 from "@/components/Card9/Card9"
+import Card10 from "@/components/Card10/Card10"
+import Card10V2 from "@/components/Card10/Card10V2"
+import Card11 from "@/components/Card11/Card11"
+import Heading from "@/components/Heading/Heading"
+import MySlider from "@/components/MySlider"
+
+import Card11Wag from "../Card11/Card11Wag"
+import { CardPost } from "../CardPost/CardPost"
 
 export interface SectionSliderPostsWagProps {
-  className?: string;
-  heading: string;
-  subHeading?: string;
-  posts: PostWithTagsCategoriesReactionsPaymentsUser[];
-  postCardName?: "card4" | "card7" | "card9" | "card10" | "card10V2" | "card11";
-  perView?: 2 | 3 | 4;
+  className?: string
+  heading: string
+  subHeading?: string
+  posts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  postCardName?: "card4" | "card7" | "card9" | "card10" | "card10V2" | "card11"
+  perView?: 2 | 3 | 4
 }
 
 const SectionSliderPostsWag: FC<SectionSliderPostsWagProps> = ({
@@ -33,30 +35,30 @@ const SectionSliderPostsWag: FC<SectionSliderPostsWagProps> = ({
   postCardName = "card11",
   perView = 3,
 }) => {
-  let CardComponent = Card11;
+  let CardComponent = Card11
 
   switch (postCardName) {
-    case "card4":
-      CardComponent = Card4;
-      break;
-    case "card7":
-      CardComponent = Card7;
-      break;
+    // case "card4":
+    //   CardComponent = Card4
+    //   break
+    // case "card7":
+    //   CardComponent = Card7
+    //   break
     case "card9":
-      CardComponent = Card9;
-      break;
+      CardComponent = Card9
+      break
     case "card10":
-      CardComponent = Card10;
-      break;
+      CardComponent = Card10
+      break
     case "card10V2":
-      CardComponent = Card10V2;
-      break;
+      CardComponent = Card10V2
+      break
     case "card11":
-      CardComponent = Card11;
-      break;
+      CardComponent = Card11
+      break
 
     default:
-      break;
+      break
   }
 
   return (
@@ -67,7 +69,7 @@ const SectionSliderPostsWag: FC<SectionSliderPostsWagProps> = ({
         itemPerRow={perView}
       />
     </div>
-  );
-};
+  )
+}
 
-export default SectionSliderPostsWag;
+export default SectionSliderPostsWag

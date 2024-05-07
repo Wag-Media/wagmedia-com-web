@@ -33,7 +33,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
 
         <div className="flex flex-1 items-center justify-end text-slate-700 dark:text-slate-100">
           <div className="flex rounded-full bg-background/60 backdrop-blur-md h-16 p-3">
-            <SearchModal />
+            {/* <SearchModal /> */}
             {/* <NotifyDropdown /> */}
             <SwitchDarkMode />
             <button

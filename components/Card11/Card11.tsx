@@ -1,19 +1,17 @@
-"use client";
+"use client"
 
-import React, { FC, useState } from "react";
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction";
-import { PostDataType } from "@/data/types";
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList";
-import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment";
-import PostCardMeta from "@/components/PostCardMeta/PostCardMeta";
-import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia";
-import Link from "next/link";
+import React, { FC, useState } from "react"
+import Link from "next/link"
+import { PostDataType } from "@/data/types"
+
+import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
+import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia"
 
 export interface Card11Props {
-  className?: string;
-  post: PostDataType;
-  ratio?: string;
-  hiddenAuthor?: boolean;
+  className?: string
+  post: PostDataType
+  ratio?: string
+  hiddenAuthor?: boolean
 }
 
 const Card11: FC<Card11Props> = ({
@@ -22,9 +20,9 @@ const Card11: FC<Card11Props> = ({
   hiddenAuthor = false,
   ratio = "aspect-w-4 aspect-h-3",
 }) => {
-  const { title, href, categories, date } = post;
+  const { title, href, categories, date } = post
 
-  const [isHover, setIsHover] = useState(false);
+  const [isHover, setIsHover] = useState(false)
 
   return (
     <div
@@ -47,7 +45,8 @@ const Card11: FC<Card11Props> = ({
 
       <div className="p-4 flex flex-col space-y-3">
         {!hiddenAuthor ? (
-          <PostCardMeta meta={post} />
+          // <PostCardMeta meta={post} />
+          <></>
         ) : (
           <span className="text-xs text-neutral-500">{date}</span>
         )}
@@ -57,12 +56,12 @@ const Card11: FC<Card11Props> = ({
           </span>
         </h3>
         <div className="flex items-end justify-between mt-auto">
-          <PostCardLikeAndComment className="relative" />
-          <PostCardSaveAction className="relative" />
+          {/* <PostCardLikeAndComment className="relative" /> */}
+          {/* <PostCardSaveAction className="relative" /> */}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Card11;
+export default Card11

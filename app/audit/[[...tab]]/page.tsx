@@ -19,9 +19,6 @@ export default async function AuditPage({
   params: { tab: string[] }
 }) {
   const selectedTab: string = params.tab ? params.tab[0] : "posts"
-  console.log("selectedTab:", selectedTab)
-
-  // console.log("groupedByPostId", groupedByPostId)
 
   const tabs = ["Posts", "Management"]
 
@@ -63,15 +60,6 @@ export default async function AuditPage({
           <AuditTableOddjobs />
         </Suspense>
       )}
-
-      {/* <h2 className="">{selectedTab}</h2>
-
-
-
-      <AuditTablePosts postPayments={groupedPaymentsArray} />
-
-      <h2>Odd Job Payments</h2>
-      <AuditTableOddjobs oddjobPayments={oddjobPayments} /> */}
     </div>
   )
 }

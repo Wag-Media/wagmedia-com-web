@@ -1,29 +1,11 @@
 import React, { FC } from "react"
-import Image from "next/image"
-import { DEMO_AUTHORS } from "@/data/authors"
 import {
-  getCategories,
-  getCategoryByName,
   getCategoryWithArticlesAndNews,
   getLanguageWithArticlesAndNews,
 } from "@/data/dbCategories"
-import { getPostsByCategoryId } from "@/data/dbPosts"
-import { DEMO_POSTS } from "@/data/posts"
-import { DEMO_CATEGORIES, DEMO_TAGS } from "@/data/taxonomies"
-import { PostDataType } from "@/data/types"
 
-import ArchiveFilterListBox from "@/components/ArchiveFilterListBox/ArchiveFilterListBox"
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
-import ButtonSecondary from "@/components/Button/ButtonSecondary"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import Heading from "@/components/Heading/Heading"
-import ModalCategories from "@/components/ModalCategories"
-import ModalTags from "@/components/ModalTags"
-import Pagination from "@/components/Pagination/Pagination"
-import SectionGridCategoryBox from "@/components/SectionGridCategoryBox/SectionGridCategoryBox"
-import SectionSliderNewAuthors from "@/components/SectionSliderNewAthors/SectionSliderNewAuthors"
-import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 
 import {
   NonAngloCategoryTitle,
@@ -55,15 +37,7 @@ export default async function PageCategory({
     return <>not found</>
   }
 
-  const { posts, articles, news } = category
-
-  const FILTERS = [
-    { name: "Most Recent" },
-    { name: "Curated by Admin" },
-    { name: "Most Appreciated" },
-    { name: "Most Discussed" },
-    { name: "Most Viewed" },
-  ]
+  const { articles, news } = category
 
   const title = NonAngloCategoryTitle(category.name)
 
@@ -72,13 +46,6 @@ export default async function PageCategory({
       {/* HEADER */}
       <div className="w-full px-2 xl:max-w-screen-2xl mx-auto">
         <div className="relative aspect-[16/13] sm:aspect-[9/4] xl:aspect-[5] rounded-lg md:rounded-[40px] overflow-hidden z-0">
-          {/* <Image
-            alt="archive"
-            fill
-            src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-            className="object-cover w-full h-full rounded-lg md:rounded-[40px]"
-            sizes="(max-width: 1280px) 100vw, 1536px"
-          /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-neutral-400">
               {isLanguage && "Non-Anglo "}Category
@@ -140,11 +107,6 @@ export default async function PageCategory({
               </div>
             </>
           )}
-          {/* <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
-            {news?.map((post) => (
-              <Card11 key={post.id} post={post} />
-            ))}
-          </div> */}
           {/* PAGINATIONS */}
           <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
             {/* <Pagination /> */}

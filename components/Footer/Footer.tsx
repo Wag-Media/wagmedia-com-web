@@ -1,14 +1,10 @@
 import React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { CustomLink } from "@/data/types"
-import polkadotBlack from "@/public/Polkadot_Logo_Horizontal_Pink_Black.png"
-import polkadotWhite from "@/public/Polkadot_Logo_Horizontal_Pink_White.png"
 
 import { siteConfig } from "@/config/site"
 import { fontUnbounded } from "@/lib/fonts"
 import Logo from "@/components/Logo/Logo"
-import SocialsList1 from "@/components/SocialsList1/SocialsList1"
 
 import { cn } from "../../lib/utils"
 import { Icons } from "../icons"
@@ -98,7 +94,7 @@ const Footer: React.FC = () => {
       {/* footer */}
       <div className="nc-Footer relative py-8 lg:py-16 border-t border-neutral-200 dark:border-neutral-700">
         <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 lg:grid-cols-5 lg:gap-x-10 items-center">
-          <div className="col-span-1 lg:col-span-1">
+          <div className="col-span-1 lg:col-span-1 h-24 w-24 lg:h-48 lg:w-48">
             <Logo />
           </div>
           <div className="col-span-3 lg:col-span-3">
@@ -110,10 +106,15 @@ const Footer: React.FC = () => {
               href="https://polkadot.network/"
               className="flex items-center mt-2"
             >
-              <span className={cn(fontUnbounded.className, "text-4xl")}>
+              <span
+                className={cn(
+                  fontUnbounded.className,
+                  "text-xl md:text-3xl lg:text-4xl"
+                )}
+              >
                 Powered by
               </span>
-              <Icons.polkadotLogo className="h-20 w-auto" />
+              <Icons.polkadotLogo className="h-16 w-auto" />
             </Link>
           </div>
           <div className="col-span-3 lg:col-span-1">

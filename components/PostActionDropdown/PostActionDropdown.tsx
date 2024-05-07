@@ -1,16 +1,18 @@
-"use client";
+"use client"
 
-import React, { FC, useState } from "react";
-import twFocusClass from "@/utils/twFocusClass";
-import NcDropDown from "@/components/NcDropDown/NcDropDown";
-import ModalReportItem from "@/components/ModalReportItem/ModalReportItem";
-import ModalHideAuthor from "./ModalHideAuthor";
-import { useRouter } from "next/navigation";
+import React, { FC, useState } from "react"
+import { useRouter } from "next/navigation"
+import twFocusClass from "@/utils/twFocusClass"
+
+import ModalReportItem from "@/components/ModalReportItem/ModalReportItem"
+import NcDropDown from "@/components/NcDropDown/NcDropDown"
+
+import ModalHideAuthor from "./ModalHideAuthor"
 
 export interface PostActionDropdownProps {
-  containerClassName?: string;
-  iconClass?: string;
-  dropdownPositon?: "up" | "down";
+  containerClassName?: string
+  iconClass?: string
+  dropdownPositon?: "up" | "down"
 }
 
 const PostActionDropdown: FC<PostActionDropdownProps> = ({
@@ -51,54 +53,54 @@ const PostActionDropdown: FC<PostActionDropdownProps> = ({
     </svg>
     `,
     },
-  ];
+  ]
 
   //
-  const router = useRouter();
+  const router = useRouter()
   //
-  const [isReporting, setIsReporting] = useState(false);
-  const [showModalHideAuthor, setShowModalHideAuthor] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
+  const [isReporting, setIsReporting] = useState(false)
+  const [showModalHideAuthor, setShowModalHideAuthor] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
 
-  const openModalReportPost = () => setIsReporting(true);
-  const closeModalReportPost = () => setIsReporting(false);
+  const openModalReportPost = () => setIsReporting(true)
+  const closeModalReportPost = () => setIsReporting(false)
 
-  const openModalHideAuthor = () => setShowModalHideAuthor(true);
-  const onCloseModalHideAuthor = () => setShowModalHideAuthor(false);
+  const openModalHideAuthor = () => setShowModalHideAuthor(true)
+  const onCloseModalHideAuthor = () => setShowModalHideAuthor(false)
 
-  const hanldeClickDropDown = (item: typeof actions[number]) => {
+  const hanldeClickDropDown = (item: (typeof actions)[number]) => {
     if (item.id === "copylink") {
       navigator.clipboard.writeText(
         window.location.origin + "/single/this-is-slug"
-      );
-      setIsCopied(true);
+      )
+      setIsCopied(true)
       setTimeout(() => {
-        setIsCopied(false);
-      }, 1000);
-      return;
+        setIsCopied(false)
+      }, 1000)
+      return
     }
     if (item.id === "reportThisArticle") {
-      return openModalReportPost();
+      return openModalReportPost()
     }
     if (item.id === "hideThisAuthor") {
-      return openModalHideAuthor();
+      return openModalHideAuthor()
     }
     if (item.id === "commentThisArticle") {
-      return;
+      return
     }
 
-    return;
-  };
+    return
+  }
 
   const renderMenu = () => {
     if (isCopied) {
       actions = actions.map((item) => {
-        if (item.id !== "copylink") return item;
+        if (item.id !== "copylink") return item
         return {
           ...item,
           name: "Link Copied",
-        };
-      });
+        }
+      })
     }
     return (
       <NcDropDown
@@ -110,8 +112,8 @@ const PostActionDropdown: FC<PostActionDropdownProps> = ({
         }
         onClick={hanldeClickDropDown}
       />
-    );
-  };
+    )
+  }
 
   return (
     <div>
@@ -126,7 +128,7 @@ const PostActionDropdown: FC<PostActionDropdownProps> = ({
         onCloseModalHideAuthor={onCloseModalHideAuthor}
       />
     </div>
-  );
-};
+  )
+}
 
-export default PostActionDropdown;
+export default PostActionDropdown

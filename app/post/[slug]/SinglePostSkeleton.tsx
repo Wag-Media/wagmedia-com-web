@@ -17,18 +17,6 @@ export async function SinglePostSkeleton({ title }: { title: string }) {
                 <SingleTitle title={title} />
 
                 <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
-                {/* <div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5 rtl:space-x-reverse">
-                  <PostMeta2Wag
-                    size="large"
-                    className="leading-none flex-shrink-0"
-                    hiddenCategories
-                    avatarRounded="rounded-full shadow-inner"
-                    author={post.user}
-                    date={post.createdAt}
-                    categories={post.categories}
-                  />
-                  <SingleMetaAction2 />
-                </div> */}
               </div>
             </div>
           </div>

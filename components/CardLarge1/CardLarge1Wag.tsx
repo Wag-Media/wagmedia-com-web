@@ -1,17 +1,8 @@
 import React, { FC } from "react"
 import Link from "next/link"
-import {
-  PostDataType,
-  PostWithTagsCategoriesReactionsPaymentsUser,
-} from "@/data/types"
+import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 
-import CardAuthor2 from "@/components/CardAuthor2/CardAuthor2"
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
-import NcImage from "@/components/NcImage/NcImage"
 import NextPrev from "@/components/NextPrev/NextPrev"
-import PostCardLikeAndComment from "@/components/PostCardLikeAndComment/PostCardLikeAndComment"
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction"
-import PostTypeFeaturedIcon from "@/components/PostTypeFeaturedIcon/PostTypeFeaturedIcon"
 
 import { cn } from "../../lib/utils"
 import CardAuthor2Wag from "../CardAuthor2/CardAuthor2Wag"

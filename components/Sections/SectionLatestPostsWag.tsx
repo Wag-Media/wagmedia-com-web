@@ -1,34 +1,24 @@
-import React, { FC } from "react";
-import Card3 from "@/components/Card3/Card3";
-import Heading from "@/components/Heading/Heading";
-import WidgetTags from "@/components/WidgetTags/WidgetTags";
-import { DEMO_POSTS } from "@/data/posts";
-import {
-  PostDataType,
-  PostWithTagsCategoriesReactionsPaymentsUser,
-} from "@/data/types";
-import WidgetCategories from "@/components/WidgetCategories/WidgetCategories";
-import WidgetAuthors from "@/components/WidgetAuthors/WidgetAuthors";
-import WidgetPosts from "@/components/WidgetPosts/WidgetPosts";
-import Pagination from "@/components/Pagination/Pagination";
-import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import Card4 from "@/components/Card4/Card4";
-import Card7 from "@/components/Card7/Card7";
-import Card9 from "@/components/Card9/Card9";
-import Card10 from "@/components/Card10/Card10";
-import Card11 from "@/components/Card11/Card11";
-import Card14 from "@/components/Card14/Card14";
-import { CardPost } from "../CardPost/CardPost";
-import Card11Wag from "../Card11/Card11Wag";
+import React, { FC } from "react"
+import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
+
+import ButtonPrimary from "@/components/Button/ButtonPrimary"
+import Heading from "@/components/Heading/Heading"
+import Pagination from "@/components/Pagination/Pagination"
+import WidgetAuthors from "@/components/WidgetAuthors/WidgetAuthors"
+import WidgetCategories from "@/components/WidgetCategories/WidgetCategories"
+// import WidgetPosts from "@/components/WidgetPosts/WidgetPosts"
+import WidgetTags from "@/components/WidgetTags/WidgetTags"
+
+import Card11Wag from "../Card11/Card11Wag"
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
 //
 export interface SectionLatestWagPostsProps {
-  posts: PostWithTagsCategoriesReactionsPaymentsUser[];
-  gridClass?: string;
-  className?: string;
-  heading?: string;
+  posts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  gridClass?: string
+  className?: string
+  heading?: string
   postCardName?:
     | "card3"
     | "card4"
@@ -36,7 +26,7 @@ export interface SectionLatestWagPostsProps {
     | "card9"
     | "card10"
     | "card11"
-    | "card14";
+    | "card14"
 }
 
 const SectionLatestWagPosts: FC<SectionLatestWagPostsProps> = ({
@@ -50,7 +40,7 @@ const SectionLatestWagPosts: FC<SectionLatestWagPostsProps> = ({
     post: PostWithTagsCategoriesReactionsPaymentsUser,
     index: number
   ) => {
-    return <Card11Wag key={index} post={post} />;
+    return <Card11Wag key={index} post={post} />
     // switch (postCardName) {
     //   case "card3":
     //     return (
@@ -72,7 +62,7 @@ const SectionLatestWagPosts: FC<SectionLatestWagPostsProps> = ({
     //   default:
     //     return null;
     // }
-  };
+  }
 
   return (
     <div className={`nc-SectionLatestWagPosts relative ${className}`}>
@@ -91,11 +81,11 @@ const SectionLatestWagPosts: FC<SectionLatestWagPostsProps> = ({
           <WidgetTags />
           <WidgetCategories />
           <WidgetAuthors />
-          <WidgetPosts />
+          {/* <WidgetPosts /> */}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SectionLatestWagPosts;
+export default SectionLatestWagPosts
