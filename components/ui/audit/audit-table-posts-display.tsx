@@ -86,10 +86,10 @@ export const columns: ColumnDef<PaymentFull>[] = [
       const user: User | undefined = row.original.Post?.user
 
       return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2 text-center">
           {user && user.avatar && (
             <Image
-              className="h-8 rounded-full"
+              className="h-8 w-8 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -114,7 +114,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
         <div className="flex flex-col items-center gap-2">
           {user?.avatar && (
             <Image
-              className="h-8 rounded-full"
+              className="h-8 w-8 rounded-full"
               src={user?.avatar}
               width={30}
               height={30}
@@ -183,6 +183,21 @@ export const columns: ColumnDef<PaymentFull>[] = [
   //   ),
   // },
   {
+    accessorKey: "amount",
+    header: () => <div className="text-right w-full">Paid Amount</div>,
+    cell: ({ row, getValue }) => {
+      const amount = getValue<number>()
+      return <div className="text-right">{amount.toFixed(2)}</div>
+    },
+    aggregationFn: (leafRows, childRows) => {
+      const amount = childRows.reduce(
+        (acc, row) => acc + row.original.amount,
+        0
+      )
+      return amount
+    },
+  },
+  {
     accessorKey: "unit",
     header: ({ column }) => {
       return (
@@ -199,21 +214,6 @@ export const columns: ColumnDef<PaymentFull>[] = [
       return childRows[0].original.unit
     },
     cell: ({ row }) => <div className="uppercase">{row.getValue("unit")}</div>,
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right w-full">Paid Amount</div>,
-    cell: ({ row, getValue }) => {
-      const amount = getValue<number>()
-      return <div className="text-right">{amount.toFixed(2)}</div>
-    },
-    aggregationFn: (leafRows, childRows) => {
-      const amount = childRows.reduce(
-        (acc, row) => acc + row.original.amount,
-        0
-      )
-      return amount
-    },
   },
   {
     accessorKey: "Post",

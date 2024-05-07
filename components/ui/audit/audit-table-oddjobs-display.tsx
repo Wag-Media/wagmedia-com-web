@@ -96,10 +96,10 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
       const user: User = row.original.OddJob.User
 
       return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2 text-center">
           {user && user.avatar && (
             <Image
-              className="h-8 rounded-full"
+              className="h-8 w-8 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -122,7 +122,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
         <div className="flex flex-col items-center gap-2">
           {user && user.avatar && (
             <Image
-              className="h-8 rounded-full"
+              className="h-8 w-8 rounded-full"
               src={user.avatar}
               width={30}
               height={30}

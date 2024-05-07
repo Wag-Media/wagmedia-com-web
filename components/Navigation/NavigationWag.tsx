@@ -12,9 +12,7 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
   const pathname = usePathname()
 
   return (
-    <ul
-      className={`nc-Navigation rounded-full bg-background/60 backdrop-blur-md items-center flex ${className}`}
-    >
+    <ul className={`nc-Navigation rounded-full items-center flex ${className}`}>
       {siteConfig.navMenuItems.map((item) => (
         <>
           <NavigationItem

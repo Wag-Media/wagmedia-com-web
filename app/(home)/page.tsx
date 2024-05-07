@@ -29,7 +29,7 @@ const PageHome = async ({
     <div className="nc-PageHome relative">
       <div className="container relative">
         <div className="relative">
-          <div className="py-10 md:py-12 lg:py-12 text-center mt-4 z-10 relative">
+          <div className="py-10 md:py-12 lg:py-12 text-center mt-4 z-10 relative flex items-center flex-col">
             {/* <h1 className="text-4xl md:text-[6.4vw] md:leading-[4.4vw] font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-[#f9b900] to-[#b51800] bg-clip-text text-transparent mb-4 drop-shadow-[4px_4px_#E6007A,4px_-4px_#f2f]">
               WagMedia
               <br />
@@ -37,14 +37,14 @@ const PageHome = async ({
                 Decentralized Media Incubation Hub
               </span>
             </h1> */}
-            <h1 className="text-6xl md:text-[12.4vw] md:leading-[12.4vw] font-outline md:font-outline-3 lg:font-outline-3  shadow-[#b51800] font-extrabold text-[#f9b900] mb-4 drop-shadow-[4px_4px_#E6007A,4px_-4px_#f2f]">
+            <h1 className="max-w-4xl text-6xl md:text-9xl font-outline md:font-outline-3 lg:font-outline-3  shadow-[#b51800] font-extrabold text-[#f9b900] mb-4 drop-shadow-[4px_4px_#E6007A,4px_-4px_#f2f]">
               WagMedia
               {/* <br /> */}
               {/* <span className="text-3xl font-outline leading-none block mt-4 md:mt-8">
                 Decentralized Media Incubation Hub
               </span> */}
             </h1>
-            <p className="block mb-8 lg:mb-16 lg:text-xl text-gray-400 mt-4 md:mt-8">
+            <p className="block mb-8 lg:mb-16 lg:text-xl text-gray-400 mt-2 md:mt-6">
               WagMedia decentralizes the story of Dotsama by incentivizing
               stakeholders to curate, share, create,
               <br /> and promote content of all languages in an open and
