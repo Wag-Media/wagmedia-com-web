@@ -39,7 +39,8 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
     const posts = category.posts
     const postsCount = category._count?.posts
 
-    const categoryHref = `/category/${encodeURIComponent(category.name)}`
+    const categoryHref =
+      category.link ?? `/category/${encodeURIComponent(category.name)}`
 
     return (
       <div key={category.id} className={`flex flex-col space-y-4`}>
