@@ -1,8 +1,10 @@
 "use client"
 
 import React, { FC } from "react"
+import Link from "next/link"
 import { DiscordIcon } from "@/images/icons"
 
+import { siteConfig } from "@/config/site"
 import Logo from "@/components/Logo/Logo"
 import MenuBar from "@/components/MenuBar/MenuBar"
 
@@ -40,7 +42,9 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
               className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
             >
               <span className="sr-only">Enable dark mode</span>
-              <DiscordIcon size={25} />
+              <Link href={siteConfig.links.discord}>
+                <DiscordIcon size={25} />
+              </Link>
             </button>
           </div>
           {/* <AvatarDropdown /> */}
