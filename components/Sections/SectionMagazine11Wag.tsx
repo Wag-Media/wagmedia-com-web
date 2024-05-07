@@ -34,6 +34,7 @@ const SectionMagazine11Wag: FC<SectionMagazine11Props> = ({
   const renderListByCat = (
     category: expectedCategoryType[number] & {
       _count: { posts: number }
+      link?: string
     }
   ) => {
     const posts = category.posts
