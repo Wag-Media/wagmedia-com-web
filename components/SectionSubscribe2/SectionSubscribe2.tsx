@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import Image from "next/image"
-import rightImg from "@/images/SVG-subcribe2.png"
+import rightImg from "@/images/wm-newsletter.png"
 import { ArrowRightIcon } from "@heroicons/react/24/solid"
 
 import Badge from "@/components/Badge/Badge"
@@ -21,11 +21,8 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
       <div className="shrink-0 mb-14 lg:mb-0 lg:me-10 lg:w-2/5">
         <h2 className="font-semibold text-4xl">Don&apos;t miss out! 🎉</h2>
         <span className="block mt-6 text-neutral-500 dark:text-neutral-400">
-          Thanks for reading WagMedia Weekly! Subscribe for free to receive new
-          posts and support our work = this was probably taken from Substack, I
-          was a bit lazy and used their generic button. That said, the context
-          only applies to substack. I suggest removing it, as the two points
-          below cover it.
+          Subscribe to our mail newsletter for free to receive regular updates
+          and support our work
         </span>
         <ul className="space-y-5 mt-10">
           <li className="flex items-center space-x-4 rtl:space-x-reverse">
