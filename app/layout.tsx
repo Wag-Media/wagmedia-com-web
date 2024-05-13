@@ -37,6 +37,13 @@ export const metadata = {
     ],
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "WagMedia Polkadot Articles and News",
+    description:
+      "Frictionless Decentralized Content Creation Platform For Polkadot",
+    creator: "@nextjs",
+  },
 }
 
 export const revalidate = 4320 // 72 hours
