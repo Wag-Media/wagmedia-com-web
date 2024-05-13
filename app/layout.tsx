@@ -28,6 +28,8 @@ export const metadata = {
   },
 }
 
+export const revalidate = 4320 // 72 hours
+
 export default function RootLayout({
   children,
 }: {
