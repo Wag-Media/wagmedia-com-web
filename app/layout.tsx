@@ -26,6 +26,17 @@ export const metadata = {
     address: false,
     telephone: false,
   },
+  openGraph: {
+    images: [
+      {
+        url: "https://thewagmedia.com/opengraph-image.png", // Must be an absolute URL
+        width: 1200,
+        height: 630,
+        alt: "WagMedia Polkadot Articles and News",
+      },
+    ],
+    type: "website",
+  },
 }
 
 export const revalidate = 4320 // 72 hours
