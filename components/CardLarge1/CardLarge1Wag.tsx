@@ -39,7 +39,7 @@ const CardLarge1Wag: FC<CardLarge1WagProps> = ({
   } = post
 
   const firstEmbed = embeds?.[0] ?? null
-  const featuredImage = firstEmbed?.embedImage
+  const featuredImage = firstEmbed?.embedImage ?? "/image404.png"
 
   return (
     <div
