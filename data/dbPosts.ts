@@ -128,12 +128,13 @@ export async function getFeaturedPosts(): Promise<
 export async function getPostsByAuthor(
   authorName: string
 ): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
+  const decodedAuthorName = decodeURIComponent(authorName)
   const posts = await prisma.post.findMany({
     where: {
       isPublished: true,
       isDeleted: false,
       user: {
-        name: authorName,
+        name: decodedAuthorName,
       },
     },
     orderBy: {

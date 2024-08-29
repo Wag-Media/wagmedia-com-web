@@ -1,13 +1,11 @@
 import { prisma } from "@/prisma/prisma"
 import { User } from "@prisma/client"
-import { includes } from "lodash"
-
-import { UserWithPosts } from "./types"
 
 export async function getAuthor(name: string) {
+  const decodedName = decodeURIComponent(name)
   const author = await prisma.user.findFirst({
     where: {
-      name,
+      name: decodedName,
     },
   })
 

@@ -23,7 +23,7 @@ export async function AuthorPage({ name }: { name: string }) {
     <div className={`nc-PageAuthor `}>
       {/* HEADER */}
       <div className="w-full">
-        <div className="relative w-full h-40 md:h-60 2xl:h-72">
+        <div className="relative w-full h-40 2xl:h-60">
           {author?.banner ? (
             <NcImage
               alt=""
@@ -56,8 +56,6 @@ export async function AuthorPage({ name }: { name: string }) {
                 )}
               </div>
             </div>
-
-            {/*  */}
             <div className="flex items-center pt-5 md:pt-1 lg:ml-6 xl:ml-12 flex-grow">
               <div className="max-w-screen-sm space-y-3.5 ">
                 <h2 className="inline-flex items-center text-2xl sm:text-3xl lg:text-4xl font-semibold">
@@ -67,6 +65,9 @@ export async function AuthorPage({ name }: { name: string }) {
                     iconClass="w-6 h-6 sm:w-7 sm:h-7 xl:w-8 xl:h-8"
                   /> */}
                 </h2>
+                <span className="block text-sm text-neutral-500 dark:text-neutral-400">
+                  {posts.length} published posts
+                </span>
                 <span className="block text-sm text-neutral-500 dark:text-neutral-400">
                   {author?.bio}
                 </span>
