@@ -51,6 +51,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Table,
   TableBody,
   TableCell,
@@ -99,7 +108,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
         <div className="flex flex-col items-center gap-2 text-center">
           {user && user.avatar && (
             <Image
-              className="h-8 w-8 rounded-full"
+              className="w-8 h-8 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -122,7 +131,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
         <div className="flex flex-col items-center gap-2">
           {user && user.avatar && (
             <Image
-              className="h-8 w-8 rounded-full"
+              className="w-8 h-8 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -215,7 +224,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   //   },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right w-full">Paid Amount</div>,
+    header: () => <div className="w-full text-right">Paid Amount</div>,
     cell: ({ row, getValue }) => {
       const amount = getValue<number>()
       return <div className="text-right">{amount.toFixed(2)}</div>
@@ -290,7 +299,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
               href={discordLink}
               target="_blank"
               rel="noreferrer"
-              className="underline text-gray-500"
+              className="text-gray-500 underline"
             >
               <DiscordIcon />
             </Link>
@@ -299,6 +308,15 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
           )}
         </div>
       )
+    },
+  },
+  {
+    id: "fundingSource",
+    accessorFn: (payment) => payment.fundingSource,
+    header: "Funding Source",
+    aggregationFn: (leafRows, childRows) => {
+      const fundingSource = childRows[0].original.fundingSource
+      return fundingSource
     },
   },
   // {
@@ -335,9 +353,9 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   //     return (
   //       <DropdownMenu>
   //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //           <Button variant="ghost" className="w-8 h-8 p-0">
   //             <span className="sr-only">Open menu</span>
-  //             <DotsHorizontalIcon className="h-4 w-4" />
+  //             <DotsHorizontalIcon className="w-4 h-4" />
   //           </Button>
   //         </DropdownMenuTrigger>
   //         <DropdownMenuContent align="end">
@@ -384,6 +402,7 @@ export function AuditTableOddjobsDisplay({
     agreedPayment: true,
     unit: true,
     amount: true,
+    fundingSource: false,
   })
   const [rowSelection, setRowSelection] = useState({})
 
@@ -395,6 +414,7 @@ export function AuditTableOddjobsDisplay({
   const [globalFilter, setGlobalFilter] = useState("")
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
+  const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -425,6 +445,13 @@ export function AuditTableOddjobsDisplay({
       setFilteredPayments(oddjobPayments)
     }
   }, [startDate, endDate, oddjobPayments])
+
+  useEffect(() => {
+    const filtered = oddjobPayments.filter((payment) => {
+      return payment.fundingSource === fundingSource
+    })
+    setFilteredPayments(filtered)
+  }, [fundingSource, oddjobPayments])
 
   const table = useReactTable({
     data: filteredPayments,
@@ -464,7 +491,7 @@ export function AuditTableOddjobsDisplay({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-4 flex-wrap">
+      <div className="flex flex-wrap items-center gap-4 py-4">
         <Input
           placeholder={`Filter all ${uniqueOddjobIds.size} entries`}
           value={globalFilter}
@@ -486,11 +513,24 @@ export function AuditTableOddjobsDisplay({
             }
           }}
         />
+        <Select
+          value={fundingSource}
+          onValueChange={setFundingSource}
+          defaultValue="OpenGov-1130"
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select Funding Source" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="OpenGov-1130">OpenGov-1130</SelectItem>
+            <SelectItem value="OpenGov-365">OpenGov-365</SelectItem>
+          </SelectContent>
+        </Select>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
+              Columns <ChevronDownIcon className="w-4 h-4 ml-2" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -514,7 +554,7 @@ export function AuditTableOddjobsDisplay({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="border rounded-md">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -585,7 +625,7 @@ export function AuditTableOddjobsDisplay({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
