@@ -44,6 +44,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Table,
   TableBody,
   TableCell,
@@ -89,7 +98,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
         <div className="flex flex-col items-center gap-2 text-center">
           {user && user.avatar && (
             <Image
-              className="h-8 w-8 rounded-full"
+              className="w-8 h-8 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -114,7 +123,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
         <div className="flex flex-col items-center gap-2">
           {user?.avatar && (
             <Image
-              className="h-8 w-8 rounded-full"
+              className="w-8 h-8 rounded-full"
               src={user?.avatar}
               width={30}
               height={30}
@@ -184,7 +193,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   // },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right w-full">Paid Amount</div>,
+    header: () => <div className="w-full text-right">Paid Amount</div>,
     cell: ({ row, getValue }) => {
       const amount = getValue<number>()
       return <div className="text-right">{amount.toFixed(2)}</div>
@@ -239,6 +248,15 @@ export const columns: ColumnDef<PaymentFull>[] = [
       )
     },
   },
+  {
+    id: "fundingSource",
+    accessorFn: (payment) => payment.fundingSource,
+    header: "Funding Source",
+    aggregationFn: (leafRows, childRows) => {
+      const fundingSource = childRows[0].original.fundingSource
+      return fundingSource
+    },
+  },
   // {
   //   id: "actions",
   //   enableHiding: false,
@@ -248,9 +266,9 @@ export const columns: ColumnDef<PaymentFull>[] = [
   //     return (
   //       <DropdownMenu>
   //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //           <Button variant="ghost" className="w-8 h-8 p-0">
   //             <span className="sr-only">Open menu</span>
-  //             <DotsHorizontalIcon className="h-4 w-4" />
+  //             <DotsHorizontalIcon className="w-4 h-4" />
   //           </Button>
   //         </DropdownMenuTrigger>
   //         <DropdownMenuContent align="end">
@@ -300,6 +318,7 @@ export function AuditTablePostsDisplay({
     amount: true,
     link: true,
     actions: true,
+    fundingSource: false,
   })
   const [rowSelection, setRowSelection] = useState({})
 
@@ -311,6 +330,7 @@ export function AuditTablePostsDisplay({
   const [globalFilter, setGlobalFilter] = useState("")
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
+  const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -374,11 +394,18 @@ export function AuditTablePostsDisplay({
     },
   })
 
+  useEffect(() => {
+    const filtered = postPayments.filter((payment) => {
+      return payment.fundingSource === fundingSource
+    })
+    setFilteredPayments(filtered)
+  }, [fundingSource, postPayments])
+
   const uniquePostIds = new Set(postPayments.map((payment) => payment.postId))
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-4 flex-wrap">
+      <div className="flex flex-wrap items-center gap-4 py-4">
         <Input
           placeholder={`Filter all ${uniquePostIds.size} entries`}
           value={globalFilter}
@@ -400,11 +427,24 @@ export function AuditTablePostsDisplay({
             }
           }}
         />
+        <Select
+          value={fundingSource}
+          onValueChange={setFundingSource}
+          defaultValue="OpenGov-1130"
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select Funding Source" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="OpenGov-1130">OpenGov-1130</SelectItem>
+            <SelectItem value="OpenGov-365">OpenGov-365</SelectItem>
+          </SelectContent>
+        </Select>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
+              Columns <ChevronDownIcon className="w-4 h-4 ml-2" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -428,7 +468,7 @@ export function AuditTablePostsDisplay({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="border rounded-md">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -499,7 +539,7 @@ export function AuditTablePostsDisplay({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
           Showing{" "}
