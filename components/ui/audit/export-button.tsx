@@ -12,7 +12,13 @@ import {
 
 import { exportToCsv } from "./table-util"
 
-export function ExportButton({ rows }: { rows: Row<any>[] }) {
+export function ExportButton({
+  rows,
+  allRows,
+}: {
+  rows: Row<any>[]
+  allRows: any[]
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,9 +29,15 @@ export function ExportButton({ rows }: { rows: Row<any>[] }) {
       <DropdownMenuContent align="end">
         <DropdownMenuItem
           className="capitalize"
-          onClick={() => exportToCsv(rows)}
+          onClick={() => exportToCsv(allRows)}
         >
           Export All Data
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="capitalize"
+          onClick={() => exportToCsv(rows)}
+        >
+          Export Selected Data
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
