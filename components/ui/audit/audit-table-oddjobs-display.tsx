@@ -555,7 +555,10 @@ export function AuditTableOddjobsDisplay({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <ExportButton rows={table.getRowModel().rows} />
+          <ExportButton
+            rows={table.getRowModel().rows}
+            allRows={table.getCoreRowModel().rows}
+          />
         </div>
       </div>
       <div className="border rounded-md">
