@@ -13,7 +13,6 @@ import {
 import { exportToCsv } from "./table-util"
 
 export function ExportButton({ rows }: { rows: Row<any>[] }) {
-  console.log("ex", rows)
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

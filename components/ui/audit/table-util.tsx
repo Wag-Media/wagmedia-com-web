@@ -1,4 +1,4 @@
-import { PaymentFull } from "@/data/types"
+import { PaymentFull, PaymentOddjob } from "@/data/types"
 import { rankItem } from "@tanstack/match-sorter-utils"
 import { FilterFn, Row } from "@tanstack/react-table"
 import { download, generateCsv, mkConfig } from "export-to-csv"
@@ -35,18 +35,28 @@ function getCsvConfig(rows: Row<PaymentFull>[]) {
 }
 
 // export function
-export const exportToCsv = (rows: Row<PaymentFull>[]) => {
+export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
   // get the data for each row
   const rowData = rows.map((row) =>
     row.getVisibleCells().map((cell) => {
-      const originalPost = cell.row.original.Post
+      const isOddjob = cell.row.original.oddJobId !== null
+
+      const originalOddJob = isOddjob
+        ? (cell.row.original as PaymentOddjob).OddJob
+        : undefined
+      const originalPost = isOddjob
+        ? undefined
+        : (cell.row.original as PaymentFull).Post
+
       switch (cell.column.id) {
         case "createdAt":
           return cell.row.original.createdAt.toUTCString()
         case "Post":
-          return originalPost?.discordLink
+          return isOddjob
+            ? originalOddJob?.discordLink
+            : originalPost?.discordLink
         case "recipient":
-          return originalPost?.user.name
+          return isOddjob ? originalOddJob?.User.name : originalPost?.user.name
         case "director":
           return cell.row.original.reaction?.user.name
         default:
