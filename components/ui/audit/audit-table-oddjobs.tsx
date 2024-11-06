@@ -1,4 +1,3 @@
-import { PaymentWithUser, PostWithUserAndCategories } from "@/data/types"
 import { prisma } from "@/prisma/prisma"
 
 import { AuditTableOddjobsDisplay } from "./audit-table-oddjobs-display"
@@ -8,6 +7,9 @@ export async function AuditTableOddjobs() {
     where: {
       oddJobId: {
         not: null,
+      },
+      fundingSource: {
+        equals: "OpenGov-1130",
       },
     },
     include: {
