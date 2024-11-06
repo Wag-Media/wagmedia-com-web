@@ -16,7 +16,7 @@ export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed
 }
 
-function getCsvConfig(rows: Row<PaymentFull>[]) {
+function getCsvConfig(rows: Row<PaymentFull | PaymentOddjob>[]) {
   const columnHeaders = rows[0].getVisibleCells().map((cell, index) => {
     // make first letter uppercase
     return {
