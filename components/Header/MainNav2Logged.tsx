@@ -19,12 +19,12 @@ export interface MainNav2LoggedProps {}
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const renderContent = () => {
     return (
-      <div className="flex h-20 justify-between">
+      <div className="flex justify-between h-20">
         <div className="flex items-center lg:hidden ">
           <MenuBar />
         </div>
 
-        <div className="flex flex-1 items-center">
+        <div className="flex items-center flex-1">
           <Logo />
         </div>
 
@@ -33,8 +33,8 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
           {/* <div className="absolute rounded-full top-full -translate-y-full left-1/2 -translate-x-1/2 bg-[#E6007A] w-[50vh] h-[50vh]" /> */}
         </div>
 
-        <div className="flex flex-1 items-center justify-end text-slate-700 dark:text-slate-100">
-          <div className="flex rounded-full h-16 p-3">
+        <div className="flex items-center justify-end flex-1 text-slate-700 dark:text-slate-100">
+          <div className="flex h-16 p-3 rounded-full">
             {/* <SearchModal /> */}
             {/* <NotifyDropdown /> */}
             <SwitchDarkMode />
@@ -54,10 +54,8 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   }
 
   return (
-    <div className="nc-MainNav2Logged relative z-10">
-      <div className="container bg-background/90 lg:backdrop-blur-sm">
-        {renderContent()}
-      </div>
+    <div className="relative z-10 nc-MainNav2Logged bg-background/90 lg:backdrop-blur-sm">
+      <div className="container">{renderContent()}</div>
     </div>
   )
 }
