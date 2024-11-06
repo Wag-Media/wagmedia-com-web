@@ -35,6 +35,8 @@ export default async function PostGrid({
   const posts = await fetchPosts({
     search,
   })
+
+  console.log("posts", posts)
   const totalPostCount = await getTotalPostCount()
   // const [tabActive, setTabActive] = useState<string>(tabs[0])
 
@@ -54,8 +56,8 @@ export default async function PostGrid({
 
   return (
     <div className={`nc-SectionGridPosts relative ${className}`}>
-      <h2 className="text-5xl font-bold mt-8">Explore our latest Articles</h2>
-      <p className="mt-3 text-gray-500 text-lg">
+      <h2 className="mt-8 text-5xl font-bold">Explore our latest Articles</h2>
+      <p className="mt-3 text-lg text-gray-500">
         Discover <Suspense fallback="...">{totalPostCount}</Suspense> Polkadot
         related articles by our community authors
       </p>

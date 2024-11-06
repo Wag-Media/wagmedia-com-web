@@ -40,7 +40,7 @@ export function getEmbedType(url: string | null): EmbedType | null {
     return "twitter"
 
   if (url.includes("instagram.com")) return "instagram"
-  if (url.includes("youtube.com" || url.includes("youtu.be"))) return "youtube"
+  if (url.includes("youtube.com") || url.includes("youtu.be")) return "youtube"
   if (url.includes("vimeo.com")) return "vimeo"
   if (url.includes("tiktok.com")) return "tiktok"
 
