@@ -55,7 +55,7 @@ export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
           return isOddjob
             ? originalOddJob?.discordLink
             : originalPost?.discordLink
-        case "invoice":
+        case "invoices":
           return isOddjob
             ? originalOddJob?.attachments.map((a) => a.url).join(", ")
             : undefined
