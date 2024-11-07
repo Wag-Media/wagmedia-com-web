@@ -396,7 +396,7 @@ export function AuditTablePostsDisplay({
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 2,
+    pageSize: 20,
   })
 
   const dataQuery = useQuery({
@@ -610,6 +610,28 @@ export function AuditTablePostsDisplay({
           row(s).
         </div>
         <div className="flex flex-row items-center space-x-2">
+          <div className="flex flex-row items-center text-sm text-muted-foreground">
+            <div className="mr-1 whitespace-nowrap">per page</div>
+            <Select
+              value={pagination.pageSize.toString()}
+              onValueChange={(value) => {
+                setPagination({
+                  ...pagination,
+                  pageSize: parseInt(value),
+                })
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Page Size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           {dataQuery.isLoading ? (
             <Loader2 className="w-3 h-3 animate-spin" />
           ) : null}
@@ -631,7 +653,7 @@ export function AuditTablePostsDisplay({
               <ChevronLeftIcon className="w-3 h-3" />
             </Button>
           )}
-          <div className="text-sm text-muted-foreground">
+          <div className="flex flex-1 text-sm text-muted-foreground">
             {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount().toLocaleString()}
           </div>
