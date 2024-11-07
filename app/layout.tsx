@@ -1,11 +1,14 @@
 import "@/styles/globals.scss"
 import "@/styles/index.scss"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 // import { Forum, Gabarito, Josefin_Sans, Laila } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { GeistSans } from "geist/font/sans"
 
 import Footer from "@/components/Footer/Footer"
 import SiteHeader from "@/components/SiteHeader"
+
+import Providers from "./providers"
 
 export const metadata = {
   metadataBase: new URL("https://thewagmedia.com/"),
@@ -48,6 +51,8 @@ export const metadata = {
 
 export const revalidate = 4320 // 72 hours
 
+const queryClient = new QueryClient()
+
 export default function RootLayout({
   children,
 }: {
@@ -56,11 +61,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="">
-        <div className="text-base text-neutral-900 dark:text-neutral-200">
-          <SiteHeader />
-          {children}
-          <Footer />
-        </div>
+        <Providers>
+          <div className="text-base text-neutral-900 dark:text-neutral-200">
+            <SiteHeader />
+            {children}
+            <Footer />
+          </div>
+        </Providers>
         <Analytics />
       </body>
     </html>

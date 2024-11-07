@@ -1,8 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { getPostPayments } from "@/actions/getPostPayments"
 import {
   PaymentFull,
   PaymentWithUser,
@@ -14,10 +16,12 @@ import {
   ChevronDownIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons"
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import {
   ColumnDef,
   ColumnFiltersState,
   GroupingState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -29,6 +33,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { set } from "date-fns"
+import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
@@ -293,8 +298,14 @@ export const columns: ColumnDef<PaymentFull>[] = [
 
 export function AuditTablePostsDisplay({
   postPayments,
+  hasNextPage,
+  hasPrevPage,
+  totalCount,
 }: {
   postPayments: PaymentFull[]
+  hasNextPage: boolean
+  hasPrevPage: boolean
+  totalCount: number
 }) {
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -323,15 +334,30 @@ export function AuditTablePostsDisplay({
   })
   const [rowSelection, setRowSelection] = useState({})
 
-  const [pageIndex, setPageIndex] = useState(0)
-  const [pageSize, setPageSize] = useState(50)
-
   // filters
   const [filteredPayments, setFilteredPayments] = useState(postPayments)
   const [globalFilter, setGlobalFilter] = useState("")
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  const createQueryString = useCallback(
+    (name: string[], value: string[]) => {
+      const params = new URLSearchParams(searchParams.toString())
+      name.forEach((n, i) => {
+        params.set(n, value[i])
+      })
+
+      return pathname + "?" + params.toString()
+    },
+    [searchParams]
+  )
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -342,14 +368,18 @@ export function AuditTablePostsDisplay({
         const createdAt = new Date(row.createdAt)
         return createdAt >= start && createdAt <= end
       })
-      setFilteredPayments(filtered)
+      // setFilteredPayments(filtered)
+      router.push(
+        createQueryString(["startDate", "endDate"], [startDate, endDate])
+      )
     } else if (startDate) {
       const start = new Date(startDate)
       const filtered = postPayments.filter((row) => {
         const createdAt = new Date(row.createdAt)
         return createdAt >= start
       })
-      setFilteredPayments(filtered)
+      // setFilteredPayments(filtered)
+      router.push(createQueryString(["startDate"], [startDate]))
     } else if (endDate) {
       const end = new Date(endDate)
       end.setHours(23, 59, 59, 999)
@@ -357,14 +387,37 @@ export function AuditTablePostsDisplay({
         const createdAt = new Date(row.createdAt)
         return createdAt <= end
       })
-      setFilteredPayments(filtered)
+      // setFilteredPayments(filtered)
+      router.push(createQueryString(["endDate"], [endDate]))
     } else {
-      setFilteredPayments(postPayments)
+      // setFilteredPayments(postPayments)
     }
   }, [startDate, endDate, postPayments])
 
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 2,
+  })
+
+  const dataQuery = useQuery({
+    queryKey: ["data", pagination],
+    queryFn: () =>
+      getPostPayments({
+        page: pagination.pageIndex.toString(),
+        pageSize: pagination.pageSize.toString(),
+        where: {
+          postId: {
+            not: null,
+          },
+        },
+      }),
+    placeholderData: keepPreviousData, // don't have 0 rows flash while changing pages/loading next page
+  })
+
+  const defaultData = useMemo(() => [], [])
+
   const table = useReactTable({
-    data: filteredPayments,
+    data: dataQuery.data ?? defaultData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -388,11 +441,11 @@ export function AuditTablePostsDisplay({
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination: {
-        pageSize,
-        pageIndex,
-      },
+      pagination,
     },
+    onPaginationChange: setPagination,
+    manualPagination: true,
+    rowCount: totalCount,
   })
 
   useEffect(() => {
@@ -402,7 +455,9 @@ export function AuditTablePostsDisplay({
     setFilteredPayments(filtered)
   }, [fundingSource, postPayments])
 
-  const uniquePostIds = new Set(postPayments.map((payment) => payment.postId))
+  const uniquePostIds = new Set(
+    filteredPayments.map((payment) => payment.postId)
+  )
 
   return (
     <div className="w-full">
@@ -471,7 +526,9 @@ export function AuditTablePostsDisplay({
           </DropdownMenu>
           <ExportButton
             rows={table.getRowModel().rows}
-            allRows={table.getCoreRowModel().rows}
+            pagination={pagination}
+            setPagination={setPagination}
+            isLoading={dataQuery.isFetching}
           />
         </div>
       </div>
@@ -549,30 +606,53 @@ export function AuditTablePostsDisplay({
       <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
-          Showing{" "}
-          {Math.min(
-            table.getFilteredRowModel().rows.length,
-            uniquePostIds.size
-          )}{" "}
+          Showing {table.getFilteredRowModel().rows.length} of {totalCount}{" "}
           row(s).
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPageIndex(pageIndex - 1)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPageIndex(pageIndex + 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+        <div className="flex flex-row items-center space-x-2">
+          {dataQuery.isLoading ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : null}
+          {table.getCanPreviousPage() ? (
+            // <Link href={previousPage()}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                table.previousPage()
+              }}
+              disabled={dataQuery.isLoading}
+            >
+              <ChevronLeftIcon className="w-3 h-3" />
+            </Button>
+          ) : (
+            // </Link>
+            <Button variant="outline" size="sm" disabled>
+              <ChevronLeftIcon className="w-3 h-3" />
+            </Button>
+          )}
+          <div className="text-sm text-muted-foreground">
+            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount().toLocaleString()}
+          </div>
+          {table.getCanNextPage() ? (
+            // <Link href={nextPage()}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                table.nextPage()
+              }}
+              disabled={dataQuery.isLoading}
+            >
+              <ChevronRightIcon className="w-3 h-3" />
+            </Button>
+          ) : (
+            // </Link>
+            <Button variant="outline" size="sm" disabled>
+              <ChevronRightIcon className="w-3 h-3" />
+            </Button>
+          )}
         </div>
       </div>
       {/* <pre className="text-xs">{JSON.stringify(payments, null, 2)}</pre> */}

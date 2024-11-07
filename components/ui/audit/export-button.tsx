@@ -1,4 +1,5 @@
-import { Row } from "@tanstack/react-table"
+import { useEffect, useState } from "react"
+import { PaginationState, Row } from "@tanstack/react-table"
 import { DownloadIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -10,15 +11,40 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { exportToCsv } from "./table-util"
+import { exportAllToCsv, exportToCsv } from "./table-util"
 
 export function ExportButton({
   rows,
-  allRows,
+  pagination,
+  setPagination,
+  isLoading,
 }: {
   rows: Row<any>[]
-  allRows: any[]
+  pagination: PaginationState
+  setPagination: (pagination: PaginationState) => void
+  isLoading: boolean
 }) {
+  const [isExportAllLoading, setIsExportAllLoading] = useState(false)
+  const [oldPagination, setOldPagination] = useState(pagination)
+
+  useEffect(() => {
+    if (isExportAllLoading) {
+      if (!isLoading) {
+        exportToCsv(rows)
+        setIsExportAllLoading(false)
+        console.log("setting pagination to", oldPagination)
+        setPagination(oldPagination)
+      }
+    }
+  }, [
+    isLoading,
+    isExportAllLoading,
+    pagination,
+    rows,
+    oldPagination,
+    setPagination,
+  ])
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +55,14 @@ export function ExportButton({
       <DropdownMenuContent align="end">
         <DropdownMenuItem
           className="capitalize"
-          onClick={() => exportToCsv(allRows)}
+          onClick={() => {
+            setOldPagination(pagination)
+            setPagination({
+              pageIndex: 0,
+              pageSize: 10000,
+            })
+            setIsExportAllLoading(true)
+          }}
         >
           Export All Data
         </DropdownMenuItem>
