@@ -11,11 +11,11 @@ export async function getPostPayments({
   pageSize,
 }: {
   where: any
-  orderBy: any
+  orderBy?: any
   page: string
   pageSize: string
 }) {
-  return await prisma.payment.findMany({
+  const query = {
     where,
     orderBy,
     include: {
@@ -32,7 +32,17 @@ export async function getPostPayments({
         },
       },
     },
+  }
+
+  const data = await prisma.payment.findMany({
+    ...query,
     skip: parseInt(page) * parseInt(pageSize),
     take: parseInt(pageSize),
   })
+
+  const totalCount = await prisma.payment.count({ where })
+  return {
+    data,
+    totalCount,
+  }
 }

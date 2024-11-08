@@ -1,5 +1,6 @@
 "use client"
 
+import { title } from "process"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -32,6 +33,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { useDebounce } from "@uidotdev/usehooks"
 import { set } from "date-fns"
 import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react"
 import { DateRange } from "react-day-picker"
@@ -67,6 +69,7 @@ import {
 } from "@/components/ui/table"
 
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
+import { Label } from "../label"
 import { ExportButton } from "./export-button"
 import { fuzzyFilter } from "./table-util"
 
@@ -84,7 +87,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
     cell: (props) => {
       const datetime = props.getValue() as Date
       return (
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 max-w-32">
           {datetime.toUTCString()}
         </div>
       )
@@ -165,7 +168,9 @@ export const columns: ColumnDef<PaymentFull>[] = [
     cell: ({ getValue, row, renderValue }) => {
       const title = getValue<string>()
 
-      return <div className="flex flex-row items-center gap-2">{title}</div>
+      return (
+        <div className="flex flex-row items-center gap-2 max-w-52">{title}</div>
+      )
     },
     aggregationFn: (leafRows, childRows) => {
       const title = childRows[0].original.Post?.title
@@ -298,13 +303,9 @@ export const columns: ColumnDef<PaymentFull>[] = [
 
 export function AuditTablePostsDisplay({
   postPayments,
-  hasNextPage,
-  hasPrevPage,
   totalCount,
 }: {
   postPayments: PaymentFull[]
-  hasNextPage: boolean
-  hasPrevPage: boolean
   totalCount: number
 }) {
   const [sorting, setSorting] = useState<SortingState>([
@@ -315,7 +316,6 @@ export function AuditTablePostsDisplay({
   ])
 
   const [grouping, setGrouping] = useState<GroupingState>(["postId"])
-
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     postId: false,
@@ -335,64 +335,11 @@ export function AuditTablePostsDisplay({
   const [rowSelection, setRowSelection] = useState({})
 
   // filters
-  const [filteredPayments, setFilteredPayments] = useState(postPayments)
   const [globalFilter, setGlobalFilter] = useState("")
+  const debouncedGlobalFilter = useDebounce(globalFilter, 300)
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
-
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  // Get a new searchParams string by merging the current
-  // searchParams with a provided key/value pair
-  const createQueryString = useCallback(
-    (name: string[], value: string[]) => {
-      const params = new URLSearchParams(searchParams.toString())
-      name.forEach((n, i) => {
-        params.set(n, value[i])
-      })
-
-      return pathname + "?" + params.toString()
-    },
-    [searchParams]
-  )
-
-  useEffect(() => {
-    if (startDate && endDate) {
-      const start = new Date(startDate)
-      const end = new Date(endDate)
-      end.setHours(23, 59, 59, 999)
-      const filtered = postPayments.filter((row) => {
-        const createdAt = new Date(row.createdAt)
-        return createdAt >= start && createdAt <= end
-      })
-      // setFilteredPayments(filtered)
-      router.push(
-        createQueryString(["startDate", "endDate"], [startDate, endDate])
-      )
-    } else if (startDate) {
-      const start = new Date(startDate)
-      const filtered = postPayments.filter((row) => {
-        const createdAt = new Date(row.createdAt)
-        return createdAt >= start
-      })
-      // setFilteredPayments(filtered)
-      router.push(createQueryString(["startDate"], [startDate]))
-    } else if (endDate) {
-      const end = new Date(endDate)
-      end.setHours(23, 59, 59, 999)
-      const filtered = postPayments.filter((row) => {
-        const createdAt = new Date(row.createdAt)
-        return createdAt <= end
-      })
-      // setFilteredPayments(filtered)
-      router.push(createQueryString(["endDate"], [endDate]))
-    } else {
-      // setFilteredPayments(postPayments)
-    }
-  }, [startDate, endDate, postPayments])
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -400,24 +347,73 @@ export function AuditTablePostsDisplay({
   })
 
   const dataQuery = useQuery({
-    queryKey: ["data", pagination],
-    queryFn: () =>
-      getPostPayments({
+    queryKey: [
+      "data",
+      pagination,
+      fundingSource,
+      startDate,
+      endDate,
+      debouncedGlobalFilter,
+    ],
+    queryFn: () => {
+      const where: any = {
+        postId: {
+          not: null,
+        },
+        fundingSource: fundingSource,
+        createdAt: {
+          gte: startDate ? new Date(startDate) : undefined,
+          lte: endDate ? new Date(endDate) : undefined,
+        },
+      }
+
+      if (debouncedGlobalFilter && debouncedGlobalFilter.length > 2) {
+        where.OR = [
+          {
+            Post: {
+              title: { contains: debouncedGlobalFilter, mode: "insensitive" },
+            },
+          },
+          {
+            Post: {
+              user: {
+                name: { contains: debouncedGlobalFilter, mode: "insensitive" },
+              },
+            },
+          },
+          {
+            Post: {
+              categories: {
+                some: {
+                  name: {
+                    contains: debouncedGlobalFilter,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+          },
+          {
+            user: {
+              name: { contains: debouncedGlobalFilter, mode: "insensitive" },
+            },
+          },
+        ]
+      }
+
+      return getPostPayments({
         page: pagination.pageIndex.toString(),
         pageSize: pagination.pageSize.toString(),
-        where: {
-          postId: {
-            not: null,
-          },
-        },
-      }),
+        where,
+      })
+    },
     placeholderData: keepPreviousData, // don't have 0 rows flash while changing pages/loading next page
   })
 
   const defaultData = useMemo(() => [], [])
 
   const table = useReactTable({
-    data: dataQuery.data ?? defaultData,
+    data: dataQuery.data?.data ?? defaultData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -427,15 +423,15 @@ export function AuditTablePostsDisplay({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: fuzzyFilter,
+    // onGlobalFilterChange: setGlobalFilter,
+    // globalFilterFn: fuzzyFilter,
     onGroupingChange: setGrouping,
     getGroupedRowModel: getGroupedRowModel(),
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
+    // filterFns: {
+    //   fuzzy: fuzzyFilter,
+    // },
     state: {
-      globalFilter,
+      // globalFilter,
       sorting,
       grouping,
       columnFilters,
@@ -445,57 +441,57 @@ export function AuditTablePostsDisplay({
     },
     onPaginationChange: setPagination,
     manualPagination: true,
-    rowCount: totalCount,
+    rowCount: dataQuery.data?.totalCount ?? totalCount,
   })
-
-  useEffect(() => {
-    const filtered = postPayments.filter((payment) => {
-      return payment.fundingSource === fundingSource
-    })
-    setFilteredPayments(filtered)
-  }, [fundingSource, postPayments])
-
-  const uniquePostIds = new Set(
-    filteredPayments.map((payment) => payment.postId)
-  )
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap items-center gap-4 py-4">
-        <Input
-          placeholder={`Filter all ${uniquePostIds.size} entries`}
-          value={globalFilter}
-          onChange={(event) => {
-            setGlobalFilter(event.target.value)
-          }}
-          className="w-64"
-        />
-        <DatePickerWithRange
-          from={startDate}
-          to={endDate}
-          onChangeRange={(range: DateRange | undefined) => {
-            if (range && range.from && range.to) {
-              setStartDate(range.from.toISOString())
-              setEndDate(range.to.toISOString())
-            } else {
-              setStartDate("")
-              setEndDate("")
-            }
-          }}
-        />
-        <Select
-          value={fundingSource}
-          onValueChange={setFundingSource}
-          defaultValue="OpenGov-1130"
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select Funding Source" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="OpenGov-1130">OpenGov-1130</SelectItem>
-            <SelectItem value="OpenGov-365">OpenGov-365</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-wrap items-end gap-4 py-4">
+        <div className="flex flex-col gap-1">
+          <Label className="text-sm">Search all posts</Label>
+          <Input
+            placeholder={`Filter all ${
+              dataQuery.data?.totalCount ?? totalCount
+            } entries`}
+            value={globalFilter}
+            onChange={(event) => {
+              setGlobalFilter(event.target.value)
+            }}
+            className="w-64"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <Label className="text-sm">Date Range</Label>
+          <DatePickerWithRange
+            from={startDate}
+            to={endDate}
+            onChangeRange={(range: DateRange | undefined) => {
+              if (range && range.from && range.to) {
+                setStartDate(range.from.toISOString())
+                setEndDate(range.to.toISOString())
+              } else {
+                setStartDate("")
+                setEndDate("")
+              }
+            }}
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <Label className="text-sm">Funding Source</Label>
+          <Select
+            value={fundingSource}
+            onValueChange={setFundingSource}
+            defaultValue="OpenGov-1130"
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select Funding Source" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="OpenGov-1130">OpenGov-1130</SelectItem>
+              <SelectItem value="OpenGov-365">OpenGov-365</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <div className="flex flex-row gap-2 ml-auto">
           <DropdownMenu>
@@ -606,8 +602,8 @@ export function AuditTablePostsDisplay({
       <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
-          Showing {table.getFilteredRowModel().rows.length} of {totalCount}{" "}
-          row(s).
+          Showing {table.getFilteredRowModel().rows.length} of{" "}
+          {dataQuery.data?.totalCount ?? totalCount} row(s).
         </div>
         <div className="flex flex-row items-center space-x-2">
           <div className="flex flex-row items-center text-sm text-muted-foreground">
@@ -629,52 +625,60 @@ export function AuditTablePostsDisplay({
                 <SelectItem value="20">20</SelectItem>
                 <SelectItem value="50">50</SelectItem>
                 <SelectItem value="100">100</SelectItem>
+                <SelectItem value="100">250</SelectItem>
               </SelectContent>
             </Select>
           </div>
           {dataQuery.isLoading ? (
             <Loader2 className="w-3 h-3 animate-spin" />
           ) : null}
-          {table.getCanPreviousPage() ? (
-            // <Link href={previousPage()}>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                table.previousPage()
-              }}
-              disabled={dataQuery.isLoading}
-            >
-              <ChevronLeftIcon className="w-3 h-3" />
-            </Button>
-          ) : (
-            // </Link>
-            <Button variant="outline" size="sm" disabled>
-              <ChevronLeftIcon className="w-3 h-3" />
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              table.firstPage()
+            }}
+            disabled={!table.getCanPreviousPage() || dataQuery.isLoading}
+          >
+            <ChevronLeftIcon className="w-3 h-3 -mr-2" />
+            <ChevronLeftIcon className="w-3 h-3" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              table.previousPage()
+            }}
+            disabled={!table.getCanPreviousPage() || dataQuery.isLoading}
+          >
+            <ChevronLeftIcon className="w-3 h-3" />
+          </Button>
+
           <div className="flex flex-1 text-sm text-muted-foreground">
             {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount().toLocaleString()}
           </div>
-          {table.getCanNextPage() ? (
-            // <Link href={nextPage()}>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                table.nextPage()
-              }}
-              disabled={dataQuery.isLoading}
-            >
-              <ChevronRightIcon className="w-3 h-3" />
-            </Button>
-          ) : (
-            // </Link>
-            <Button variant="outline" size="sm" disabled>
-              <ChevronRightIcon className="w-3 h-3" />
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              table.nextPage()
+            }}
+            disabled={!table.getCanNextPage() || dataQuery.isLoading}
+          >
+            <ChevronRightIcon className="w-3 h-3" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              table.lastPage()
+            }}
+            disabled={!table.getCanNextPage() || dataQuery.isLoading}
+          >
+            <ChevronRightIcon className="w-3 h-3 -mr-2" />
+            <ChevronRightIcon className="w-3 h-3" />
+          </Button>
         </div>
       </div>
       {/* <pre className="text-xs">{JSON.stringify(payments, null, 2)}</pre> */}

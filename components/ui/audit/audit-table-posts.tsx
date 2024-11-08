@@ -44,16 +44,12 @@ export async function AuditTablePosts({
   searchParams,
 }: {
   searchParams: {
-    startDate?: string
-    endDate?: string
     fundingSource?: string
     page?: string
     pageSize?: string
   }
 }) {
   const {
-    startDate,
-    endDate,
     fundingSource = "OpenGov-1130",
     page = "0",
     pageSize = "2",
@@ -65,21 +61,17 @@ export async function AuditTablePosts({
     },
   }
 
-  if (startDate) {
-    where.createdAt = { ...where.createdAt, gte: new Date(startDate) }
-  }
-  if (endDate) {
-    where.createdAt = { ...where.createdAt, lte: new Date(endDate) }
-  }
+  // if (startDate) {
+  //   where.createdAt = { ...where.createdAt, gte: new Date(startDate) }
+  // }
+  // if (endDate) {
+  //   where.createdAt = { ...where.createdAt, lte: new Date(endDate) }
+  // }
   if (fundingSource) {
     where.fundingSource = fundingSource
   }
 
   const totalCount = await prisma.payment.count({ where })
-
-  // Calculate if next/prev navigation should be enabled
-  const hasNextPage = (parseInt(page) + 1) * parseInt(pageSize) < totalCount
-  const hasPrevPage = parseInt(page) > 0
 
   const postPayments = await getPostPayments({ where, page, pageSize })
 
@@ -88,8 +80,6 @@ export async function AuditTablePosts({
   return (
     <AuditTablePostsDisplay
       postPayments={postPayments}
-      hasNextPage={hasNextPage}
-      hasPrevPage={hasPrevPage}
       totalCount={totalCount}
     />
   )

@@ -18,13 +18,13 @@ export default async function AuditPage({
   searchParams,
 }: {
   params: { tab: string[] }
-  searchParams: {
+  searchParams: Promise<{
     startDate?: string
     endDate?: string
     fundingSource?: string
     page?: string
     pageSize?: string
-  }
+  }>
 }) {
   const selectedTab: string = params.tab ? params.tab[0] : "posts"
 
@@ -60,7 +60,7 @@ export default async function AuditPage({
       </div>
       {selectedTab === "posts" && (
         <Suspense fallback={<div>Loading Audit Data...</div>}>
-          <AuditTablePosts searchParams={searchParams} />
+          <AuditTablePosts searchParams={await searchParams} />
         </Suspense>
       )}
       {selectedTab === "management" && (
