@@ -605,7 +605,6 @@ export function AuditTablePostsDisplay({
       </div>
       <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
-          {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
           Showing {table.getFilteredRowModel().rows.length} of {totalCount}{" "}
           row(s).
         </div>
