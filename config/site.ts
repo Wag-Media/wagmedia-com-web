@@ -1,5 +1,3 @@
-import { NavItemType } from "../components/Navigation/NavigationItem"
-
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
@@ -13,27 +11,27 @@ export const siteConfig = {
       href: "/categories",
     },
     {
-      id: "1",
+      id: "2",
       name: "Non-Anglo",
       href: "/non-anglo",
     },
     {
-      id: "2",
+      id: "3",
       name: "Newsletter",
       href: "/newsletter",
     },
     {
-      id: "3",
+      id: "4",
       name: "News",
       href: "/polkadot-news",
     },
     {
-      id: "4",
+      id: "5",
       name: "Audit",
       href: "/audit",
     },
     {
-      id: "5",
+      id: "6",
       name: "About",
       href: "/about",
     },
