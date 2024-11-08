@@ -34,6 +34,19 @@ function getCsvConfig(rows: Row<PaymentFull | PaymentOddjob>[]) {
   })
 }
 
+export const exportAllToCsv = async (rows: any[]) => {
+  const csvConfig = mkConfig({
+    fieldSeparator: ",",
+    filename: "wagmedia-audit", // export file name (without .csv)
+    decimalSeparator: ".",
+    useKeysAsHeaders: true,
+  })
+
+  const rowData = rows.map((row) => row.map((cell: any) => cell.toString()))
+  const csv = generateCsv(csvConfig)(rowData)
+  download(csvConfig)(csv)
+}
+
 // export function
 export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
   // get the data for each row
