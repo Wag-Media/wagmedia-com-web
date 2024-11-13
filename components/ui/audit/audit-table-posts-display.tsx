@@ -182,20 +182,12 @@ export const columns: ColumnDef<PaymentFull>[] = [
 
       return <div className="flex flex-row items-center gap-2">{title}</div>
     },
-    aggregationFn: (leafRows, childRows) => {
-      const title = childRows[0].original.Post?.title
-      return title
-    },
     header: "Title",
   },
   {
     header: "Categories",
     accessorFn: (row) => {
       return row.Post?.categories?.map((category) => category.name).join(", ")
-    },
-    aggregationFn: (leafRows, childRows) => {
-      const categories = childRows[0].original.Post?.categories
-      return categories?.map((category) => category.name).join(", ")
     },
     cell: (props) => {
       const categories = props.getValue() as string
@@ -221,13 +213,6 @@ export const columns: ColumnDef<PaymentFull>[] = [
       const amount = getValue<number>()
       return <div className="text-right tabular-nums">{amount.toFixed(2)}</div>
     },
-    aggregationFn: (leafRows, childRows) => {
-      const amount = childRows.reduce(
-        (acc, row) => acc + row.original.amount,
-        0
-      )
-      return amount
-    },
   },
   {
     accessorKey: "unit",
@@ -241,9 +226,6 @@ export const columns: ColumnDef<PaymentFull>[] = [
           <CaretSortIcon className="ml-2 size-4" />
         </Button>
       )
-    },
-    aggregationFn: (leafRows, childRows) => {
-      return childRows[0].original.unit
     },
     cell: ({ row }) => <div className="uppercase">{row.getValue("unit")}</div>,
   },
@@ -275,10 +257,6 @@ export const columns: ColumnDef<PaymentFull>[] = [
     id: "fundingSource",
     accessorFn: (payment) => payment.fundingSource,
     header: "Funding Source",
-    aggregationFn: (leafRows, childRows) => {
-      const fundingSource = childRows[0].original.fundingSource
-      return fundingSource
-    },
   },
   // {
   //   id: "actions",
