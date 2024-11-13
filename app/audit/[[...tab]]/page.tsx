@@ -3,6 +3,8 @@ import { Suspense } from "react"
 import { cn } from "@/lib/utils"
 import { AuditTableOddjobs } from "@/components/ui/audit/audit-table-oddjobs"
 import { AuditTablePosts } from "@/components/ui/audit/audit-table-posts"
+import { AuditGraphs } from "@/components/ui/audit/graphs/AuditGraphs"
+import PageAuditCharts from "@/components/ui/audit/graphs/PageAuditCharts"
 
 export const fetchCache = "force-no-store"
 export const revalidate = 10 // seconds
@@ -28,7 +30,7 @@ export default async function AuditPage({
 }) {
   const selectedTab: string = params.tab ? params.tab[0] : "posts"
 
-  const tabs = ["Posts", "Management"]
+  const tabs = ["Posts", "Management", "Charts"]
 
   if (!selectedTab) {
     return <div>params:{JSON.stringify(params)} Invalid tab</div>
@@ -66,6 +68,11 @@ export default async function AuditPage({
       {selectedTab === "management" && (
         <Suspense fallback={<div>Loading Audit Data...</div>}>
           <AuditTableOddjobs />
+        </Suspense>
+      )}
+      {selectedTab === "charts" && (
+        <Suspense fallback={<div>Loading Audit Data...</div>}>
+          <AuditGraphs />
         </Suspense>
       )}
     </div>

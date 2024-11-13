@@ -75,7 +75,7 @@ export default async function PageNonAnglo() {
     <div className="container relative">
       <CategoryOverview
         categories={allCategories}
-        className="py-4 md:py-8 lg:py-20"
+        className="py-4 md:py-8 lg:py-16"
         heading="Explore curated non-Anglo Polkadot content"
         desc="Check out all the original non-Anglo content, translations, and dubbed content from our diverse contributors."
       />
