@@ -1,11 +1,15 @@
 "use client"
 
-import { title } from "process"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { table } from "console"
+import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { getPostPayments } from "@/actions/getPostPayments"
+import {
+  getPostPayments,
+  getPostPaymentsFiltered,
+  getPostPaymentsGroupedByPostId,
+} from "@/actions/getPostPayments"
 import {
   PaymentFull,
   PaymentWithUser,
@@ -70,6 +74,7 @@ import {
 
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
 import { Label } from "../label"
+import { Skeleton } from "../skeleton"
 import { ExportButton } from "./export-button"
 import { fuzzyFilter } from "./table-util"
 
@@ -87,8 +92,8 @@ export const columns: ColumnDef<PaymentFull>[] = [
     cell: (props) => {
       const datetime = props.getValue() as Date
       return (
-        <div className="flex flex-row items-center gap-2 max-w-32">
-          {datetime.toUTCString()}
+        <div className="flex flex-row items-center gap-2">
+          {datetime?.toUTCString()}
         </div>
       )
     },
@@ -104,10 +109,10 @@ export const columns: ColumnDef<PaymentFull>[] = [
       const user: User | undefined = row.original.Post?.user
 
       return (
-        <div className="flex flex-col items-center gap-2 text-center">
+        <div className="flex flex-row items-center gap-2 text-center">
           {user && user.avatar && (
             <Image
-              className="w-8 h-8 rounded-full"
+              className="w-6 h-6 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -129,10 +134,10 @@ export const columns: ColumnDef<PaymentFull>[] = [
       const user: User | null = row.original.user
 
       return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-row items-center gap-2">
           {user?.avatar && (
             <Image
-              className="w-8 h-8 rounded-full"
+              className="w-6 h-6 rounded-full"
               src={user?.avatar}
               width={30}
               height={30}
@@ -302,7 +307,6 @@ export const columns: ColumnDef<PaymentFull>[] = [
 ]
 
 export function AuditTablePostsDisplay({
-  postPayments,
   totalCount,
 }: {
   postPayments: PaymentFull[]
@@ -315,7 +319,7 @@ export function AuditTablePostsDisplay({
     },
   ])
 
-  const [grouping, setGrouping] = useState<GroupingState>(["postId"])
+  // const [grouping, setGrouping] = useState<GroupingState>(["postId"])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     postId: false,
@@ -355,66 +359,42 @@ export function AuditTablePostsDisplay({
       endDate,
       debouncedGlobalFilter,
     ],
-    queryFn: () => {
-      const where: any = {
-        postId: {
-          not: null,
-        },
-        fundingSource: fundingSource,
-        createdAt: {
-          gte: startDate ? new Date(startDate) : undefined,
-          lte: endDate ? new Date(endDate) : undefined,
-        },
-      }
-
-      if (debouncedGlobalFilter && debouncedGlobalFilter.length > 2) {
-        where.OR = [
-          {
-            Post: {
-              title: { contains: debouncedGlobalFilter, mode: "insensitive" },
-            },
-          },
-          {
-            Post: {
-              user: {
-                name: { contains: debouncedGlobalFilter, mode: "insensitive" },
-              },
-            },
-          },
-          {
-            Post: {
-              categories: {
-                some: {
-                  name: {
-                    contains: debouncedGlobalFilter,
-                    mode: "insensitive",
-                  },
-                },
-              },
-            },
-          },
-          {
-            user: {
-              name: { contains: debouncedGlobalFilter, mode: "insensitive" },
-            },
-          },
-        ]
-      }
-
-      return getPostPayments({
+    queryFn: async () => {
+      const groupedPayments = await getPostPaymentsGroupedByPostId({
+        fundingSource,
+        startDate,
+        endDate,
+        globalFilter: debouncedGlobalFilter,
         page: pagination.pageIndex.toString(),
         pageSize: pagination.pageSize.toString(),
-        where,
       })
+
+      return groupedPayments
     },
-    placeholderData: keepPreviousData, // don't have 0 rows flash while changing pages/loading next page
   })
 
   const defaultData = useMemo(() => [], [])
 
+  const tableData = useMemo(() => {
+    return dataQuery.isLoading || dataQuery.isFetching
+      ? (Array(pagination.pageSize)
+          .fill({})
+          .map((_, index) => ({ postId: index })) as any[])
+      : dataQuery.data?.data ?? defaultData
+  }, [dataQuery.isLoading, dataQuery.isFetching, pagination.pageSize])
+
+  const columnData = useMemo(() => {
+    return dataQuery.isLoading || dataQuery.isFetching
+      ? columns.map((column) => ({
+          ...column,
+          cell: () => <Skeleton className="h-[20px]" />,
+        }))
+      : columns
+  }, [dataQuery.isLoading, dataQuery.isFetching])
+
   const table = useReactTable({
-    data: dataQuery.data?.data ?? defaultData,
-    columns,
+    data: tableData,
+    columns: columnData,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -423,17 +403,8 @@ export function AuditTablePostsDisplay({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    // onGlobalFilterChange: setGlobalFilter,
-    // globalFilterFn: fuzzyFilter,
-    onGroupingChange: setGrouping,
-    getGroupedRowModel: getGroupedRowModel(),
-    // filterFns: {
-    //   fuzzy: fuzzyFilter,
-    // },
     state: {
-      // globalFilter,
       sorting,
-      grouping,
       columnFilters,
       columnVisibility,
       rowSelection,
@@ -441,7 +412,7 @@ export function AuditTablePostsDisplay({
     },
     onPaginationChange: setPagination,
     manualPagination: true,
-    rowCount: dataQuery.data?.totalCount ?? totalCount,
+    rowCount: dataQuery.data?.totalCount,
   })
 
   return (
@@ -450,9 +421,7 @@ export function AuditTablePostsDisplay({
         <div className="flex flex-col gap-1">
           <Label className="text-sm">Search all posts</Label>
           <Input
-            placeholder={`Filter all ${
-              dataQuery.data?.totalCount ?? totalCount
-            } entries`}
+            placeholder={`Filter ${dataQuery.data?.totalCount ?? ""} entries`}
             value={globalFilter}
             onChange={(event) => {
               setGlobalFilter(event.target.value)
@@ -521,10 +490,11 @@ export function AuditTablePostsDisplay({
             </DropdownMenuContent>
           </DropdownMenu>
           <ExportButton
-            rows={table.getRowModel().rows}
-            pagination={pagination}
-            setPagination={setPagination}
-            isLoading={dataQuery.isFetching}
+            table={table}
+            fundingSource={fundingSource}
+            startDate={startDate}
+            globalFilter={globalFilter}
+            endDate={endDate}
           />
         </div>
       </div>
@@ -577,7 +547,7 @@ export function AuditTablePostsDisplay({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="py-2">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -603,7 +573,7 @@ export function AuditTablePostsDisplay({
         <div className="flex-1 text-sm text-muted-foreground">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
           Showing {table.getFilteredRowModel().rows.length} of{" "}
-          {dataQuery.data?.totalCount ?? totalCount} row(s).
+          {dataQuery.data?.totalCount} row(s).
         </div>
         <div className="flex flex-row items-center space-x-2">
           <div className="flex flex-row items-center text-sm text-muted-foreground">

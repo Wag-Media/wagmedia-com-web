@@ -1,6 +1,6 @@
 import { PaymentFull, PaymentOddjob } from "@/data/types"
 import { rankItem } from "@tanstack/match-sorter-utils"
-import { FilterFn, Row } from "@tanstack/react-table"
+import { FilterFn, Row, Table } from "@tanstack/react-table"
 import { download, generateCsv, mkConfig } from "export-to-csv"
 
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
@@ -16,13 +16,14 @@ export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed
 }
 
-function getCsvConfig(rows: Row<PaymentFull | PaymentOddjob>[]) {
-  const columnHeaders = rows[0].getVisibleCells().map((cell, index) => {
-    // make first letter uppercase
+function getCsvConfig(
+  table: Table<PaymentFull | PaymentOddjob>,
+  rows: Row<PaymentFull | PaymentOddjob>[]
+) {
+  const columnHeaders = table.getVisibleLeafColumns().map((column, index) => {
     return {
       key: index.toString(),
-      displayLabel:
-        cell.column.id.charAt(0).toUpperCase() + cell.column.id.slice(1),
+      displayLabel: column.id.charAt(0).toUpperCase() + column.id.slice(1),
     }
   })
 
@@ -47,8 +48,54 @@ export const exportAllToCsv = async (rows: any[]) => {
   download(csvConfig)(csv)
 }
 
+export const exportPaymentsToCsv = async (payments: PaymentFull[]) => {
+  // Group payments by postId
+  const groupedPayments = payments.reduce((acc, payment) => {
+    const postId = payment.Post?.id
+    if (!postId) return acc
+
+    if (!acc[postId]) {
+      acc[postId] = { ...payment, amount: 0 }
+    }
+
+    acc[postId].amount += payment.amount
+    return acc
+  }, {} as Record<string, PaymentFull>)
+
+  const rowData = Object.values(groupedPayments).map((payment) => {
+    const post = payment.Post
+
+    return {
+      postId: post?.id,
+      createdAt: payment.createdAt.toUTCString(),
+      recipient: payment.Post?.user?.name,
+      director: payment.reaction?.user.name,
+      featured: post?.isFeatured ? true : false,
+      title: post?.title,
+      categories: post?.categories.map((c) => c.name).join(", "),
+      amount: payment.amount.toFixed(2), // Summed amount
+      unit: payment.unit,
+      link: post?.discordLink,
+      fundingSource: payment.fundingSource,
+    }
+  })
+
+  const csvConfig = mkConfig({
+    fieldSeparator: ",",
+    filename: "wagmedia-audit", // export file name (without .csv)
+    decimalSeparator: ".",
+    useKeysAsHeaders: true,
+  })
+
+  const csv = generateCsv(csvConfig)(rowData)
+  download(csvConfig)(csv)
+}
+
 // export function
-export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
+export const exportToCsv = (
+  table: Table<PaymentFull | PaymentOddjob>,
+  rows: Row<PaymentFull | PaymentOddjob>[]
+) => {
   // get the data for each row
   const rowData = rows.map((row) =>
     row.getVisibleCells().map((cell) => {
@@ -76,6 +123,8 @@ export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
           return isOddjob ? originalOddJob?.User.name : originalPost?.user.name
         case "director":
           return cell.row.original.reaction?.user.name
+        case "featured":
+          return originalPost?.isFeatured ? "featured ⭐️" : ""
         default:
           if (typeof cell.getValue() === "object") {
             return JSON.stringify(cell.getValue())
@@ -85,7 +134,7 @@ export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
     })
   )
 
-  const csvConfig = getCsvConfig(rows)
+  const csvConfig = getCsvConfig(table, rows)
   const csv = generateCsv(csvConfig)(rowData as any)
   download(csvConfig)(csv)
 }

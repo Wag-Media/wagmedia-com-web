@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react"
-import { PaginationState, Row } from "@tanstack/react-table"
+import {
+  getPostPayments,
+  getPostPaymentsFiltered,
+  getPostPaymentsGroupedByPostId,
+} from "@/actions/getPostPayments"
+import { PaginationState, Row, Table } from "@tanstack/react-table"
 import { DownloadIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -11,40 +16,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { exportAllToCsv, exportToCsv } from "./table-util"
+import { exportPaymentsToCsv, exportToCsv } from "./table-util"
 
 export function ExportButton({
-  rows,
-  pagination,
-  setPagination,
-  isLoading,
+  table,
+  fundingSource,
+  startDate,
+  endDate,
+  globalFilter,
 }: {
-  rows: Row<any>[]
-  pagination: PaginationState
-  setPagination: (pagination: PaginationState) => void
-  isLoading: boolean
+  table: Table<any>
+  fundingSource: string
+  startDate: string
+  endDate: string
+  globalFilter: string
 }) {
-  const [isExportAllLoading, setIsExportAllLoading] = useState(false)
-  const [oldPagination, setOldPagination] = useState(pagination)
-
-  useEffect(() => {
-    if (isExportAllLoading) {
-      if (!isLoading) {
-        exportToCsv(rows)
-        setIsExportAllLoading(false)
-        console.log("setting pagination to", oldPagination)
-        setPagination(oldPagination)
-      }
-    }
-  }, [
-    isLoading,
-    isExportAllLoading,
-    pagination,
-    rows,
-    oldPagination,
-    setPagination,
-  ])
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -55,20 +41,44 @@ export function ExportButton({
       <DropdownMenuContent align="end">
         <DropdownMenuItem
           className="capitalize"
-          onClick={() => {
-            setOldPagination(pagination)
-            setPagination({
-              pageIndex: 0,
-              pageSize: 10000,
+          onClick={async () => {
+            const groupedPayments = await getPostPaymentsGroupedByPostId({
+              where: {
+                fundingSource,
+                postId: {
+                  not: null,
+                },
+              },
+              page: "0",
+              pageSize: "10000",
             })
-            setIsExportAllLoading(true)
+            console.log(groupedPayments)
+            const allData = await getPostPayments({
+              where: {
+                fundingSource,
+              },
+              page: "0",
+              pageSize: "10000",
+            })
+            console.log(groupedPayments)
+            exportPaymentsToCsv(allData.data)
           }}
         >
           Export All Data
         </DropdownMenuItem>
         <DropdownMenuItem
           className="capitalize"
-          onClick={() => exportToCsv(rows)}
+          onClick={async () => {
+            const data = await getPostPaymentsFiltered({
+              fundingSource,
+              startDate: startDate ? new Date(startDate) : undefined,
+              endDate: endDate ? new Date(endDate) : undefined,
+              globalFilter,
+              page: "0",
+              pageSize: "10000",
+            })
+            exportPaymentsToCsv(data.data)
+          }}
         >
           Export Selected Data
         </DropdownMenuItem>
