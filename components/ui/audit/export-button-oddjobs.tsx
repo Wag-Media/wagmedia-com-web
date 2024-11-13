@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { getOddjobPaymentsGroupedByPostId } from "@/actions/getOddjobPayments"
 import {
   getPostPayments,
   getPostPaymentsFiltered,
@@ -16,9 +17,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { exportPaymentsToCsv, exportToCsv } from "./table-util"
+import {
+  exportOddjobPaymentsToCsv,
+  exportPaymentsToCsv,
+  exportToCsv,
+} from "./table-util"
 
-export function ExportButton({
+export function ExportButtonOddjobs({
   table,
   fundingSource,
   startDate,
@@ -42,21 +47,13 @@ export function ExportButton({
         <DropdownMenuItem
           className="capitalize"
           onClick={async () => {
-            const groupedPayments = await getPostPaymentsGroupedByPostId({
+            const groupedPayments = await getOddjobPaymentsGroupedByPostId({
               fundingSource,
               page: "0",
               pageSize: "10000",
             })
-            console.log(groupedPayments)
-            const allData = await getPostPayments({
-              where: {
-                fundingSource,
-              },
-              page: "0",
-              pageSize: "10000",
-            })
-            console.log(groupedPayments)
-            exportPaymentsToCsv(allData.data)
+            console.log("groupedPayments", groupedPayments)
+            exportOddjobPaymentsToCsv(groupedPayments.data)
           }}
         >
           Export All Data
@@ -64,15 +61,15 @@ export function ExportButton({
         <DropdownMenuItem
           className="capitalize"
           onClick={async () => {
-            const data = await getPostPaymentsFiltered({
+            const data = await getOddjobPaymentsGroupedByPostId({
               fundingSource,
-              startDate: startDate ? new Date(startDate) : undefined,
-              endDate: endDate ? new Date(endDate) : undefined,
+              startDate,
+              endDate,
               globalFilter,
               page: "0",
               pageSize: "10000",
             })
-            exportPaymentsToCsv(data.data)
+            exportOddjobPaymentsToCsv(data.data)
           }}
         >
           Export Selected Data

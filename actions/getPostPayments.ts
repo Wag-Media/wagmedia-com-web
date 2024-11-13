@@ -91,7 +91,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
       where: {
         postId: { in: postIds },
       },
-      orderBy: { createdAt: "asc" }, // Ensure consistent ordering
+      orderBy,
       include: {
         user: true,
         Post: {

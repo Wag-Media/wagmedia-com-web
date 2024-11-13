@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { getOddjobPaymentsGroupedByPostId } from "@/actions/getOddjobPayments"
 import { OddJobWithUserAndCategories, PaymentOddjob } from "@/data/types"
 import { DiscordIcon } from "@/images/icons"
 import {
@@ -22,10 +23,12 @@ import {
   ChevronDownIcon,
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons"
+import { useQuery } from "@tanstack/react-query"
 import {
   ColumnDef,
   ColumnFiltersState,
   GroupingState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -36,6 +39,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { useDebounce } from "@uidotdev/usehooks"
+import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
@@ -70,10 +75,10 @@ import {
 
 import { dynamic } from "../../../app/audit/[[...tab]]/page"
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
+import { Skeleton } from "../skeleton"
 import AttachmentLink from "./attachment-link"
-import { ExportButton } from "./export-button"
+import { ExportButtonOddjobs } from "./export-button-oddjobs"
 import FileViewer from "./file-viewer"
-import { fuzzyFilter } from "./table-util"
 
 export const columns: ColumnDef<PaymentOddjob>[] = [
   {
@@ -87,29 +92,34 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
     },
     header: "Datetime",
     cell: (props) => {
-      const datetime = props.getValue() as Date
+      const datetime = new Date(props.getValue() as string)
+
       return (
         <div className="flex flex-row items-center gap-2">
-          {datetime.toUTCString()}
+          {datetime?.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZoneName: "shortGeneric",
+          })}
         </div>
       )
-    },
-    aggregationFn: (leafRows, childRows) => {
-      return childRows[0].original.createdAt
     },
   },
   {
     id: "recipient",
-    accessorFn: (payment) => payment.OddJob.User.name,
+    accessorFn: (payment) => payment.OddJob?.User.name,
     header: "Recipient",
     cell: ({ row, getValue }) => {
-      const user: User = row.original.OddJob.User
+      const user: User = row.original.OddJob?.User
 
       return (
-        <div className="flex flex-col items-center gap-2 text-center">
+        <div className="flex flex-row items-center gap-2 text-center">
           {user && user.avatar && (
             <Image
-              className="w-8 h-8 rounded-full"
+              className="w-6 h-6 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -124,15 +134,15 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   {
     id: "director",
     header: "Director",
-    accessorFn: (payment) => payment.OddJob.manager.name,
+    accessorFn: (payment) => payment.OddJob?.manager?.name,
     cell: ({ row, getValue }) => {
-      const user: User = row.original.OddJob.manager
+      const user: User = row.original.OddJob?.manager
 
       return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-row items-center gap-2">
           {user && user.avatar && (
             <Image
-              className="w-8 h-8 rounded-full"
+              className="w-6 h-6 rounded-full"
               src={user.avatar}
               width={30}
               height={30}
@@ -148,7 +158,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
     id: "description",
     header: "Description",
     accessorFn: (row) => {
-      return row.OddJob.description
+      return row.OddJob?.description
     },
 
     cell: ({ getValue, row, renderValue }) => {
@@ -158,45 +168,29 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
         <div className="flex flex-row items-center gap-2">{description}</div>
       )
     },
-    aggregationFn: (leafRows, childRows) => {
-      const description = childRows[0].original.OddJob.description
-      return description
-    },
   },
   {
     id: "role",
-    accessorFn: (payment) => payment.OddJob.role,
+    accessorFn: (payment) => payment.OddJob?.role,
     header: "Role",
-    aggregationFn: (leafRows, childRows) => {
-      const role = childRows[0].original.OddJob.role
-      return role
-    },
   },
   {
     id: "timeline",
-    accessorFn: (payment) => payment.OddJob.timeline,
+    accessorFn: (payment) => payment.OddJob?.timeline,
     header: "Timeline",
-    aggregationFn: (leafRows, childRows) => {
-      const timeline = childRows[0].original.OddJob.timeline
-      return timeline
-    },
   },
   {
     id: "agreedPayment",
     accessorFn: (payment) =>
-      `${payment.OddJob.requestedAmount} ${payment.OddJob.requestedUnit}`,
+      `${payment.OddJob?.requestedAmount} ${payment.OddJob?.requestedUnit}`,
     header: "Agreed Payment",
     cell: ({ row }) => {
       const payment: PaymentOddjob = row.original
       return (
         <div className="flex flex-row items-center gap-2">
-          {payment.OddJob.requestedAmount} {payment.OddJob.requestedUnit}
+          {payment.OddJob?.requestedAmount} {payment.OddJob?.requestedUnit}
         </div>
       )
-    },
-    aggregationFn: (leafRows, childRows) => {
-      const payment = childRows[0].original
-      return `${payment.OddJob.requestedAmount} ${payment.OddJob.requestedUnit}`
     },
   },
   //   {
@@ -230,67 +224,40 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
       const amount = getValue<number>()
       return <div className="text-right">{amount.toFixed(2)}</div>
     },
-    aggregationFn: (leafRows, childRows) => {
-      const amount = childRows.reduce(
-        (acc, row) => acc + row.original.amount,
-        0
-      )
-      return amount
-    },
   },
   {
     accessorKey: "unit",
     header: "Paid Unit",
-    aggregationFn: (leafRows, childRows) => {
-      const unit = childRows[0].original.unit
-      return unit
-    },
   },
   {
     id: "invoices",
     header: "Invoices",
-    accessorFn: (payment) => payment.OddJob.attachments.map((a) => a.name),
+    accessorFn: (payment) => payment.OddJob?.attachments,
     cell: ({ row, getValue }) => {
       const attachments = getValue<Attachment[]>()
 
       return (
         <div className="flex flex-row items-center justify-center gap-2">
           {attachments?.map((attachment, index) => (
-            // <Link
-            //   key={index}
-            //   href={attachment.url}
-            //   target="_blank"
-            //   rel="noreferrer"
-            //   className="underline"
-            // >
-            //   {`invoice ${index + 1}`}
-            //   {JSON.stringify(attachment.url)}
-            // </Link>
-            // <AttachmentLink key={index} attachment={attachment} />
-            <FileViewer
-              key={index}
-              mimeType={attachment.mimeType}
-              byteArray={attachment.data as unknown as string}
-            >
-              <span className="underline">📄 {index + 1}</span>
-            </FileViewer>
+            <span key={index}>
+              {attachment?.data && (
+                <FileViewer
+                  mimeType={attachment.mimeType}
+                  byteArray={attachment.data as unknown as string}
+                >
+                  <span className="underline">📄 {index + 1}</span>
+                </FileViewer>
+              )}
+            </span>
           ))}
         </div>
       )
-    },
-    aggregationFn: (leafRows, childRows) => {
-      const attachments = childRows[0].original.OddJob.attachments
-      return attachments
     },
   },
   {
     id: "link",
     header: "Link",
-    accessorFn: (payment) => payment.OddJob.discordLink,
-    aggregationFn: (leafRows, childRows) => {
-      const discordLink = childRows[0].original.OddJob.discordLink
-      return discordLink
-    },
+    accessorFn: (payment) => payment.OddJob?.discordLink,
     cell: ({ row, getValue }) => {
       const discordLink = getValue<string>()
       return (
@@ -315,10 +282,6 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
     id: "fundingSource",
     accessorFn: (payment) => payment.fundingSource,
     header: "Funding Source",
-    aggregationFn: (leafRows, childRows) => {
-      const fundingSource = childRows[0].original.fundingSource
-      return fundingSource
-    },
   },
   // {
   //   accessorKey: "OddJob",
@@ -354,7 +317,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   //     return (
   //       <DropdownMenu>
   //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="w-8 h-8 p-0">
+  //           <Button variant="ghost" className="w-6 h-6 p-0">
   //             <span className="sr-only">Open menu</span>
   //             <DotsHorizontalIcon className="w-4 h-4" />
   //           </Button>
@@ -378,18 +341,13 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   // },
 ]
 
-export function AuditTableOddjobsDisplay({
-  oddjobPayments,
-}: {
-  oddjobPayments: Payment[]
-}) {
+export function AuditTableOddjobsDisplay() {
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "createdAt",
       desc: true, // `false` for ascending, `true` for descending
     },
   ])
-  const [grouping, setGrouping] = useState<GroupingState>(["postId"])
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -407,56 +365,62 @@ export function AuditTableOddjobsDisplay({
   })
   const [rowSelection, setRowSelection] = useState({})
 
-  const [pageIndex, setPageIndex] = useState(0)
-  const [pageSize, setPageSize] = useState(50)
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  })
 
   // filters
-  const [filteredPayments, setFilteredPayments] = useState(oddjobPayments)
   const [globalFilter, setGlobalFilter] = useState("")
+  const debouncedGlobalFilter = useDebounce(globalFilter, 300)
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
 
-  useEffect(() => {
-    if (startDate && endDate) {
-      const start = new Date(startDate)
-      const end = new Date(endDate)
-      end.setHours(23, 59, 59, 999)
-      const filtered = oddjobPayments.filter((payment) => {
-        const createdAt = new Date(payment.createdAt)
-        return createdAt >= start && createdAt <= end
+  const dataQuery = useQuery({
+    queryKey: [
+      "oddjobPayments",
+      pagination,
+      fundingSource,
+      startDate,
+      endDate,
+      // globalFilter,
+    ],
+    queryFn: async () => {
+      const data = await getOddjobPaymentsGroupedByPostId({
+        fundingSource,
+        startDate,
+        endDate,
+        globalFilter,
+        page: pagination.pageIndex.toString(),
+        pageSize: pagination.pageSize.toString(),
       })
-      setFilteredPayments(filtered)
-    } else if (startDate) {
-      const start = new Date(startDate)
-      const filtered = oddjobPayments.filter((payment) => {
-        const createdAt = new Date(payment.createdAt)
-        return createdAt >= start
-      })
-      setFilteredPayments(filtered)
-    } else if (endDate) {
-      const end = new Date(endDate)
-      end.setHours(23, 59, 59, 999)
-      const filtered = oddjobPayments.filter((payment) => {
-        const createdAt = new Date(payment.createdAt)
-        return createdAt <= end
-      })
-      setFilteredPayments(filtered)
-    } else {
-      setFilteredPayments(oddjobPayments)
-    }
-  }, [startDate, endDate, oddjobPayments])
+      return data
+    },
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60,
+  })
 
-  useEffect(() => {
-    const filtered = oddjobPayments.filter((payment) => {
-      return payment.fundingSource === fundingSource
-    })
-    setFilteredPayments(filtered)
-  }, [fundingSource, oddjobPayments])
+  const tableData = useMemo(() => {
+    return dataQuery.isLoading || dataQuery.isFetching
+      ? (Array(pagination.pageSize)
+          .fill({})
+          .map((_, index) => ({ postId: index })) as any[])
+      : dataQuery.data?.data ?? []
+  }, [dataQuery.isLoading, dataQuery.isFetching, pagination.pageSize])
+
+  const columnData = useMemo(() => {
+    return dataQuery.isLoading || dataQuery.isFetching
+      ? columns.map((column) => ({
+          ...column,
+          cell: () => <Skeleton className="h-[20px]" />,
+        }))
+      : columns
+  }, [dataQuery.isLoading, dataQuery.isFetching])
 
   const table = useReactTable({
-    data: filteredPayments,
-    columns,
+    data: tableData,
+    columns: columnData,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -465,36 +429,25 @@ export function AuditTableOddjobsDisplay({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: fuzzyFilter,
-    onGroupingChange: setGrouping,
     getGroupedRowModel: getGroupedRowModel(),
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
     state: {
-      globalFilter,
       sorting,
-      grouping,
       columnFilters,
       columnVisibility,
       rowSelection,
-      pagination: {
-        pageSize,
-        pageIndex,
-      },
+      pagination,
+      globalFilter: debouncedGlobalFilter,
     },
+    rowCount: dataQuery.data?.totalCount,
   })
-
-  const uniqueOddjobIds = new Set(
-    oddjobPayments.map((payment) => payment.oddJobId)
-  )
 
   return (
     <div className="w-full">
       <div className="flex flex-wrap items-center gap-4 py-4">
         <Input
-          placeholder={`Filter all ${uniqueOddjobIds.size} entries`}
+          placeholder={`Filter ${dataQuery.data?.totalCount ?? ""} entries`}
           value={globalFilter}
           onChange={(event) => {
             setGlobalFilter(event.target.value)
@@ -555,12 +508,13 @@ export function AuditTableOddjobsDisplay({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* <ExportButton
-            rows={table.getRowModel().rows}
-            pagination={pagination}
-            setPagination={setPagination}
-            isLoading={dataQuery.isFetching}
-          /> */}
+          <ExportButtonOddjobs
+            table={table}
+            fundingSource={fundingSource}
+            startDate={startDate}
+            globalFilter={globalFilter}
+            endDate={endDate}
+          />
         </div>
       </div>
       <div className="border rounded-md">
@@ -636,25 +590,83 @@ export function AuditTableOddjobsDisplay({
       </div>
       <div className="flex items-center justify-end py-4 space-x-2">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
+          Showing {table.getFilteredRowModel().rows.length} of{" "}
+          {dataQuery.data?.totalCount} row(s).
         </div>
-        <div className="space-x-2">
+        <div className="flex flex-row items-center space-x-2">
+          <div className="flex flex-row items-center text-sm text-muted-foreground">
+            <div className="mr-1 whitespace-nowrap">per page</div>
+            <Select
+              value={pagination.pageSize.toString()}
+              onValueChange={(value) => {
+                setPagination({
+                  ...pagination,
+                  pageSize: parseInt(value),
+                })
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Page Size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+                <SelectItem value="250">250</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {dataQuery.isLoading ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : null}
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setPageIndex(pageIndex - 1)}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => {
+              table.firstPage()
+            }}
+            disabled={!table.getCanPreviousPage() || dataQuery.isLoading}
           >
-            Previous
+            <ChevronLeftIcon className="w-3 h-3 -mr-2" />
+            <ChevronLeftIcon className="w-3 h-3" />
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setPageIndex(pageIndex + 1)}
-            disabled={!table.getCanNextPage()}
+            onClick={() => {
+              table.previousPage()
+            }}
+            disabled={!table.getCanPreviousPage() || dataQuery.isLoading}
           >
-            Next
+            <ChevronLeftIcon className="w-3 h-3" />
+          </Button>
+
+          <div className="flex flex-1 text-sm text-muted-foreground">
+            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount().toLocaleString()}
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              table.nextPage()
+            }}
+            disabled={!table.getCanNextPage() || dataQuery.isLoading}
+          >
+            <ChevronRightIcon className="w-3 h-3" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              table.lastPage()
+            }}
+            disabled={!table.getCanNextPage() || dataQuery.isLoading}
+          >
+            <ChevronRightIcon className="w-3 h-3 -mr-2" />
+            <ChevronRightIcon className="w-3 h-3" />
           </Button>
         </div>
       </div>

@@ -48,6 +48,35 @@ export const exportAllToCsv = async (rows: any[]) => {
   download(csvConfig)(csv)
 }
 
+export const exportOddjobPaymentsToCsv = async (payments: PaymentOddjob[]) => {
+  const csvConfig = mkConfig({
+    fieldSeparator: ",",
+    filename: "wagmedia-audit", // export file name (without .csv)
+    decimalSeparator: ".",
+    useKeysAsHeaders: true,
+  })
+
+  const rowData = payments.map((payment) => {
+    return {
+      postId: payment.oddJobId,
+      createdAt: new Date(payment.createdAt).toUTCString(),
+      recipient: payment.OddJob?.User.name,
+      director: payment.reaction?.user.name,
+      description: payment.OddJob?.description,
+      role: payment.OddJob?.role,
+      timeline: payment.OddJob?.timeline,
+      agreedPayment: `${payment.OddJob?.requestedAmount} ${payment.OddJob?.requestedUnit}`,
+      paidAmount: payment.amount.toFixed(2), // Summed amount
+      paidUnit: payment.unit,
+      invoices: payment.OddJob?.attachments.map((a) => a.name).join(", "),
+      fundingSource: payment.fundingSource,
+    }
+  })
+
+  const csv = generateCsv(csvConfig)(rowData)
+  download(csvConfig)(csv)
+}
+
 export const exportPaymentsToCsv = async (payments: PaymentFull[]) => {
   // Group payments by postId
   const groupedPayments = payments.reduce((acc, payment) => {

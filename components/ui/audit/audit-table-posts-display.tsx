@@ -9,6 +9,7 @@ import {
   getPostPaymentsGroupedByPostId,
 } from "@/actions/getPostPayments"
 import { PaymentFull } from "@/data/types"
+import { DiscordIcon } from "@/images/icons"
 import { User } from "@prisma/client"
 import {
   CaretSortIcon,
@@ -68,8 +69,7 @@ import {
 import { DatePickerWithRange } from "../date-picker/date-picker-with-range"
 import { Label } from "../label"
 import { Skeleton } from "../skeleton"
-import { ExportButton } from "./export-button"
-import { fuzzyFilter } from "./table-util"
+import { ExportButtonPosts } from "./export-button-posts"
 
 export const columns: ColumnDef<PaymentFull>[] = [
   {
@@ -229,12 +229,12 @@ export const columns: ColumnDef<PaymentFull>[] = [
         <div className="flex flex-row items-center justify-center gap-2">
           {post?.discordLink ? (
             <Link
-              href={post?.discordLink}
+              href={post.discordLink}
               target="_blank"
               rel="noreferrer"
-              className="underline"
+              className="text-gray-500 underline"
             >
-              discord
+              <DiscordIcon />
             </Link>
           ) : (
             "?"
@@ -324,12 +324,12 @@ export function AuditTablePostsDisplay() {
 
   const dataQuery = useQuery({
     queryKey: [
-      "data",
+      "postPayments",
       pagination,
       fundingSource,
       startDate,
       endDate,
-      debouncedGlobalFilter,
+      // debouncedGlobalFilter,
     ],
     queryFn: async () => {
       const groupedPayments = await getPostPaymentsGroupedByPostId({
@@ -343,6 +343,8 @@ export function AuditTablePostsDisplay() {
 
       return groupedPayments
     },
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60,
   })
 
   const defaultData = useMemo(() => [], [])
@@ -380,6 +382,7 @@ export function AuditTablePostsDisplay() {
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter: debouncedGlobalFilter,
       pagination,
     },
     onPaginationChange: setPagination,
@@ -461,7 +464,7 @@ export function AuditTablePostsDisplay() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <ExportButton
+          <ExportButtonPosts
             table={table}
             fundingSource={fundingSource}
             startDate={startDate}
@@ -567,7 +570,7 @@ export function AuditTablePostsDisplay() {
                 <SelectItem value="20">20</SelectItem>
                 <SelectItem value="50">50</SelectItem>
                 <SelectItem value="100">100</SelectItem>
-                <SelectItem value="100">250</SelectItem>
+                <SelectItem value="250">250</SelectItem>
               </SelectContent>
             </Select>
           </div>
