@@ -90,7 +90,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
     },
     header: "Datetime",
     cell: (props) => {
-      const datetime = props.getValue() as Date
+      const datetime = new Date(props.getValue() as string)
       return (
         <div className="flex flex-row items-center gap-2">
           {datetime?.toUTCString()}
@@ -173,9 +173,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
     cell: ({ getValue, row, renderValue }) => {
       const title = getValue<string>()
 
-      return (
-        <div className="flex flex-row items-center gap-2 max-w-52">{title}</div>
-      )
+      return <div className="flex flex-row items-center gap-2">{title}</div>
     },
     aggregationFn: (leafRows, childRows) => {
       const title = childRows[0].original.Post?.title
@@ -306,12 +304,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   // },
 ]
 
-export function AuditTablePostsDisplay({
-  totalCount,
-}: {
-  postPayments: PaymentFull[]
-  totalCount: number
-}) {
+export function AuditTablePostsDisplay() {
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "createdAt",
