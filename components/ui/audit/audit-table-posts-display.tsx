@@ -92,8 +92,15 @@ export const columns: ColumnDef<PaymentFull>[] = [
     cell: (props) => {
       const datetime = new Date(props.getValue() as string)
       return (
-        <div className="flex flex-row items-center gap-2">
-          {datetime?.toUTCString()}
+        <div className="flex flex-row items-center gap-2 tabular-nums">
+          {datetime.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZoneName: "shortGeneric",
+          })}
         </div>
       )
     },
@@ -207,10 +214,12 @@ export const columns: ColumnDef<PaymentFull>[] = [
   // },
   {
     accessorKey: "amount",
-    header: () => <div className="w-full text-right">Paid Amount</div>,
+    header: () => (
+      <div className="w-full text-right tabular-nums">Paid Amount</div>
+    ),
     cell: ({ row, getValue }) => {
       const amount = getValue<number>()
-      return <div className="text-right">{amount.toFixed(2)}</div>
+      return <div className="text-right tabular-nums">{amount.toFixed(2)}</div>
     },
     aggregationFn: (leafRows, childRows) => {
       const amount = childRows.reduce(
