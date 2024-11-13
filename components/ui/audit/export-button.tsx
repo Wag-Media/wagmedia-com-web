@@ -43,12 +43,7 @@ export function ExportButton({
           className="capitalize"
           onClick={async () => {
             const groupedPayments = await getPostPaymentsGroupedByPostId({
-              where: {
-                fundingSource,
-                postId: {
-                  not: null,
-                },
-              },
+              fundingSource,
               page: "0",
               pageSize: "10000",
             })
