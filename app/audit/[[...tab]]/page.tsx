@@ -60,7 +60,7 @@ export default async function AuditPage({
       </div>
       {selectedTab === "posts" && (
         <Suspense fallback={<div>Loading Audit Data...</div>}>
-          <AuditTablePosts searchParams={await searchParams} />
+          <AuditTablePosts />
         </Suspense>
       )}
       {selectedTab === "management" && (
