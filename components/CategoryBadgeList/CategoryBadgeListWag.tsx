@@ -22,7 +22,7 @@ const CategoryBadgeListWag: FC<CategoryBadgeListWagProps> = ({
       data-nc-id="CategoryBadgeListWag"
     >
       {categories.map((item, index) => (
-        <Link href={`/category/${item.name}`} passHref>
+        <Link href={`/category/${item.name}`} passHref key={item.name}>
           <Badge
             className={itemClass}
             key={index}

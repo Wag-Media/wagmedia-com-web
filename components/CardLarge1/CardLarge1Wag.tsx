@@ -45,11 +45,11 @@ const CardLarge1Wag: FC<CardLarge1WagProps> = ({
     <div
       className={`nc-CardLarge1 nc-CardLarge1--hasAnimation relative flex flex-col-reverse md:flex-row justify-end ${className}`}
     >
-      <div className="md:absolute z-10 md:start-0 md:top-1/2 md:-translate-y-1/2 w-full -mt-8 md:mt-0 px-3 sm:px-6 md:px-0 md:w-3/5 lg:w-1/2 xl:w-2/5">
-        <div className="nc-CardLarge1__left p-4 sm:p-8 xl:py-14 md:px-10 bg-white/40 dark:bg-neutral-900/40 backdrop-filter backdrop-blur-lg shadow-lg dark:shadow-2xl rounded-lg space-y-3 sm:space-y-5 ">
+      <div className="z-10 w-full px-3 -mt-8 md:absolute md:start-0 md:top-1/2 md:-translate-y-1/2 md:mt-0 sm:px-6 md:px-0 md:w-3/5 lg:w-1/2 xl:w-2/5">
+        <div className="p-4 space-y-3 rounded-lg shadow-lg nc-CardLarge1__left sm:p-8 xl:py-14 md:px-10 bg-white/40 dark:bg-neutral-900/40 backdrop-filter backdrop-blur-lg dark:shadow-2xl sm:space-y-5 ">
           <CategoryBadgeListWag categories={categories} />
 
-          <h2 className="nc-card-title text-base sm:text-xl lg:text-2xl font-semibold ">
+          <h2 className="text-base font-semibold nc-card-title sm:text-xl lg:text-2xl ">
             <Link
               href={`/post/${post.slug}`}
               className="line-clamp-2"
@@ -77,7 +77,7 @@ const CardLarge1Wag: FC<CardLarge1WagProps> = ({
       <div className="w-full md:w-4/5 lg:w-2/3">
         <Link
           href={`/post/${post.slug}`}
-          className="nc-CardLarge1__right block relative"
+          className="relative block nc-CardLarge1__right"
         >
           {/* <NcImage
             containerClassName="aspect-w-16 aspect-h-12 sm:aspect-h-9 md:aspect-h-14 lg:aspect-h-10 2xl:aspect-h-9 relative"
@@ -96,8 +96,7 @@ const CardLarge1Wag: FC<CardLarge1WagProps> = ({
             )}
             containerStyle={{ backgroundImage: `url(${featuredImage})` }}
             className="absolute inset-0 object-contain rounded-lg backdrop-blur-lg"
-            fill
-            priority
+            priority={true}
             alt={title}
           />
           {/* META TYPE */}

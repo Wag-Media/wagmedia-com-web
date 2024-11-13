@@ -1,21 +1,15 @@
 "use client"
 
-import { table } from "console"
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import {
   getPostPayments,
   getPostPaymentsFiltered,
   getPostPaymentsGroupedByPostId,
 } from "@/actions/getPostPayments"
-import {
-  PaymentFull,
-  PaymentWithUser,
-  PostWithUserAndCategories,
-} from "@/data/types"
-import { Category, Payment, Post, Reaction, User } from "@prisma/client"
+import { PaymentFull } from "@/data/types"
+import { User } from "@prisma/client"
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -32,7 +26,6 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getGroupedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -103,9 +96,6 @@ export const columns: ColumnDef<PaymentFull>[] = [
           })}
         </div>
       )
-    },
-    aggregationFn: (leafRows, childRows) => {
-      return childRows[0].original.createdAt
     },
   },
   {
@@ -258,37 +248,39 @@ export const columns: ColumnDef<PaymentFull>[] = [
     accessorFn: (payment) => payment.fundingSource,
     header: "Funding Source",
   },
-  // {
-  //   id: "actions",
-  //   enableHiding: false,
-  //   cell: ({ row }) => {
-  //     const payment = row.original
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const payment = row.original
 
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button variant="ghost" className="w-8 h-8 p-0">
-  //             <span className="sr-only">Open menu</span>
-  //             <DotsHorizontalIcon className="w-4 h-4" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end">
-  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //           <DropdownMenuItem
-  //             onClick={() =>
-  //               navigator.clipboard.writeText(payment.id.toString())
-  //             }
-  //           >
-  //             Copy payment ID
-  //           </DropdownMenuItem>
-  //           <DropdownMenuSeparator />
-  //           <DropdownMenuItem>View customer</DropdownMenuItem>
-  //           <DropdownMenuItem>View payment details</DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     )
-  //   },
-  // },
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="w-8 h-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <DotsHorizontalIcon className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <Link href={`/post/${payment.Post?.slug}`}>
+              <DropdownMenuItem>View Post</DropdownMenuItem>
+            </Link>
+            <Link href={`/creator/${payment.user?.name}`}>
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(payment.id.toString())
+                }
+              >
+                View all posts from creator
+              </DropdownMenuItem>
+            </Link>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+    },
+  },
 ]
 
 export function AuditTablePostsDisplay() {
