@@ -47,15 +47,8 @@ export function ExportButtonPosts({
               page: "0",
               pageSize: "10000",
             })
-            const allData = await getPostPayments({
-              where: {
-                fundingSource,
-              },
-              page: "0",
-              pageSize: "10000",
-            })
-            console.log(groupedPayments)
-            exportPaymentsToCsv(allData.data)
+            exportPaymentsToCsv(groupedPayments.data)
+            console.info(`Exported ${groupedPayments.data.length} posts to CSV`)
           }}
         >
           Export All Data
@@ -80,6 +73,7 @@ export function ExportButtonPosts({
               pageSize: "10000",
             })
             exportPaymentsToCsv(data.data)
+            console.info(`Exported ${data.data.length} posts to CSV`)
           }}
         >
           Export Selected Data

@@ -3,11 +3,7 @@
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import {
-  getPostPayments,
-  getPostPaymentsFiltered,
-  getPostPaymentsGroupedByPostId,
-} from "@/actions/getPostPayments"
+import { getPostPaymentsGroupedByPostId } from "@/actions/getPostPayments"
 import { PaymentFull } from "@/data/types"
 import { DiscordIcon } from "@/images/icons"
 import { User } from "@prisma/client"

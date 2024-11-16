@@ -250,6 +250,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
               )}
             </span>
           ))}
+          {attachments?.length === 0 && <span>-</span>}
         </div>
       )
     },
