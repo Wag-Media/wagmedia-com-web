@@ -47,7 +47,6 @@ export function ExportButtonPosts({
               page: "0",
               pageSize: "10000",
             })
-            console.log(groupedPayments)
             const allData = await getPostPayments({
               where: {
                 fundingSource,
@@ -64,10 +63,18 @@ export function ExportButtonPosts({
         <DropdownMenuItem
           className="capitalize"
           onClick={async () => {
-            const data = await getPostPaymentsFiltered({
+            // const data = await getPostPaymentsFiltered({
+            //   fundingSource,
+            //   startDate: startDate ? new Date(startDate) : undefined,
+            //   endDate: endDate ? new Date(endDate) : undefined,
+            //   globalFilter,
+            //   page: "0",
+            //   pageSize: "10000",
+            // })
+            const data = await getPostPaymentsGroupedByPostId({
               fundingSource,
-              startDate: startDate ? new Date(startDate) : undefined,
-              endDate: endDate ? new Date(endDate) : undefined,
+              startDate,
+              endDate,
               globalFilter,
               page: "0",
               pageSize: "10000",
