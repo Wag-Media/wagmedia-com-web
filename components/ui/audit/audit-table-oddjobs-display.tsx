@@ -88,7 +88,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.createdAt
+      return row.OddJob?.createdAt
     },
     header: "Datetime",
     cell: (props) => {

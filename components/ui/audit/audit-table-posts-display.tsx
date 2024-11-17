@@ -75,7 +75,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.createdAt
+      return row.Post?.createdAt
     },
     header: "Datetime",
     cell: (props) => {
