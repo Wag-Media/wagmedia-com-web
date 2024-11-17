@@ -68,6 +68,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     // Step 1: Fetch distinct postIds with pagination
     const distinctPostIds = await prisma.payment.findMany({
       where,
+      orderBy,
       select: { postId: true },
       distinct: ["postId"],
       skip: parseInt(page) * parseInt(pageSize),
@@ -76,6 +77,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
 
     const distinctPostIdsFull = await prisma.payment.findMany({
       where,
+      orderBy,
       select: { postId: true },
       distinct: ["postId"],
     })
@@ -134,114 +136,3 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
   ["posts"],
   { revalidate: 60, tags: ["postPayments"] }
 )
-
-export async function getPostPayments({
-  where,
-  orderBy = {
-    createdAt: "desc",
-  },
-  page,
-  pageSize,
-}: {
-  where: any
-  orderBy?: any
-  page: string
-  pageSize: string
-}) {
-  const query = {
-    where: {
-      ...where,
-      postId: {
-        not: null,
-      },
-    },
-    orderBy,
-    include: {
-      user: true,
-      Post: {
-        include: {
-          user: true,
-          categories: true,
-        },
-      },
-      reaction: {
-        include: {
-          user: true,
-        },
-      },
-    },
-  }
-
-  const data = await prisma.payment.findMany({
-    ...query,
-    skip: parseInt(page) * parseInt(pageSize),
-    take: parseInt(pageSize),
-  })
-
-  const totalCount = await prisma.payment.count({ where })
-  return {
-    data,
-    totalCount,
-  }
-}
-
-export async function getPostPaymentsFiltered({
-  globalFilter,
-  startDate,
-  endDate,
-  page,
-  pageSize,
-  fundingSource,
-}: {
-  globalFilter: string
-  startDate: Date | undefined
-  endDate: Date | undefined
-  page: string
-  pageSize: string
-  fundingSource: string
-}) {
-  const where = {
-    fundingSource,
-    OR: [
-      {
-        Post: {
-          title: { contains: globalFilter, mode: "insensitive" },
-        },
-      },
-      {
-        Post: {
-          user: {
-            name: { contains: globalFilter, mode: "insensitive" },
-          },
-        },
-      },
-      {
-        Post: {
-          categories: {
-            some: {
-              name: {
-                contains: globalFilter,
-                mode: "insensitive",
-              },
-            },
-          },
-        },
-      },
-      {
-        user: {
-          name: { contains: globalFilter, mode: "insensitive" },
-        },
-      },
-    ],
-    createdAt: {
-      gte: startDate,
-      lte: endDate,
-    },
-  }
-
-  return getPostPayments({
-    where,
-    page,
-    pageSize,
-  })
-}

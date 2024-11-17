@@ -96,7 +96,7 @@ export const exportPaymentsToCsv = async (payments: PaymentFull[]) => {
 
     return {
       postId: post?.id,
-      createdAt: payment.createdAt.toUTCString(),
+      createdAt: new Date(payment.createdAt).toUTCString(),
       recipient: payment.Post?.user?.name,
       director: payment.reaction?.user.name,
       featured: post?.isFeatured ? true : false,
@@ -139,7 +139,7 @@ export const exportToCsv = (
 
       switch (cell.column.id) {
         case "createdAt":
-          return cell.row.original.createdAt.toUTCString()
+          return new Date(cell.row.original.createdAt).toUTCString()
         case "Post":
           return isOddjob
             ? originalOddJob?.discordLink

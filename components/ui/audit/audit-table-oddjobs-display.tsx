@@ -88,7 +88,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.createdAt
+      return row.OddJob?.createdAt
     },
     header: "Datetime",
     cell: (props) => {
@@ -250,6 +250,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
               )}
             </span>
           ))}
+          {attachments?.length === 0 && <span>-</span>}
         </div>
       )
     },
@@ -384,14 +385,14 @@ export function AuditTableOddjobsDisplay() {
       fundingSource,
       startDate,
       endDate,
-      // globalFilter,
+      debouncedGlobalFilter,
     ],
     queryFn: async () => {
       const data = await getOddjobPaymentsGroupedByPostId({
         fundingSource,
         startDate,
         endDate,
-        globalFilter,
+        globalFilter: debouncedGlobalFilter,
         page: pagination.pageIndex.toString(),
         pageSize: pagination.pageSize.toString(),
       })
@@ -401,22 +402,24 @@ export function AuditTableOddjobsDisplay() {
     staleTime: 1000 * 60,
   })
 
+  const isLoading = dataQuery.isLoading || dataQuery.isFetching
+
   const tableData = useMemo(() => {
-    return dataQuery.isLoading || dataQuery.isFetching
+    return isLoading
       ? (Array(pagination.pageSize)
           .fill({})
           .map((_, index) => ({ postId: index })) as any[])
       : dataQuery.data?.data ?? []
-  }, [dataQuery.isLoading, dataQuery.isFetching, pagination.pageSize])
+  }, [isLoading, pagination.pageSize, dataQuery.data?.data])
 
   const columnData = useMemo(() => {
-    return dataQuery.isLoading || dataQuery.isFetching
+    return isLoading
       ? columns.map((column) => ({
           ...column,
           cell: () => <Skeleton className="h-[20px]" />,
         }))
       : columns
-  }, [dataQuery.isLoading, dataQuery.isFetching])
+  }, [isLoading])
 
   const table = useReactTable({
     data: tableData,

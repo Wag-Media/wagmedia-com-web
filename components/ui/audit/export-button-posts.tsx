@@ -47,16 +47,8 @@ export function ExportButtonPosts({
               page: "0",
               pageSize: "10000",
             })
-            console.log(groupedPayments)
-            const allData = await getPostPayments({
-              where: {
-                fundingSource,
-              },
-              page: "0",
-              pageSize: "10000",
-            })
-            console.log(groupedPayments)
-            exportPaymentsToCsv(allData.data)
+            exportPaymentsToCsv(groupedPayments.data)
+            console.info(`Exported ${groupedPayments.data.length} posts to CSV`)
           }}
         >
           Export All Data
@@ -64,15 +56,24 @@ export function ExportButtonPosts({
         <DropdownMenuItem
           className="capitalize"
           onClick={async () => {
-            const data = await getPostPaymentsFiltered({
+            // const data = await getPostPaymentsFiltered({
+            //   fundingSource,
+            //   startDate: startDate ? new Date(startDate) : undefined,
+            //   endDate: endDate ? new Date(endDate) : undefined,
+            //   globalFilter,
+            //   page: "0",
+            //   pageSize: "10000",
+            // })
+            const data = await getPostPaymentsGroupedByPostId({
               fundingSource,
-              startDate: startDate ? new Date(startDate) : undefined,
-              endDate: endDate ? new Date(endDate) : undefined,
+              startDate,
+              endDate,
               globalFilter,
               page: "0",
               pageSize: "10000",
             })
             exportPaymentsToCsv(data.data)
+            console.info(`Exported ${data.data.length} posts to CSV`)
           }}
         >
           Export Selected Data

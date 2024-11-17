@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react"
 import { getOddjobPaymentsGroupedByPostId } from "@/actions/getOddjobPayments"
-import {
-  getPostPayments,
-  getPostPaymentsFiltered,
-  getPostPaymentsGroupedByPostId,
-} from "@/actions/getPostPayments"
 import { PaginationState, Row, Table } from "@tanstack/react-table"
 import { DownloadIcon } from "lucide-react"
 

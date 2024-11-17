@@ -3,11 +3,7 @@
 import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import {
-  getPostPayments,
-  getPostPaymentsFiltered,
-  getPostPaymentsGroupedByPostId,
-} from "@/actions/getPostPayments"
+import { getPostPaymentsGroupedByPostId } from "@/actions/getPostPayments"
 import { PaymentFull } from "@/data/types"
 import { DiscordIcon } from "@/images/icons"
 import { User } from "@prisma/client"
@@ -79,7 +75,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.createdAt
+      return row.Post?.createdAt
     },
     header: "Datetime",
     cell: (props) => {
@@ -329,7 +325,7 @@ export function AuditTablePostsDisplay() {
       fundingSource,
       startDate,
       endDate,
-      // debouncedGlobalFilter,
+      debouncedGlobalFilter,
     ],
     queryFn: async () => {
       const groupedPayments = await getPostPaymentsGroupedByPostId({
@@ -344,7 +340,7 @@ export function AuditTablePostsDisplay() {
       return groupedPayments
     },
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60,
+    // staleTime: 1000 * 60,
   })
 
   const defaultData = useMemo(() => [], [])
@@ -376,17 +372,17 @@ export function AuditTablePostsDisplay() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
+    manualPagination: true,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
-      globalFilter: debouncedGlobalFilter,
       pagination,
+      globalFilter: debouncedGlobalFilter,
     },
-    onPaginationChange: setPagination,
-    manualPagination: true,
     rowCount: dataQuery.data?.totalCount,
   })
 
