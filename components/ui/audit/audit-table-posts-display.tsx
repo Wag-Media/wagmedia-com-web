@@ -340,7 +340,7 @@ export function AuditTablePostsDisplay() {
       return groupedPayments
     },
     refetchOnWindowFocus: false,
-    // staleTime: 1000 * 60,
+    staleTime: 1000 * 60,
   })
 
   const defaultData = useMemo(() => [], [])

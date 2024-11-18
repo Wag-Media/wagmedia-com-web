@@ -64,7 +64,10 @@ export function ExportButtonOddjobs({
               page: "0",
               pageSize: "10000",
             })
-            exportOddjobPaymentsToCsv(data.data)
+            const selectedColumns = table
+              .getVisibleLeafColumns()
+              .map((c) => c.id)
+            exportOddjobPaymentsToCsv(data.data, selectedColumns)
           }}
         >
           Export Selected Data

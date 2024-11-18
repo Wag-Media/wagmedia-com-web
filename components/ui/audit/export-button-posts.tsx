@@ -68,7 +68,11 @@ export function ExportButtonPosts({
               page: "0",
               pageSize: "10000",
             })
-            exportPaymentsToCsv(data.data)
+            const selectedColumns = table
+              .getVisibleLeafColumns()
+              .map((c) => c.id)
+
+            exportPaymentsToCsv(data.data, selectedColumns)
             console.info(`Exported ${data.data.length} posts to CSV`)
           }}
         >
