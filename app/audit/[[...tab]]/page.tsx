@@ -3,8 +3,8 @@ import { Suspense } from "react"
 import { cn } from "@/lib/utils"
 import { AuditTableOddjobs } from "@/components/ui/audit/audit-table-oddjobs"
 import { AuditTablePosts } from "@/components/ui/audit/audit-table-posts"
-import { AuditGraphs } from "@/components/ui/audit/graphs/AuditGraphs"
-import PageAuditCharts from "@/components/ui/audit/graphs/PageAuditCharts"
+import PageAuditCharts from "@/components/ui/audit/graphs/audit-graphs"
+import { AuditGraphs } from "@/components/ui/audit/graphs/audit-graphs-display"
 
 export const fetchCache = "force-no-store"
 export const revalidate = 10 // seconds
@@ -72,7 +72,7 @@ export default async function AuditPage({
       )}
       {selectedTab === "charts" && (
         <Suspense fallback={<div>Loading Audit Data...</div>}>
-          <AuditGraphs />
+          <PageAuditCharts />
         </Suspense>
       )}
     </div>

@@ -1,10 +1,8 @@
 "use server"
 
 import { unstable_cache } from "next/cache"
-import { PaymentFull } from "@/data/types"
 import { prisma } from "@/prisma/prisma"
 import { Prisma } from "@prisma/client"
-import orderBy from "lodash"
 
 export const getOddjobPaymentsGroupedByPostId = unstable_cache(
   async ({
@@ -129,6 +127,63 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
     return {
       data: result,
       totalCount: count,
+    }
+  },
+  ["oddjobs"],
+  { revalidate: 60, tags: ["oddjobPayments"] }
+)
+
+export const getOddjobPaymentsByRole = unstable_cache(
+  async (fundingSource: string = "OpenGov-1130") => {
+    // Step 1: Fetch payments
+    const payments = await prisma.payment.findMany({
+      where: {
+        oddJobId: {
+          not: null,
+        },
+        fundingSource,
+      },
+      include: {
+        user: true,
+        OddJob: true,
+      },
+    })
+
+    // Initialize total amounts for each currency
+    const total = {} as Record<string, number>
+
+    // Step 3: Group payments by role and currency
+    const groupedData = payments.reduce((acc, payment) => {
+      const role = payment.OddJob?.role
+      const currency = payment.unit
+
+      if (role && currency) {
+        if (!acc[role]) {
+          acc[role] = {}
+        }
+        if (!acc[role][currency]) {
+          acc[role][currency] = 0
+        }
+        acc[role][currency] += payment.amount
+
+        // Update total amounts
+        if (!total[currency]) {
+          total[currency] = 0
+        }
+        total[currency] += payment.amount
+      }
+      return acc
+    }, {} as Record<string, Record<string, number>>)
+
+    // Convert grouped data to an array format
+    const result = Object.entries(groupedData).map(([role, currencies]) => ({
+      role,
+      ...currencies,
+    }))
+
+    return {
+      data: result,
+      total,
     }
   },
   ["oddjobs"],
