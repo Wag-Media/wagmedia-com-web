@@ -1,18 +1,6 @@
 import React, { FC, ReactNode, Suspense } from "react"
 import { getPosts, getTotalPostCount } from "@/data/dbPosts"
-import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
-import { prisma } from "@/prisma/prisma"
-import { ArrowRightIcon } from "lucide-react"
 
-import Button from "@/components/Button/Button"
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
-import Card11Wag from "@/components/Card11/Card11Wag"
-import Heading from "@/components/Heading/Heading"
-import Nav from "@/components/Nav/Nav"
-import { fetchPosts } from "@/app/actions/fetchPosts"
-
-import { revalidate } from "../../../app/(home)/page"
-import { Skeleton } from "../skeleton"
 import { PostGridDisplay } from "./PostGridDisplay"
 
 export interface NewsGridProps {
@@ -40,10 +28,10 @@ export default async function NewsGrid({
 
   return (
     <div className={`nc-SectionGridPosts relative ${className}`}>
-      <h2 className="text-5xl font-bold mt-8">
+      <h2 className="mt-8 text-5xl font-bold">
         What&apos;s the news and updates about the Polkadot ecosystem?
       </h2>
-      <p className="mt-3 text-gray-500 text-lg">
+      <p className="mt-3 text-lg text-gray-500">
         Explore <Suspense fallback="...">{totalPostCount}</Suspense> Polkadot
         ecosystem news uncovered by our news finders program, conveniently
         bundled together in one place.

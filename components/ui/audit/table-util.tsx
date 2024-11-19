@@ -1,6 +1,6 @@
 import { PaymentFull, PaymentOddjob } from "@/data/types"
 import { rankItem } from "@tanstack/match-sorter-utils"
-import { FilterFn, Row } from "@tanstack/react-table"
+import { FilterFn, Row, Table } from "@tanstack/react-table"
 import { download, generateCsv, mkConfig } from "export-to-csv"
 
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
@@ -16,13 +16,14 @@ export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed
 }
 
-function getCsvConfig(rows: Row<PaymentFull | PaymentOddjob>[]) {
-  const columnHeaders = rows[0].getVisibleCells().map((cell, index) => {
-    // make first letter uppercase
+function getCsvConfig(
+  table: Table<PaymentFull | PaymentOddjob>,
+  rows: Row<PaymentFull | PaymentOddjob>[]
+) {
+  const columnHeaders = table.getVisibleLeafColumns().map((column, index) => {
     return {
       key: index.toString(),
-      displayLabel:
-        cell.column.id.charAt(0).toUpperCase() + cell.column.id.slice(1),
+      displayLabel: column.id.charAt(0).toUpperCase() + column.id.slice(1),
     }
   })
 
@@ -47,8 +48,141 @@ export const exportAllToCsv = async (rows: any[]) => {
   download(csvConfig)(csv)
 }
 
+export const exportOddjobPaymentsToCsv = async (
+  payments: PaymentOddjob[],
+  selectedColumns: string[] = []
+) => {
+  const csvConfig = mkConfig({
+    fieldSeparator: ",",
+    filename: "wagmedia-audit", // export file name (without .csv)
+    decimalSeparator: ".",
+    useKeysAsHeaders: true,
+  })
+
+  const rowData = payments.map((payment) => {
+    let fullData: Record<string, any> = {}
+
+    console.log(selectedColumns)
+    if (selectedColumns.includes("postId") || selectedColumns.length === 0) {
+      fullData.PostId = payment.oddJobId
+    }
+    if (selectedColumns.includes("createdAt") || selectedColumns.length === 0) {
+      fullData.CreatedAt = new Date(payment.createdAt).toUTCString()
+    }
+    if (selectedColumns.includes("recipient") || selectedColumns.length === 0) {
+      fullData.Recipient = payment.OddJob?.User.name
+    }
+    if (selectedColumns.includes("director") || selectedColumns.length === 0) {
+      fullData.Director = payment.reaction?.user.name
+    }
+    if (
+      selectedColumns.includes("description") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.Description = payment.OddJob?.description
+    }
+    if (selectedColumns.includes("role") || selectedColumns.length === 0) {
+      fullData.Role = payment.OddJob?.role
+    }
+    if (selectedColumns.includes("timeline") || selectedColumns.length === 0) {
+      fullData.Timeline = payment.OddJob?.timeline
+    }
+    if (
+      selectedColumns.includes("agreedPayment") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.AgreedPayment = `${payment.OddJob?.requestedAmount} ${payment.OddJob?.requestedUnit}`
+    }
+    if (selectedColumns.includes("amount") || selectedColumns.length === 0) {
+      fullData.PaidAmount = payment.amount.toFixed(2)
+    }
+    if (selectedColumns.includes("unit") || selectedColumns.length === 0) {
+      fullData.PaidUnit = payment.unit
+    }
+    if (selectedColumns.includes("invoices") || selectedColumns.length === 0) {
+      fullData.Invoices = payment.OddJob?.attachments
+        .map((a) => a.name)
+        .join(", ")
+    }
+    if (
+      selectedColumns.includes("fundingSource") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.FundingSource = payment.fundingSource
+    }
+
+    return fullData
+  })
+
+  const csv = generateCsv(csvConfig)(rowData)
+  download(csvConfig)(csv)
+}
+
+export const exportPaymentsToCsv = async (
+  payments: PaymentFull[],
+  selectedColumns: string[] = []
+) => {
+  const rowData = payments.map((payment) => {
+    const post = payment.Post
+
+    let fullData: Record<string, any> = {}
+
+    if (selectedColumns.includes("createdAt") || selectedColumns.length === 0) {
+      fullData.CreatedAt = new Date(payment.createdAt).toUTCString()
+    }
+    if (selectedColumns.includes("recipient") || selectedColumns.length === 0) {
+      fullData.Recipient = payment.Post?.user?.name
+    }
+    if (selectedColumns.includes("director") || selectedColumns.length === 0) {
+      fullData.Director = payment.reaction?.user.name
+    }
+    if (selectedColumns.includes("featured") || selectedColumns.length === 0) {
+      fullData.Featured = post?.isFeatured ? true : false
+    }
+    if (selectedColumns.includes("title") || selectedColumns.length === 0) {
+      fullData.Title = post?.title
+    }
+    if (
+      selectedColumns.includes("Categories") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.Categories = post?.categories.map((c) => c.name).join(", ")
+    }
+    if (selectedColumns.includes("amount") || selectedColumns.length === 0) {
+      fullData.Amount = payment.amount.toFixed(2)
+    }
+    if (selectedColumns.includes("unit") || selectedColumns.length === 0) {
+      fullData.Unit = payment.unit
+    }
+    if (selectedColumns.includes("Post") || selectedColumns.length === 0) {
+      fullData.Link = post?.discordLink
+    }
+    if (
+      selectedColumns.includes("fundingSource") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.FundingSource = payment.fundingSource
+    }
+
+    return fullData
+  })
+
+  const csvConfig = mkConfig({
+    fieldSeparator: ",",
+    filename: "wagmedia-audit", // export file name (without .csv)
+    decimalSeparator: ".",
+    useKeysAsHeaders: true,
+  })
+
+  const csv = generateCsv(csvConfig)(rowData)
+  download(csvConfig)(csv)
+}
+
 // export function
-export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
+export const exportToCsv = (
+  table: Table<PaymentFull | PaymentOddjob>,
+  rows: Row<PaymentFull | PaymentOddjob>[]
+) => {
   // get the data for each row
   const rowData = rows.map((row) =>
     row.getVisibleCells().map((cell) => {
@@ -63,7 +197,7 @@ export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
 
       switch (cell.column.id) {
         case "createdAt":
-          return cell.row.original.createdAt.toUTCString()
+          return new Date(cell.row.original.createdAt).toUTCString()
         case "Post":
           return isOddjob
             ? originalOddJob?.discordLink
@@ -76,6 +210,8 @@ export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
           return isOddjob ? originalOddJob?.User.name : originalPost?.user.name
         case "director":
           return cell.row.original.reaction?.user.name
+        case "featured":
+          return originalPost?.isFeatured ? "featured ⭐️" : ""
         default:
           if (typeof cell.getValue() === "object") {
             return JSON.stringify(cell.getValue())
@@ -85,7 +221,7 @@ export const exportToCsv = (rows: Row<PaymentFull | PaymentOddjob>[]) => {
     })
   )
 
-  const csvConfig = getCsvConfig(rows)
+  const csvConfig = getCsvConfig(table, rows)
   const csv = generateCsv(csvConfig)(rowData as any)
   download(csvConfig)(csv)
 }

@@ -10,9 +10,6 @@ import MenuBar from "@/components/MenuBar/MenuBar"
 
 import NavigationWag from "../Navigation/NavigationWag"
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode"
-import AvatarDropdown from "./AvatarDropdown"
-import NotifyDropdown from "./NotifyDropdown"
-import SearchModal from "./SearchModal"
 
 export interface MainNav2LoggedProps {}
 

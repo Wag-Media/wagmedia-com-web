@@ -48,7 +48,6 @@ const Card11Wag: FC<Card11Props> = ({
       className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-xl overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      //
     >
       <div
         className={`block flex-shrink-0 relative w-full rounded-t-lg overflow-hidden z-10 ${ratio}`}
@@ -58,17 +57,17 @@ const Card11Wag: FC<Card11Props> = ({
         </div>
       </div>
 
-      <span className="absolute top-3 inset-x-3 z-10">
+      <span className="absolute z-10 top-3 inset-x-3">
         <CategoryBadgeListWag categories={categories} />
       </span>
 
-      <div className="p-4 flex flex-col space-y-3 h-full">
+      <div className="flex flex-col h-full p-4 space-y-3">
         <div className="relative flex-1">
           <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
           <PostCardWagMeta meta={{ ...post }} />
 
-          <h3 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100">
-            <span className="line-clamp-2 h-12" title={title}>
+          <h3 className="block text-base font-semibold nc-card-title text-neutral-900 dark:text-neutral-100">
+            <span className="h-12 line-clamp-2" title={title}>
               {title}
             </span>
           </h3>

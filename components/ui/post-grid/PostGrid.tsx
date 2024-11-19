@@ -36,7 +36,6 @@ export default async function PostGrid({
     search,
   })
 
-  console.log("posts", posts)
   const totalPostCount = await getTotalPostCount()
   // const [tabActive, setTabActive] = useState<string>(tabs[0])
 

@@ -4,8 +4,9 @@ import { unstable_cache } from "next/cache"
 import { PaymentFull } from "@/data/types"
 import { prisma } from "@/prisma/prisma"
 import { Prisma } from "@prisma/client"
+import orderBy from "lodash"
 
-export const getPostPaymentsGroupedByPostId = unstable_cache(
+export const getOddjobPaymentsGroupedByPostId = unstable_cache(
   async ({
     fundingSource,
     globalFilter,
@@ -26,7 +27,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     pageSize: string
   }) => {
     const where: Prisma.PaymentWhereInput = {
-      postId: {
+      oddJobId: {
         not: null,
       },
       fundingSource,
@@ -36,30 +37,25 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
       },
       OR: [
         {
-          Post: {
-            title: { contains: globalFilter, mode: "insensitive" },
+          OddJob: {
+            description: { contains: globalFilter, mode: "insensitive" },
           },
         },
         {
-          Post: {
-            user: { name: { contains: globalFilter, mode: "insensitive" } },
+          OddJob: {
+            manager: { name: { contains: globalFilter, mode: "insensitive" } },
           },
         },
         {
-          Post: {
-            categories: {
-              some: {
-                name: {
-                  contains: globalFilter,
-                  mode: "insensitive",
-                },
-              },
+          OddJob: {
+            role: { contains: globalFilter, mode: "insensitive" },
+          },
+        },
+        {
+          OddJob: {
+            User: {
+              name: { contains: globalFilter, mode: "insensitive" },
             },
-          },
-        },
-        {
-          user: {
-            name: { contains: globalFilter, mode: "insensitive" },
           },
         },
       ],
@@ -69,8 +65,8 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     const distinctPostIds = await prisma.payment.findMany({
       where,
       orderBy,
-      select: { postId: true },
-      distinct: ["postId"],
+      select: { oddJobId: true },
+      distinct: ["oddJobId"],
       skip: parseInt(page) * parseInt(pageSize),
       take: parseInt(pageSize),
     })
@@ -78,28 +74,29 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     const distinctPostIdsFull = await prisma.payment.findMany({
       where,
       orderBy,
-      select: { postId: true },
-      distinct: ["postId"],
+      select: { oddJobId: true },
+      distinct: ["oddJobId"],
     })
 
     const count = distinctPostIdsFull.length
 
-    const postIds = distinctPostIds
-      .map((item) => item.postId)
+    const oddJobIds = distinctPostIds
+      .map((item) => item.oddJobId)
       .filter(Boolean) as string[]
 
     // Step 2: Fetch payments for these postIds
     const payments = await prisma.payment.findMany({
       where: {
-        postId: { in: postIds },
+        oddJobId: { in: oddJobIds },
       },
       orderBy,
       include: {
         user: true,
-        Post: {
+        OddJob: {
           include: {
-            user: true,
-            categories: true,
+            User: true,
+            manager: true,
+            attachments: true,
           },
         },
         reaction: {
@@ -112,18 +109,19 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
 
     // Step 3: Group payments by postId and process
     const groupedData = payments.reduce((acc, payment) => {
-      const postId = payment.postId
-      if (postId && !acc[postId]) {
-        acc[postId] = {
+      const oddJobId = payment.oddJobId
+
+      if (oddJobId && !acc[oddJobId]) {
+        acc[oddJobId] = {
           ...payment,
           amount: 0,
         }
       }
-      if (postId) {
-        acc[postId].amount += payment.amount
+      if (oddJobId) {
+        acc[oddJobId].amount += payment.amount
       }
       return acc
-    }, {} as Record<string, PaymentFull>)
+    }, {} as Record<string, any>)
 
     // Convert grouped data to an array
     const result = Object.values(groupedData)
@@ -133,6 +131,6 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
       totalCount: count,
     }
   },
-  ["posts"],
-  { revalidate: 60, tags: ["postPayments"] }
+  ["oddjobs"],
+  { revalidate: 60, tags: ["oddjobPayments"] }
 )

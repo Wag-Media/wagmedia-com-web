@@ -14,13 +14,11 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
   return (
     <ul className={`nc-Navigation rounded-full items-center flex ${className}`}>
       {siteConfig.navMenuItems.map((item) => (
-        <>
-          <NavigationItem
-            key={item.id}
-            menuItem={item}
-            active={pathname.includes(item.href)}
-          />
-        </>
+        <NavigationItem
+          key={item.id}
+          menuItem={item}
+          active={pathname.includes(item.href)}
+        />
       ))}
     </ul>
   )

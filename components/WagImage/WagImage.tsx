@@ -28,9 +28,8 @@ export function WagImage({
         <img
           src={image}
           alt={props.alt}
-          className="absolute h-full w-full object-contain backdrop-blur-lg "
+          className="absolute object-contain w-full h-full backdrop-blur-lg "
           sizes="(max-width: 600px) 480px, 800px"
-          {...props}
         />
       </div>
     )
