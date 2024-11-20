@@ -9,6 +9,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
   async ({
     fundingSource,
     globalFilter,
+    directorFilter,
     startDate,
     endDate,
     orderBy = {
@@ -19,6 +20,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
   }: {
     fundingSource: string
     globalFilter?: string
+    directorFilter?: string
     startDate?: string
     endDate?: string
     orderBy?: any
@@ -34,32 +36,41 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
         gte: startDate ? new Date(startDate) : undefined,
         lte: endDate ? new Date(endDate) : undefined,
       },
-      OR: [
+      AND: [
         {
-          Post: {
-            title: { contains: globalFilter, mode: "insensitive" },
-          },
-        },
-        {
-          Post: {
-            user: { name: { contains: globalFilter, mode: "insensitive" } },
-          },
-        },
-        {
-          Post: {
-            categories: {
-              some: {
-                name: {
-                  contains: globalFilter,
-                  mode: "insensitive",
+          OR: [
+            {
+              Post: {
+                title: { contains: globalFilter, mode: "insensitive" },
+              },
+            },
+            {
+              Post: {
+                user: { name: { contains: globalFilter, mode: "insensitive" } },
+              },
+            },
+            {
+              Post: {
+                categories: {
+                  some: {
+                    name: {
+                      contains: globalFilter,
+                      mode: "insensitive",
+                    },
+                  },
                 },
               },
             },
-          },
+            {
+              user: {
+                name: { contains: globalFilter, mode: "insensitive" },
+              },
+            },
+          ],
         },
         {
-          user: {
-            name: { contains: globalFilter, mode: "insensitive" },
+          Post: {
+            user: { name: { contains: directorFilter, mode: "insensitive" } },
           },
         },
       ],

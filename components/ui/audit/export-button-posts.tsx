@@ -20,12 +20,14 @@ export function ExportButtonPosts({
   startDate,
   endDate,
   globalFilter,
+  directorFilter,
 }: {
   table: Table<any>
   fundingSource: string
   startDate: string
   endDate: string
   globalFilter: string
+  directorFilter: string
 }) {
   return (
     <DropdownMenu>
@@ -65,6 +67,7 @@ export function ExportButtonPosts({
               startDate,
               endDate,
               globalFilter,
+              directorFilter,
               page: "0",
               pageSize: "10000",
             })
