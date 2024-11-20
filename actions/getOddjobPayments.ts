@@ -33,43 +33,37 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
         not: null,
       },
       fundingSource,
-      createdAt: {
-        gte: startDate ? new Date(startDate) : undefined,
-        lte: endDate ? new Date(endDate) : undefined,
+      OddJob: {
+        createdAt: {
+          gte: startDate ? new Date(startDate) : undefined,
+          lte: endDate ? new Date(endDate) : undefined,
+        },
+        manager: {
+          name: { contains: directorFilter, mode: "insensitive" },
+        },
       },
-      AND: [
+      OR: [
         {
-          OR: [
-            {
-              OddJob: {
-                description: { contains: globalFilter, mode: "insensitive" },
-              },
-            },
-            {
-              OddJob: {
-                manager: {
-                  name: { contains: globalFilter, mode: "insensitive" },
-                },
-              },
-            },
-            {
-              OddJob: {
-                role: { contains: globalFilter, mode: "insensitive" },
-              },
-            },
-            {
-              OddJob: {
-                User: {
-                  name: { contains: globalFilter, mode: "insensitive" },
-                },
-              },
-            },
-          ],
+          OddJob: {
+            description: { contains: globalFilter, mode: "insensitive" },
+          },
         },
         {
           OddJob: {
             manager: {
-              name: { contains: directorFilter, mode: "insensitive" },
+              name: { contains: globalFilter, mode: "insensitive" },
+            },
+          },
+        },
+        {
+          OddJob: {
+            role: { contains: globalFilter, mode: "insensitive" },
+          },
+        },
+        {
+          OddJob: {
+            User: {
+              name: { contains: globalFilter, mode: "insensitive" },
             },
           },
         },

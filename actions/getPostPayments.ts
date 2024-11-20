@@ -31,48 +31,42 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
       postId: {
         not: null,
       },
-      AND: [
+      fundingSource,
+      Post: {
+        createdAt: {
+          gte: startDate ? new Date(startDate) : undefined,
+          lte: endDate ? new Date(endDate) : undefined,
+        },
+      },
+      user: {
+        name: { contains: directorFilter, mode: "insensitive" },
+      },
+      OR: [
         {
-          OR: [
-            {
-              Post: {
-                title: { contains: globalFilter, mode: "insensitive" },
-              },
-            },
-            {
-              Post: {
-                user: { name: { contains: globalFilter, mode: "insensitive" } },
-              },
-            },
-            {
-              Post: {
-                categories: {
-                  some: {
-                    name: {
-                      contains: globalFilter,
-                      mode: "insensitive",
-                    },
-                  },
+          Post: {
+            title: { contains: globalFilter, mode: "insensitive" },
+          },
+        },
+        {
+          Post: {
+            user: { name: { contains: globalFilter, mode: "insensitive" } },
+          },
+        },
+        {
+          Post: {
+            categories: {
+              some: {
+                name: {
+                  contains: globalFilter,
+                  mode: "insensitive",
                 },
               },
             },
-            {
-              user: {
-                name: { contains: globalFilter, mode: "insensitive" },
-              },
-            },
-          ],
+          },
         },
         {
-          user: { name: { contains: directorFilter, mode: "insensitive" } },
-        },
-        {
-          fundingSource,
-        },
-        {
-          createdAt: {
-            gte: startDate ? new Date(startDate) : undefined,
-            lte: endDate ? new Date(endDate) : undefined,
+          user: {
+            name: { contains: globalFilter, mode: "insensitive" },
           },
         },
       ],
