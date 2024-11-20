@@ -374,6 +374,9 @@ export function AuditTableOddjobsDisplay() {
   // filters
   const [globalFilter, setGlobalFilter] = useState("")
   const debouncedGlobalFilter = useDebounce(globalFilter, 300)
+  const [directorFilter, setDirectorFilter] = useState("")
+  const debouncedDirectorFilter = useDebounce(directorFilter, 300)
+
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
@@ -386,6 +389,7 @@ export function AuditTableOddjobsDisplay() {
       startDate,
       endDate,
       debouncedGlobalFilter,
+      debouncedDirectorFilter,
     ],
     queryFn: async () => {
       const data = await getOddjobPaymentsGroupedByPostId({
@@ -393,6 +397,7 @@ export function AuditTableOddjobsDisplay() {
         startDate,
         endDate,
         globalFilter: debouncedGlobalFilter,
+        directorFilter: debouncedDirectorFilter,
         page: pagination.pageIndex.toString(),
         pageSize: pagination.pageSize.toString(),
       })
@@ -448,14 +453,14 @@ export function AuditTableOddjobsDisplay() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap items-center gap-4 py-4">
+      <div className="flex flex-wrap items-center gap-2 py-2">
         <Input
           placeholder={`Filter ${dataQuery.data?.totalCount ?? ""} entries`}
           value={globalFilter}
           onChange={(event) => {
             setGlobalFilter(event.target.value)
           }}
-          className="w-64"
+          className="w-64 h-9"
         />
         <DatePickerWithRange
           from={startDate}
@@ -469,6 +474,14 @@ export function AuditTableOddjobsDisplay() {
               setEndDate("")
             }
           }}
+        />
+        <Input
+          placeholder="Search for Director"
+          value={directorFilter}
+          onChange={(event) => {
+            setDirectorFilter(event.target.value)
+          }}
+          className="w-64 h-9"
         />
         <Select
           value={fundingSource}
@@ -517,6 +530,7 @@ export function AuditTableOddjobsDisplay() {
             startDate={startDate}
             globalFilter={globalFilter}
             endDate={endDate}
+            directorFilter={directorFilter}
           />
         </div>
       </div>

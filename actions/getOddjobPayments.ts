@@ -10,6 +10,7 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
   async ({
     fundingSource,
     globalFilter,
+    directorFilter,
     startDate,
     endDate,
     orderBy = {
@@ -20,6 +21,7 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
   }: {
     fundingSource: string
     globalFilter?: string
+    directorFilter?: string
     startDate?: string
     endDate?: string
     orderBy?: any
@@ -35,26 +37,39 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
         gte: startDate ? new Date(startDate) : undefined,
         lte: endDate ? new Date(endDate) : undefined,
       },
-      OR: [
+      AND: [
         {
-          OddJob: {
-            description: { contains: globalFilter, mode: "insensitive" },
-          },
+          OR: [
+            {
+              OddJob: {
+                description: { contains: globalFilter, mode: "insensitive" },
+              },
+            },
+            {
+              OddJob: {
+                manager: {
+                  name: { contains: globalFilter, mode: "insensitive" },
+                },
+              },
+            },
+            {
+              OddJob: {
+                role: { contains: globalFilter, mode: "insensitive" },
+              },
+            },
+            {
+              OddJob: {
+                User: {
+                  name: { contains: globalFilter, mode: "insensitive" },
+                },
+              },
+            },
+          ],
         },
         {
           OddJob: {
-            manager: { name: { contains: globalFilter, mode: "insensitive" } },
-          },
-        },
-        {
-          OddJob: {
-            role: { contains: globalFilter, mode: "insensitive" },
-          },
-        },
-        {
-          OddJob: {
-            User: {
-              name: { contains: globalFilter, mode: "insensitive" },
+            manager: {
+              name: { contains: directorFilter, mode: "insensitive" },
             },
           },
         },
