@@ -82,14 +82,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
       const datetime = new Date(props.getValue() as string)
       return (
         <div className="flex flex-row items-center gap-2 tabular-nums">
-          {datetime.toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            timeZoneName: "shortGeneric",
-          })}
+          {datetime.toUTCString()}
         </div>
       )
     },

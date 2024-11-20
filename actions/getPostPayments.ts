@@ -31,11 +31,6 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
       postId: {
         not: null,
       },
-      fundingSource,
-      createdAt: {
-        gte: startDate ? new Date(startDate) : undefined,
-        lte: endDate ? new Date(endDate) : undefined,
-      },
       AND: [
         {
           OR: [
@@ -70,6 +65,15 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
         },
         {
           user: { name: { contains: directorFilter, mode: "insensitive" } },
+        },
+        {
+          fundingSource,
+        },
+        {
+          createdAt: {
+            gte: startDate ? new Date(startDate) : undefined,
+            lte: endDate ? new Date(endDate) : undefined,
+          },
         },
       ],
     }

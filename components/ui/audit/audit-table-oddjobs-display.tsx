@@ -96,14 +96,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
 
       return (
         <div className="flex flex-row items-center gap-2">
-          {datetime?.toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            timeZoneName: "shortGeneric",
-          })}
+          {datetime?.toUTCString()}
         </div>
       )
     },
