@@ -69,9 +69,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
           ],
         },
         {
-          Post: {
-            user: { name: { contains: directorFilter, mode: "insensitive" } },
-          },
+          user: { name: { contains: directorFilter, mode: "insensitive" } },
         },
       ],
     }
