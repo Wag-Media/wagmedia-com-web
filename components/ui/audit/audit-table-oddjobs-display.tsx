@@ -84,12 +84,25 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   {
     id: "postId",
     accessorFn: (payment) => payment.oddJobId,
+    header: "Post ID",
   },
+  // {
+  //   id: "firstPaymentdAt",
+  //   accessorFn: (row) => row.OddJob?.firstPaymentAt,
+  //   header: "First Paymnet At",
+  //   cell: (props) => {
+  //     const datetime = new Date(props.getValue() as string)
+
+  //     return (
+  //       <div className="flex flex-row items-center gap-2">
+  //         {datetime?.toUTCString()}
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     id: "createdAt",
-    accessorFn: (row) => {
-      return row.OddJob?.createdAt
-    },
+    accessorFn: (row) => row.OddJob?.firstPaymentAt || row.createdAt,
     header: "Datetime",
     cell: (props) => {
       const datetime = new Date(props.getValue() as string)

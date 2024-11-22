@@ -71,11 +71,12 @@ export const columns: ColumnDef<PaymentFull>[] = [
   {
     id: "postId",
     accessorFn: (payment) => payment.postId,
+    header: "Post ID",
   },
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.Post?.createdAt
+      return row.Post?.firstPaymentAt || row.createdAt
     },
     header: "Datetime",
     cell: (props) => {

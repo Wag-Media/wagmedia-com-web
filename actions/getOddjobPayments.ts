@@ -71,25 +71,27 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
     }
 
     // Step 1: Fetch distinct postIds with pagination
-    const distinctPostIds = await prisma.payment.findMany({
+    const distinctOddjobIds = await prisma.payment.findMany({
       where,
-      orderBy,
+      orderBy: {
+        createdAt: "desc",
+      },
       select: { oddJobId: true },
       distinct: ["oddJobId"],
       skip: parseInt(page) * parseInt(pageSize),
       take: parseInt(pageSize),
     })
 
-    const distinctPostIdsFull = await prisma.payment.findMany({
+    const distinctOddjobIdsFull = await prisma.payment.findMany({
       where,
       orderBy,
       select: { oddJobId: true },
       distinct: ["oddJobId"],
     })
 
-    const count = distinctPostIdsFull.length
+    const count = distinctOddjobIdsFull.length
 
-    const oddJobIds = distinctPostIds
+    const oddJobIds = distinctOddjobIds
       .map((item) => item.oddJobId)
       .filter(Boolean) as string[]
 

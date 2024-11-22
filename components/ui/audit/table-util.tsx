@@ -62,7 +62,6 @@ export const exportOddjobPaymentsToCsv = async (
   const rowData = payments.map((payment) => {
     let fullData: Record<string, any> = {}
 
-    console.log(selectedColumns)
     if (selectedColumns.includes("postId") || selectedColumns.length === 0) {
       fullData.PostId = payment.oddJobId
     }
@@ -127,6 +126,9 @@ export const exportPaymentsToCsv = async (
 
     let fullData: Record<string, any> = {}
 
+    if (selectedColumns.includes("postId") || selectedColumns.length === 0) {
+      fullData.PostId = payment.postId
+    }
     if (selectedColumns.includes("createdAt") || selectedColumns.length === 0) {
       fullData.CreatedAt = new Date(payment.createdAt).toUTCString()
     }

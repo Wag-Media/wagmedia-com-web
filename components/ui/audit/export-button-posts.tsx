@@ -54,14 +54,6 @@ export function ExportButtonPosts({
         <DropdownMenuItem
           className="capitalize"
           onClick={async () => {
-            // const data = await getPostPaymentsFiltered({
-            //   fundingSource,
-            //   startDate: startDate ? new Date(startDate) : undefined,
-            //   endDate: endDate ? new Date(endDate) : undefined,
-            //   globalFilter,
-            //   page: "0",
-            //   pageSize: "10000",
-            // })
             const data = await getPostPaymentsGroupedByPostId({
               fundingSource,
               startDate,
