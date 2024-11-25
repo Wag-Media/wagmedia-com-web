@@ -161,6 +161,9 @@ export const getOddjobPaymentsByRole = unstable_cache(
         },
         fundingSource,
       },
+      orderBy: {
+        createdAt: "asc",
+      },
       include: {
         user: true,
         OddJob: true,
@@ -172,7 +175,7 @@ export const getOddjobPaymentsByRole = unstable_cache(
 
     // Step 3: Group payments by role and currency
     const groupedData = payments.reduce((acc, payment) => {
-      const role = payment.OddJob?.role
+      const role = payment.OddJob?.role.toLowerCase()
       const currency = payment.unit
 
       if (role && currency) {
@@ -195,13 +198,18 @@ export const getOddjobPaymentsByRole = unstable_cache(
 
     // Convert grouped data to an array format
     const result = Object.entries(groupedData).map(([role, currencies]) => ({
-      role,
+      role: role
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" "),
       ...currencies,
     }))
 
     return {
       data: result,
       total,
+      firstSpent: payments[0].createdAt,
+      lastSpent: payments[payments.length - 1].createdAt,
     }
   },
   ["oddjobs"],
