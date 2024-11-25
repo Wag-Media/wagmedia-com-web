@@ -66,7 +66,14 @@ export const exportOddjobPaymentsToCsv = async (
       fullData.PostId = payment.oddJobId
     }
     if (selectedColumns.includes("createdAt") || selectedColumns.length === 0) {
-      fullData.CreatedAt = new Date(payment.createdAt).toUTCString()
+      const dateData =
+        payment.OddJob?.firstPaymentAt || payment.OddJob?.createdAt
+
+      if (dateData) {
+        fullData.CreatedAt = new Date(dateData).toUTCString()
+      } else {
+        fullData.CreatedAt = ""
+      }
     }
     if (selectedColumns.includes("recipient") || selectedColumns.length === 0) {
       fullData.Recipient = payment.OddJob?.User.name
@@ -130,7 +137,13 @@ export const exportPaymentsToCsv = async (
       fullData.PostId = payment.postId
     }
     if (selectedColumns.includes("createdAt") || selectedColumns.length === 0) {
-      fullData.CreatedAt = new Date(payment.createdAt).toUTCString()
+      const dateData = payment.Post?.firstPaymentAt || payment.Post?.createdAt
+
+      if (dateData) {
+        fullData.CreatedAt = new Date(dateData).toUTCString()
+      } else {
+        fullData.CreatedAt = ""
+      }
     }
     if (selectedColumns.includes("recipient") || selectedColumns.length === 0) {
       fullData.Recipient = payment.Post?.user?.name
