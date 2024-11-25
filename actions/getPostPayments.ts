@@ -12,9 +12,18 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     directorFilter,
     startDate,
     endDate,
-    orderBy = {
-      createdAt: "desc",
-    },
+    orderBy = [
+      {
+        Post: {
+          firstPaymentAt: "desc",
+        },
+      },
+      {
+        Post: {
+          createdAt: "desc",
+        },
+      },
+    ],
     page,
     pageSize,
   }: {

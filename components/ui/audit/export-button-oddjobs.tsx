@@ -49,8 +49,8 @@ export function ExportButtonOddjobs({
               page: "0",
               pageSize: "10000",
             })
-            console.log("groupedPayments", groupedPayments)
             exportOddjobPaymentsToCsv(groupedPayments.data)
+            console.info(`Exported ${groupedPayments.data.length} posts to CSV`)
           }}
         >
           Export All Data
