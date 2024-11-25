@@ -4,6 +4,7 @@ import { unstable_cache } from "next/cache"
 import { PaymentFull } from "@/data/types"
 import { prisma } from "@/prisma/prisma"
 import { Prisma } from "@prisma/client"
+import orderBy from "lodash"
 
 export const getPostPaymentsGroupedByPostId = unstable_cache(
   async ({
@@ -83,8 +84,8 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
 
     // Step 1: Fetch distinct postIds with pagination
     const distinctPostIds = await prisma.payment.findMany({
-      where,
       orderBy,
+      where,
       select: { postId: true },
       distinct: ["postId"],
       skip: parseInt(page) * parseInt(pageSize),
