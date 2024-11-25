@@ -24,12 +24,14 @@ export function ExportButtonOddjobs({
   startDate,
   endDate,
   globalFilter,
+  directorFilter,
 }: {
   table: Table<any>
   fundingSource: string
   startDate: string
   endDate: string
   globalFilter: string
+  directorFilter: string
 }) {
   return (
     <DropdownMenu>
@@ -47,8 +49,8 @@ export function ExportButtonOddjobs({
               page: "0",
               pageSize: "10000",
             })
-            console.log("groupedPayments", groupedPayments)
             exportOddjobPaymentsToCsv(groupedPayments.data)
+            console.info(`Exported ${groupedPayments.data.length} posts to CSV`)
           }}
         >
           Export All Data
@@ -61,10 +63,14 @@ export function ExportButtonOddjobs({
               startDate,
               endDate,
               globalFilter,
+              directorFilter,
               page: "0",
               pageSize: "10000",
             })
-            exportOddjobPaymentsToCsv(data.data)
+            const selectedColumns = table
+              .getVisibleLeafColumns()
+              .map((c) => c.id)
+            exportOddjobPaymentsToCsv(data.data, selectedColumns)
           }}
         >
           Export Selected Data

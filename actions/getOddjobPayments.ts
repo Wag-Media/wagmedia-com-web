@@ -8,6 +8,7 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
   async ({
     fundingSource,
     globalFilter,
+    directorFilter,
     startDate,
     endDate,
     orderBy = {
@@ -18,6 +19,7 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
   }: {
     fundingSource: string
     globalFilter?: string
+    directorFilter?: string
     startDate?: string
     endDate?: string
     orderBy?: any
@@ -29,9 +31,14 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
         not: null,
       },
       fundingSource,
-      createdAt: {
-        gte: startDate ? new Date(startDate) : undefined,
-        lte: endDate ? new Date(endDate) : undefined,
+      OddJob: {
+        createdAt: {
+          gte: startDate ? new Date(startDate) : undefined,
+          lte: endDate ? new Date(endDate) : undefined,
+        },
+        manager: {
+          name: { contains: directorFilter, mode: "insensitive" },
+        },
       },
       OR: [
         {
@@ -41,7 +48,9 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
         },
         {
           OddJob: {
-            manager: { name: { contains: globalFilter, mode: "insensitive" } },
+            manager: {
+              name: { contains: globalFilter, mode: "insensitive" },
+            },
           },
         },
         {
@@ -60,25 +69,27 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
     }
 
     // Step 1: Fetch distinct postIds with pagination
-    const distinctPostIds = await prisma.payment.findMany({
+    const distinctOddjobIds = await prisma.payment.findMany({
       where,
-      orderBy,
+      orderBy: {
+        createdAt: "desc",
+      },
       select: { oddJobId: true },
       distinct: ["oddJobId"],
       skip: parseInt(page) * parseInt(pageSize),
       take: parseInt(pageSize),
     })
 
-    const distinctPostIdsFull = await prisma.payment.findMany({
+    const distinctOddjobIdsFull = await prisma.payment.findMany({
       where,
       orderBy,
       select: { oddJobId: true },
       distinct: ["oddJobId"],
     })
 
-    const count = distinctPostIdsFull.length
+    const count = distinctOddjobIdsFull.length
 
-    const oddJobIds = distinctPostIds
+    const oddJobIds = distinctOddjobIds
       .map((item) => item.oddJobId)
       .filter(Boolean) as string[]
 

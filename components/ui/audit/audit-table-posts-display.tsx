@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { getPostPaymentsGroupedByPostId } from "@/actions/getPostPayments"
@@ -71,25 +71,19 @@ export const columns: ColumnDef<PaymentFull>[] = [
   {
     id: "postId",
     accessorFn: (payment) => payment.postId,
+    header: "Post ID",
   },
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.Post?.createdAt
+      return row.Post?.firstPaymentAt || row.createdAt
     },
     header: "Datetime",
     cell: (props) => {
       const datetime = new Date(props.getValue() as string)
       return (
         <div className="flex flex-row items-center gap-2 tabular-nums">
-          {datetime.toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            timeZoneName: "shortGeneric",
-          })}
+          {datetime.toUTCString()}
         </div>
       )
     },
@@ -309,6 +303,9 @@ export function AuditTablePostsDisplay() {
   // filters
   const [globalFilter, setGlobalFilter] = useState("")
   const debouncedGlobalFilter = useDebounce(globalFilter, 300)
+  const [directorFilter, setDirectorFilter] = useState("")
+  const debouncedDirectorFilter = useDebounce(directorFilter, 300)
+
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
   const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
@@ -326,6 +323,7 @@ export function AuditTablePostsDisplay() {
       startDate,
       endDate,
       debouncedGlobalFilter,
+      debouncedDirectorFilter,
     ],
     queryFn: async () => {
       const groupedPayments = await getPostPaymentsGroupedByPostId({
@@ -333,6 +331,7 @@ export function AuditTablePostsDisplay() {
         startDate,
         endDate,
         globalFilter: debouncedGlobalFilter,
+        directorFilter: debouncedDirectorFilter,
         page: pagination.pageIndex.toString(),
         pageSize: pagination.pageSize.toString(),
       })
@@ -340,7 +339,7 @@ export function AuditTablePostsDisplay() {
       return groupedPayments
     },
     refetchOnWindowFocus: false,
-    // staleTime: 1000 * 60,
+    staleTime: 1000 * 60,
   })
 
   const defaultData = useMemo(() => [], [])
@@ -351,7 +350,12 @@ export function AuditTablePostsDisplay() {
           .fill({})
           .map((_, index) => ({ postId: index })) as any[])
       : dataQuery.data?.data ?? defaultData
-  }, [dataQuery.isLoading, dataQuery.isFetching, pagination.pageSize])
+  }, [
+    dataQuery.isLoading,
+    dataQuery.isFetching,
+    pagination.pageSize,
+    dataQuery.data?.data,
+  ])
 
   const columnData = useMemo(() => {
     return dataQuery.isLoading || dataQuery.isFetching
@@ -361,6 +365,10 @@ export function AuditTablePostsDisplay() {
         }))
       : columns
   }, [dataQuery.isLoading, dataQuery.isFetching])
+
+  useEffect(() => {
+    console.log("Table Data:", tableData)
+  }, [tableData])
 
   const table = useReactTable({
     data: tableData,
@@ -388,7 +396,7 @@ export function AuditTablePostsDisplay() {
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap items-end gap-4 py-4">
+      <div className="flex flex-wrap items-end gap-2 py-2">
         <div className="flex flex-col gap-1">
           <Label className="text-sm">Search all posts</Label>
           <Input
@@ -397,7 +405,7 @@ export function AuditTablePostsDisplay() {
             onChange={(event) => {
               setGlobalFilter(event.target.value)
             }}
-            className="w-64"
+            className="w-64 h-9"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -414,6 +422,17 @@ export function AuditTablePostsDisplay() {
                 setEndDate("")
               }
             }}
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <Label className="text-sm">Search for Director</Label>
+          <Input
+            placeholder="Search for Director"
+            value={directorFilter}
+            onChange={(event) => {
+              setDirectorFilter(event.target.value)
+            }}
+            className="w-64 h-9"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -466,6 +485,7 @@ export function AuditTablePostsDisplay() {
             startDate={startDate}
             globalFilter={globalFilter}
             endDate={endDate}
+            directorFilter={directorFilter}
           />
         </div>
       </div>

@@ -48,7 +48,10 @@ export const exportAllToCsv = async (rows: any[]) => {
   download(csvConfig)(csv)
 }
 
-export const exportOddjobPaymentsToCsv = async (payments: PaymentOddjob[]) => {
+export const exportOddjobPaymentsToCsv = async (
+  payments: PaymentOddjob[],
+  selectedColumns: string[] = []
+) => {
   const csvConfig = mkConfig({
     fieldSeparator: ",",
     filename: "wagmedia-audit", // export file name (without .csv)
@@ -57,56 +60,113 @@ export const exportOddjobPaymentsToCsv = async (payments: PaymentOddjob[]) => {
   })
 
   const rowData = payments.map((payment) => {
-    return {
-      postId: payment.oddJobId,
-      createdAt: new Date(payment.createdAt).toUTCString(),
-      recipient: payment.OddJob?.User.name,
-      director: payment.reaction?.user.name,
-      description: payment.OddJob?.description,
-      role: payment.OddJob?.role,
-      timeline: payment.OddJob?.timeline,
-      agreedPayment: `${payment.OddJob?.requestedAmount} ${payment.OddJob?.requestedUnit}`,
-      paidAmount: payment.amount.toFixed(2), // Summed amount
-      paidUnit: payment.unit,
-      invoices: payment.OddJob?.attachments.map((a) => a.name).join(", "),
-      fundingSource: payment.fundingSource,
+    let fullData: Record<string, any> = {}
+
+    if (selectedColumns.includes("postId") || selectedColumns.length === 0) {
+      fullData.PostId = payment.oddJobId
     }
+    if (selectedColumns.includes("createdAt") || selectedColumns.length === 0) {
+      fullData.CreatedAt = new Date(payment.createdAt).toUTCString()
+    }
+    if (selectedColumns.includes("recipient") || selectedColumns.length === 0) {
+      fullData.Recipient = payment.OddJob?.User.name
+    }
+    if (selectedColumns.includes("director") || selectedColumns.length === 0) {
+      fullData.Director = payment.reaction?.user.name
+    }
+    if (
+      selectedColumns.includes("description") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.Description = payment.OddJob?.description
+    }
+    if (selectedColumns.includes("role") || selectedColumns.length === 0) {
+      fullData.Role = payment.OddJob?.role
+    }
+    if (selectedColumns.includes("timeline") || selectedColumns.length === 0) {
+      fullData.Timeline = payment.OddJob?.timeline
+    }
+    if (
+      selectedColumns.includes("agreedPayment") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.AgreedPayment = `${payment.OddJob?.requestedAmount} ${payment.OddJob?.requestedUnit}`
+    }
+    if (selectedColumns.includes("amount") || selectedColumns.length === 0) {
+      fullData.PaidAmount = payment.amount.toFixed(2)
+    }
+    if (selectedColumns.includes("unit") || selectedColumns.length === 0) {
+      fullData.PaidUnit = payment.unit
+    }
+    if (selectedColumns.includes("invoices") || selectedColumns.length === 0) {
+      fullData.Invoices = payment.OddJob?.attachments
+        .map((a) => a.name)
+        .join(", ")
+    }
+    if (
+      selectedColumns.includes("fundingSource") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.FundingSource = payment.fundingSource
+    }
+
+    return fullData
   })
 
   const csv = generateCsv(csvConfig)(rowData)
   download(csvConfig)(csv)
 }
 
-export const exportPaymentsToCsv = async (payments: PaymentFull[]) => {
-  // Group payments by postId
-  const groupedPayments = payments.reduce((acc, payment) => {
-    const postId = payment.Post?.id
-    if (!postId) return acc
-
-    if (!acc[postId]) {
-      acc[postId] = { ...payment, amount: 0 }
-    }
-
-    acc[postId].amount += payment.amount
-    return acc
-  }, {} as Record<string, PaymentFull>)
-
-  const rowData = Object.values(groupedPayments).map((payment) => {
+export const exportPaymentsToCsv = async (
+  payments: PaymentFull[],
+  selectedColumns: string[] = []
+) => {
+  const rowData = payments.map((payment) => {
     const post = payment.Post
 
-    return {
-      postId: post?.id,
-      createdAt: new Date(payment.createdAt).toUTCString(),
-      recipient: payment.Post?.user?.name,
-      director: payment.reaction?.user.name,
-      featured: post?.isFeatured ? true : false,
-      title: post?.title,
-      categories: post?.categories.map((c) => c.name).join(", "),
-      amount: payment.amount.toFixed(2), // Summed amount
-      unit: payment.unit,
-      link: post?.discordLink,
-      fundingSource: payment.fundingSource,
+    let fullData: Record<string, any> = {}
+
+    if (selectedColumns.includes("postId") || selectedColumns.length === 0) {
+      fullData.PostId = payment.postId
     }
+    if (selectedColumns.includes("createdAt") || selectedColumns.length === 0) {
+      fullData.CreatedAt = new Date(payment.createdAt).toUTCString()
+    }
+    if (selectedColumns.includes("recipient") || selectedColumns.length === 0) {
+      fullData.Recipient = payment.Post?.user?.name
+    }
+    if (selectedColumns.includes("director") || selectedColumns.length === 0) {
+      fullData.Director = payment.reaction?.user.name
+    }
+    if (selectedColumns.includes("featured") || selectedColumns.length === 0) {
+      fullData.Featured = post?.isFeatured ? true : false
+    }
+    if (selectedColumns.includes("title") || selectedColumns.length === 0) {
+      fullData.Title = post?.title
+    }
+    if (
+      selectedColumns.includes("Categories") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.Categories = post?.categories.map((c) => c.name).join(", ")
+    }
+    if (selectedColumns.includes("amount") || selectedColumns.length === 0) {
+      fullData.Amount = payment.amount.toFixed(2)
+    }
+    if (selectedColumns.includes("unit") || selectedColumns.length === 0) {
+      fullData.Unit = payment.unit
+    }
+    if (selectedColumns.includes("Post") || selectedColumns.length === 0) {
+      fullData.Link = post?.discordLink
+    }
+    if (
+      selectedColumns.includes("fundingSource") ||
+      selectedColumns.length === 0
+    ) {
+      fullData.FundingSource = payment.fundingSource
+    }
+
+    return fullData
   })
 
   const csvConfig = mkConfig({

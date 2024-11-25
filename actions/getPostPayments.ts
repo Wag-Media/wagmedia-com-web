@@ -9,16 +9,27 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
   async ({
     fundingSource,
     globalFilter,
+    directorFilter,
     startDate,
     endDate,
-    orderBy = {
-      createdAt: "desc",
-    },
+    orderBy = [
+      {
+        Post: {
+          firstPaymentAt: "desc",
+        },
+      },
+      {
+        Post: {
+          createdAt: "desc",
+        },
+      },
+    ],
     page,
     pageSize,
   }: {
     fundingSource: string
     globalFilter?: string
+    directorFilter?: string
     startDate?: string
     endDate?: string
     orderBy?: any
@@ -30,9 +41,14 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
         not: null,
       },
       fundingSource,
-      createdAt: {
-        gte: startDate ? new Date(startDate) : undefined,
-        lte: endDate ? new Date(endDate) : undefined,
+      Post: {
+        createdAt: {
+          gte: startDate ? new Date(startDate) : undefined,
+          lte: endDate ? new Date(endDate) : undefined,
+        },
+      },
+      user: {
+        name: { contains: directorFilter, mode: "insensitive" },
       },
       OR: [
         {
