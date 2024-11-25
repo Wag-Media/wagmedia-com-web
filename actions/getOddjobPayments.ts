@@ -13,9 +13,18 @@ export const getOddjobPaymentsGroupedByPostId = unstable_cache(
     directorFilter,
     startDate,
     endDate,
-    orderBy = {
-      createdAt: "desc",
-    },
+    orderBy = [
+      {
+        OddJob: {
+          firstPaymentAt: "desc",
+        },
+      },
+      {
+        OddJob: {
+          createdAt: "desc",
+        },
+      },
+    ],
     page,
     pageSize,
   }: {

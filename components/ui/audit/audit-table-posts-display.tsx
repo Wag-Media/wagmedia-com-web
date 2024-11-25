@@ -76,14 +76,14 @@ export const columns: ColumnDef<PaymentFull>[] = [
   {
     id: "createdAt",
     accessorFn: (row) => {
-      return row.Post?.firstPaymentAt || row.createdAt
+      return row?.Post?.firstPaymentAt || row?.Post?.createdAt
     },
     header: "Datetime",
     cell: (props) => {
       const datetime = new Date(props.getValue() as string)
       return (
         <div className="flex flex-row items-center gap-2 tabular-nums">
-          {datetime.toUTCString()}
+          {datetime.toUTCString().split(" ").slice(1).join(" ")}
         </div>
       )
     },
@@ -315,6 +315,16 @@ export function AuditTablePostsDisplay() {
     pageSize: 20,
   })
 
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+  }, [
+    debouncedGlobalFilter,
+    debouncedDirectorFilter,
+    startDate,
+    endDate,
+    fundingSource,
+  ])
+
   const dataQuery = useQuery({
     queryKey: [
       "postPayments",
@@ -339,12 +349,18 @@ export function AuditTablePostsDisplay() {
       return groupedPayments
     },
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60,
+    // staleTime: 1000 * 60,
   })
 
   const defaultData = useMemo(() => [], [])
 
   const tableData = useMemo(() => {
+    console.log(
+      "dataQuery.data?.data",
+      dataQuery.data?.data.map(
+        (item) => item.Post?.firstPaymentAt || item.Post?.createdAt
+      )
+    )
     return dataQuery.isLoading || dataQuery.isFetching
       ? (Array(pagination.pageSize)
           .fill({})
@@ -355,6 +371,7 @@ export function AuditTablePostsDisplay() {
     dataQuery.isFetching,
     pagination.pageSize,
     dataQuery.data?.data,
+    defaultData,
   ])
 
   const columnData = useMemo(() => {
@@ -365,10 +382,6 @@ export function AuditTablePostsDisplay() {
         }))
       : columns
   }, [dataQuery.isLoading, dataQuery.isFetching])
-
-  useEffect(() => {
-    console.log("Table Data:", tableData)
-  }, [tableData])
 
   const table = useReactTable({
     data: tableData,
