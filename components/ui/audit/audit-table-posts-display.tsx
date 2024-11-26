@@ -169,6 +169,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
     accessorFn: (row) => {
       return row.Post?.categories?.map((category) => category.name).join(", ")
     },
+    enableSorting: false,
     cell: (props) => {
       const categories = props.getValue() as string
 
@@ -203,7 +204,6 @@ export const columns: ColumnDef<PaymentFull>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Unit
-          <CaretSortIcon className="ml-2 size-4" />
         </Button>
       )
     },
@@ -212,6 +212,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   {
     accessorKey: "Post",
     header: "Link",
+    enableSorting: false,
     cell: ({ row }) => {
       const post = row.original.Post
 
@@ -241,6 +242,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
   {
     id: "actions",
     enableHiding: false,
+    enableSorting: false,
     cell: ({ row }) => {
       const payment = row.original
 
@@ -275,10 +277,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
 
 export function AuditTablePostsDisplay() {
   const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: "createdAt",
-      desc: true, // `false` for ascending, `true` for descending
-    },
+    { id: "createdAt", desc: true },
   ])
 
   // const [grouping, setGrouping] = useState<GroupingState>(["postId"])
@@ -323,6 +322,8 @@ export function AuditTablePostsDisplay() {
     startDate,
     endDate,
     fundingSource,
+    sorting,
+    pagination.pageSize,
   ])
 
   const dataQuery = useQuery({
@@ -334,6 +335,7 @@ export function AuditTablePostsDisplay() {
       endDate,
       debouncedGlobalFilter,
       debouncedDirectorFilter,
+      sorting,
     ],
     queryFn: async () => {
       const groupedPayments = await getPostPaymentsGroupedByPostId({
@@ -344,12 +346,13 @@ export function AuditTablePostsDisplay() {
         directorFilter: debouncedDirectorFilter,
         page: pagination.pageIndex.toString(),
         pageSize: pagination.pageSize.toString(),
+        sorting,
       })
 
       return groupedPayments
     },
     refetchOnWindowFocus: false,
-    // staleTime: 1000 * 60,
+    staleTime: 1000 * 60,
   })
 
   const defaultData = useMemo(() => [], [])
@@ -396,6 +399,7 @@ export function AuditTablePostsDisplay() {
     onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     manualPagination: true,
+    manualSorting: true,
     state: {
       sorting,
       columnFilters,
@@ -428,8 +432,15 @@ export function AuditTablePostsDisplay() {
             to={endDate}
             onChangeRange={(range: DateRange | undefined) => {
               if (range && range.from && range.to) {
-                setStartDate(range.from.toISOString())
-                setEndDate(range.to.toISOString())
+                const start = new Date(range.from)
+                start.setUTCHours(23, 59, 59, 999) // Set to start of the day in UTC
+
+                const end = new Date(range.to)
+                // add 1 day to the end date
+                end.setUTCDate(end.getUTCDate() + 1)
+
+                setStartDate(start.toISOString())
+                setEndDate(end.toISOString())
               } else {
                 setStartDate("")
                 setEndDate("")
@@ -526,7 +537,7 @@ export function AuditTablePostsDisplay() {
                       }
                     >
                       {header.isPlaceholder ? null : (
-                        <>
+                        <div className="flex flex-row items-center gap-2">
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
@@ -535,7 +546,7 @@ export function AuditTablePostsDisplay() {
                             asc: " ↑",
                             desc: " ↓",
                           }[header.column.getIsSorted() as string] ?? null}
-                        </>
+                        </div>
                       )}
                     </TableHead>
                   )
