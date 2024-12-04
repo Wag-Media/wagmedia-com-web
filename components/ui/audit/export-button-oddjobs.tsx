@@ -48,6 +48,7 @@ export function ExportButtonOddjobs({
               fundingSource,
               page: "0",
               pageSize: "10000",
+              sorting: table.getState().sorting,
             })
             exportOddjobPaymentsToCsv(groupedPayments.data)
             console.info(`Exported ${groupedPayments.data.length} posts to CSV`)
@@ -66,6 +67,7 @@ export function ExportButtonOddjobs({
               directorFilter,
               page: "0",
               pageSize: "10000",
+              sorting: table.getState().sorting,
             })
             const selectedColumns = table
               .getVisibleLeafColumns()

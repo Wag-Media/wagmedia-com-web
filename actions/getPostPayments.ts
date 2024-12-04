@@ -4,6 +4,7 @@ import { unstable_cache } from "next/cache"
 import { PaymentFull } from "@/data/types"
 import { prisma } from "@/prisma/prisma"
 import { Prisma } from "@prisma/client"
+import { SortingState } from "@tanstack/react-table"
 import orderBy from "lodash"
 
 export const getPostPaymentsGroupedByPostId = unstable_cache(
@@ -13,18 +14,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     directorFilter,
     startDate,
     endDate,
-    orderBy = [
-      {
-        Post: {
-          firstPaymentAt: "desc",
-        },
-      },
-      {
-        Post: {
-          createdAt: "desc",
-        },
-      },
-    ],
+    sorting,
     page,
     pageSize,
   }: {
@@ -34,6 +24,7 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     startDate?: string
     endDate?: string
     orderBy?: any
+    sorting: SortingState
     page: string
     pageSize: string
   }) => {
@@ -81,6 +72,9 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
         },
       ],
     }
+
+    // Convert sorting array to Prisma orderBy format
+    const orderBy = getOrderBy(sorting)
 
     // Step 1: Fetch distinct postIds with pagination
     const distinctPostIds = await prisma.payment.findMany({
@@ -153,3 +147,26 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
   ["posts"],
   { revalidate: 60, tags: ["postPayments"] }
 )
+
+// Function to convert sorting array to Prisma orderBy format
+function getOrderBy(
+  sorting: SortingState
+): Prisma.PaymentOrderByWithRelationInput[] {
+  return sorting.reduce((acc, { id, desc }) => {
+    if (id === "createdAt") {
+      acc.push(
+        { Post: { firstPaymentAt: desc ? "desc" : "asc" } },
+        { Post: { createdAt: desc ? "desc" : "asc" } }
+      )
+    } else if (id === "title") {
+      acc.push({ Post: { title: desc ? "desc" : "asc" } })
+    } else if (id === "director") {
+      acc.push({ user: { name: desc ? "desc" : "asc" } })
+    } else if (id === "recipient") {
+      acc.push({ Post: { user: { name: desc ? "desc" : "asc" } } })
+    } else {
+      acc.push({ [id]: desc ? "desc" : "asc" })
+    }
+    return acc
+  }, [] as Prisma.PaymentOrderByWithRelationInput[])
+}

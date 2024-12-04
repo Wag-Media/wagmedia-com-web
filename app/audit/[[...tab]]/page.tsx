@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { AuditTableOddjobs } from "@/components/ui/audit/audit-table-oddjobs"
 import { AuditTablePosts } from "@/components/ui/audit/audit-table-posts"
 import PageAuditCharts from "@/components/ui/audit/graphs/audit-graphs"
-import { AuditGraphs } from "@/components/ui/audit/graphs/audit-graphs-display"
+import { AuditGraphs } from "@/components/ui/audit/graphs/oddjob/oddjob-by-roles"
 
 export const fetchCache = "force-no-store"
 export const revalidate = 10 // seconds

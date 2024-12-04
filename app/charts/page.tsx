@@ -1,4 +1,4 @@
-import { AuditGraphs } from "@/components/ui/audit/graphs/audit-graphs-display"
+import { AuditGraphs } from "@/components/ui/audit/graphs/oddjob/oddjob-by-roles"
 
 export default function PageCharts() {
   return (

@@ -184,6 +184,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
     id: "timeline",
     accessorFn: (payment) => payment.OddJob?.timeline,
     header: "Timeline",
+    enableSorting: false,
   },
   {
     id: "agreedPayment",
@@ -239,6 +240,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
     id: "invoices",
     header: "Invoices",
     accessorFn: (payment) => payment.OddJob?.attachments,
+    enableSorting: false,
     cell: ({ row, getValue }) => {
       const attachments = getValue<Attachment[]>()
 
@@ -264,6 +266,7 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   {
     id: "link",
     header: "Link",
+    enableSorting: false,
     accessorFn: (payment) => payment.OddJob?.discordLink,
     cell: ({ row, getValue }) => {
       const discordLink = getValue<string>()
@@ -352,7 +355,7 @@ export function AuditTableOddjobsDisplay() {
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "createdAt",
-      desc: true, // `false` for ascending, `true` for descending
+      desc: true,
     },
   ])
 
@@ -372,11 +375,6 @@ export function AuditTableOddjobsDisplay() {
   })
   const [rowSelection, setRowSelection] = useState({})
 
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 20,
-  })
-
   // filters
   const [globalFilter, setGlobalFilter] = useState("")
   const debouncedGlobalFilter = useDebounce(globalFilter, 300)
@@ -387,6 +385,23 @@ export function AuditTableOddjobsDisplay() {
   const [endDate, setEndDate] = useState("")
   const [fundingSource, setFundingSource] = useState<string>("OpenGov-1130")
 
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  })
+
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+  }, [
+    debouncedGlobalFilter,
+    debouncedDirectorFilter,
+    startDate,
+    endDate,
+    fundingSource,
+    sorting,
+    pagination.pageSize,
+  ])
+
   const dataQuery = useQuery({
     queryKey: [
       "oddjobPayments",
@@ -396,6 +411,7 @@ export function AuditTableOddjobsDisplay() {
       endDate,
       debouncedGlobalFilter,
       debouncedDirectorFilter,
+      sorting,
     ],
     queryFn: async () => {
       const data = await getOddjobPaymentsGroupedByPostId({
@@ -406,6 +422,7 @@ export function AuditTableOddjobsDisplay() {
         directorFilter: debouncedDirectorFilter,
         page: pagination.pageIndex.toString(),
         pageSize: pagination.pageSize.toString(),
+        sorting,
       })
       return data
     },
@@ -446,6 +463,7 @@ export function AuditTableOddjobsDisplay() {
     getGroupedRowModel: getGroupedRowModel(),
     onPaginationChange: setPagination,
     manualPagination: true,
+    manualSorting: true,
     state: {
       sorting,
       columnFilters,
@@ -473,8 +491,15 @@ export function AuditTableOddjobsDisplay() {
           to={endDate}
           onChangeRange={(range: DateRange | undefined) => {
             if (range && range.from && range.to) {
-              setStartDate(range.from.toISOString())
-              setEndDate(range.to.toISOString())
+              const start = new Date(range.from)
+              start.setUTCHours(23, 59, 59, 999) // Set to start of the day in UTC
+
+              const end = new Date(range.to)
+              // add 1 day to the end date
+              end.setUTCDate(end.getUTCDate() + 1)
+
+              setStartDate(start.toISOString())
+              setEndDate(end.toISOString())
             } else {
               setStartDate("")
               setEndDate("")
