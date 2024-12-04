@@ -2,10 +2,6 @@ import { Null, Option, StorageKey, u128 } from "@polkadot/types"
 import { AccountId32 } from "@polkadot/types/interfaces"
 
 import "@polkadot/api-augment"
-import {
-  PalletLiquidityMiningDepositData,
-  PalletOmnipoolPosition,
-} from "@polkadot/types/lookup"
 
 export const parseNfts = (
   nfts: [StorageKey<[AccountId32, u128, u128]>, Option<Null>][]
@@ -21,7 +17,7 @@ export const parseNfts = (
   })
 
 export const parseLiquidityPositions = <T>(
-  positions: Option<PalletOmnipoolPosition>[],
+  positions: Option<any>[],
   ids: string[],
   metadata?: T[]
 ) =>
@@ -43,7 +39,7 @@ export const parseLiquidityPositions = <T>(
         id: ids[i],
         amount: data.amount.toString(),
         shares: data.shares.toString(),
-        price: data.price.map((e) => e.toString()),
+        price: data.price.map((e: any) => e.toString()),
         assetId: data.assetId.toString(),
         ...(metadata ? metadata[i] : ({} as T)),
       })
