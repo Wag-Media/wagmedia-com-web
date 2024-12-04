@@ -98,6 +98,9 @@ importers:
       country-flag-emoji:
         specifier: ^1.0.3
         version: 1.0.3
+      cross-spawn:
+        specifier: ^7.0.6
+        version: 7.0.6
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -1744,8 +1747,8 @@ packages:
     resolution: {integrity: sha512-OVMltN9rF8Rd9fjDzcNAT376fslwlkTuu+BeqzY4Z+kr+nF/3u4Kod5SyEKuABxwvi6tWO7uszO3MgWzoevAuQ==}
     engines: {node: '>=10.0.0'}
 
-  cross-spawn@7.0.5:
-    resolution: {integrity: sha512-ZVJrKKYunU38/76t0RMOulHOnUcbU9GbpWKAOZ0mhjr7CX6FVrH+4FrAapSOekrgFQ3f/8gwMEuIft0aKq6Hug==}
+  cross-spawn@7.0.6:
+    resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
   css-in-js-utils@3.1.0:
@@ -5116,7 +5119,7 @@ snapshots:
 
   country-flag-emoji@1.0.3: {}
 
-  cross-spawn@7.0.5:
+  cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
       shebang-command: 2.0.0
@@ -5528,7 +5531,7 @@ snapshots:
       '@ungap/structured-clone': 1.2.0
       ajv: 6.12.6
       chalk: 4.1.2
-      cross-spawn: 7.0.5
+      cross-spawn: 7.0.6
       debug: 4.3.7
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
@@ -5656,7 +5659,7 @@ snapshots:
 
   foreground-child@3.3.0:
     dependencies:
-      cross-spawn: 7.0.5
+      cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
   formdata-polyfill@4.0.10:
