@@ -12,7 +12,7 @@ const TREASURY_WAGMEDIA_MULTISIG =
   "1nk1zBjum3dr6Y1YAx6Uqr6Worx5rSYJtu9iq5v5gyTFzCL"
 const TREASURY_WAGMEDIA_EVM = "0xC24061804be38E41c5Cc4bB391A20f4e494A566d"
 const TREASURY_HYDRA = "7MVFQh1WchfKX6rgoPcRLaPd3bYaF1akVsg38MtEwtTY29JF"
-const WSS_HYDRA = "wss://rpc.hydradx.cloud"
+const WSS_HYDRA = "wss://hydradx.paras.ibp.network"
 
 const SUBSCAN_POLKADOT = "https://polkadot.api.subscan.io"
 const SUBSCAN_ASSET_HUB = "https://assethub-polkadot.api.subscan.io"
@@ -47,94 +47,90 @@ const ERC20_ABI = [
  * treasury - BASE - ETH + USDC
  *
  */
-export const getTreasuryValues = unstable_cache(
-  async () => {
-    const currentTime = new Date()
+export const getTreasuryValues = async () => {
+  const currentTime = new Date()
 
-    const [
-      treasuryAH,
-      treasuryPolkadot,
-      multisigAH,
-      multisigPolkadot,
-      hydra,
-      ethTreasuryMainnet,
-      ethTreasuryBase,
-    ] = await Promise.all([
-      getSubscanAssets("assethub", TREASURY_WAGMEDIA),
-      getSubscanAssets("polkadot", TREASURY_WAGMEDIA),
-      getSubscanAssets("assethub", TREASURY_WAGMEDIA_MULTISIG),
-      getSubscanAssets("polkadot", TREASURY_WAGMEDIA_MULTISIG),
-      getHydraPoolBalance(),
-      getEthTreasuryBalance({ chain: mainnet }),
-      getEthTreasuryBalance({ chain: base }),
-    ])
+  const [
+    treasuryAH,
+    treasuryPolkadot,
+    multisigAH,
+    multisigPolkadot,
+    hydra,
+    ethTreasuryMainnet,
+    ethTreasuryBase,
+  ] = await Promise.all([
+    getSubscanAssets("assethub", TREASURY_WAGMEDIA),
+    getSubscanAssets("polkadot", TREASURY_WAGMEDIA),
+    getSubscanAssets("assethub", TREASURY_WAGMEDIA_MULTISIG),
+    getSubscanAssets("polkadot", TREASURY_WAGMEDIA_MULTISIG),
+    getHydraPoolBalance(),
+    getEthTreasuryBalance({ chain: mainnet }),
+    getEthTreasuryBalance({ chain: base }),
+  ])
 
-    const totalTreasuryAH = calculateTotalValue(treasuryAH)
-    const totalTreasuryPolkadot = calculateTotalValue(treasuryPolkadot)
-    const totalMultisigAH = calculateTotalValue(multisigAH)
-    const totalMultisigPolkadot = calculateTotalValue(multisigPolkadot)
+  const totalTreasuryAH = calculateTotalValue(treasuryAH)
+  const totalTreasuryPolkadot = calculateTotalValue(treasuryPolkadot)
+  const totalMultisigAH = calculateTotalValue(multisigAH)
+  const totalMultisigPolkadot = calculateTotalValue(multisigPolkadot)
 
-    const DOTprice = treasuryPolkadot.native.find(
-      (item) => item.symbol === "DOT"
-    )?.price
-    const totalHydra = hydra.DOTamount * Number(DOTprice)
+  const DOTprice = treasuryPolkadot.native.find(
+    (item) => item.symbol === "DOT"
+  )?.price
+  const totalHydra = hydra.DOTamount * Number(DOTprice)
 
-    return {
-      currentTime,
-      totalUSD:
-        totalTreasuryAH +
-        totalTreasuryPolkadot +
-        totalMultisigAH +
-        totalMultisigPolkadot +
-        totalHydra +
-        ethTreasuryMainnet.totalUSD +
-        ethTreasuryBase.totalUSD,
-      eth: {
-        address: TREASURY_WAGMEDIA_EVM,
-        mainnet: {
-          ...ethTreasuryMainnet,
-          url: `https://etherscan.io/address/${TREASURY_WAGMEDIA_EVM}`,
-        },
-        base: {
-          ...ethTreasuryBase,
-          url: `https://basescan.org/address/${TREASURY_WAGMEDIA_EVM}`,
-        },
+  return {
+    currentTime,
+    totalUSD:
+      totalTreasuryAH +
+      totalTreasuryPolkadot +
+      totalMultisigAH +
+      totalMultisigPolkadot +
+      totalHydra +
+      ethTreasuryMainnet.totalUSD +
+      ethTreasuryBase.totalUSD,
+    eth: {
+      address: TREASURY_WAGMEDIA_EVM,
+      mainnet: {
+        ...ethTreasuryMainnet,
+        url: `https://etherscan.io/address/${TREASURY_WAGMEDIA_EVM}`,
       },
-      hydra: {
-        totalUSD: totalHydra,
-        address: TREASURY_HYDRA,
-        url: `https://app.hydration.net/liquidity/my-liquidity?account=${TREASURY_HYDRA}&id=5`,
-        ...hydra,
+      base: {
+        ...ethTreasuryBase,
+        url: `https://basescan.org/address/${TREASURY_WAGMEDIA_EVM}`,
       },
-      treasuryAH: {
-        totalUSD: totalTreasuryAH,
-        address: TREASURY_WAGMEDIA,
-        url: `${SUBSCAN_ASSET_HUB}/account/${TREASURY_WAGMEDIA}`,
-        ...treasuryAH,
-      },
-      treasuryPolkadot: {
-        totalUSD: totalTreasuryPolkadot,
-        address: TREASURY_WAGMEDIA,
-        url: `${SUBSCAN_POLKADOT}/account/${TREASURY_WAGMEDIA}`,
-        ...treasuryPolkadot,
-      },
-      multisigAH: {
-        totalUSD: totalMultisigAH,
-        address: TREASURY_WAGMEDIA_MULTISIG,
-        url: `${SUBSCAN_ASSET_HUB}/account/${TREASURY_WAGMEDIA_MULTISIG}`,
-        ...multisigAH,
-      },
-      multisigPolkadot: {
-        totalUSD: totalMultisigPolkadot,
-        address: TREASURY_WAGMEDIA_MULTISIG,
-        url: `${SUBSCAN_POLKADOT}/account/${TREASURY_WAGMEDIA_MULTISIG}`,
-        ...multisigPolkadot,
-      },
-    }
-  },
-  ["treasuries"],
-  { revalidate: 43200 }
-) // 12 hours in seconds
+    },
+    hydra: {
+      totalUSD: totalHydra,
+      address: TREASURY_HYDRA,
+      url: `https://app.hydration.net/liquidity/my-liquidity?account=${TREASURY_HYDRA}&id=5`,
+      ...hydra,
+    },
+    treasuryAH: {
+      totalUSD: totalTreasuryAH,
+      address: TREASURY_WAGMEDIA,
+      url: `${SUBSCAN_ASSET_HUB}/account/${TREASURY_WAGMEDIA}`,
+      ...treasuryAH,
+    },
+    treasuryPolkadot: {
+      totalUSD: totalTreasuryPolkadot,
+      address: TREASURY_WAGMEDIA,
+      url: `${SUBSCAN_POLKADOT}/account/${TREASURY_WAGMEDIA}`,
+      ...treasuryPolkadot,
+    },
+    multisigAH: {
+      totalUSD: totalMultisigAH,
+      address: TREASURY_WAGMEDIA_MULTISIG,
+      url: `${SUBSCAN_ASSET_HUB}/account/${TREASURY_WAGMEDIA_MULTISIG}`,
+      ...multisigAH,
+    },
+    multisigPolkadot: {
+      totalUSD: totalMultisigPolkadot,
+      address: TREASURY_WAGMEDIA_MULTISIG,
+      url: `${SUBSCAN_POLKADOT}/account/${TREASURY_WAGMEDIA_MULTISIG}`,
+      ...multisigPolkadot,
+    },
+  }
+}
 
 async function getHydraPoolBalance() {
   const provider = new WsProvider(WSS_HYDRA)
@@ -145,10 +141,10 @@ async function getHydraPoolBalance() {
     api.consts.omnipoolLiquidityMining.nftCollectionId,
     api.consts.xykLiquidityMining.nftCollectionId,
   ])
-  const [omnipoolNftsRaw, miningNftsRaw, xykMiningNftsRaw] = await Promise.all([
-    api.query.uniques.account.entries(TREASURY_HYDRA, omnipoolNftId),
+  const [miningNftsRaw] = await Promise.all([
+    // api.query.uniques.account.entries(TREASURY_HYDRA, omnipoolNftId),
     api.query.uniques.account.entries(TREASURY_HYDRA, miningNftId),
-    api.query.uniques.account.entries(TREASURY_HYDRA, xykMiningNftId),
+    // api.query.uniques.account.entries(TREASURY_HYDRA, xykMiningNftId),
   ])
 
   // const omnipoolNfts = parseNfts(omnipoolNftsRaw as any)
