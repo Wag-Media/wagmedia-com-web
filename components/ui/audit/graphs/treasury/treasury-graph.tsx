@@ -166,7 +166,7 @@ export function TreasuryGraph({ treasuries }: { treasuries: any }) {
                             y={viewBox.cy}
                             className="text-lg font-bold fill-foreground"
                           >
-                            ${treasuries.totalUSD.toFixed(2)}
+                            ${treasuries.totalUSD.toFixed(0)}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
