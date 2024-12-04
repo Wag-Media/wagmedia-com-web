@@ -76,8 +76,6 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
     // Convert sorting array to Prisma orderBy format
     const orderBy = getOrderBy(sorting)
 
-    console.log("orderBy", orderBy)
-
     // Step 1: Fetch distinct postIds with pagination
     const distinctPostIds = await prisma.payment.findMany({
       orderBy,
@@ -150,7 +148,6 @@ export const getPostPaymentsGroupedByPostId = unstable_cache(
   { revalidate: 60, tags: ["postPayments"] }
 )
 
-// Function to convert sorting array to Prisma orderBy format
 // Function to convert sorting array to Prisma orderBy format
 function getOrderBy(
   sorting: SortingState
