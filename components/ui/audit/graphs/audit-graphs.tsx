@@ -5,7 +5,7 @@ import { getTreasuryValues } from "@/actions/getTreasuryValues"
 import { OddjobByRoles } from "./oddjob/oddjob-by-roles"
 import { TreasuryGraph } from "./treasury/treasury-graph"
 
-export const revalidate = 43200
+export const revalidate = 43200 // 12 hours
 
 export default async function PageAuditCharts() {
   const treasuries = await getTreasuryValues()
