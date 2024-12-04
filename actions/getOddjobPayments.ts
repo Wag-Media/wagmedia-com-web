@@ -156,12 +156,12 @@ function getOrderBy(
       acc.push(
         {
           OddJob: {
-            firstPaymentAt: "desc",
+            createdAt: "desc",
           },
         },
         {
           OddJob: {
-            createdAt: "desc",
+            firstPaymentAt: "desc",
           },
         }
       )

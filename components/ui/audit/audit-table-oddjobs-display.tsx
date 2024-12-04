@@ -102,7 +102,10 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   // },
   {
     id: "createdAt",
-    accessorFn: (row) => row.OddJob?.firstPaymentAt || row.createdAt,
+    accessorFn: (row) =>
+      row?.OddJob?.createdAt
+        ? row?.OddJob?.createdAt
+        : row?.OddJob?.firstPaymentAt,
     header: "Datetime",
     cell: (props) => {
       const datetime = new Date(props.getValue() as string)
