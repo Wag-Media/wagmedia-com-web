@@ -190,8 +190,8 @@ export function TreasuryGraph({ treasuries }: { treasuries: any }) {
         </CardContent>
         <CardFooter className="flex-col gap-2 mt-2 text-sm text-center">
           <p className="text-xs leading-none text-muted-foreground">
-            Total Treasury Amount might deviate from the actual amount due to
-            the use of different prices for each asset. For more accurate
+            The total treasury amount might deviate from the actual amount due
+            to the use of different prices for each asset. For more accurate
             values, please refer to the detailed breakdown in block explorers:{" "}
             {[
               treasuries.treasuryAH.url,
