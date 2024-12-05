@@ -50,23 +50,25 @@ const ERC20_ABI = [
 export const getTreasuryValues = async () => {
   const currentTime = new Date()
 
-  const [
-    treasuryAH,
-    treasuryPolkadot,
-    multisigAH,
-    multisigPolkadot,
-    hydra,
-    ethTreasuryMainnet,
-    ethTreasuryBase,
-  ] = await Promise.all([
-    getSubscanAssets("assethub", TREASURY_WAGMEDIA),
-    getSubscanAssets("polkadot", TREASURY_WAGMEDIA),
-    getSubscanAssets("assethub", TREASURY_WAGMEDIA_MULTISIG),
-    getSubscanAssets("polkadot", TREASURY_WAGMEDIA_MULTISIG),
-    getHydraPoolBalance(),
-    getEthTreasuryBalance({ chain: mainnet }),
-    getEthTreasuryBalance({ chain: base }),
-  ])
+  const [treasuryAH, hydra, ethTreasuryMainnet, ethTreasuryBase] =
+    await Promise.all([
+      getSubscanAssets("assethub", TREASURY_WAGMEDIA),
+      getHydraPoolBalance(),
+      getEthTreasuryBalance({ chain: mainnet }),
+      getEthTreasuryBalance({ chain: base }),
+    ])
+
+  const treasuryPolkadot = await getSubscanAssets("polkadot", TREASURY_WAGMEDIA)
+
+  const multisigAH = await getSubscanAssets(
+    "assethub",
+    TREASURY_WAGMEDIA_MULTISIG
+  )
+
+  const multisigPolkadot = await getSubscanAssets(
+    "polkadot",
+    TREASURY_WAGMEDIA_MULTISIG
+  )
 
   const totalTreasuryAH = calculateTotalValue(treasuryAH)
   const totalTreasuryPolkadot = calculateTotalValue(treasuryPolkadot)
@@ -133,10 +135,6 @@ export const getTreasuryValues = async () => {
 }
 
 async function getHydraPoolBalance() {
-  return {
-    DOTamount: 20000,
-  }
-
   const provider = new WsProvider(WSS_HYDRA)
   const api = await ApiPromise.create({ provider })
 
