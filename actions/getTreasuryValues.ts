@@ -135,6 +135,10 @@ export const getTreasuryValues = async () => {
 }
 
 async function getHydraPoolBalance() {
+  return {
+    DOTamount: 20000,
+  }
+
   const provider = new WsProvider(WSS_HYDRA)
   const api = await ApiPromise.create({ provider })
 
