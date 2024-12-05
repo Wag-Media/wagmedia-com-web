@@ -133,6 +133,10 @@ export const getTreasuryValues = async () => {
 }
 
 async function getHydraPoolBalance() {
+  return {
+    DOTamount: 20000,
+  }
+
   const provider = new WsProvider(WSS_HYDRA)
   const api = await ApiPromise.create({ provider })
 
@@ -251,13 +255,15 @@ function calculateTotalValue(data: {
     symbol: string
   }[]
 }): number {
-  const totalNativeValue = data.native.reduce((acc, item) => {
-    const balance = Number(item.balance) / Math.pow(10, item.decimals)
-    const price = Number(item.price)
-    return acc + balance * price
-  }, 0)
+  const totalNativeValue = data?.native
+    ? data?.native?.reduce((acc, item) => {
+        const balance = Number(item.balance) / Math.pow(10, item.decimals)
+        const price = Number(item.price)
+        return acc + balance * price
+      }, 0)
+    : 0
 
-  const totalAssetsValue = data.assets
+  const totalAssetsValue = data?.assets
     ? data.assets.reduce((acc, item) => {
         if (item.price || item.symbol.includes("USD")) {
           const balance = Number(item.balance) / Math.pow(10, item.decimals)
