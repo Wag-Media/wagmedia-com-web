@@ -148,8 +148,7 @@ export function TreasuryGraph({ treasuries }: { treasuries: any }) {
                 innerRadius={60}
                 outerRadius={110}
                 strokeWidth={2}
-                labelLine={true}
-                label={false}
+                labelLine={false}
               >
                 <Label
                   content={({ viewBox }) => {
