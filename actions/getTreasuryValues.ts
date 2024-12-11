@@ -195,7 +195,12 @@ async function getEthTreasuryBalance({
   blockNumber?: bigint
   date?: string
   chain?: Chain
-}): Promise<{ ethBalance: number; usdcBalance: number; totalUSD: number }> {
+}): Promise<{
+  ethPrice: number
+  ethBalance: number
+  usdcBalance: number
+  totalUSD: number
+}> {
   if (!chain) {
     chain = mainnet
   }
@@ -221,6 +226,8 @@ async function getEthTreasuryBalance({
 
   const ethUsdRate = await getEthUsdRate()
 
+  console.log("ethUsdRate", ethUsdRate)
+
   const usdcContractAddress: `0x${string}` =
     usdcAddresses[chain.id as keyof typeof usdcAddresses]
 
@@ -233,6 +240,7 @@ async function getEthTreasuryBalance({
   })) as unknown as bigint
 
   return {
+    ethPrice: ethUsdRate,
     ethBalance: Number(ethBalance.toString()) / 10 ** 18,
     usdcBalance: usdcBalance
       ? Number(usdcBalance.toString()) / 10 ** USDC_DECIMALS
@@ -377,7 +385,7 @@ async function getEthUsdRate() {
   // Fetch the current ETH to USD exchange rate
   const response = await fetch(
     "https://api.etherscan.io/api?module=stats&action=ethprice&apikey=" +
-      process.env.ETHERSCAN_API_KEY
+      process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY
   )
   const data = await response.json()
   const ethToUsdRate = data?.result?.ethusd

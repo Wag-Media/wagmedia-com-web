@@ -31,18 +31,16 @@ export function OddjobByRoles({
 
   const coloredData = totalPayments.map((p: any, index: number) => ({
     ...p,
-    label: p.role,
+    label: p.role.replace("_", " "),
     fill: `hsl(var(--chart-${(index + 1) % 10}))`,
   }))
 
   const chartConfig = totalPayments.reduce((acc: any, p: any) => {
     acc[p.role] = {
-      label: p.role,
+      label: p.role.replace(/_/g, " "),
     }
     return acc
   }, {}) satisfies ChartConfig
-
-  // console.log("coloredData", coloredData)
 
   return (
     <>
@@ -67,7 +65,7 @@ export function OddjobByRoles({
         <CardContent className="flex-1 pb-0">
           <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square max-h-[300px]"
+            className="mx-auto aspect-square max-h-[400px]"
           >
             <PieChart>
               <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
@@ -75,8 +73,8 @@ export function OddjobByRoles({
                 data={coloredData}
                 dataKey="USD"
                 nameKey="role"
-                innerRadius={60}
-                outerRadius={110}
+                innerRadius={80}
+                outerRadius={130}
                 strokeWidth={2}
               >
                 <Label
@@ -111,7 +109,7 @@ export function OddjobByRoles({
               </Pie>
               <ChartLegend
                 content={<ChartLegendContent />}
-                // className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+                className="-translate-y-2 flex-wrap gap-2 [&>*]:justify-center"
               />
             </PieChart>
           </ChartContainer>

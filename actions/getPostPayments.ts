@@ -5,7 +5,6 @@ import { PaymentFull } from "@/data/types"
 import { prisma } from "@/prisma/prisma"
 import { Prisma } from "@prisma/client"
 import { SortingState } from "@tanstack/react-table"
-import orderBy from "lodash"
 
 export const getPostPaymentsGroupedByPostId = unstable_cache(
   async ({

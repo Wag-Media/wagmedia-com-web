@@ -70,7 +70,7 @@ export default async function AuditPage({
         </Suspense>
       )}
       {selectedTab === "charts" && (
-        <Suspense fallback={<div>Loading Audit Data...</div>}>
+        <Suspense fallback={<div>Loading Charts...</div>}>
           <PageAuditCharts />
         </Suspense>
       )}
