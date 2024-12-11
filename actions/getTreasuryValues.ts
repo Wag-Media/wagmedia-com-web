@@ -83,14 +83,13 @@ export const getTreasuryValues = async () => {
   return {
     currentTime,
     totalUSD:
-      totalTreasuryAH ||
-      0 + totalTreasuryPolkadot ||
-      0 + totalMultisigAH ||
-      0 + totalMultisigPolkadot ||
-      0 + totalHydra ||
-      0 + ethTreasuryMainnet.totalUSD ||
-      0 + ethTreasuryBase.totalUSD ||
-      0,
+      (totalTreasuryAH || 0) +
+      (totalTreasuryPolkadot || 0) +
+      (totalMultisigAH || 0) +
+      (totalMultisigPolkadot || 0) +
+      (totalHydra || 0) +
+      (ethTreasuryMainnet.totalUSD || 0) +
+      (ethTreasuryBase.totalUSD || 0),
     eth: {
       address: TREASURY_WAGMEDIA_EVM,
       mainnet: {
