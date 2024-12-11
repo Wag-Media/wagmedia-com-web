@@ -49,7 +49,7 @@ export function OddjobByRoles({
       </Card> */}
       <Card className="flex flex-col">
         <CardHeader className="items-center pb-0">
-          <CardTitle>WagMedia Oddjob Payments by Role</CardTitle>
+          <CardTitle>WagMedia Oddjob Payments by Role (USD)</CardTitle>
           <CardDescription>
             {totalOddJobPayments.firstSpent.toLocaleString("default", {
               month: "long",

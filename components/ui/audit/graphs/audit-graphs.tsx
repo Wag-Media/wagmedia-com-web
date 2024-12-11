@@ -66,8 +66,11 @@ export default async function PageAuditCharts() {
         <TreasuryGraph />
         <SimplePieChart
           data={chartDataContent}
-          title="WagMedia Spending"
-          description="Total Spending"
+          title="WagMedia Content Spending (DOT)"
+          description={`October 2024 - ${new Date().toLocaleString("default", {
+            month: "long",
+            year: "numeric",
+          })}`}
           centerText={`${totalContentSpent.toFixed(2)} DOT`}
           centerTextDescription="Total Spent"
         />

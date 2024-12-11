@@ -54,10 +54,10 @@ export async function getSpendingsContent(): Promise<Spending> {
       postId: {
         not: null,
       },
+      fundingSource: "OpenGov-1130",
       Post: {
         contentType: "article",
       },
-      fundingSource: "OpenGov-1130",
     },
   })
 
