@@ -50,7 +50,7 @@ export function GraphRoleSpendingBars({
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="mx-auto max-h-[400px]">
           <BarChart
             accessibilityLayer
             data={chartData.sort((a, b) => a.USD - b.USD)}

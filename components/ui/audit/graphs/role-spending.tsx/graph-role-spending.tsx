@@ -78,17 +78,20 @@ export async function GraphsRoleSpending() {
   // ]
 
   return (
-    <>
-      {/* {budgets.map(([budget, spendingsQuery, title, description]) => (
-        <GraphRoleSpendingDetail
-          key={title}
-          budget={budget}
-          spendingsQuery={spendingsQuery}
-          title={title}
-          description={description}
-        />
-      ))} */}
+    <div className="col-span-2">
       <GraphRoleSpendingBars chartData={chartData} />
-    </>
+    </div>
+
+    // <>
+    //   {/* {budgets.map(([budget, spendingsQuery, title, description]) => (
+    //     <GraphRoleSpendingDetail
+    //       key={title}
+    //       budget={budget}
+    //       spendingsQuery={spendingsQuery}
+    //       title={title}
+    //       description={description}
+    //     />
+    //   ))} */}
+    // </>
   )
 }

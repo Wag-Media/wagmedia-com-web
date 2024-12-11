@@ -72,7 +72,13 @@ export default async function PageAuditCharts() {
           centerTextDescription="Total Spent"
         />
         <OddjobByRoles totalOddJobPayments={totalOddJobPayments} />
-        <Suspense fallback={<Skeleton className="h-[300px]" />}>
+        <Suspense
+          fallback={
+            <div className="h-[300px] w-full flex items-center justify-center">
+              <Skeleton className="h-[300px]" />
+            </div>
+          }
+        >
           <GraphsRoleSpending />
         </Suspense>
       </div>
