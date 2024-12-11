@@ -46,8 +46,13 @@ export function GraphRoleSpendingBars({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>WagMedia Spendings by Area</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Monthly WagMedia Spendings</CardTitle>
+        <CardDescription>
+          {new Date().toLocaleString("default", {
+            month: "long",
+            year: "numeric",
+          })}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="mx-auto max-h-[400px]">
