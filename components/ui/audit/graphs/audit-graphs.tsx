@@ -68,7 +68,7 @@ export default async function PageAuditCharts() {
           data={chartDataContent}
           title="WagMedia Spending"
           description="Total Spending"
-          centerText={`${totalContentSpent} DOT`}
+          centerText={`${totalContentSpent.toFixed(2)} DOT`}
           centerTextDescription="Total Spent"
         />
         <OddjobByRoles totalOddJobPayments={totalOddJobPayments} />
