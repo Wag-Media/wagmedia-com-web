@@ -12,7 +12,7 @@ import { name } from "country-emoji"
 
 import { Skeleton } from "../../skeleton"
 import { OddjobByRoles } from "./oddjob/oddjob-by-roles"
-import { GraphsRoleSpending } from "./role-spending.tsx/graph-role-spending"
+import { GraphsMonthlySpending } from "./role-spending.tsx/graph-monthly-spending"
 import { SimplePieChart } from "./simple-pie-chart"
 import { TreasuryGraph } from "./treasury/treasury-graph"
 
@@ -31,17 +31,17 @@ export default async function PageAuditCharts() {
   const chartDataContent = [
     {
       name: "Content",
-      value: spendingsContent.DOT,
+      value: spendingsContent.total.DOT,
       fill: `hsl(var(--chart-${1}))`,
     },
     {
       name: "Newsletter",
-      value: spendingsNewsletter.DOT,
+      value: spendingsNewsletter.total.DOT,
       fill: `hsl(var(--chart-${2}))`,
     },
     {
       name: "Finders",
-      value: spendingsFinders.DOT,
+      value: spendingsFinders.total.DOT,
       fill: `hsl(var(--chart-${3}))`,
     },
   ]
@@ -82,7 +82,12 @@ export default async function PageAuditCharts() {
             </div>
           }
         >
-          <GraphsRoleSpending />
+          <GraphsMonthlySpending
+            oddjobSpending={totalOddJobPayments.byMonth}
+            contentSpending={spendingsContent.byMonth}
+            newsletterSpending={spendingsNewsletter.byMonth}
+            findersSpending={spendingsFinders.byMonth}
+          />
         </Suspense>
       </div>
     </div>

@@ -38,35 +38,54 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function GraphRoleSpendingBars({
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const
+
+function formatYearMonth(yearMonth: string) {
+  const [year, month] = yearMonth.split("-")
+  const index = Number(month)
+  if (index < 0 || index >= 12) return yearMonth
+  return `${MONTHS[index]} ${year}`
+}
+
+export function GraphMonthlySpendingBars({
   chartData,
 }: {
-  chartData: { role: string; DOT: number; USD: number }[]
+  chartData: { yearMonth: string; DOT: number; USD: number }[]
 }) {
+  const firstMonth = chartData[0].yearMonth
+  const lastMonth = chartData[chartData.length - 1].yearMonth
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Monthly WagMedia Spendings</CardTitle>
         <CardDescription>
-          {new Date().toLocaleString("default", {
-            month: "long",
-            year: "numeric",
-          })}
+          {formatYearMonth(firstMonth)} - {formatYearMonth(lastMonth)}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="mx-auto max-h-[400px]">
-          <BarChart
-            accessibilityLayer
-            data={chartData.sort((a, b) => a.USD - b.USD)}
-          >
+          <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="role"
+              dataKey="yearMonth"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              //   tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={formatYearMonth}
             />
             <ChartTooltip
               cursor={false}

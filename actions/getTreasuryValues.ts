@@ -52,8 +52,6 @@ interface TreasuryData {
   multisigPolkadot?: any // Replace 'any' with specific type if needed
 }
 
-export const revalidate = 3600 // 1 hour
-
 /**
  * Get the current USD value of the treasury
  *

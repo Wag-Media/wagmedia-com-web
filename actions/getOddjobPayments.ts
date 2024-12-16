@@ -229,6 +229,17 @@ export const getOddjobPaymentsByRole = unstable_cache(
       return acc
     }, {} as Record<string, Record<string, number>>)
 
+    const groupedByMonth = payments.reduce((acc, payment) => {
+      const year = payment.createdAt.getFullYear()
+      const month = payment.createdAt.getMonth()
+      const currency = payment.unit as "DOT" | "USD"
+      acc[`${year}-${month}`] = {
+        ...(acc[`${year}-${month}`] || { DOT: 0, USD: 0 }),
+        [currency]: (acc[`${year}-${month}`]?.[currency] || 0) + payment.amount,
+      }
+      return acc
+    }, {} as Record<string, { DOT: number; USD: number }>)
+
     // Convert grouped data to an array format
     const result = Object.entries(groupedData).map(([role, currencies]) => ({
       role: role
@@ -243,6 +254,7 @@ export const getOddjobPaymentsByRole = unstable_cache(
       total,
       firstSpent: payments[0].createdAt,
       lastSpent: payments[payments.length - 1].createdAt,
+      byMonth: groupedByMonth,
     }
   },
   ["oddjobs"],

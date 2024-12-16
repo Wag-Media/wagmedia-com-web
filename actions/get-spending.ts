@@ -48,7 +48,10 @@ export async function getSpendingsGroupedByRole(): Promise<
  * Get all spendings in the content creations, which is all post payments
  * @returns
  */
-export async function getSpendingsContent(): Promise<Spending> {
+export async function getSpendingsContent(): Promise<{
+  total: Spending
+  byMonth: Record<string, Spending>
+}> {
   const res = await prisma.payment.findMany({
     where: {
       postId: {
@@ -73,10 +76,27 @@ export async function getSpendingsContent(): Promise<Spending> {
     { DOT: 0, USD: 0 }
   )
 
-  return total
+  const byMonth = res.reduce((acc, payment) => {
+    const year = payment.createdAt.getFullYear()
+    const month = payment.createdAt.getMonth()
+    const currency = payment.unit as "DOT" | "USD"
+    acc[`${year}-${month}`] = {
+      ...(acc[`${year}-${month}`] || { DOT: 0, USD: 0 }),
+      [currency]: (acc[`${year}-${month}`]?.[currency] || 0) + payment.amount,
+    }
+    return acc
+  }, {} as Record<string, Spending>)
+
+  return {
+    total,
+    byMonth,
+  }
 }
 
-export async function getSpendingsFinders(): Promise<Spending> {
+export async function getSpendingsFinders(): Promise<{
+  total: Spending
+  byMonth: Record<string, Spending>
+}> {
   const findersPayments = await prisma.payment.findMany({
     where: {
       fundingSource: "OpenGov-1130",
@@ -98,10 +118,27 @@ export async function getSpendingsFinders(): Promise<Spending> {
     { DOT: 0, USD: 0 }
   )
 
-  return totalFinders
+  const byMonth = findersPayments.reduce((acc, payment) => {
+    const year = payment.createdAt.getFullYear()
+    const month = payment.createdAt.getMonth()
+    const currency = payment.unit as "DOT" | "USD"
+    acc[`${year}-${month}`] = {
+      ...(acc[`${year}-${month}`] || { DOT: 0, USD: 0 }),
+      [currency]: (acc[`${year}-${month}`]?.[currency] || 0) + payment.amount,
+    }
+    return acc
+  }, {} as Record<string, Spending>)
+
+  return {
+    total: totalFinders,
+    byMonth,
+  }
 }
 
-export async function getSpendingsNewsletter(): Promise<Spending> {
+export async function getSpendingsNewsletter(): Promise<{
+  total: Spending
+  byMonth: Record<string, Spending>
+}> {
   const newsletterPosts = await prisma.post.findMany({
     where: {
       categories: {
@@ -138,9 +175,21 @@ export async function getSpendingsNewsletter(): Promise<Spending> {
     }
   )
 
-  console.log("totalNewsletter", total)
+  const byMonth = totalNewsletter.reduce((acc, payment) => {
+    const year = payment.createdAt.getFullYear()
+    const month = payment.createdAt.getMonth()
+    const currency = payment.unit as "DOT" | "USD"
+    acc[`${year}-${month}`] = {
+      ...(acc[`${year}-${month}`] || { DOT: 0, USD: 0 }),
+      [currency]: (acc[`${year}-${month}`]?.[currency] || 0) + payment.amount,
+    }
+    return acc
+  }, {} as Record<string, Spending>)
 
-  return total
+  return {
+    total,
+    byMonth,
+  }
 }
 
 // Development + Tooling - $94,500 (Developer, QA and Product Owner, QA, Product Owner, WagTool, Infra, Web Designer, WagTool Maintenance/Bug Squash)
