@@ -44,11 +44,7 @@ interface TreasuryData {
   error: unknown | null
   currentTime: Date
   totalUSD: number
-  eth?: {
-    address: string
-    mainnet: any // Replace 'any' with specific type if needed
-    base: any // Replace 'any' with specific type if needed
-  }
+  eth?: any
   hydra?: any // Replace 'any' with specific type if needed
   treasuryAH?: any // Replace 'any' with specific type if needed
   treasuryPolkadot?: any // Replace 'any' with specific type if needed
@@ -69,7 +65,7 @@ interface TreasuryData {
  */
 export const getTreasuryValues = async (): Promise<TreasuryData> => {
   const currentTime = new Date()
-  let data = {
+  let data: TreasuryData = {
     success: false,
     error: null,
     currentTime,
