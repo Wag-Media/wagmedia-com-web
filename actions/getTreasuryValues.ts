@@ -424,7 +424,7 @@ async function getEthUsdRate() {
   // Fetch the current ETH to USD exchange rate
   const response = await fetch(
     "https://api.etherscan.io/api?module=stats&action=ethprice&apikey=" +
-      process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY
+      process.env.ETHERSCAN_API_KEY
   )
   const data = await response.json()
   const ethToUsdRate = data?.result?.ethusd
