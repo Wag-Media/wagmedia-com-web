@@ -3,12 +3,13 @@ import Link from "next/link"
 import { PostDataType } from "@/data/types"
 import { Category } from "@prisma/client"
 
+import { slugify } from "@/lib/slug"
 import Badge from "@/components/Badge/Badge"
 
 export interface CategoryBadgeListWagProps {
   className?: string
   itemClass?: string
-  categories: Category[]
+  categories: (Category & { slug?: string })[]
 }
 
 const CategoryBadgeListWag: FC<CategoryBadgeListWagProps> = ({
@@ -22,7 +23,7 @@ const CategoryBadgeListWag: FC<CategoryBadgeListWagProps> = ({
       data-nc-id="CategoryBadgeListWag"
     >
       {categories.map((item, index) => (
-        <Link href={`/category/${item.name}`} passHref key={item.name}>
+        <Link href={`/category/${slugify(item.name)}`} passHref key={item.name}>
           <Badge
             className={itemClass}
             key={index}

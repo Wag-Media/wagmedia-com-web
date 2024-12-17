@@ -18,6 +18,7 @@ export default async function PageCategories() {
         heading="Explore curated Polkadot content"
         desc="Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Polkadot."
       />
+      s
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import { code, countries, name } from "country-emoji"
 
-export function isCategoryNameLanguage(name: string): boolean {
+export function isCategoryNameLanguage(slug: string): boolean {
   return (
     Object.values(countries)
       .map((countryArray) => countryArray[countryArray.length - 1])
-      .find((countryName) => countryName.toLowerCase() === name) !== undefined
+      .find((countryName) => countryName.toLowerCase() === slug) !== undefined
   )
 }
 

@@ -3,6 +3,7 @@ import { Category, ContentType } from "@prisma/client"
 import { code, countries, name } from "country-emoji"
 import _, { filter, orderBy } from "lodash"
 
+import { deslugify, slugify } from "@/lib/slug"
 import { getPostFlag } from "@/lib/utils"
 
 import { getPostsByCategoryId } from "./dbPosts"
@@ -79,7 +80,12 @@ export async function getCategoryOverview(
     },
   })
 
-  return categories.filter((category) => category.posts.length > 0)
+  return categories
+    .filter((category) => category.posts.length > 0)
+    .map((category) => ({
+      ...category,
+      slug: slugify(category.name),
+    }))
 }
 
 export async function getNonAngloOverview() {
@@ -221,6 +227,16 @@ export async function getNonEnglishCategories(
   return filteredCategories
 }
 
+export async function getCategoriesNames() {
+  const categories = await prisma.category.findMany({
+    select: {
+      name: true,
+    },
+  })
+
+  return categories.map((category) => category.name)
+}
+
 export async function getCategories(
   contentType: ContentType = ContentType.article
 ): Promise<CategoryWithCount[]> {
@@ -258,12 +274,15 @@ export async function getCategories(
   return filteredCategories
 }
 
-export async function getCategoryWithArticlesAndNews(name: string) {
-  const decodedName = decodeURIComponent(name)
+export async function getCategoryWithArticlesAndNews(slug: string) {
+  const decodedName = deslugify(slug)
 
-  const category = await prisma.category.findUnique({
+  const category = await prisma.category.findFirst({
     where: {
-      name: decodedName,
+      name: {
+        equals: decodedName,
+        mode: "insensitive",
+      },
     },
     include: {
       emoji: true,
@@ -338,7 +357,7 @@ function flagMatchesLanguage(flag: string, language: string) {
   return languageName.toLowerCase() === language.toLowerCase()
 }
 
-export async function getLanguageWithArticlesAndNews(name: string) {
+export async function getLanguageWithArticlesAndNews(slug: string) {
   const category = await getCategoryWithArticlesAndNews("Non Anglo")
 
   const language = {
@@ -346,11 +365,11 @@ export async function getLanguageWithArticlesAndNews(name: string) {
     name,
     articles: category?.articles.filter((article) => {
       const flag = getPostFlag(article)
-      return flag && flagMatchesLanguage(flag, name)
+      return flag && flagMatchesLanguage(flag, slug)
     }),
     news: category?.news.filter((news) => {
       const flag = getPostFlag(news)
-      return flag && flagMatchesLanguage(flag, name)
+      return flag && flagMatchesLanguage(flag, slug)
     }),
   }
 
