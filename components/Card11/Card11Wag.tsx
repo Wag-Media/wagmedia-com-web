@@ -53,7 +53,11 @@ const Card11Wag: FC<Card11Props> = ({
         className={`block flex-shrink-0 relative w-full rounded-t-lg overflow-hidden z-10 ${ratio}`}
       >
         <div>
-          <PostFeaturedWagMedia post={post} isHover={isHover} />
+          <PostFeaturedWagMedia
+            post={post}
+            isHover={isHover}
+            className="h-[220px]"
+          />
         </div>
       </div>
 

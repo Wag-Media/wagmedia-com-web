@@ -1,8 +1,13 @@
 import Image from "next/image"
 
+import { cn } from "@/lib/utils"
+
 export function WagImage({
   image,
   containerClassName = "",
+  containerStyle = {},
+  className = "object-contain w-full h-full backdrop-blur-lg",
+  sizes = "(max-width: 600px) 480px, 800px",
   ...props
 }: {
   image: string | undefined | null
@@ -12,10 +17,10 @@ export function WagImage({
 
   if (image.includes("discordapp")) {
     return (
-      <div className={containerClassName}>
+      <div className={containerClassName} style={containerStyle}>
         <Image
-          fill
           src={image}
+          className={cn(className, props.className)}
           sizes="(max-width: 600px) 480px, 800px"
           alt={props.alt}
           {...props}
@@ -24,11 +29,11 @@ export function WagImage({
     )
   } else {
     return (
-      <div className={containerClassName}>
+      <div className={containerClassName} style={containerStyle}>
         <img
           src={image}
           alt={props.alt}
-          className="absolute object-contain w-full h-full backdrop-blur-lg "
+          className={cn(className, props.className)}
           sizes="(max-width: 600px) 480px, 800px"
           {...props}
         />

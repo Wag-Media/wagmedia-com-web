@@ -103,8 +103,9 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                   alt="single"
                   className="w-full my-8 rounded-xl"
                   image={featuredImage}
-                  // width={1260}
-                  // height={750}
+                  containerClassName="w-full relative h-[400px] max-h-[750px] mb-4"
+                  width={1260}
+                  height={750}
                   sizes="(max-width: 1024px) 100vw, 1280px"
                 />
               )}
