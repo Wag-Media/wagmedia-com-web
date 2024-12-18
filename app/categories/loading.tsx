@@ -1,10 +1,4 @@
-"use client"
-
-import { useParams } from "next/navigation"
-
-import { deslugify } from "@/lib/slug"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
-import LoadingSpinner from "@/components/Button/Loading"
 import Heading from "@/components/Heading/Heading"
 
 export default function Loading() {

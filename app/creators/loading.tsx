@@ -1,16 +1,10 @@
-"use client"
-
-import { useParams } from "next/navigation"
-
-import { deslugify } from "@/lib/slug"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
-import LoadingSpinner from "@/components/Button/Loading"
 import Heading from "@/components/Heading/Heading"
 
 export default function Loading() {
   return (
     <div className={`nc-PageArchive`}>
-      <div className="py-4 md:py-8 lg:py-16">
+      <div className="container pt-10 pb-16 space-y-16 lg:pb-28 lg:pt-20 lg:space-y-28">
         <div>
           <div className="flex flex-col sm:justify-between sm:flex-row">
             <div className="flex space-x-2.5 rtl:space-x-reverse">
@@ -23,15 +17,12 @@ export default function Loading() {
             </div> */}
           </div>
           <Heading
-            desc={`Our group of creators will help you identify content of interest, enabling you to deepen your understanding of Polkadot.`}
+            desc="Our growing group of creators will help you identify content of interest, enabling you to deepen your understanding of Polkadot."
+            isCenter
           >
-            WagMedia Polkadot Creators
+            WagMedia Content Creators
           </Heading>
-          <PostGridSkeleton />
-          <Heading desc={``} className="mt-12">
-            {/* {params.slug} News */}
-          </Heading>
-          <PostGridSkeleton />
+          <PostGridSkeleton cols={5} />
         </div>
       </div>
     </div>
