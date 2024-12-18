@@ -15,12 +15,16 @@ export default async function PageCreators({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const authors = await getAuthors({ limit: 200 })
+  const authors = (await getAuthors({ limit: 200 })).filter(
+    (author) => author.posts.length > 0
+  )
   const sort = searchParams.sort as string
 
   const sortedAuthors =
     sort === "rewards"
       ? authors
+      : sort === "posts"
+      ? authors.sort((a, b) => b.posts.length - a.posts.length)
       : authors.sort((a, b) => {
           // Handle cases where either name is null/undefined
           if (!a.name && !b.name) return 0
@@ -60,6 +64,11 @@ export default async function PageCreators({
               className="text-sm"
             >
               Rewards
+            </Button>
+          </Link>
+          <Link href={`/creators?sort=posts`}>
+            <Button pattern={sort === "posts" ? "default" : "secondary"}>
+              Posts
             </Button>
           </Link>
         </div>
