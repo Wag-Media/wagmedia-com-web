@@ -52,6 +52,7 @@ export default async function OpengraphImage({
       >
         {title}
         <div style={{ fontSize: 32 }}>{subtitle}</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           style={{
             height: "80px",
@@ -59,7 +60,8 @@ export default async function OpengraphImage({
             bottom: 20,
             right: 20,
           }}
-          src={logoSrc}
+          alt="Wagmedia Logo"
+          src={logoSrc as unknown as string}
         />
       </div>
     ),
