@@ -25,7 +25,7 @@ export default function Loading() {
           <Heading
             desc={`Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Polkadot.`}
           >
-            Explore curated Polkadot content
+            Explore Curated Polkadot Content
           </Heading>
           <PostGridSkeleton />
           <Heading desc={``} className="mt-12">
