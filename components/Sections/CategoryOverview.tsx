@@ -46,7 +46,9 @@ const CategoryOverview: FC<SectionMagazine11Props> = ({
         {category.name && (
           <>
             <h2 className="mb-0 text-3xl font-bold">{category.name}</h2>
-            <p className="pt-0 mt-0">{`${postsCount} total posts in ${category.name}`}</p>
+            <p className="pt-0 mt-0">{`${postsCount} Total ${
+              contentType === ContentType.article ? "Articles" : "News"
+            } in ${category.name}`}</p>
           </>
         )}
         <div className="flex flex-col h-full">

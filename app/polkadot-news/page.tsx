@@ -17,7 +17,7 @@ export default async function PageNews() {
       <CategoryOverview
         categories={categories}
         className="py-16 lg:py-24"
-        heading="Explore all the Polkadot News uncovered from our finders program"
+        heading="All the Polkadot News Uncovered by our Finders Program"
         desc="Polkadot Ecosystem news grouped by category"
         contentType={ContentType.news}
       />
