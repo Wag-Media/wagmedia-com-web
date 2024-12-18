@@ -71,10 +71,10 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                 <SingleTitle title={title} />
 
                 <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
-                <div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5 rtl:space-x-reverse">
+                <div className="flex flex-col justify-between space-y-5 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-5 rtl:space-x-reverse">
                   <PostMeta2Wag
                     size="large"
-                    className="leading-none flex-shrink-0"
+                    className="flex-shrink-0 leading-none"
                     hiddenCategories
                     avatarRounded="rounded-full shadow-inner"
                     author={post.user}
@@ -102,7 +102,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                 <WagImage
                   alt="single"
                   containerClassName=""
-                  className="rounded-xl w-full my-8"
+                  className="w-full my-8 rounded-xl"
                   image={featuredImage}
                   width={1260}
                   height={750}
@@ -113,7 +113,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
             </>
           )}
           <div
-            className="mb-4 whitespace-break-spaces prose lg:prose-lg dark:prose-invert"
+            className="mb-4 prose whitespace-break-spaces lg:prose-lg dark:prose-invert"
             dangerouslySetInnerHTML={{
               __html: content,
             }}
@@ -157,7 +157,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
           {post.tags && post.tags.length > 0 && (
             <div>
               <h3 className="font-bold">Tags</h3>
-              <div className="max-w-screen-md mx-auto flex flex-wrap">
+              <div className="flex flex-wrap max-w-screen-md mx-auto">
                 {post.tags.map((tag) => (
                   <Link
                     className={`nc-Tag inline-block bg-white hover:bg-neutral-50 text-sm text-neutral-600 dark:text-neutral-300 py-2 px-3 rounded-lg md:py-2.5 md:px-4 dark:bg-neutral-900 no-underline`}
@@ -174,7 +174,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
             </div>
           )}
           <div>
-            <h3 className="font-bold mb-2">Reactions</h3>
+            <h3 className="mb-2 font-bold">Reactions</h3>
             <SinglePostReactions reactions={post.reactions} />
           </div>
           {/* <div>
@@ -190,8 +190,8 @@ export async function SinglePostContent({ slug }: { slug: string }) {
           </div> */}
         </div>
       </article>
-      <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700 my-8"></div>
-      <div className="max-w-screen-md mx-auto my-4 mb-12 px-2 md:px-0">
+      <div className="max-w-screen-md mx-auto my-8 border-t border-b border-neutral-100 dark:border-neutral-700"></div>
+      <div className="max-w-screen-md px-2 mx-auto my-4 mb-12 md:px-0">
         <SingleAuthor author={user} />
       </div>
 
