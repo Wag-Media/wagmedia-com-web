@@ -101,11 +101,10 @@ export async function SinglePostContent({ slug }: { slug: string }) {
               {!embedType && (
                 <WagImage
                   alt="single"
-                  containerClassName=""
                   className="w-full my-8 rounded-xl"
                   image={featuredImage}
-                  width={1260}
-                  height={750}
+                  // width={1260}
+                  // height={750}
                   sizes="(max-width: 1024px) 100vw, 1280px"
                 />
               )}
