@@ -1,3 +1,4 @@
+import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
 import Heading from "@/components/Heading/Heading"
 
 export default function Loading() {
@@ -6,7 +7,7 @@ export default function Loading() {
       <Heading desc="Read all the original native articles, translations, and dubbed content from WagMedia's native contributors.">
         Explore curated non-Anglo Polkadot content
       </Heading>
-      Loading...
+      <PostGridSkeleton cols={3} />
     </div>
   )
 }

@@ -6,7 +6,7 @@ import Nav from "@/components/Nav/Nav"
 
 import { Skeleton } from "../skeleton"
 
-export default async function PostGridSkeleton() {
+export default async function PostGridSkeleton({ cols = 4 }) {
   const tabs = ["Latest", "Most Reactions", "Trending"]
   const posts = Array.from({ length: 12 })
 
@@ -30,7 +30,9 @@ export default async function PostGridSkeleton() {
         </Button> */}
       </div>
       <div className="mt-8">
-        <div className="grid gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-8 xl:grid-cols-4">
+        <div
+          className={`grid gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-${cols} lg:gap-8 xl:grid-cols-${cols}`}
+        >
           {posts.map((post, index) => (
             <div className="flex flex-col border-2 rounded-xl" key={index}>
               <Skeleton className="w-full aspect-w-16 aspect-h-9 rounded-t-xl" />

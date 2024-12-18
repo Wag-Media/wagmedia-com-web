@@ -12,7 +12,29 @@ export async function getAuthor(name: string) {
   return author
 }
 
-export async function getAuthors() {
+export async function getAuthorsList() {
+  const authors = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      discordId: true,
+      avatar: true,
+      avatarDecoration: true,
+      banner: true,
+      accentColor: true,
+      bio: true,
+    },
+    orderBy: {
+      posts: {
+        _count: "desc",
+      },
+    },
+  })
+
+  return authors
+}
+
+export async function getAuthors({ limit = 10 }: { limit?: number }) {
   const authors = await prisma.user.findMany({
     select: {
       id: true,
@@ -83,7 +105,7 @@ export async function getAuthors() {
       })
     )
     .sort((a, b) => b.totalEarnings - a.totalEarnings) // Sort authors by total earnings in descending order
-    .slice(0, 10) // Get the top 10 authors
+    .slice(0, limit) // Get the top 10 authors
 }
 
 export async function getAuthorsByIds(ids: string[]) {

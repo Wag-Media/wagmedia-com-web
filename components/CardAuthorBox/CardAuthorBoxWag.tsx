@@ -19,7 +19,7 @@ const CardAuthorBoxWag: FC<CardAuthorBoxProps> = ({
   return (
     <Link
       href={`/creator/${name}`}
-      className={`nc-CardAuthorBox flex flex-col items-center justify-center text-center px-3 py-5 sm:px-6 sm:py-7 rounded-lg bg-white dark:bg-neutral-900 ${className}`}
+      className={`nc-CardAuthorBox flex flex-col items-center justify-center text-center px-3 py-5 sm:px-6 sm:py-7 rounded-lg bg-gray-50 hover:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 ${className}`}
     >
       <Avatar
         sizeClass="w-20 h-20 text-2xl"
@@ -33,14 +33,12 @@ const CardAuthorBoxWag: FC<CardAuthorBoxProps> = ({
         </h2>
         <span
           className={`block mt-1 text-sm text-neutral-500 dark:text-neutral-400`}
-        >
-          {/* @{jobName} */}
-        </span>
+        ></span>
       </div>
-      <div className="py-2 px-4 mt-4 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center justify-center leading-none text-xs font-medium">
+      <div className="flex items-center justify-center px-4 py-2 mt-4 text-xs font-medium leading-none rounded-full bg-neutral-300 dark:bg-neutral-800">
         {totalEarnings.toFixed(2)} DOT earned
       </div>
-      <div className="py-2 px-4 mt-4 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center justify-center leading-none text-xs font-medium">
+      <div className="flex items-center justify-center px-4 py-2 mt-4 text-xs font-medium leading-none rounded-full bg-neutral-300 dark:bg-neutral-800">
         {postCount} Posts
         <ArrowRightIcon className="w-5 h-5 text-yellow-600 ms-3" />
       </div>

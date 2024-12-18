@@ -23,7 +23,7 @@ const PageHome = async ({
   const search = searchParams?.search || ""
   const currentPage = Number(searchParams?.page) || 1
 
-  const authors = await getAuthors()
+  const authors = await getAuthors({ limit: 10 })
 
   return (
     <div className="relative nc-PageHome">
