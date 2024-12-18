@@ -1,10 +1,13 @@
 import { code, countries, name } from "country-emoji"
 
 export function isCategoryNameLanguage(slug: string): boolean {
+  const decodedSlug = decodeURIComponent(slug)
+
   return (
     Object.values(countries)
       .map((countryArray) => countryArray[countryArray.length - 1])
-      .find((countryName) => countryName.toLowerCase() === slug) !== undefined
+      .find((countryName) => countryName.toLowerCase() === decodedSlug) !==
+    undefined
   )
 }
 
@@ -14,7 +17,7 @@ export function NonAngloCategoryTitle(n: string): string {
   }
 
   const countryCode = code(n)
-  return countryCode ? `${capitalizeFirstLetter(n)} Polkadot Articles` : n
+  return "countryCode ? `${capitalizeFirstLetter(n)} Polkadot Articles` : n"
 }
 
 export function capitalizeFirstLetter(string: string): string {

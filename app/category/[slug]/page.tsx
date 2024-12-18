@@ -9,11 +9,7 @@ import { deslugify, slugify } from "@/lib/slug"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import Heading from "@/components/Heading/Heading"
 
-import {
-  NonAngloCategoryTitle,
-  capitalizeFirstLetter,
-  isCategoryNameLanguage,
-} from "./util"
+import { NonAngloCategoryTitle, isCategoryNameLanguage } from "./util"
 
 export async function generateStaticParams() {
   const categories = await getCategoriesNames()
@@ -76,7 +72,7 @@ export default async function PageCategory({
                 desc={`Read ${articles.length} articles${
                   news?.length ? ` and ${news.length} news` : ""
                 } on Polkadot ${
-                  isLanguage ? `in ${category.name}` : category.name
+                  isLanguage ? `in ${title}` : category.name
                 } written by our community creators`}
               >
                 {title} Articles
