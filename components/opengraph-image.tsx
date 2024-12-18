@@ -1,7 +1,5 @@
 import { ImageResponse } from "next/og"
 
-import { deslugify } from "@/lib/slug"
-
 // Route segment config
 export const runtime = "edge"
 
@@ -15,10 +13,23 @@ export const size = {
 export const contentType = "image/png"
 
 // Image generation
-export default async function OpengraphImage({ title }: { title: string }) {
+export default async function OpengraphImage({
+  title,
+  subtitle,
+  style,
+}: {
+  title: string
+  subtitle: string
+  style?: React.CSSProperties
+}) {
   // Font
-  const interSemiBold = fetch(
-    new URL("../fonts/Inter-SemiBold.ttf", import.meta.url)
+
+  const url = new URL("../fonts/Inter-Bold.ttf", import.meta.url)
+  console.log("url", url)
+  const interBold = fetch(url).then((res) => res.arrayBuffer())
+
+  const logoSrc = await fetch(
+    new URL("../public/wagmedia-logo.png", import.meta.url)
   ).then((res) => res.arrayBuffer())
 
   return new ImageResponse(
@@ -26,16 +37,30 @@ export default async function OpengraphImage({ title }: { title: string }) {
       // ImageResponse JSX element
       <div
         style={{
-          fontSize: 128,
-          background: "white",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          ...{
+            fontSize: 128,
+            background: "white",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          },
+          ...style,
         }}
       >
         {title}
+        <div style={{ fontSize: 32 }}>{subtitle}</div>
+        <img
+          style={{
+            height: "80px",
+            position: "absolute",
+            bottom: 20,
+            right: 20,
+          }}
+          src={logoSrc}
+        />
       </div>
     ),
     // ImageResponse options
@@ -46,7 +71,7 @@ export default async function OpengraphImage({ title }: { title: string }) {
       fonts: [
         {
           name: "Inter",
-          data: await interSemiBold,
+          data: await interBold,
           style: "normal",
           weight: 400,
         },

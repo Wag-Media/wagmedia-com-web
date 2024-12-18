@@ -281,3 +281,14 @@ export async function getNewsletterPosts(): Promise<
 
   return posts
 }
+
+export async function getAuthorPostCount(authorName: string) {
+  const count = await prisma.post.count({
+    where: {
+      user: {
+        name: authorName,
+      },
+    },
+  })
+  return count
+}
