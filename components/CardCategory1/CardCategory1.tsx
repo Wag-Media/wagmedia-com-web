@@ -1,9 +1,8 @@
 import React, { FC } from "react"
 import Link from "next/link"
 import { CategoryWithCount } from "@/data/types"
-import { Category } from "@prisma/client"
 
-import NcImage from "@/components/NcImage/NcImage"
+import { slugify } from "@/lib/slug"
 
 export interface CardCategory1Props {
   className?: string
@@ -18,7 +17,7 @@ const CardCategory1: FC<CardCategory1Props> = ({
 }) => {
   if (!category) return null
   const { postsCount, name } = category
-  const href = `/category/${name}`
+  const href = `/category/${slugify(name)}`
   // const thumbnail = category?.thumbnail
 
   return (

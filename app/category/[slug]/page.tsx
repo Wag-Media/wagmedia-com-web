@@ -51,32 +51,12 @@ export default async function PageCategory({
     return <>not found</>
   }
 
-  const { articles, news } = category
+  const { articles, news, name } = category
 
-  const title = NonAngloCategoryTitle(deslugify(params.slug))
+  const title = name ? NonAngloCategoryTitle(deslugify(params.slug)) : ""
 
   return (
     <div className={`nc-PageArchive`}>
-      {/* HEADER */}
-      <div className="w-full px-2 mx-auto xl:max-w-screen-2xl">
-        <div className="relative aspect-[16/13] sm:aspect-[9/4] xl:aspect-[5] rounded-lg md:rounded-[40px] overflow-hidden z-0">
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-neutral-400">
-              {isLanguage && "Non-Anglo "}Category
-            </span>
-            <h2 className="inline-block my-4 text-5xl font-semibold align-middle md:text-7xl">
-              {title}
-            </h2>
-            <span className="block text-xl">
-              {articles?.length} Articles{" "}
-              {news?.length ? `and ${news?.length} News ` : null}
-              with the Category <b>{deslugify(params.slug)}</b>
-            </span>
-          </div>
-        </div>
-      </div>
-      {/* ====================== END HEADER ====================== */}
-
       <div className="container pt-10 pb-16 space-y-16 lg:pb-28 lg:pt-20 lg:space-y-28">
         <div>
           <div className="flex flex-col sm:justify-between sm:flex-row">
@@ -93,11 +73,13 @@ export default async function PageCategory({
           {!articles?.length ? null : (
             <>
               <Heading
-                desc={`Read decentralized articles on Polkadot ${
-                  isLanguage ? `in ${category.name}` : `${category.name}`
+                desc={`Read ${articles.length} articles${
+                  news?.length ? ` and ${news.length} news` : ""
+                } on Polkadot ${
+                  isLanguage ? `in ${category.name}` : category.name
                 } written by our community creators`}
               >
-                {deslugify(params.slug)} Articles
+                {title} Articles
               </Heading>
               <div className="grid gap-6 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 lg:mt-4">
                 {articles?.map((post) => (

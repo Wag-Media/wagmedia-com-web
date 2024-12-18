@@ -2,6 +2,7 @@ import { getNonAngloOverview } from "@/data/dbCategories"
 import { code, countries, name } from "country-emoji"
 import _ from "lodash"
 
+import { slugify } from "@/lib/slug"
 import { getPostFlag } from "@/lib/utils"
 import CategoryOverview from "@/components/Sections/CategoryOverview"
 
@@ -22,6 +23,7 @@ export default async function PageNonAnglo() {
       name: string
       posts: any[]
       link?: string
+      slug: string
     }
   > = {}
   categories.forEach((category) => {
@@ -54,6 +56,7 @@ export default async function PageNonAnglo() {
           _count: {
             posts: 0,
           },
+          slug: "",
         }
       }
 
@@ -63,6 +66,7 @@ export default async function PageNonAnglo() {
 
   for (const key in languageCategories) {
     languageCategories[key]._count.posts = languageCategories[key].posts.length
+    languageCategories[key].slug = slugify(languageCategories[key].name)
   }
 
   const languageCategoriesArray = Object.values(languageCategories)

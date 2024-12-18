@@ -12,7 +12,7 @@ import Button from "../Button/Button"
 import Card11Wag from "../Card11/Card11Wag"
 
 type expectedCategoryType = Awaited<ReturnType<typeof getCategoryOverview>> & {
-  slug: string
+  slug?: string
 }
 
 export interface SectionMagazine11Props {
