@@ -25,7 +25,6 @@ export default async function OpengraphImage({
   // Font
 
   const url = new URL("../fonts/Inter-Bold.ttf", import.meta.url)
-  console.log("url", url)
   const interBold = fetch(url).then((res) => res.arrayBuffer())
 
   const logoSrc = await fetch(
