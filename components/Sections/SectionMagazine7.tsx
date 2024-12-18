@@ -28,11 +28,11 @@ const SectionMagazine7: FC<SectionMagazine7Props> = ({
           {posts?.[1] && <Card10V3Wag post={posts[1]} />}
           {posts?.[2] && <Card10V3Wag post={posts[2]} />}
           {posts?.[3] && <Card10V3Wag post={posts[3]} />} */}
-          {posts?.map((post, index) => {
+          {posts?.map((post) => {
             return <Card10V3Wag key={post.id} post={post} />
           })}
         </div>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-3">
+        {/* <div className="grid grid-cols-1 gap-6 mt-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8">
           {posts?.map((post, index) => {
             if (index > 3) {
               return <Card10V3Wag key={post.id} post={post} />

@@ -54,19 +54,23 @@ const Card10V3Wag: FC<Card10V3WagProps> = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div className="block group rounded-lg flex-shrink-0 relative w-full aspect-w-16 aspect-h-16 sm:aspect-h-9 overflow-hidden z-0">
+      <div className="relative z-0 flex-shrink-0 block w-full overflow-hidden rounded-lg group aspect-w-16 aspect-h-16 sm:aspect-h-9">
         <div>
-          <PostFeaturedWagMedia post={post} isHover={isHover} />
+          <PostFeaturedWagMedia
+            post={post}
+            isHover={isHover}
+            className="h-[330px]"
+          />
         </div>
 
         <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
       </div>
-      <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4 rtl:space-x-reverse">
+      <div className="absolute flex items-start justify-between space-x-4 top-3 inset-x-3 rtl:space-x-reverse">
         <CategoryBadgeListWag categories={categories} />
       </div>
 
       <div className="space-y-2.5 mt-4 px-4">
-        <h2 className="nc-card-title block sm:text-lg font-semibold text-neutral-900 dark:text-neutral-100 ">
+        <h2 className="block font-semibold nc-card-title sm:text-lg text-neutral-900 dark:text-neutral-100 ">
           <Link
             href={`/post/${post.slug}`}
             className="line-clamp-1"

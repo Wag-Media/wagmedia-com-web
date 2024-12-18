@@ -56,7 +56,7 @@ const Card11Wag: FC<Card11Props> = ({
           <PostFeaturedWagMedia
             post={post}
             isHover={isHover}
-            className="h-[220px]"
+            className="h-[200px]"
           />
         </div>
       </div>
