@@ -14,6 +14,9 @@ const TREASURY_WAGMEDIA_EVM = "0xC24061804be38E41c5Cc4bB391A20f4e494A566d"
 const TREASURY_HYDRA = "7MVFQh1WchfKX6rgoPcRLaPd3bYaF1akVsg38MtEwtTY29JF"
 const WSS_HYDRA = "wss://rpc.hydradx.cloud"
 
+const QUICKNODE_URL =
+  "https://silent-twilight-yard.quiknode.pro/79f45e1a716fa0427483f7f4aee32845a891f33a"
+
 export const getTreasuries = unstable_cache(
   async () => {
     const account1BalanceHistoryData = await getTreasuryData(TREASURY_WAGMEDIA)
@@ -27,15 +30,15 @@ export const getTreasuries = unstable_cache(
     console.log("dateRange", dateRange)
     console.log("ethUsdRate", ethUsdRate)
 
-    const promises = dateRange.map((date: string) =>
-      getEthTreasuryBalance({ date })
-    )
+    // const promises = dateRange.map((date: string) =>
+    //   getEthTreasuryBalance({ date })
+    // )
 
-    const ethTotal = await Promise.all(promises)
-    const ethTotalInUsd = ethTotal.map((balance) => {
-      const balanceInUsd = (Number(balance) * Number(ethUsdRate)) / 1e18
-      return isNaN(balanceInUsd) ? 0 : balanceInUsd.toFixed(2)
-    })
+    // const ethTotal = await Promise.all(promises)
+    // const ethTotalInUsd = ethTotal.map((balance) => {
+    //   const balanceInUsd = (Number(balance) * Number(ethUsdRate)) / 1e18
+    //   return isNaN(balanceInUsd) ? 0 : balanceInUsd.toFixed(2)
+    // })
 
     const hydraBalance = await getHydraPoolBalance()
 
@@ -44,7 +47,7 @@ export const getTreasuries = unstable_cache(
         date: item.date,
         treasury1: parseFloat(item.value),
         treasury2: parseFloat(account2BalanceHistoryData?.[index]?.value) || 0,
-        treasury3: ethTotalInUsd[index],
+        treasury3: 0,
         treasury4: hydraBalance,
       })
     )
@@ -175,7 +178,7 @@ async function getEthTreasuryBalance({
 }): Promise<bigint> {
   const client = createPublicClient({
     chain: mainnet,
-    transport: http(),
+    transport: http(QUICKNODE_URL),
   })
 
   if (!blockNumber && !date) {

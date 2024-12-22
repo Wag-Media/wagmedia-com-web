@@ -90,7 +90,9 @@ export function TreasuryGraph() {
     },
     {
       label: "wagmediaMultisig",
-      value: treasuries?.multisigAH?.totalUSD || 0,
+      value:
+        (treasuries?.multisigAH?.totalUSD || 0) +
+        (treasuries?.multisigPolkadot?.totalUSD || 0),
       fill: "hsl(var(--chart-4))",
     },
     {
@@ -102,24 +104,35 @@ export function TreasuryGraph() {
 
   const chartConfig = {
     ethMainnet: {
-      label: "ETH Mainnet",
+      label: `ETH Mainnet (${
+        treasuries?.eth?.mainnet?.totalUSD?.toFixed(0) || 0
+      } USD)`,
     },
     ethBase: {
-      label: "Base",
+      label: `Base (${treasuries?.eth?.base?.totalUSD?.toFixed(0) || 0} USD)`,
     },
     wagmediaTreasury: {
-      label: "WagMedia Treasury",
+      label: `WagMedia Treasury (${(
+        (treasuries?.treasuryAH?.totalUSD || 0) +
+        (treasuries?.treasuryPolkadot?.totalUSD || 0)
+      ).toFixed(0)} USD)`,
     },
     wagmediaMultisig: {
-      label: "WagMedia Multisig",
+      label: `WagMedia Multisig (${(
+        (treasuries?.multisigAH?.totalUSD || 0) +
+        (treasuries?.multisigPolkadot?.totalUSD || 0)
+      ).toFixed(0)} USD)`,
     },
     hydraOmnipool: {
-      label: "Hydra Omnipool",
+      label: `Hydra Omnipool (${
+        treasuries?.hydra?.totalUSD?.toFixed(0) || 0
+      } USD)`,
     },
   } satisfies ChartConfig
 
   return (
     <Card className="flex flex-col col-span-2">
+      <pre>{JSON.stringify(treasuries, null, 2)}</pre>
       <CardHeader className="items-center pb-0">
         <CardTitle>WagMedia Treasury Holdings</CardTitle>
         <CardDescription>

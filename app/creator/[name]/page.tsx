@@ -19,7 +19,12 @@ export const generateMetadata = async ({
 
 export const generateStaticParams = async () => {
   const creators = await getAuthorsList()
-  return creators.map((creator) => ({ name: creator.name }))
+
+  return creators
+    .filter((creator) => creator.name)
+    .map((creator) => ({
+      name: creator.name,
+    }))
 }
 
 const PageAuthor = async ({ params }: { params: { name: string } }) => {

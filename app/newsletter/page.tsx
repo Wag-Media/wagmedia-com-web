@@ -17,7 +17,7 @@ export default async function PageCategories() {
     <div className="container relative py-8 lg:py-16">
       <Heading desc="🎉 Catch up on the latest updates as well as our captivating stories.">
         WagMedia Newsletter
-      </Heading>
+      </Heading>  
 
       <SectionMagazine7 posts={posts} />
 
