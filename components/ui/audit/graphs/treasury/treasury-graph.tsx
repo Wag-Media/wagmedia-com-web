@@ -132,7 +132,6 @@ export function TreasuryGraph() {
 
   return (
     <Card className="flex flex-col col-span-2">
-      <pre>{JSON.stringify(treasuries, null, 2)}</pre>
       <CardHeader className="items-center pb-0">
         <CardTitle>WagMedia Treasury Holdings</CardTitle>
         <CardDescription>
