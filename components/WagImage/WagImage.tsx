@@ -21,8 +21,9 @@ export function WagImage({
         <Image
           src={image}
           className={cn(className, props.className)}
-          sizes="(max-width: 600px) 480px, 800px"
           alt={props.alt}
+          width={1000}
+          height={1000}
           {...props}
         />
       </div>
@@ -34,7 +35,8 @@ export function WagImage({
           src={image}
           alt={props.alt}
           className={cn(className, props.className)}
-          sizes="(max-width: 600px) 480px, 800px"
+          width={1000}
+          height={1000}
           {...props}
         />
       </div>
