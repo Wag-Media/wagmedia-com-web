@@ -87,7 +87,7 @@ export default function MySlider<T>({
           <div className={`flow-root overflow-hidden rounded-xl`}>
             <motion.ul
               initial={false}
-              className="relative whitespace-nowrap -mx-2 xl:-mx-4 "
+              className="relative -mx-2 whitespace-nowrap xl:-mx-4 "
             >
               <AnimatePresence initial={false} custom={direction}>
                 {data.map((item, indx) => (

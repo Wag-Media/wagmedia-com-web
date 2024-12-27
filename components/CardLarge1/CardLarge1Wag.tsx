@@ -95,7 +95,7 @@ const CardLarge1Wag: FC<CardLarge1WagProps> = ({
               "aspect-w-16 aspect-h-12 sm:aspect-h-9 md:aspect-h-14 lg:aspect-h-10 2xl:aspect-h-9 relative rounded-lg"
             )}
             containerStyle={{ backgroundImage: `url(${featuredImage})` }}
-            className="absolute inset-0 object-contain rounded-lg backdrop-blur-lg"
+            className="inset-0 object-contain w-full h-auto rounded-lg backdrop-blur-lg max-h-[500px]"
             priority={true}
             alt={title}
           />

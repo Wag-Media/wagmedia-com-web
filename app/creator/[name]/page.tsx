@@ -1,10 +1,30 @@
 import React, { Suspense } from "react"
+import { getAuthor, getAuthorsList } from "@/data/dbAuthors"
 
 import { AuthorPage } from "./AuthorPage"
 
-export const metadata = {
-  title: "Author Page",
-  description: "Author Page",
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { name: string }
+}) => {
+  const creator = await getAuthor(params.name)
+  return {
+    title: `Creator: ${creator?.name} - WagMedia`,
+    description:
+      creator?.bio ||
+      "Discover the latest Polkadot news and insights from our creators.",
+  }
+}
+
+export const generateStaticParams = async () => {
+  const creators = await getAuthorsList()
+
+  return creators
+    .filter((creator) => creator.name)
+    .map((creator) => ({
+      name: creator.name,
+    }))
 }
 
 const PageAuthor = async ({ params }: { params: { name: string } }) => {

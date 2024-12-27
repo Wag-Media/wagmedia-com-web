@@ -42,7 +42,7 @@ export async function AuthorPage({ name }: { name: string }) {
           )}
         </div>
         <div className="container -mt-10 lg:-mt-16">
-          <div className="relative bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 p-5 lg:p-8 rounded-lg md:rounded-[40px] flex flex-col md:flex-row">
+          <div className="relative flex flex-col p-5 bg-white border rounded-md dark:bg-neutral-900 dark:border-neutral-700 lg:p-8 md:rounded-xl md:flex-row">
             <div className="flex-shrink-0 w-32 mt-12 lg:w-40 sm:mt-0">
               <div className="relative z-0 inline-flex items-center justify-center flex-shrink-0 w-20 h-20 overflow-hidden text-xl font-semibold uppercase rounded-full shadow-2xl wil-avatar text-neutral-100 lg:text-2xl lg:w-36 lg:h-36 ring-4 ring-white dark:ring-0">
                 {author?.avatar && (
@@ -58,6 +58,9 @@ export async function AuthorPage({ name }: { name: string }) {
             </div>
             <div className="flex items-center flex-grow pt-5 md:pt-1 lg:ml-6 xl:ml-12">
               <div className="max-w-screen-sm space-y-3.5 ">
+                <span className="block text-sm text-neutral-500 dark:text-neutral-400">
+                  WagMedia Creator
+                </span>
                 <h2 className="inline-flex items-center text-2xl font-semibold sm:text-3xl lg:text-4xl">
                   <span>{author?.name}</span>
                   {/* <VerifyIcon
@@ -65,7 +68,7 @@ export async function AuthorPage({ name }: { name: string }) {
                     iconClass="w-6 h-6 sm:w-7 sm:h-7 xl:w-8 xl:h-8"
                   /> */}
                 </h2>
-                <span className="block text-sm text-neutral-500 dark:text-neutral-400">
+                <span className="block text-md text-neutral-500 dark:text-neutral-400">
                   {posts.length} published posts
                 </span>
                 <span className="block text-sm text-neutral-500 dark:text-neutral-400">
@@ -107,7 +110,7 @@ export async function AuthorPage({ name }: { name: string }) {
         </div>
       </div>
       {/* ====================== END HEADER ====================== */}
-      <div className="container py-16 space-y-16 lg:pb-28 lg:pt-20 lg:space-y-28">
+      <div className="container py-8 space-y-8 lg:pb-28 lg:pt-8 lg:space-y-8">
         <main>
           {/* TABS FILTER */}
           <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row">

@@ -59,16 +59,16 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
   }, [reactions])
 
   return (
-    <div className="flex items-center space-x-2 w-full justify-between">
+    <div className="flex items-center justify-between w-full space-x-2">
       <HoverCard openDelay={0}>
         <HoverCardTrigger>
-          <div className="flex items-center gap-2 text-xs cursor-default rounded-full">
-            <ThumbsUp size={20} strokeWidth={1} />
+          <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
+            <ThumbsUp size={20} strokeWidth={2} color="#999" />
             {likeCount}
           </div>
         </HoverCardTrigger>
         <HoverCardContent>
-          <ul className="flex gap-4 flex-wrap">
+          <ul className="flex flex-wrap gap-4">
             {groupedReactions.slice(0, sliceAfter).map((group) => (
               <li key={group.emojiId} className="inline-block">
                 {group.emojiUrl ? (
@@ -77,7 +77,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
                     alt={group.emojiId}
                     width={20}
                     height={20}
-                    className="inline-block m-0 p-0 mr-1"
+                    className="inline-block p-0 m-0 mr-1"
                   />
                 ) : (
                   <span className="align-middle text-[20px] mr-1">
@@ -98,8 +98,8 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
         </HoverCardContent>
       </HoverCard>
       {total && parseFloat(total) > 0 && (
-        <div className="flex items-center gap-2 text-xs cursor-default rounded-full">
-          <Coins strokeWidth={1} size={20} />
+        <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
+          <Coins strokeWidth={2} size={20} color="#999" />
           {total}
         </div>
       )}

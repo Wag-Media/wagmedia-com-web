@@ -156,12 +156,12 @@ function getOrderBy(
       acc.push(
         {
           OddJob: {
-            firstPaymentAt: "desc",
+            createdAt: "desc",
           },
         },
         {
           OddJob: {
-            createdAt: "desc",
+            firstPaymentAt: "desc",
           },
         }
       )
@@ -183,3 +183,80 @@ function getOrderBy(
     return acc
   }, [] as Prisma.PaymentOrderByWithRelationInput[])
 }
+
+export const getOddjobPaymentsByRole = unstable_cache(
+  async (fundingSource: string = "OpenGov-1130") => {
+    // Step 1: Fetch payments
+    const payments = await prisma.payment.findMany({
+      where: {
+        oddJobId: {
+          not: null,
+        },
+        fundingSource,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      include: {
+        user: true,
+        OddJob: true,
+      },
+    })
+
+    // Initialize total amounts for each currency
+    const total = {} as Record<string, number>
+
+    // Step 3: Group payments by role and currency
+    const groupedData = payments.reduce((acc, payment) => {
+      const role = payment.OddJob?.role.toLowerCase()
+      const currency = payment.unit
+
+      if (role && currency) {
+        if (!acc[role]) {
+          acc[role] = {}
+        }
+        if (!acc[role][currency]) {
+          acc[role][currency] = 0
+        }
+        acc[role][currency] += payment.amount
+
+        // Update total amounts
+        if (!total[currency]) {
+          total[currency] = 0
+        }
+        total[currency] += payment.amount
+      }
+      return acc
+    }, {} as Record<string, Record<string, number>>)
+
+    const groupedByMonth = payments.reduce((acc, payment) => {
+      const year = payment.createdAt.getFullYear()
+      const month = payment.createdAt.getMonth()
+      const currency = payment.unit as "DOT" | "USD"
+      acc[`${year}-${month}`] = {
+        ...(acc[`${year}-${month}`] || { DOT: 0, USD: 0 }),
+        [currency]: (acc[`${year}-${month}`]?.[currency] || 0) + payment.amount,
+      }
+      return acc
+    }, {} as Record<string, { DOT: number; USD: number }>)
+
+    // Convert grouped data to an array format
+    const result = Object.entries(groupedData).map(([role, currencies]) => ({
+      role: role
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" "),
+      ...currencies,
+    }))
+
+    return {
+      data: result,
+      total,
+      firstSpent: payments[0].createdAt,
+      lastSpent: payments[payments.length - 1].createdAt,
+      byMonth: groupedByMonth,
+    }
+  },
+  ["oddjobs"],
+  { revalidate: 60, tags: ["oddjobPayments"] }
+)

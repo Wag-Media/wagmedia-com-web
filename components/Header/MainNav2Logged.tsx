@@ -36,9 +36,9 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
             {/* <NotifyDropdown /> */}
             <SwitchDarkMode />
             <button
-              className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
+              className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl backdrop-blur-xl`}
             >
-              <span className="sr-only">Enable dark mode</span>
+              <span className="sr-only">Discord</span>
               <Link href={siteConfig.links.discord}>
                 <DiscordIcon size={25} />
               </Link>
@@ -51,7 +51,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   }
 
   return (
-    <div className="relative z-10 nc-MainNav2Logged bg-background/90 lg:backdrop-blur-sm">
+    <div className="relative z-10 nc-MainNav2Logged">
       <div className="container">{renderContent()}</div>
     </div>
   )

@@ -53,7 +53,11 @@ const Card11Wag: FC<Card11Props> = ({
         className={`block flex-shrink-0 relative w-full rounded-t-lg overflow-hidden z-10 ${ratio}`}
       >
         <div>
-          <PostFeaturedWagMedia post={post} isHover={isHover} />
+          <PostFeaturedWagMedia
+            post={post}
+            isHover={isHover}
+            className="h-[200px]"
+          />
         </div>
       </div>
 
@@ -67,7 +71,7 @@ const Card11Wag: FC<Card11Props> = ({
           <PostCardWagMeta meta={{ ...post }} />
 
           <h3 className="block text-base font-semibold nc-card-title text-neutral-900 dark:text-neutral-100">
-            <span className="h-12 line-clamp-2" title={title}>
+            <span className="h-12 line-clamp-2" title={title}>  
               {title}
             </span>
           </h3>

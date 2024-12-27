@@ -14,13 +14,10 @@ export default async function PageCategories() {
   const posts = await getNewsletterPosts()
 
   return (
-    <div className="container relative py-16 lg:py-24">
-      <Heading
-        className="max-w-xl"
-        desc="🎉 Catch up on the latest updates as well as our captivating stories."
-      >
+    <div className="container relative py-8 lg:py-16">
+      <Heading desc="🎉 Catch up on the latest updates as well as our captivating stories.">
         WagMedia Newsletter
-      </Heading>
+      </Heading>  
 
       <SectionMagazine7 posts={posts} />
 

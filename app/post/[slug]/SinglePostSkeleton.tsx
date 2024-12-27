@@ -22,7 +22,7 @@ export async function SinglePostSkeleton({ title }: { title: string }) {
           </div>
         </header>
         <div
-          id="single-entry-content"
+          id="w"
           className="prose lg:prose-lg !max-w-screen-md mx-auto dark:prose-invert"
           // ref={contentRef}
         >

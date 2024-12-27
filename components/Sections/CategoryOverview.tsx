@@ -11,7 +11,9 @@ import Heading from "@/components/Heading/Heading"
 import Button from "../Button/Button"
 import Card11Wag from "../Card11/Card11Wag"
 
-type expectedCategoryType = Awaited<ReturnType<typeof getCategoryOverview>>
+type expectedCategoryType = Awaited<ReturnType<typeof getCategoryOverview>> & {
+  slug?: string
+}
 
 export interface SectionMagazine11Props {
   className?: string
@@ -37,37 +39,34 @@ const CategoryOverview: FC<SectionMagazine11Props> = ({
     const posts = category.posts
     const postsCount = category._count?.posts
 
-    const categoryHref =
-      category.link ?? `/category/${encodeURIComponent(category.name)}`
+    const categoryHref = category.link ?? `/category/${category.slug}`
 
     return (
       <div key={category.id} className={`flex flex-col space-y-4`}>
         {category.name && (
           <>
-            <h2 className="text-3xl font-bold mb-0">{category.name}</h2>
-            <p className="pt-0 mt-0">{`${postsCount} total posts in ${category.name}`}</p>
+            <h2 className="mb-0 text-3xl font-bold">{category.name}</h2>
+            <p className="pt-0 mt-0">{`${postsCount} Total ${
+              contentType === ContentType.article ? "Articles" : "News"
+            } in ${category.name}`}</p>
           </>
         )}
         <div className="flex flex-col h-full">
           {posts[0] && <Card11Wag post={posts[0]} />}
-          <ul className="space-y-3 mt-4">
+          <ul className="mt-4 space-y-3">
             {posts
               .filter((_, i) => i > 0 && i < 5)
               .map((post) => {
                 const flag = getPostFlag(post)
                 return (
                   <li key={post.id}>
-                    <h2 className="nc-card-title flex items-start font-medium space-x-4 rtl:space-x-reverse">
+                    <h2 className="flex items-start space-x-4 font-medium nc-card-title rtl:space-x-reverse">
                       {flag ? (
                         <span className="ml-2 text-xl">
                           {getPostFlag(post)}
                         </span>
                       ) : (
-                        <Badge
-                          className="w-2.5 h-2.5 !p-0 rounded flex-shrink-0 mt-2 ml-3"
-                          name={""}
-                          // color={category.color as TwMainColor}
-                        />
+                        <span className="w-2 h-2 !p-0 rounded flex-shrink-0 mt-2 ml-3 bg-gray-300"></span>
                       )}
                       <Link
                         href={`/post/${post.slug}`}
