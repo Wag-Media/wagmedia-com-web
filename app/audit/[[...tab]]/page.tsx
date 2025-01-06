@@ -29,7 +29,7 @@ export default async function AuditPage({
 }) {
   const selectedTab: string = params.tab ? params.tab[0] : "posts"
 
-  const tabs = ["Posts", "Management"]
+  const tabs = ["Posts", "Management", "Charts"]
 
   if (!selectedTab) {
     return <div>params:{JSON.stringify(params)} Invalid tab</div>

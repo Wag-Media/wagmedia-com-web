@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
 import { totalEarnings } from "@/utils/totalPostEarnings"
 import orderBy from "lodash"
@@ -292,3 +293,14 @@ export async function getAuthorPostCount(authorName: string) {
   })
   return count
 }
+
+export const getPostBySlug = cache(async (slug: string) => {
+  const post = await prisma.post.findUnique({
+    where: { slug },
+    include: {
+      tags: true,
+      categories: true,
+    },
+  })
+  return post
+})
