@@ -49,7 +49,6 @@ export default async function PostPage({
   return (
     <Suspense fallback={<SinglePostSkeleton title={calculatedTitle} />}>
       <SinglePostContent slug={slug} />
-      {/* <SinglePostSkeleton title={calculatedTitle} /> */}
     </Suspense>
   )
 }
