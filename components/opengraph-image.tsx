@@ -45,6 +45,8 @@ export default async function OpengraphImage({
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
+            textAlign: "center",
+            padding: 20,
           },
           ...style,
         }}
