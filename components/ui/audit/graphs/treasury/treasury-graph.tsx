@@ -33,31 +33,6 @@ const chartData = [
   { browser: "other", visitors: 190, fill: "var(--color-other)" },
 ]
 
-// const chartConfig = {
-//   Developer: {
-//     label: "Developer",
-//   },
-//   Chrome: {
-//     label: "Chrome",
-//   },
-//   safari: {
-//     label: "Safari",
-//     color: "hsl(var(--chart-2))",
-//   },
-//   firefox: {
-//     label: "Firefox",
-//     color: "hsl(var(--chart-3))",
-//   },
-//   edge: {
-//     label: "Edge",
-//     color: "hsl(var(--chart-4))",
-//   },
-//   other: {
-//     label: "Other",
-//     color: "hsl(var(--chart-5))",
-//   },
-// } satisfies ChartConfig
-
 export function TreasuryGraph() {
   const { data: treasuries, isLoading, isError } = useTreasuryData()
 
@@ -104,29 +79,27 @@ export function TreasuryGraph() {
 
   const chartConfig = {
     ethMainnet: {
-      label: `ETH Mainnet (${
+      label: `ETH Mainnet: $${
         treasuries?.eth?.mainnet?.totalUSD?.toFixed(0) || 0
-      } USD)`,
+      }`,
     },
     ethBase: {
-      label: `Base (${treasuries?.eth?.base?.totalUSD?.toFixed(0) || 0} USD)`,
+      label: `Base: $${treasuries?.eth?.base?.totalUSD?.toFixed(0) || 0}`,
     },
     wagmediaTreasury: {
-      label: `WagMedia Treasury (${(
+      label: `WagMedia Treasury: $${(
         (treasuries?.treasuryAH?.totalUSD || 0) +
         (treasuries?.treasuryPolkadot?.totalUSD || 0)
-      ).toFixed(0)} USD)`,
+      ).toFixed(0)}`,
     },
     wagmediaMultisig: {
-      label: `WagMedia Multisig (${(
+      label: `WagMedia Multisig: $${(
         (treasuries?.multisigAH?.totalUSD || 0) +
         (treasuries?.multisigPolkadot?.totalUSD || 0)
-      ).toFixed(0)} USD)`,
+      ).toFixed(0)}`,
     },
     hydraOmnipool: {
-      label: `Hydra Omnipool (${
-        treasuries?.hydra?.totalUSD?.toFixed(0) || 0
-      } USD)`,
+      label: `Hydra Omnipool: $${treasuries?.hydra?.totalUSD?.toFixed(0) || 0}`,
     },
   } satisfies ChartConfig
 
@@ -155,7 +128,16 @@ export function TreasuryGraph() {
             className="mx-auto aspect-square max-h-[400px]"
           >
             <PieChart>
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    formatter={(value, name) =>
+                      `${chartConfig[name as keyof typeof chartConfig].label}`
+                    }
+                  />
+                }
+              />
               <Pie
                 data={coloredData}
                 dataKey="value"
@@ -208,7 +190,7 @@ export function TreasuryGraph() {
           {treasuryUrls.map((url, index: number) => (
             <a
               key={index}
-              href={url}
+              href={url.replace(".api.subscan.io", ".subscan.io")}
               target="_blank"
               rel="noreferrer"
               className={cn("text-cyan-600 after:content-['|'] after:mx-1", {

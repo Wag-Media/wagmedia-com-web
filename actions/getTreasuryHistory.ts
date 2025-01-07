@@ -274,17 +274,3 @@ async function getEthUsdRate() {
 
   return ethToUsdRate
 }
-
-// get price
-
-// https://assethub-polkadot.api.subscan.io/api/open/price_converter
-// {
-//   "from": "DOT",
-//   "quote": "USD",
-//   "value": 100
-// . "time": timestamp
-// }
-
-// tokens with price
-// https://assethub-polkadot.api.subscan.io/api/scan/account/tokens
-// https://polkadot.api.subscan.io/api/scan/account/tokens

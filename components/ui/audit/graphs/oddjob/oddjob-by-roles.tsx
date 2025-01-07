@@ -68,7 +68,18 @@ export function OddjobByRoles({
             className="mx-auto aspect-square max-h-[400px]"
           >
             <PieChart>
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    formatter={(value, name) =>
+                      `${
+                        chartConfig[name as keyof typeof chartConfig].label
+                      }: $${value.toLocaleString()}`
+                    }
+                  />
+                }
+              />
               <Pie
                 data={coloredData}
                 dataKey="USD"
