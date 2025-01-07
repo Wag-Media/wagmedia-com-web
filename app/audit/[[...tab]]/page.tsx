@@ -9,9 +9,15 @@ export const fetchCache = "force-no-store"
 export const revalidate = 10 // seconds
 export const dynamic = "force-dynamic"
 
-export const metadata = {
-  title: "Audit",
-  description: "See where all WagMedia payments go",
+export const generateMetadata = ({ params }: { params: { tab: string[] } }) => {
+  const selectedTab: string = params.tab ? params.tab[0] : "posts"
+
+  return {
+    title: `Audit - ${
+      selectedTab.charAt(0).toUpperCase() + selectedTab.slice(1)
+    }`,
+    description: "See where all WagMedia payments go",
+  }
 }
 
 export default async function AuditPage({
@@ -29,13 +35,15 @@ export default async function AuditPage({
 }) {
   const selectedTab: string = params.tab ? params.tab[0] : "posts"
 
-  const tabs = ["Posts", "Management", "Charts"]
+  const tabs = ["Posts", "Management", "Treasury"]
 
   if (!selectedTab) {
     return <div>params:{JSON.stringify(params)} Invalid tab</div>
   }
 
-  if (![...tabs, "charts"].map((t) => t.toLowerCase()).includes(selectedTab)) {
+  if (
+    ![...tabs, "treasury"].map((t) => t.toLowerCase()).includes(selectedTab)
+  ) {
     return <div>params:{JSON.stringify(params)} Invalid tab</div>
   }
 
@@ -69,8 +77,8 @@ export default async function AuditPage({
           <AuditTableOddjobs />
         </Suspense>
       )}
-      {selectedTab === "charts" && (
-        <Suspense fallback={<div>Loading Charts...</div>}>
+      {selectedTab === "treasury" && (
+        <Suspense fallback={<div>Loading Treasury Charts...</div>}>
           <PageAuditCharts />
         </Suspense>
       )}
