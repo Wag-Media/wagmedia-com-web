@@ -300,6 +300,7 @@ export const getPostBySlug = cache(async (slug: string) => {
     include: {
       tags: true,
       categories: true,
+      embeds: true,
     },
   })
   return post

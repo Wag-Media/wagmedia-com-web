@@ -48,7 +48,7 @@ export function SinglePostReactions({
   return (
     <ul className="">
       {groupedReactions.map((group) => (
-        <TooltipProvider delayDuration={0}>
+        <TooltipProvider delayDuration={0} key={group.emojiId}>
           <Tooltip>
             <TooltipTrigger>
               {" "}
@@ -59,7 +59,7 @@ export function SinglePostReactions({
                     alt={group.emojiId}
                     width={30}
                     height={30}
-                    className="inline-block m-0 p-0 mr-1"
+                    className="inline-block p-0 m-0 mr-1"
                   />
                 ) : (
                   <span className="align-middle text-[30px] mr-1">
