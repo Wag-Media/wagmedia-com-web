@@ -247,8 +247,6 @@ async function getEthTreasuryBalance({
 }> {
   if (!chain) chain = mainnet
 
-  console.log("getEthTreasuryBalance", chain)
-
   const rpcUrl =
     chain.id === mainnet.id ? QUICKNODE_URL_MAINNET : QUICKNODE_URL_BASE
 
@@ -257,8 +255,6 @@ async function getEthTreasuryBalance({
     transport: http(rpcUrl),
   })
 
-  console.log("client", client)
-
   let ethBalance = BigInt(0)
 
   // Get ETH balance
@@ -266,7 +262,6 @@ async function getEthTreasuryBalance({
     ethBalance = await client.getBalance({
       address: TREASURY_WAGMEDIA_EVM,
     })
-    console.log("ethBalance", ethBalance)
   } catch (error) {
     console.error(`ETH balance read failed on ${chain.name}:`, error)
   }
@@ -285,11 +280,7 @@ async function getEthTreasuryBalance({
     console.error(`USDC balance read failed on ${chain.name}:`, error)
   }
 
-  console.log("usdcBalance", usdcBalance)
-
   const ethUsdRate = await getEthUsdRate()
-
-  console.log("ethUsdRate", ethUsdRate)
 
   return {
     ethPrice: ethUsdRate,
