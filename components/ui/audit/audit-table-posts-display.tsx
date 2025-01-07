@@ -358,12 +358,6 @@ export function AuditTablePostsDisplay() {
   const defaultData = useMemo(() => [], [])
 
   const tableData = useMemo(() => {
-    console.log(
-      "dataQuery.data?.data",
-      dataQuery.data?.data.map(
-        (item) => item.Post?.firstPaymentAt || item.Post?.createdAt
-      )
-    )
     return dataQuery.isLoading || dataQuery.isFetching
       ? (Array(pagination.pageSize)
           .fill({})

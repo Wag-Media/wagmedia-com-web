@@ -12,7 +12,6 @@ const AttachmentLink: React.FC<AttachmentProps> = ({ attachment }) => {
   useEffect(() => {
     const fetchPdf = async () => {
       const pdf = await fetch(`/api/pdf/${id}`)
-      console.log("pdf", pdf)
       setUrl(url)
     }
 

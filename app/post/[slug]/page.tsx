@@ -19,8 +19,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // fetch data
   const post = await getPostBySlug(slug)
 
-  console.log("post", post)
-
   if (!post) {
     return {
       title: "Post not found",

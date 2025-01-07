@@ -69,7 +69,6 @@ export const getOddjobPaymentsGroupedByPostId = async ({
 
   // Convert sorting array to Prisma orderBy format
   const orderBy = getOrderBy(sorting)
-  console.log("orderBy", orderBy)
 
   // Step 1: Fetch distinct postIds with pagination
   const distinctOddjobIds = await prisma.payment.findMany({
