@@ -19,8 +19,10 @@ const WSS_HYDRA = "wss://hydradx.paras.ibp.network"
 const SUBSCAN_POLKADOT = "https://polkadot.api.subscan.io"
 const SUBSCAN_ASSET_HUB = "https://assethub-polkadot.api.subscan.io"
 
-const QUICKNODE_URL =
+const QUICKNODE_URL_MAINNET =
   "https://silent-twilight-yard.quiknode.pro/79f45e1a716fa0427483f7f4aee32845a891f33a"
+const QUICKNODE_URL_BASE =
+  "https://silent-twilight-yard.base-mainnet.quiknode.pro/79f45e1a716fa0427483f7f4aee32845a891f33a"
 
 // USDC contract addresses on various blockchains
 const usdcAddresses: Record<number, `0x${string}`> = {
@@ -30,13 +32,13 @@ const usdcAddresses: Record<number, `0x${string}`> = {
 
 const USDC_DECIMALS = 6
 
-// Define the ABI for the ERC20 `balanceOf` function
+// Simplified ABI just for balanceOf
 const ERC20_ABI = [
   {
-    constant: true,
-    inputs: [{ name: "_owner", type: "address" }],
+    inputs: [{ name: "who", type: "address" }],
     name: "balanceOf",
-    outputs: [{ name: "balance", type: "uint256" }],
+    outputs: [{ type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
 ] as const
@@ -76,12 +78,13 @@ export const getTreasuryValues = async (): Promise<TreasuryData> => {
   }
 
   try {
-    const [treasuryAH, hydra, ethTreasuryMainnet] = await Promise.all([
-      getSubscanAssets("assethub", TREASURY_WAGMEDIA),
-      getHydraPoolBalance(),
-      getEthTreasuryBalance({ chain: mainnet }),
-      // getEthTreasuryBalance({ chain: base }),
-    ])
+    const [treasuryAH, hydra, ethTreasuryMainnet, ethTreasuryBase] =
+      await Promise.all([
+        getSubscanAssets("assethub", TREASURY_WAGMEDIA),
+        getHydraPoolBalance(),
+        getEthTreasuryBalance({ chain: mainnet }),
+        getEthTreasuryBalance({ chain: base }),
+      ])
 
     const treasuryPolkadot = await getSubscanAssets(
       "polkadot",
@@ -118,8 +121,8 @@ export const getTreasuryValues = async (): Promise<TreasuryData> => {
         (totalMultisigAH || 0) +
         (totalMultisigPolkadot || 0) +
         (totalHydra || 0) +
-        (ethTreasuryMainnet.totalUSD || 0),
-      // (ethTreasuryBase.totalUSD || 0),
+        (ethTreasuryMainnet.totalUSD || 0) +
+        (ethTreasuryBase.totalUSD || 0),
       eth: {
         address: TREASURY_WAGMEDIA_EVM,
         mainnet: {
@@ -127,7 +130,7 @@ export const getTreasuryValues = async (): Promise<TreasuryData> => {
           url: `https://etherscan.io/address/${TREASURY_WAGMEDIA_EVM}`,
         },
         base: {
-          // ...ethTreasuryBase,
+          ...ethTreasuryBase,
           url: `https://basescan.org/address/${TREASURY_WAGMEDIA_EVM}`,
         },
       },
@@ -242,64 +245,43 @@ async function getEthTreasuryBalance({
   usdcBalance: number
   totalUSD: number
 }> {
-  if (!chain) {
-    chain = mainnet
-  }
+  if (!chain) chain = mainnet
+
+  const rpcUrl =
+    chain.id === mainnet.id ? QUICKNODE_URL_MAINNET : QUICKNODE_URL_BASE
 
   const client = createPublicClient({
     chain,
-    transport: http(QUICKNODE_URL),
+    transport: http(rpcUrl),
   })
 
-  let queryBlockNumber: bigint
-  if (!blockNumber && !date) {
-    queryBlockNumber = await client.getBlockNumber()
-    console.log("Using current block:", queryBlockNumber.toString())
-  } else if (date) {
-    queryBlockNumber = estimateBlockNumberAtDate(new Date(date))
-    console.log("Using estimated block from date:", queryBlockNumber.toString())
-  } else {
-    queryBlockNumber = blockNumber!
-    console.log("Using provided block:", queryBlockNumber.toString())
-  }
-
+  // Get ETH balance
   const ethBalance = await client.getBalance({
     address: TREASURY_WAGMEDIA_EVM,
-    blockNumber: queryBlockNumber,
   })
 
-  console.log("Raw ETH Balance:", ethBalance.toString())
-  const convertedBalance = Number(ethBalance) / 1e18 // Use 1e18 instead of Math.pow(10, 18)
-  console.log("Converted ETH Balance:", convertedBalance)
-
-  console.log("ethBalance", ethBalance)
-
-  const chains = [mainnet.id, base.id]
+  // Get USDC balance
+  const usdcAddress = usdcAddresses[chain.id]
+  let usdcBalance = BigInt(0)
+  try {
+    usdcBalance = await client.readContract({
+      address: usdcAddress,
+      abi: ERC20_ABI,
+      functionName: "balanceOf",
+      args: [TREASURY_WAGMEDIA_EVM],
+    })
+  } catch (error) {
+    console.error(`USDC balance read failed on ${chain.name}:`, error)
+  }
 
   const ethUsdRate = await getEthUsdRate()
 
-  console.log("ethUsdRate", ethUsdRate)
-
-  const usdcContractAddress: `0x${string}` =
-    usdcAddresses[chain.id as keyof typeof usdcAddresses]
-
-  console.log("usdcContractAddress", chain.name, usdcContractAddress)
-
-  const usdcBalance = (await client.readContract({
-    address: usdcContractAddress,
-    abi: ERC20_ABI,
-    functionName: "balanceOf",
-    args: [TREASURY_WAGMEDIA_EVM],
-    blockNumber: blockNumber,
-  })) as unknown as bigint
-
   return {
     ethPrice: ethUsdRate,
-    ethBalance: Number(ethBalance.toString()) / 1e18,
-    usdcBalance: usdcBalance ? Number(usdcBalance.toString()) / 1e6 : 0,
+    ethBalance: Number(ethBalance) / 1e18,
+    usdcBalance: Number(usdcBalance) / 1e6,
     totalUSD:
-      (Number(ethBalance.toString()) / 1e18) * ethUsdRate +
-      (usdcBalance ? Number(usdcBalance.toString()) / 1e6 : 0),
+      (Number(ethBalance) / 1e18) * ethUsdRate + Number(usdcBalance) / 1e6,
   }
 }
 

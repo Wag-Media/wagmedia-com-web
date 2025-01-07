@@ -48,8 +48,6 @@ export function SimplePieChart({
     return acc
   }, {}) satisfies ChartConfig
 
-  console.log("simple pie config", chartConfig, data)
-
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -62,7 +60,18 @@ export function SimplePieChart({
           className="mx-auto aspect-square max-h-[400px]"
         >
           <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartTooltip
+              cursor={false}
+              content={
+                <ChartTooltipContent
+                  formatter={(value, name) =>
+                    `${
+                      chartConfig[name as keyof typeof chartConfig].label
+                    }: ${value.toLocaleString()} DOT`
+                  }
+                />
+              }
+            />
             <Pie
               data={data}
               dataKey="value"
