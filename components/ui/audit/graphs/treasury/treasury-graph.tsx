@@ -187,19 +187,20 @@ export function TreasuryGraph() {
           The total treasury amount might deviate from the actual amount due to
           the use of different prices for each asset. For more accurate values,
           please refer to the detailed breakdown in block explorers:{" "}
-          {treasuryUrls.map((url, index: number) => (
-            <a
-              key={index}
-              href={url.replace(".api.subscan.io", ".subscan.io")}
-              target="_blank"
-              rel="noreferrer"
-              className={cn("text-cyan-600 after:content-['|'] after:mx-1", {
-                "after:content-none": index === 5,
-              })}
-            >
-              {index + 1}
-            </a>
-          ))}
+          {treasuryUrls &&
+            treasuryUrls.map((url, index: number) => (
+              <a
+                key={index}
+                href={url?.replace(".api.subscan.io", ".subscan.io")}
+                target="_blank"
+                rel="noreferrer"
+                className={cn("text-cyan-600 after:content-['|'] after:mx-1", {
+                  "after:content-none": index === 5,
+                })}
+              >
+                {index + 1}
+              </a>
+            ))}
         </p>
       </CardFooter>
     </Card>
