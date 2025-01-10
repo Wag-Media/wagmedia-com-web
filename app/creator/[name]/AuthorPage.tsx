@@ -1,23 +1,22 @@
 import React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { getAuthor } from "@/data/dbAuthors"
 import { getPostsByAuthor } from "@/data/dbPosts"
+import { Globe, TwitterIcon } from "lucide-react"
 
 import Card11Wag from "@/components/Card11/Card11Wag"
 import NcImage from "@/components/NcImage/NcImage"
 
 export async function AuthorPage({ name }: { name: string }) {
-  // const FILTERS = [
-  //   { name: "Most Recent" },
-  //   { name: "Curated by Admin" },
-  //   { name: "Most Appreciated" },
-  //   { name: "Most Discussed" },
-  //   { name: "Most Viewed" },
-  // ]
   const TABS = ["Articles", "Favorites", "Saved"]
 
   const author = await getAuthor(name)
   const posts = await getPostsByAuthor(name)
+
+  if (!author) {
+    return <div>Creator not found</div>
+  }
 
   return (
     <div className={`nc-PageAuthor `}>
@@ -63,49 +62,56 @@ export async function AuthorPage({ name }: { name: string }) {
                 </span>
                 <h2 className="inline-flex items-center text-2xl font-semibold sm:text-3xl lg:text-4xl">
                   <span>{author?.name}</span>
-                  {/* <VerifyIcon
-                    className="ml-2"
-                    iconClass="w-6 h-6 sm:w-7 sm:h-7 xl:w-8 xl:h-8"
-                  /> */}
                 </h2>
-                <span className="block text-md text-neutral-500 dark:text-neutral-400">
+                <span className="block text-sm text-neutral-500 dark:text-neutral-400">
                   {posts.length} published posts
                 </span>
-                <span className="block text-sm text-neutral-500 dark:text-neutral-400">
-                  {author?.bio}
-                </span>
-                <a
-                  href="#"
-                  className="flex items-center text-xs font-medium space-x-2.5 rtl:space-x-reverse cursor-pointer text-neutral-500 dark:text-neutral-400 truncate"
-                >
-                  {/* <GlobeAltIcon className="flex-shrink-0 w-4 h-4" />
-                  <span className="truncate text-neutral-700 dark:text-neutral-300">
-                    https://example.com/me
-                  </span> */}
-                </a>
-                {/* <SocialsList itemClass="block w-7 h-7" /> */}
+                <p className="block text-md">{author?.bio}</p>
+
+                {author?.domain && (
+                  <Link
+                    href={author.domain}
+                    className="flex flex-row items-center"
+                  >
+                    <Globe className="flex-shrink-0 w-4 h-4 mr-2" />
+                    <span className="truncate text-neutral-700 dark:text-neutral-300">
+                      {author.domain}
+                    </span>
+                  </Link>
+                )}
+                {author?.twitterUsername && (
+                  <Link
+                    href={`https://x.com/${author?.twitterUsername}`}
+                    className="flex flex-row items-center"
+                  >
+                    <TwitterIcon className="flex-shrink-0 w-4 h-4 mr-2" />
+                    <span className="truncate text-neutral-700 dark:text-neutral-300">
+                      {author.twitterUsername}
+                    </span>
+                  </Link>
+                )}
               </div>
             </div>
 
-            {/*  */}
+            {/* 
             <div className="absolute flex justify-end md:static start-5 end-5 top-4 sm:start-auto sm:top-5 sm:end-5">
-              {/* <FollowButton
+              <FollowButton
               isFollowing={false}
               fontSize="text-sm md:text-base font-medium"
               sizeClass="px-4 py-1 md:py-2.5 h-8 md:!h-10 sm:px-6 lg:px-8"
-            /> */}
+            />
 
               <div className="mx-2">
-                {/* <NcDropDown
+                <NcDropDown
                 className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-full focus:outline-none bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-200"
                 renderTrigger={() => <ShareIcon className="w-5 h-5" />}
                 onClick={() => {}}
                 data={SOCIALS_DATA}
-              /> */}
+              />
               </div>
 
-              {/* <AccountActionDropdown containerClassName="h-10 w-10 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700" /> */}
-            </div>
+              <AccountActionDropdown containerClassName="h-10 w-10 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700" />
+            </div> */}
           </div>
         </div>
       </div>
