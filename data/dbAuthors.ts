@@ -45,6 +45,8 @@ export async function getAuthors({ limit = 10 }: { limit?: number }) {
       accentColor: true,
       bio: true,
       discordId: true,
+      domain: true,
+      twitterUsername: true,
       posts: {
         where: {
           isPublished: true,
