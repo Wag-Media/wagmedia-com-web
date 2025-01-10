@@ -8,6 +8,8 @@ import { Globe, TwitterIcon } from "lucide-react"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import NcImage from "@/components/NcImage/NcImage"
 
+export const revalidate = 20
+
 export async function AuthorPage({ name }: { name: string }) {
   const TABS = ["Articles", "Favorites", "Saved"]
 

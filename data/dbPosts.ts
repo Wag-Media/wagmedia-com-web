@@ -1,7 +1,5 @@
 import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
-import { totalEarnings } from "@/utils/totalPostEarnings"
-import orderBy from "lodash"
 import _ from "lodash"
 
 import {
