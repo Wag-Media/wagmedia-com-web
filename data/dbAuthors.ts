@@ -1,8 +1,7 @@
-import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
 import { User } from "@prisma/client"
 
-export const getAuthor = cache(async (name: string) => {
+export async function getAuthor(name: string) {
   const decodedName = decodeURIComponent(name)
   const author = await prisma.user.findFirst({
     where: {
@@ -11,9 +10,9 @@ export const getAuthor = cache(async (name: string) => {
   })
 
   return author
-})
+}
 
-export const getAuthorsList = cache(async () => {
+export async function getAuthorsList() {
   const authors = await prisma.user.findMany({
     select: {
       id: true,
@@ -33,9 +32,9 @@ export const getAuthorsList = cache(async () => {
   })
 
   return authors
-})
+}
 
-export const getAuthors = cache(async ({ limit = 10 }: { limit?: number }) => {
+export async function getAuthors({ limit = 10 }: { limit?: number }) {
   const authors = await prisma.user.findMany({
     select: {
       id: true,
@@ -46,8 +45,6 @@ export const getAuthors = cache(async ({ limit = 10 }: { limit?: number }) => {
       accentColor: true,
       bio: true,
       discordId: true,
-      domain: true,
-      twitterUsername: true,
       posts: {
         where: {
           isPublished: true,
@@ -109,7 +106,7 @@ export const getAuthors = cache(async ({ limit = 10 }: { limit?: number }) => {
     )
     .sort((a, b) => b.totalEarnings - a.totalEarnings) // Sort authors by total earnings in descending order
     .slice(0, limit) // Get the top 10 authors
-})
+}
 
 export async function getAuthorsByIds(ids: string[]) {
   const authors = await prisma.user.findMany({
