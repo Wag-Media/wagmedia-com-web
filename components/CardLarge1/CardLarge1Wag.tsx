@@ -96,7 +96,7 @@ const CardLarge1Wag: FC<CardLarge1WagProps> = ({
             )}
             containerStyle={{ backgroundImage: `url(${featuredImage})` }}
             className="inset-0 object-contain w-full h-auto rounded-lg backdrop-blur-lg max-h-[500px]"
-            priority={true}
+            priority
             alt={title}
           />
           {/* META TYPE */}

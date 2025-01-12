@@ -17,11 +17,18 @@ export async function AuthorPage({
   author: User
   posts: PostWithTagsCategoriesReactionsPaymentsUser[]
 }) {
-  // const TABS = ["Articles", "Favorites", "Saved"]
+  const displayedRoles = [
+    "Tier 1 Creator",
+    "Tier 2 Creator",
+    "Tier 3 Creator",
+    "Tier 1 Finder",
+    "Tier 2 Finder",
+    "Non-Anglo",
+  ]
 
-  if (!author) {
-    return <div>Creator not found</div>
-  }
+  const userRoles = author?.roles.filter((role) =>
+    displayedRoles.includes(role)
+  ) || ["Wagmedia Creator"]
 
   return (
     <div className={`nc-PageAuthor `}>
@@ -55,16 +62,23 @@ export async function AuthorPage({
                     src={author.avatar}
                     fill
                     className="object-cover"
-                    priority={true}
+                    priority
                   />
                 )}
               </div>
             </div>
             <div className="flex items-center flex-grow pt-5 md:pt-1 lg:ml-6 xl:ml-12">
               <div className="max-w-screen-sm space-y-3.5 ">
-                <span className="block text-sm text-neutral-500 dark:text-neutral-400">
-                  WagMedia Creator
-                </span>
+                <div>
+                  {userRoles.map((role) => (
+                    <span
+                      className="inline-block p-0.5 px-2 text-sm rounded-full border border-neutral-200"
+                      key={role}
+                    >
+                      {role}
+                    </span>
+                  ))}
+                </div>
                 <h2 className="inline-flex items-center text-2xl font-semibold sm:text-3xl lg:text-4xl">
                   <span>{author?.name}</span>
                 </h2>
