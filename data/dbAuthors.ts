@@ -1,7 +1,8 @@
+import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
 import { User } from "@prisma/client"
 
-export async function getAuthor(name: string) {
+export const getAuthor = cache(async (name: string) => {
   const decodedName = decodeURIComponent(name)
   const author = await prisma.user.findFirst({
     where: {
@@ -10,7 +11,7 @@ export async function getAuthor(name: string) {
   })
 
   return author
-}
+})
 
 export async function getAuthorsList() {
   const authors = await prisma.user.findMany({
