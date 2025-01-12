@@ -2,8 +2,6 @@ import React, { Suspense } from "react"
 import { getAuthor, getAuthorsList } from "@/data/dbAuthors"
 import { getPostsByAuthor } from "@/data/dbPosts"
 
-import { getDiscordRoles } from "@/lib/discord"
-
 import { AuthorPage } from "./AuthorPage"
 
 export const revalidate = 20
