@@ -47,7 +47,7 @@ export default async function PageCategory({
     return <>not found</>
   }
 
-  const { articles, news, name } = category
+  const { articles, news, name, articlesCount, newsCount } = category
 
   const title = name ? NonAngloCategoryTitle(deslugify(params.slug)) : ""
 
@@ -69,8 +69,8 @@ export default async function PageCategory({
           {!articles?.length ? null : (
             <>
               <Heading
-                desc={`Read ${articles.length} articles${
-                  news?.length ? ` and ${news.length} news` : ""
+                desc={`Read ${articlesCount} articles${
+                  newsCount ? ` and ${newsCount} news` : ""
                 } on Polkadot ${
                   isLanguage ? `in ${title}` : category.name
                 } written by our community creators`}
@@ -88,7 +88,7 @@ export default async function PageCategory({
             <>
               <Heading
                 desc={`Read decentralized news on Polkadot ${category.name}, collected from the web by our community finders`}
-                className="mt-12"
+                className="mt-24 mb-12"
               >
                 {deslugify(params.slug)} News
               </Heading>
