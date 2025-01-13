@@ -286,47 +286,46 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
     },
     include: {
       emoji: true,
-      _count: {
-        select: { posts: true },
-      },
       posts: {
         where: {
           isPublished: true,
           isDeleted: false,
           OR: [
-            {
-              contentType: ContentType.article,
-            },
-            {
-              contentType: ContentType.news,
-            },
+            { contentType: ContentType.article },
+            { contentType: ContentType.news },
           ],
         },
         include: {
           tags: true,
           categories: {
-            include: {
+            select: {
               emoji: true,
             },
           },
           reactions: {
-            include: {
+            select: {
               user: true,
               emoji: true,
             },
           },
-          payments: true,
-          user: true,
-          embeds: true,
-          earnings: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
+          },
+          earnings: {
+            select: {
+              totalAmount: true,
+            },
+          },
         },
       },
     },
   })
 
-  if (!category) {
-    return null
-  }
+  if (!category) return null
 
   return {
     ...category,

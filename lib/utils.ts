@@ -11,7 +11,7 @@ export function postHasFlag(post: PostWithReactions) {
   return post.reactions.some((reaction) => isCountryFlag(reaction.emoji.id))
 }
 
-export function getPostFlag(post: PostWithReactions) {
+export function getPostFlag(post: { reactions: { emoji: { id: string } }[] }) {
   // Get the flag emoji from the post reactions
   const flagReaction = post.reactions.find((reaction) =>
     isCountryFlag(reaction.emoji.id)
