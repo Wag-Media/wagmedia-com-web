@@ -116,7 +116,7 @@ export function SearchModal() {
               </div>
             )
           )}
-          <DialogFooter className="flex flex-wrap items-center !justify-start bg-gray-50 dark:bg-gray-900 py-2.5 px-4 text-xs text-gray-700 dark:text-gray-100 rounded-b-md">
+          <DialogFooter className="flex flex-wrap items-center flex-row !justify-start bg-gray-50 dark:bg-gray-900 py-2.5 px-4 text-xs text-gray-700 dark:text-gray-100 rounded-b-md">
             Type{" "}
             <kbd
               className={cn(

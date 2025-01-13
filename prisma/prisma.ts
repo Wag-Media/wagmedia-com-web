@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import { PrismaClientOptions } from "@prisma/client/runtime/library"
 import { withAccelerate } from "@prisma/extension-accelerate"
 
 let prisma: PrismaClient
