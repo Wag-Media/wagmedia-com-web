@@ -284,22 +284,29 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
         mode: "insensitive",
       },
     },
+  })
+
+  const categoryWhere = {
+    where: {
+      name: {
+        equals: decodedName,
+        mode: "insensitive",
+      },
+    },
     include: {
       emoji: true,
       posts: {
         where: {
           isPublished: true,
           isDeleted: false,
-          OR: [
-            { contentType: ContentType.article },
-            { contentType: ContentType.news },
-          ],
         },
         include: {
+          embeds: true,
           tags: true,
           categories: {
             select: {
               emoji: true,
+              name: true,
             },
           },
           reactions: {
@@ -312,7 +319,6 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
             select: {
               id: true,
               name: true,
-              avatar: true,
             },
           },
           earnings: {
@@ -323,19 +329,90 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
         },
       },
     },
+  } satisfies Prisma.CategoryFindFirstArgs
+
+  const articlesCount = await prisma.post.count({
+    where: {
+      contentType: ContentType.article,
+      isPublished: true,
+      isDeleted: false,
+      categories: {
+        some: {
+          name: decodedName,
+        },
+      },
+    },
   })
 
-  if (!category) return null
+  const articles = await prisma.post.findMany({
+    take: 12,
+    where: {
+      contentType: ContentType.article,
+      isPublished: true,
+      isDeleted: false,
+      categories: {
+        some: {
+          name: decodedName,
+        },
+      },
+    },
+    include: {
+      categories: true,
+      embeds: true,
+      reactions: {
+        include: {
+          emoji: true,
+        },
+      },
+      user: true,
+      earnings: true,
+    },
+  })
+
+  const newsCount = await prisma.post.count({
+    where: {
+      isPublished: true,
+      isDeleted: false,
+      contentType: ContentType.news,
+      categories: {
+        some: {
+          name: decodedName,
+        },
+      },
+    },
+  })
+
+  const news = await prisma.post.findMany({
+    take: 12,
+    where: {
+      isPublished: true,
+      isDeleted: false,
+      contentType: ContentType.news,
+      categories: {
+        some: {
+          name: decodedName,
+        },
+      },
+    },
+    include: {
+      embeds: true,
+      categories: true,
+      reactions: {
+        include: {
+          emoji: true,
+        },
+      },
+      user: true,
+      earnings: true,
+    },
+  })
 
   return {
     ...category,
-    postsCount: category.posts.length,
-    articles: category.posts.filter(
-      (post) => post.contentType === ContentType.article
-    ),
-    news: category.posts.filter(
-      (post) => post.contentType === ContentType.news
-    ),
+    articlesCount,
+    newsCount,
+    articles,
+    news,
   }
 }
 
