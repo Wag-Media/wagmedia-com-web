@@ -1,7 +1,10 @@
-import { FC } from "react"
+import { FC, Fragment, ReactNode, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { DEMO_AUTHORS } from "@/data/authors"
+import { DEMO_CATEGORIES } from "@/data/taxonomies"
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
+import { Combobox, Dialog, Transition } from "@headlessui/react"
 import {
   ClockIcon,
   ExclamationTriangleIcon,
@@ -28,28 +31,27 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
       <div className="fixed inset-0 z-10 p-4 overflow-y-auto sm:p-6 md:p-20">
         <div
           className="block max-w-2xl mx-auto overflow-hidden transition-all transform bg-white divide-y divide-gray-100 shadow-2xl rounded-xl ring-1 ring-black ring-opacity-5 dark:bg-background"
-          // onSubmit={(e) => {
-          //   e.preventDefault()
-          //   // router.push("/search")
-          //   // setOpen(false)
-          // }}
+          onSubmit={(e) => {
+            e.preventDefault()
+            // router.push("/search")
+            // setOpen(false)
+          }}
         >
-          <div
-          //   onChange={(item: any) => {
-          //     router.push(item.href)
-          //     setOpen(false)
-          //   }}
-          // name="searchpallet"
+          <Combobox
+            //   onChange={(item: any) => {
+            //     router.push(item.href)
+            //     setOpen(false)
+            //   }}
+            name="searchpallet"
           >
             <div className="relative">
               <MagnifyingGlassIcon
                 className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"
                 aria-hidden="true"
               />
-              <input
+              <Combobox.Input
                 className="w-full h-12 pr-4 text-gray-900 bg-transparent border-0 pl-11 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
                 placeholder="Search..."
-                value={query}
                 //   onChange={(event) => setRawQuery(event.target.value)}
               />
             </div>
@@ -57,7 +59,10 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
             {(posts.length > 0 ||
               authors.length > 0 ||
               (posts?.length ?? 0) > 0) && (
-              <div className="p-4 pb-2 space-y-4 overflow-y-auto max-h-80 scroll-py-10 scroll-pb-2">
+              <Combobox.Options
+                static
+                className="p-4 pb-2 space-y-4 overflow-y-auto max-h-80 scroll-py-10 scroll-pb-2"
+              >
                 {(posts?.length ?? 0) > 0 && (
                   <li>
                     <h2 className="text-xs font-semibold text-gray-900">
@@ -65,7 +70,7 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
                     </h2>
                     <ul className="mt-2 -mx-4 text-sm text-gray-700">
                       {(posts ?? []).map((post) => (
-                        <div
+                        <Combobox.Option
                           key={post.id}
                           value={post}
                           className={({ active }) =>
@@ -89,7 +94,7 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
                               </span>
                             </>
                           )}
-                        </div>
+                        </Combobox.Option>
                       ))}
                     </ul>
                   </li>
@@ -102,7 +107,7 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
                     </h2>
                     <ul className="mt-2 -mx-4 text-sm text-gray-700">
                       {posts.map((post) => (
-                        <div
+                        <Combobox.Option
                           key={post.id}
                           value={post}
                           className={({ active }) =>
@@ -126,7 +131,7 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
                               </span>
                             </>
                           )}
-                        </div>
+                        </Combobox.Option>
                       ))}
                     </ul>
                   </li>
@@ -139,7 +144,7 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
                     </h2>
                     <ul className="mt-2 -mx-4 text-sm text-gray-700">
                       {authors.map((user) => (
-                        <div
+                        <Combobox.Option
                           key={user.id}
                           value={user}
                           className={({ active }) =>
@@ -158,12 +163,12 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
                           <span className="flex-auto truncate ms-3">
                             {user.name}
                           </span>
-                        </div>
+                        </Combobox.Option>
                       ))}
                     </ul>
                   </li>
                 )}
-              </div>
+              </Combobox.Options>
             )}
 
             {query === "?" && (
@@ -246,7 +251,7 @@ const SearchResults: FC<Props> = ({ query, posts, authors, categories }) => {
                 Go to search page
               </Link>{" "}
             </div>
-          </div>
+          </Combobox>
         </div>
       </div>
     </>

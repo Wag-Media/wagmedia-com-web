@@ -48,8 +48,6 @@ export function SearchModal() {
     if (debouncedQuery) execute({ query: debouncedQuery })
   }, [debouncedQuery, execute])
 
-  console.log("result", result)
-
   // Only show results if we have data or are loading
   const shouldShowResults = status === "executing" || result?.data
 

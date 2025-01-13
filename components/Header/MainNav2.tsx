@@ -71,7 +71,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             <div className="hidden h-10 md:block border-s border-slate-200 dark:border-slate-700"></div>
 
             <div className="flex-grow hidden max-w-xs sm:block">
-              <SearchModal renderTrigger={renderSearchForm} />
+              <SearchModal />
             </div>
           </div>
 
