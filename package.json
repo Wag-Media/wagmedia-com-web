@@ -10,7 +10,7 @@
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",
     "typecheck": "tsc --noEmit",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "vercel-build": "prisma generate && next build",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
