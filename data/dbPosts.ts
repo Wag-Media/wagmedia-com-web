@@ -1,7 +1,6 @@
 import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
-import { totalEarnings } from "@/utils/totalPostEarnings"
-import orderBy from "lodash"
+import { Prisma } from "@prisma/client"
 import _ from "lodash"
 
 import {
@@ -31,13 +30,21 @@ export async function getPosts({
         }
       : { createdAt: "desc" }
 
+  const where = {
+    isPublished: true,
+    isDeleted: false,
+    isFeatured: false,
+    contentType,
+    ...(search && {
+      title: {
+        contains: search,
+        mode: Prisma.QueryMode.insensitive,
+      },
+    }),
+  }
+
   const posts = await prisma.post.findMany({
-    where: {
-      isPublished: true,
-      isDeleted: false,
-      isFeatured: false,
-      contentType,
-    },
+    where,
     orderBy: order as any,
     include: {
       tags: true,
@@ -72,6 +79,7 @@ export async function getPosts({
     take,
     skip,
   })
+
   return posts
 }
 

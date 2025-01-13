@@ -1,7 +1,8 @@
+import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
-import { User } from "@prisma/client"
+import { Prisma, User } from "@prisma/client"
 
-export async function getAuthor(name: string) {
+export const getAuthor = cache(async (name: string) => {
   const decodedName = decodeURIComponent(name)
   const author = await prisma.user.findFirst({
     where: {
@@ -10,7 +11,7 @@ export async function getAuthor(name: string) {
   })
 
   return author
-}
+})
 
 export async function getAuthorsList() {
   const authors = await prisma.user.findMany({
@@ -45,6 +46,9 @@ export async function getAuthors({ limit = 10 }: { limit?: number }) {
       accentColor: true,
       bio: true,
       discordId: true,
+      domain: true,
+      twitterUsername: true,
+      roles: true,
       posts: {
         where: {
           isPublished: true,
@@ -125,6 +129,29 @@ export async function getAuthorsByIds(ids: string[]) {
       bio: true,
       discordId: true,
     },
+  })
+
+  return authors
+}
+
+export async function searchAuthors(search: string) {
+  const where = search
+    ? {
+        name: {
+          contains: search,
+          mode: Prisma.QueryMode.insensitive,
+        },
+      }
+    : {}
+
+  const authors = await prisma.user.findMany({
+    where,
+    orderBy: {
+      posts: {
+        _count: "desc",
+      },
+    },
+    take: 5,
   })
 
   return authors
