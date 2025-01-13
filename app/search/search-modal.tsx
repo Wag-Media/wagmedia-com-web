@@ -26,7 +26,7 @@ interface SearchModalProps {
 }
 
 export function SearchModal() {
-  const [query, setQuery] = useState("a")
+  const [query, setQuery] = useState("")
   const [isOpen, setIsOpen] = useState(false)
   const debouncedQuery = useDebounce(query, 300)
   const router = useRouter()
@@ -45,11 +45,12 @@ export function SearchModal() {
   }, [])
 
   useEffect(() => {
-    if (debouncedQuery) execute({ query: debouncedQuery })
+    execute({ query: debouncedQuery || "" })
   }, [debouncedQuery, execute])
 
-  // Only show results if we have data or are loading
-  const shouldShowResults = status === "executing" || result?.data
+  // Show results if we have data, are loading, or query is empty
+  const shouldShowResults =
+    status === "executing" || result?.data || query === ""
 
   return (
     <>

@@ -8,7 +8,7 @@ import { z } from "zod"
 import { actionClient } from "@/lib/safe-action"
 
 const searchSchema = z.object({
-  query: z.string().min(1),
+  query: z.string(),
 })
 
 export const searchAction = actionClient
