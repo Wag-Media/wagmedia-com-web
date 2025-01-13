@@ -6,7 +6,18 @@ declare global {
 }
 
 if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient()
+  prisma = new PrismaClient({
+    log: ["query", "info", "warn", "error"],
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL,
+      },
+    },
+    transactionOptions: {
+      maxWait: 10000,
+      timeout: 60000,
+    },
+  })
 } else {
   if (!global.prisma) {
     global.prisma = new PrismaClient()
