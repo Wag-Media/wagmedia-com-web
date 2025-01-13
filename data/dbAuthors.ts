@@ -1,6 +1,6 @@
 import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
-import { User } from "@prisma/client"
+import { Prisma, User } from "@prisma/client"
 
 export const getAuthor = cache(async (name: string) => {
   const decodedName = decodeURIComponent(name)
@@ -129,6 +129,29 @@ export async function getAuthorsByIds(ids: string[]) {
       bio: true,
       discordId: true,
     },
+  })
+
+  return authors
+}
+
+export async function searchAuthors(search: string) {
+  const where = search
+    ? {
+        name: {
+          contains: search,
+          mode: Prisma.QueryMode.insensitive,
+        },
+      }
+    : {}
+
+  const authors = await prisma.user.findMany({
+    where,
+    orderBy: {
+      posts: {
+        _count: "desc",
+      },
+    },
+    take: 5,
   })
 
   return authors

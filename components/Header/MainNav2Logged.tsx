@@ -7,6 +7,7 @@ import { DiscordIcon } from "@/images/icons"
 import { siteConfig } from "@/config/site"
 import Logo from "@/components/Logo/Logo"
 import MenuBar from "@/components/MenuBar/MenuBar"
+import { SearchModal } from "@/app/search/search-modal"
 
 import NavigationWag from "../Navigation/NavigationWag"
 import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode"
@@ -32,7 +33,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
 
         <div className="flex items-center justify-end flex-1 text-slate-700 dark:text-slate-100">
           <div className="flex h-16 p-3 rounded-full">
-            {/* <SearchModal /> */}
+            <SearchModal />
             {/* <NotifyDropdown /> */}
             <SwitchDarkMode />
             <button

@@ -40,7 +40,7 @@ export async function AuthorPage({
               alt=""
               containerClassName="absolute inset-0"
               sizes="(max-width: 1280px) 100vw, 1536px"
-              src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+              src={author?.banner}
               className="object-cover w-full h-full"
               fill
               priority
@@ -59,7 +59,7 @@ export async function AuthorPage({
                 {author?.avatar && (
                   <Image
                     alt="Avatar"
-                    src={author.avatar}
+                    src={`${author.avatar}?size=512`}
                     fill
                     className="object-cover"
                     priority
@@ -69,16 +69,6 @@ export async function AuthorPage({
             </div>
             <div className="flex items-center flex-grow pt-5 md:pt-1 lg:ml-6 xl:ml-12">
               <div className="max-w-screen-sm space-y-3.5 ">
-                <div>
-                  {userRoles.map((role) => (
-                    <span
-                      className="inline-block p-0.5 px-2 text-sm rounded-full border border-neutral-200"
-                      key={role}
-                    >
-                      {role}
-                    </span>
-                  ))}
-                </div>
                 <h2 className="inline-flex items-center text-2xl font-semibold sm:text-3xl lg:text-4xl">
                   <span>{author?.name}</span>
                 </h2>
@@ -109,6 +99,16 @@ export async function AuthorPage({
                     </span>
                   </Link>
                 )}
+                <div>
+                  {userRoles.map((role) => (
+                    <span
+                      className="inline-block p-0.5 px-2 text-sm rounded-full border border-neutral-200"
+                      key={role}
+                    >
+                      {role}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

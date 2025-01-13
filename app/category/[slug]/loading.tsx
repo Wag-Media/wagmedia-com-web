@@ -1,7 +1,16 @@
+"use client"
+
+import { useParams } from "next/navigation"
+
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
 import Heading from "@/components/Heading/Heading"
 
+import { deslugify } from "../../../lib/slug"
+
 export default function Loading() {
+  const params = useParams<{ slug: string }>()
+  if (!params?.slug) return "Loading..."
+
   return (
     <div className={`nc-PageArchive`}>
       <div className="container pt-10 pb-16 space-y-16 lg:pb-28 lg:pt-20 lg:space-y-28">
@@ -17,13 +26,19 @@ export default function Loading() {
             </div> */}
           </div>
           <Heading
-            desc={`Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Polkadot.`}
+            desc={`Our extensive range of ${deslugify(
+              params.slug
+            )} articles will help you identify content of interest, enabling you to deepen your understanding of Polkadot.`}
           >
-            Explore Curated Polkadot Content
+            {deslugify(params.slug)} Articles
           </Heading>
           <PostGridSkeleton />
-          <Heading desc={``} className="mt-12">
-            {/* {params.slug} News */}
+          <Heading
+            desc={`Our extensive range of ${deslugify(
+              params.slug
+            )} news will help you identify content of interest, enabling you to deepen your understanding of Polkadot.`}
+          >
+            {deslugify(params.slug)} News
           </Heading>
           <PostGridSkeleton />
         </div>

@@ -1,18 +1,20 @@
-"use client";
+"use client"
 
-import React, { FC } from "react";
-import Logo from "@/components/Logo/Logo";
-import MenuBar from "@/components/MenuBar/MenuBar";
-import LangDropdown from "./LangDropdown";
-import AvatarDropdown from "./AvatarDropdown";
-import TemplatesDropdown from "./TemplatesDropdown";
-import NotifyDropdown from "./NotifyDropdown";
-import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode";
-import Input from "../Input/Input";
-import SearchModal from "./SearchModal";
+import React, { FC } from "react"
+
+import Logo from "@/components/Logo/Logo"
+import MenuBar from "@/components/MenuBar/MenuBar"
+import { SearchModal } from "@/app/search/search-modal"
+
+import Input from "../Input/Input"
+import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode"
+import AvatarDropdown from "./AvatarDropdown"
+import LangDropdown from "./LangDropdown"
+import NotifyDropdown from "./NotifyDropdown"
+import TemplatesDropdown from "./TemplatesDropdown"
 
 export interface MainNav2Props {
-  className?: string;
+  className?: string
 }
 
 const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
@@ -27,9 +29,9 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
           sizeClass="h-[42px] pl-4 py-3"
           autoFocus={false}
         />
-        <span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 dark:text-neutral-400">
+        <span className="absolute -translate-y-1/2 top-1/2 right-3 text-neutral-500 dark:text-neutral-400">
           <svg
-            className="h-5 w-5"
+            className="w-5 h-5"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -52,28 +54,28 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
         </span>
         <div className="absolute inset-0"></div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
-    <div className="nc-MainNav2 relative z-10 bg-white dark:bg-slate-900 ">
+    <div className="relative z-10 bg-white nc-MainNav2 dark:bg-slate-900 ">
       <div className="container">
-        <div className="h-20 flex justify-between">
-          <div className="flex items-center md:hidden flex-1">
+        <div className="flex justify-between h-20">
+          <div className="flex items-center flex-1 md:hidden">
             <MenuBar />
           </div>
 
-          <div className="flex lg:flex-1 items-center rtl:space-x-reverse space-x-3 sm:space-x-8">
+          <div className="flex items-center space-x-3 lg:flex-1 rtl:space-x-reverse sm:space-x-8">
             <Logo />
 
-            <div className="hidden md:block h-10 border-s border-slate-200 dark:border-slate-700"></div>
+            <div className="hidden h-10 md:block border-s border-slate-200 dark:border-slate-700"></div>
 
-            <div className="hidden sm:block flex-grow max-w-xs">
+            <div className="flex-grow hidden max-w-xs sm:block">
               <SearchModal renderTrigger={renderSearchForm} />
             </div>
           </div>
 
-          <div className="flex-1 flex items-center justify-end ">
+          <div className="flex items-center justify-end flex-1 ">
             <TemplatesDropdown />
             <LangDropdown />
             <SwitchDarkMode />
@@ -83,7 +85,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MainNav2;
+export default MainNav2

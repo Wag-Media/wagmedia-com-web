@@ -1,5 +1,5 @@
 import { prisma } from "@/prisma/prisma"
-import { Category, ContentType } from "@prisma/client"
+import { Category, ContentType, Prisma } from "@prisma/client"
 import { code, countries, name } from "country-emoji"
 import _, { filter, orderBy } from "lodash"
 
@@ -404,4 +404,27 @@ export async function getCategoryByName(
   })
 
   return category
+}
+
+export async function searchCategories(search: string) {
+  const where = search
+    ? {
+        name: {
+          contains: search,
+          mode: Prisma.QueryMode.insensitive,
+        },
+      }
+    : {}
+
+  const categories = await prisma.category.findMany({
+    where,
+    orderBy: {
+      posts: {
+        _count: "desc",
+      },
+    },
+    take: 5,
+  })
+
+  return categories
 }

@@ -16,8 +16,9 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline"
 
+import { usePosts } from "@/hooks/usePosts"
+
 const categories = DEMO_CATEGORIES.filter((_, i) => i < 9)
-const posts = DEMO_POSTS.filter((_, i) => i < 5)
 const authors = DEMO_AUTHORS.filter((_, i) => i < 9)
 
 function classNames(...classes: any) {
@@ -36,12 +37,14 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
 
   const query = rawQuery.toLowerCase().replace(/^[#>]/, "")
 
+  const { data: posts, isLoading: isPostsLoading } = usePosts(query)
+
   const filteredPosts =
     rawQuery === "#"
       ? posts
       : query === "" || rawQuery.startsWith(">")
       ? []
-      : posts.filter((project) => project.title.toLowerCase().includes(query))
+      : posts?.filter((post) => post.title.toLowerCase().includes(query))
 
   const filteredProjects =
     rawQuery === "#"
@@ -62,7 +65,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
   return (
     <>
       <button
-        className="flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl"
+        className="flex items-center self-center justify-center w-12 h-12 text-2xl rounded-full text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl backdrop-blur-md"
         onClick={() => setOpen(true)}
       >
         <svg
@@ -109,10 +112,10 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/40 transition-opacity" />
+            <div className="fixed inset-0 transition-opacity bg-black/40" />
           </Transition.Child>
 
-          <div className="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
+          <div className="fixed inset-0 z-10 p-4 overflow-y-auto sm:p-6 md:p-20">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -123,7 +126,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
               leaveTo="opacity-0 scale-100"
             >
               <Dialog.Panel
-                className="block mx-auto max-w-2xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
+                className="block max-w-2xl mx-auto overflow-hidden transition-all transform bg-white divide-y divide-gray-100 shadow-2xl rounded-xl ring-1 ring-black ring-opacity-5 dark:bg-background"
                 as="form"
                 onSubmit={(e) => {
                   e.preventDefault()
@@ -131,6 +134,8 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                   setOpen(false)
                 }}
               >
+                {isPostsLoading && <div>Loading...</div>}
+                posts:{!isPostsLoading && <>{JSON.stringify(posts)}</>}
                 <Combobox
                   onChange={(item: any) => {
                     router.push(item.href)
@@ -144,7 +149,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                       aria-hidden="true"
                     />
                     <Combobox.Input
-                      className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
+                      className="w-full h-12 pr-4 text-gray-900 bg-transparent border-0 pl-11 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
                       placeholder="Search..."
                       onChange={(event) => setRawQuery(event.target.value)}
                     />
@@ -152,18 +157,18 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
 
                   {(filteredProjects.length > 0 ||
                     filteredUsers.length > 0 ||
-                    filteredPosts.length > 0) && (
+                    (filteredPosts?.length ?? 0) > 0) && (
                     <Combobox.Options
                       static
-                      className="max-h-80 scroll-py-10 scroll-pb-2 space-y-4 overflow-y-auto p-4 pb-2"
+                      className="p-4 pb-2 space-y-4 overflow-y-auto max-h-80 scroll-py-10 scroll-pb-2"
                     >
-                      {filteredPosts.length > 0 && (
+                      {(filteredPosts?.length ?? 0) > 0 && (
                         <li>
                           <h2 className="text-xs font-semibold text-gray-900">
                             Posts
                           </h2>
-                          <ul className="-mx-4 mt-2 text-sm text-gray-700">
-                            {filteredPosts.map((post) => (
+                          <ul className="mt-2 -mx-4 text-sm text-gray-700">
+                            {(filteredPosts ?? []).map((post) => (
                               <Combobox.Option
                                 key={post.id}
                                 value={post}
@@ -183,7 +188,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                                       )}
                                       aria-hidden="true"
                                     />
-                                    <span className="ms-3 flex-auto truncate">
+                                    <span className="flex-auto truncate ms-3">
                                       {post.title}
                                     </span>
                                   </>
@@ -199,7 +204,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                           <h2 className="text-xs font-semibold text-gray-900">
                             Categories
                           </h2>
-                          <ul className="-mx-4 mt-2 text-sm text-gray-700">
+                          <ul className="mt-2 -mx-4 text-sm text-gray-700">
                             {filteredProjects.map((project) => (
                               <Combobox.Option
                                 key={project.id}
@@ -220,7 +225,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                                       )}
                                       aria-hidden="true"
                                     />
-                                    <span className="ms-3 flex-auto truncate">
+                                    <span className="flex-auto truncate ms-3">
                                       {project.name}
                                     </span>
                                   </>
@@ -236,7 +241,7 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                           <h2 className="text-xs font-semibold text-gray-900">
                             Authors
                           </h2>
-                          <ul className="-mx-4 mt-2 text-sm text-gray-700">
+                          <ul className="mt-2 -mx-4 text-sm text-gray-700">
                             {filteredUsers.map((user) => (
                               <Combobox.Option
                                 key={user.id}
@@ -251,10 +256,10 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                                 <Image
                                   src={user.avatar}
                                   alt="author"
-                                  className="h-6 w-6 flex-none rounded-full"
+                                  className="flex-none w-6 h-6 rounded-full"
                                   sizes="30px"
                                 />
-                                <span className="ms-3 flex-auto truncate">
+                                <span className="flex-auto truncate ms-3">
                                   {user.displayName}
                                 </span>
                               </Combobox.Option>
@@ -266,9 +271,9 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                   )}
 
                   {rawQuery === "?" && (
-                    <div className="py-14 px-6 text-center text-sm sm:px-14">
+                    <div className="px-6 text-sm text-center py-14 sm:px-14">
                       <LifebuoyIcon
-                        className="mx-auto h-6 w-6 text-gray-400"
+                        className="w-6 h-6 mx-auto text-gray-400"
                         aria-hidden="true"
                       />
                       <p className="mt-4 font-semibold text-gray-900">
@@ -287,9 +292,9 @@ const SearchModal: FC<Props> = ({ renderTrigger }) => {
                     rawQuery !== "?" &&
                     filteredProjects.length === 0 &&
                     filteredUsers.length === 0 && (
-                      <div className="py-14 px-6 text-center text-sm sm:px-14">
+                      <div className="px-6 text-sm text-center py-14 sm:px-14">
                         <ExclamationTriangleIcon
-                          className="mx-auto h-6 w-6 text-gray-400"
+                          className="w-6 h-6 mx-auto text-gray-400"
                           aria-hidden="true"
                         />
                         <p className="mt-4 font-semibold text-gray-900">
