@@ -286,51 +286,6 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
     },
   })
 
-  const categoryWhere = {
-    where: {
-      name: {
-        equals: decodedName,
-        mode: "insensitive",
-      },
-    },
-    include: {
-      emoji: true,
-      posts: {
-        where: {
-          isPublished: true,
-          isDeleted: false,
-        },
-        include: {
-          embeds: true,
-          tags: true,
-          categories: {
-            select: {
-              emoji: true,
-              name: true,
-            },
-          },
-          reactions: {
-            select: {
-              user: true,
-              emoji: true,
-            },
-          },
-          user: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-          earnings: {
-            select: {
-              totalAmount: true,
-            },
-          },
-        },
-      },
-    },
-  } satisfies Prisma.CategoryFindFirstArgs
-
   const articlesCount = await prisma.post.count({
     where: {
       contentType: ContentType.article,
@@ -362,6 +317,7 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
       reactions: {
         include: {
           emoji: true,
+          user: true,
         },
       },
       user: true,
@@ -400,6 +356,7 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
       reactions: {
         include: {
           emoji: true,
+          user: true,
         },
       },
       user: true,

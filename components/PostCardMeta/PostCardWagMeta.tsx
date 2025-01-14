@@ -15,7 +15,7 @@ export interface PostCardWagProps {
 }
 
 const PostCardWagMeta: FC<PostCardWagProps> = ({
-  className = "leading-none text-xs",
+  className = "text-xs leading-none",
   meta,
   hiddenAvatar = false,
   avatarSize = "h-7 w-7 text-sm",
@@ -38,7 +38,7 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
             userName={user.name}
           />
         )}
-        <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
+        <span className="block font-medium text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white">
           {user.name}
         </span>
       </Link>
@@ -46,7 +46,7 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
         <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
           ·
         </span>
-        <span className="text-neutral-500 dark:text-neutral-400 font-normal">
+        <span className="font-normal text-neutral-500 dark:text-neutral-400">
           {createdAt.toLocaleString("default", { month: "long" })}{" "}
           {createdAt.getDate()}, {createdAt.getFullYear()}
         </span>

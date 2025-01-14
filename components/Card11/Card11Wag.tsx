@@ -5,7 +5,15 @@ import Link from "next/link"
 import {
   PostDataType,
   PostWithTagsCategoriesReactionsPaymentsUser,
+  ReactionWithUserAndEmoji,
 } from "@/data/types"
+import {
+  Category,
+  ContentEarnings,
+  Embed,
+  Reaction,
+  User,
+} from "@prisma/client"
 
 import CategoryBadgeListWag from "../CategoryBadgeList/CategoryBadgeListWag"
 import PostCardLikeAndCommentWag from "../PostCardLikeAndComment/PostCardLikeAndCommentWag"
@@ -14,7 +22,16 @@ import PostFeaturedWagMedia from "../PostFeaturedMedia/PostFeaturedWagMedia"
 
 export interface Card11Props {
   className?: string
-  post: PostWithTagsCategoriesReactionsPaymentsUser
+  post: {
+    title: string
+    categories: Category[]
+    reactions: ReactionWithUserAndEmoji[]
+    earnings: ContentEarnings[]
+    slug: string
+    embeds: Embed[]
+    user: User
+    createdAt: Date
+  }
   ratio?: string
   hiddenAuthor?: boolean
 }
@@ -25,21 +42,7 @@ const Card11Wag: FC<Card11Props> = ({
   hiddenAuthor = false,
   ratio = "aspect-w-16 aspect-h-9",
 }) => {
-  const {
-    id,
-    title,
-    content,
-    slug,
-    tags,
-    categories,
-    reactions,
-    payments,
-    embeds,
-    createdAt,
-    discordLink,
-    user,
-    earnings,
-  } = post
+  const { title, categories, reactions, earnings, slug } = post
 
   const [isHover, setIsHover] = useState(false)
 
@@ -71,7 +74,7 @@ const Card11Wag: FC<Card11Props> = ({
           <PostCardWagMeta meta={{ ...post }} />
 
           <h3 className="block text-base font-semibold nc-card-title text-neutral-900 dark:text-neutral-100">
-            <span className="h-12 line-clamp-2" title={title}>  
+            <span className="h-12 line-clamp-2" title={title}>
               {title}
             </span>
           </h3>
