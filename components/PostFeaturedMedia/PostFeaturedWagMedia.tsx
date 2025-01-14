@@ -8,6 +8,7 @@ import {
   PostWithTagsCategoriesReactionsPaymentsUser,
 } from "@/data/types"
 import { categoryToColor, stringToColor } from "@/utils/stringToColor"
+import { Category, ContentEarnings, Embed, Reaction } from "@prisma/client"
 
 import PostTypeFeaturedIcon from "@/components/PostTypeFeaturedIcon/PostTypeFeaturedIcon"
 
@@ -17,7 +18,14 @@ import MediaVideo from "./MediaVideo"
 
 export interface PostFeaturedWagMediaProps {
   className?: string
-  post: PostWithTagsCategoriesReactionsPaymentsUser
+  post: {
+    title: string
+    categories: Category[]
+    reactions: Reaction[]
+    earnings: ContentEarnings[]
+    slug: string
+    embeds: Embed[]
+  }
   isHover?: boolean
 }
 
@@ -26,20 +34,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
   post,
   isHover = false,
 }) => {
-  const {
-    id,
-    title,
-    content,
-    slug,
-    tags,
-    categories,
-    reactions,
-    payments,
-    embeds,
-    createdAt,
-    discordLink,
-    user,
-  } = post
+  const { title, categories, reactions, embeds } = post
 
   const isPostMedia = () => embeds && embeds.length > 0
   const firstEmbed = embeds?.[0] ?? null
@@ -78,7 +73,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
   //   return isPostMedia() ? (
   //     <span className="absolute inset-0 flex items-center justify-center ">
   //       <PostTypeFeaturedIcon
-  //         className="hover:scale-105 transform cursor-pointer transition-transform"
+  //         className="transition-transform transform cursor-pointer hover:scale-105"
   //         postType={postType}
   //       />
   //     </span>
@@ -163,7 +158,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
               <img
                 src={featuredImage}
                 alt={title}
-                className="object-contain backdrop-blur-lg absolute w-full h-full "
+                className="absolute object-contain w-full h-full backdrop-blur-lg "
                 sizes="(max-width: 600px) 480px, 800px"
               />
             </div>
