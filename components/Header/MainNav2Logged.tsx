@@ -22,12 +22,14 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
           <MenuBar />
         </div>
 
-        <div className="flex items-center flex-1">
-          <Logo />
-          <NavigationWag className="z-10 h-16 p-3 mt-2" />
+        <div className="flex items-center flex-1 lg:flex-none">
+          <div className="flex items-center h-16 pl-3 border rounded-full backdrop-blur-md border-background/50 bg-background/50">
+            <Logo />
+            <NavigationWag className="z-10 hidden h-16 p-3 lg:flex" />
+          </div>
         </div>
 
-        <div className="flex items-center justify-end flex-1 text-slate-700 dark:text-slate-100">
+        <div className="flex items-center justify-end text-slate-700 dark:text-slate-100">
           <div className="flex h-16 p-3 rounded-full">
             <SearchModal />
             {/* <NotifyDropdown /> */}
