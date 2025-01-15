@@ -316,10 +316,13 @@ export const getPostBySlug = cache(async (slug: string) => {
   return post
 })
 
-export async function getAgentTippingPosts(): Promise<
-  PostWithTagsCategoriesReactionsPaymentsUser[]
-> {
+export async function getAgentTippingPosts(
+  skip: number = 0,
+  take: number = 12
+): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
   const posts = await prisma.post.findMany({
+    skip,
+    take,
     where: {
       isPublished: true,
       isDeleted: false,

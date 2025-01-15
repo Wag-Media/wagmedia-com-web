@@ -1,5 +1,6 @@
 import { getAgentTippingPosts, getNewsletterPosts } from "@/data/dbPosts"
 
+import { AgentTipGrid } from "@/components/ui/post-grid/AgentTipGrid"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
 import { PostGridDisplay } from "@/components/ui/post-grid/PostGridDisplay"
 import Card10V3Wag from "@/components/Card10/Card10V3Wag"
@@ -30,7 +31,7 @@ export default async function PageCategories() {
         Agent Tipping
       </Heading>
 
-      <PostGridDisplay
+      <AgentTipGrid
         initialPosts={postsWithLinks}
         totalPostCount={posts.length}
       />

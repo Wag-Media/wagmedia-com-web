@@ -295,7 +295,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ menuItem, active }) => {
       <div className="flex items-center flex-shrink-0 h-20">
         <Link
           className={cn(
-            "inline-flex items-center text-sm lg:text-[15px] font-medium text-slate-700 dark:text-slate-300 py-2 px-2 xl:px-4 hover:text-pink-600 transition-colors dark:hover:text-pink-400",
+            "inline-flex items-center text-sm lg:text-[15px] font-medium text-slate-700 dark:text-slate-300 py-2 px-1 xl:px-3 hover:text-pink-600 transition-colors dark:hover:text-pink-400",
             {
               "text-pink-600 dark:text-pink-400": active,
             }
