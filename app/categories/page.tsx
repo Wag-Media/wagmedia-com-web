@@ -1,4 +1,4 @@
-import { getCategoryOverview } from "@/data/dbCategories"
+import { getCategories, getCategoryOverview } from "@/data/dbCategories"
 
 import CategoryOverview from "@/components/Sections/CategoryOverview"
 

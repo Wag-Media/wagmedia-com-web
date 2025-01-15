@@ -127,6 +127,14 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
         return `text-lime-800 bg-lime-100/50 ${
           hasHover ? "hover:bg-lime-800/50" : ""
         }`
+      case "Wallet":
+        return `text-blue-800 bg-blue-100/50 ${
+          hasHover ? "hover:bg-blue-800/50" : ""
+        }`
+      case "RWA":
+        return `text-purple-800 bg-purple-100/50 ${
+          hasHover ? "hover:bg-purple-800/50" : ""
+        }`
       default:
         return `text-pink-800 bg-pink-100/50 ${
           hasHover ? "hover:bg-pink-800" : ""
