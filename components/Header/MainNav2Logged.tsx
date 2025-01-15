@@ -24,11 +24,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
 
         <div className="flex items-center flex-1">
           <Logo />
-        </div>
-
-        <div className="mx-4 hidden flex-[2] justify-center lg:flex">
           <NavigationWag className="z-10 h-16 p-3 mt-2" />
-          {/* <div className="absolute rounded-full top-full -translate-y-full left-1/2 -translate-x-1/2 bg-[#E6007A] w-[50vh] h-[50vh]" /> */}
         </div>
 
         <div className="flex items-center justify-end flex-1 text-slate-700 dark:text-slate-100">
