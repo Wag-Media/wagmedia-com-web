@@ -54,8 +54,9 @@ export async function SinglePostContent({ slug }: { slug: string }) {
   }
 
   let content = linkTextsToAnchorTags(post.content)
-
   content = await replaceAuthorLinks(content)
+
+  const sanitizedTitle = await replaceAuthorLinks(post.title, false)
 
   return (
     <div className={`nc-PageSingle pt-8 lg:pt-16`}>
@@ -68,7 +69,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                   itemClass="!px-3"
                   categories={post.categories}
                 />
-                <SingleTitle title={title} />
+                <SingleTitle title={sanitizedTitle} />
 
                 <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
                 <div className="flex flex-col justify-between space-y-5 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-5 rtl:space-x-reverse">

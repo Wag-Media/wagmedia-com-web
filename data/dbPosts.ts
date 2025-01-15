@@ -21,8 +21,6 @@ export async function getPosts({
   orderBy?: TypePostOrder
   contentType?: "article" | "news"
 }): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
-  console.log("getPosts args", orderBy, contentType)
-
   const order: Prisma.PostOrderByWithRelationInput =
     orderBy === "reactions"
       ? { reactions: { _count: "desc" } }
@@ -317,3 +315,42 @@ export const getPostBySlug = cache(async (slug: string) => {
   })
   return post
 })
+
+export async function getAgentTippingPosts(): Promise<
+  PostWithTagsCategoriesReactionsPaymentsUser[]
+> {
+  const posts = await prisma.post.findMany({
+    where: {
+      isPublished: true,
+      isDeleted: false,
+      categories: {
+        some: {
+          name: "Tip",
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      tags: true,
+      categories: {
+        include: {
+          emoji: true,
+        },
+      },
+      reactions: {
+        include: {
+          user: true,
+          emoji: true,
+        },
+      },
+      payments: true,
+      user: true,
+      embeds: true,
+      earnings: true,
+    },
+  })
+
+  return posts
+}

@@ -10,6 +10,7 @@ import Card11Wag from "@/components/Card11/Card11Wag"
 import Heading from "@/components/Heading/Heading"
 import Nav from "@/components/Nav/Nav"
 import { fetchPosts } from "@/app/actions/fetchPosts"
+import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
 import { revalidate } from "../../../app/(home)/page"
 import { Skeleton } from "../skeleton"
@@ -36,6 +37,13 @@ export default async function PostGrid({
     search,
   })
 
+  const postsWithLinks = await Promise.all(
+    posts.map(async (post) => {
+      const title = await replaceAuthorLinks(post.title, false)
+      return { ...post, title }
+    })
+  )
+
   const totalPostCount = await getTotalPostCount()
   // const [tabActive, setTabActive] = useState<string>(tabs[0])
 
@@ -60,7 +68,10 @@ export default async function PostGrid({
         Discover <Suspense fallback="...">{totalPostCount}</Suspense> Polkadot
         related articles by our community authors
       </p>
-      <PostGridDisplay initialPosts={posts} totalPostCount={totalPostCount} />
+      <PostGridDisplay
+        initialPosts={postsWithLinks}
+        totalPostCount={totalPostCount}
+      />
     </div>
   )
 }

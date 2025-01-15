@@ -1,4 +1,5 @@
 import React, { FC } from "react"
+import { redirect } from "next/navigation"
 import {
   getCategoriesNames,
   getCategoryWithArticlesAndNews,
@@ -8,6 +9,7 @@ import {
 import { deslugify, slugify } from "@/lib/slug"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import Heading from "@/components/Heading/Heading"
+import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
 import { NonAngloCategoryTitle, isCategoryNameLanguage } from "./util"
 
@@ -32,6 +34,10 @@ export default async function PageCategory({
 }: {
   params: { slug: string }
 }) {
+  if (params.slug === "tip") {
+    redirect("/agent-tipping")
+  }
+
   const isLanguage = isCategoryNameLanguage(params.slug)
 
   let category
@@ -48,6 +54,13 @@ export default async function PageCategory({
   }
 
   const { articles, news, name, articlesCount, newsCount } = category
+
+  const posts = await Promise.all(
+    articles.map(async (post) => {
+      const title = await replaceAuthorLinks(post.title, false)
+      return { ...post, title }
+    })
+  )
 
   const title = name ? NonAngloCategoryTitle(deslugify(params.slug)) : ""
 
@@ -66,7 +79,7 @@ export default async function PageCategory({
             </div> */}
           </div>
           {/* LOOP ITEMS */}
-          {!articles?.length ? null : (
+          {!posts?.length ? null : (
             <>
               <Heading
                 desc={`Read ${articlesCount} articles${
@@ -78,7 +91,7 @@ export default async function PageCategory({
                 {title} Articles
               </Heading>
               <div className="grid gap-6 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 lg:mt-4">
-                {articles?.map((post) => (
+                {posts?.map((post) => (
                   <Card11Wag key={post.id} post={post} />
                 ))}
               </div>

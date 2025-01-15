@@ -461,3 +461,67 @@ export async function searchCategories(search: string) {
 
   return categories
 }
+
+export async function getAgentTipCategories() {
+  const categories = await prisma.category.findMany({
+    where: {
+      name: "Tip",
+    },
+    select: {
+      id: true,
+      name: true,
+      _count: {
+        select: {
+          posts: {
+            where: {
+              isPublished: true,
+              isDeleted: false,
+              contentType: ContentType.article,
+              categories: {
+                some: {
+                  name: "Tip",
+                },
+              },
+            },
+          },
+        },
+      },
+      posts: {
+        where: {
+          isPublished: true,
+          isDeleted: false,
+          contentType: ContentType.article,
+          categories: {
+            some: {
+              name: "Tip",
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          tags: true,
+          categories: {
+            include: {
+              emoji: true,
+            },
+          },
+          reactions: {
+            include: {
+              user: true,
+              emoji: true,
+            },
+          },
+          payments: true,
+          user: true,
+          embeds: true,
+          earnings: true,
+        },
+        take: 5,
+      },
+    },
+  })
+
+  return categories
+}

@@ -6,7 +6,7 @@ import { deslugify } from "@/lib/slug"
 
 import { SinglePostContent } from "./SinglePostContent"
 import { SinglePostSkeleton } from "./SinglePostSkeleton"
-import { removeSocialMediaEmbeds } from "./util"
+import { removeSocialMediaEmbeds, replaceAuthorLinks } from "./util"
 
 type Props = {
   params: { slug: string }
@@ -31,8 +31,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description = description.slice(0, 150) + "..."
   }
 
+  description = await replaceAuthorLinks(description, false)
+
+  const title = await replaceAuthorLinks(post.title, false)
+
   return {
-    title: `${post.title} | ${post.categories.map((c) => c.name).join(", ")}`,
+    title: `${title} | ${post.categories.map((c) => c.name).join(", ")}`,
     description,
   }
 }

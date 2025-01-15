@@ -13,6 +13,7 @@ import Loading from "@/components/Button/Loading"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import Nav from "@/components/Nav/Nav"
 import { fetchPosts } from "@/app/actions/fetchPosts"
+import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
 import { cn } from "../../../utils/cn"
 
@@ -47,8 +48,15 @@ export function PostGridDisplay({
       contentType,
     })
 
+    const postsWithLinks = await Promise.all(
+      newPosts.map(async (post) => {
+        const title = await replaceAuthorLinks(post.title, false)
+        return { ...post, title }
+      })
+    )
+
     setCurrentPage(currentPage + 1)
-    setPosts((prev) => [...prev, ...newPosts])
+    setPosts((prev) => [...prev, ...postsWithLinks])
     setIsLoading(false)
   }, [currentPage, isLoading, isLoadMoreDisabled, orderBy])
 
@@ -106,7 +114,7 @@ export function PostGridDisplay({
         </Nav>
         {/* <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
           <span>View all</span>
-          <ArrowRightIcon className="ms-3 w-6 h-6 rtl:rotate-180" />
+          <ArrowRightIcon className="w-6 h-6 ms-3 rtl:rotate-180" />
         </Button> */}
       </div>
       <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
@@ -114,7 +122,7 @@ export function PostGridDisplay({
           <Card11Wag key={index} post={post} />
         ))}
       </div>
-      <div className="mt-20 flex items-center justify-center">
+      <div className="flex items-center justify-center mt-20">
         {!isLoadMoreDisabled && (
           <ButtonPrimary onClick={loadMorePosts} disabled={isLoading}>
             Show me more {isLoading && <Loading className="ml-2" />}

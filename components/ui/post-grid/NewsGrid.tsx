@@ -1,6 +1,8 @@
 import React, { FC, ReactNode, Suspense } from "react"
 import { getPosts, getTotalPostCount } from "@/data/dbPosts"
 
+import { replaceAuthorLinks } from "@/app/post/[slug]/util"
+
 import { PostGridDisplay } from "./PostGridDisplay"
 
 export interface NewsGridProps {
@@ -24,6 +26,12 @@ export default async function NewsGrid({
     search,
     contentType: "news",
   })
+  const postsWithLinks = await Promise.all(
+    posts.map(async (post) => {
+      const title = await replaceAuthorLinks(post.title, false)
+      return { ...post, title }
+    })
+  )
   const totalPostCount = await getTotalPostCount("news")
 
   return (
@@ -37,7 +45,7 @@ export default async function NewsGrid({
         bundled together in one place.
       </p>
       <PostGridDisplay
-        initialPosts={posts}
+        initialPosts={postsWithLinks}
         totalPostCount={totalPostCount}
         contentType="news"
       />

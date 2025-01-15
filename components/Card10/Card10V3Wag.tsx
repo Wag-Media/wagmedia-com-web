@@ -79,13 +79,6 @@ const Card10V3Wag: FC<Card10V3WagProps> = ({
             {title}
           </Link>
         </h2>
-        {/* <CardAuthor2
-          className="mt-3"
-          author={author}
-          hoverReadingTime={false}
-          date={date}
-          readingTime={readingTime}
-        /> */}
         <PostCardWagMeta meta={{ ...post }} />
       </div>
     </div>
