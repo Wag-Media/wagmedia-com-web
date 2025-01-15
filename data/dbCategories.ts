@@ -17,7 +17,7 @@ export async function getCategoryOverview(
   const categories = await prisma.category.findMany({
     where: {
       name: {
-        notIn: [...nonAngloCategories, "Newsletter"],
+        notIn: [...nonAngloCategories, "Newsletter", "Tip", "Meme", "Events"],
       },
     },
     select: {

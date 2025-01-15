@@ -66,9 +66,41 @@ const Badge: FC<BadgeProps> = ({
         return `text-lime-800 bg-lime-100/50 ${
           hasHover ? "hover:bg-lime-800/50" : ""
         }`
+      case "Wallet":
+        return `text-blue-800 bg-blue-100/50 ${
+          hasHover ? "hover:bg-blue-800/50" : ""
+        }`
+      case "RWA":
+        return `text-purple-800 bg-purple-100/50 ${
+          hasHover ? "hover:bg-purple-800/50" : ""
+        }`
+      case "Rollup":
+        return `text-orange-800 bg-orange-100/50 ${
+          hasHover ? "hover:bg-orange-800/50" : ""
+        }`
+      case "Jam":
+        return `text-pink-200 bg-gradient-to-r from-pink-500 to-pink-600 ${
+          hasHover ? "hover:bg-black-800" : ""
+        }`
+      case "Grant":
+        return `text-black bg-gradient-to-r from-cyan-400 to-orange-400 ${
+          hasHover ? "hover:bg-black-800" : ""
+        }`
+      case "DV":
+        return `text-gray-200 bg-gradient-to-r from-gray-500 to-gray-600 ${
+          hasHover ? "hover:bg-black-800" : ""
+        }`
+      case "DAO":
+        return `text-gray-800 bg-gradient-to-r from-fuchsia-500 to-fuchsia-600 ${
+          hasHover ? "hover:text-white" : ""
+        }`
+      case "Coretime":
+        return `text-gray-800 bg-gradient-to-r from-emerald-500 to-emerald-600 ${
+          hasHover ? "hover:text-white" : ""
+        }`
       default:
         return `text-pink-800 bg-pink-100/50 ${
-          hasHover ? "hover:bg-pink-800" : ""
+          hasHover ? "hover:bg-pink-200" : ""
         }`
     }
   }
@@ -79,13 +111,13 @@ const Badge: FC<BadgeProps> = ({
   return !!href ? (
     <Link
       href={href || "/"}
-      className={`transition-colors hover:text-white duration-300 ${CLASSES}`}
+      className={`transition-colors hover:text-white duration-300 ${CLASSES} from-`}
     >
-      {name}
+      {name === "Jam" ? "JAM" : name}
     </Link>
   ) : (
     <span className={`${CLASSES} backdrop-blur-sm ${getColorClass()}`}>
-      {name}
+      {name === "Jam" ? "JAM" : name}
     </span>
   )
 }

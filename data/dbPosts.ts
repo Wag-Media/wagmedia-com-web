@@ -21,7 +21,9 @@ export async function getPosts({
   orderBy?: TypePostOrder
   contentType?: "article" | "news"
 }): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
-  const order =
+  console.log("getPosts args", orderBy, contentType)
+
+  const order: Prisma.PostOrderByWithRelationInput =
     orderBy === "reactions"
       ? { reactions: { _count: "desc" } }
       : orderBy === "earnings"
@@ -45,7 +47,7 @@ export async function getPosts({
 
   const posts = await prisma.post.findMany({
     where,
-    orderBy: order as any,
+    orderBy: order,
     include: {
       tags: true,
       categories: {
@@ -79,6 +81,8 @@ export async function getPosts({
     take,
     skip,
   })
+
+  console.log(posts.map((post) => post.createdAt + ": " + post.title))
 
   return posts
 }
