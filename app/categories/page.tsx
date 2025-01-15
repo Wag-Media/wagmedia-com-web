@@ -2,9 +2,13 @@ import { getCategories, getCategoryOverview } from "@/data/dbCategories"
 
 import CategoryOverview from "@/components/Sections/CategoryOverview"
 
+// revalidate every 30 minutes
+export const revalidate = 1800
+
 export const metadata = {
-  title: "Article Categories",
-  description: "Explore all Polkadot Article Categories",
+  title: "Explore Curated Polkadot Content from different categories",
+  description:
+    "Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Polkadot.",
 }
 
 export default async function PageCategories() {
