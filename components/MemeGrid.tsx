@@ -150,16 +150,20 @@ export function MemeGrid() {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+    <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 gap-2 [&>*]:mb-2">
       {memes.map((meme) => (
-        <Card key={meme.id} className="relative overflow-hidden group">
+        <Card
+          key={meme.id}
+          className="relative overflow-hidden transition-all duration-300 rounded-sm group break-inside-avoid hover:scale-[102%] hover:shadow-lg"
+        >
           <CardContent className="p-0">
-            <div className="relative aspect-square">
+            <div className="relative w-full">
               <Image
                 src={meme.image || "/placeholder.svg"}
                 alt={meme.title}
-                fill
-                className="object-cover"
+                width={400}
+                height={Math.floor(Math.random() * (600 - 200) + 200)}
+                className="object-cover w-full"
                 sizes="(min-width: 1536px) 16.67vw, (min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 33.33vw, 50vw"
               />
               <div className="absolute inset-0 flex flex-col justify-between p-4 transition-opacity duration-300 bg-black opacity-0 bg-opacity-70 group-hover:opacity-100">
