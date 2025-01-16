@@ -1,11 +1,12 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import { getAgentTippingPosts } from "@/data/dbPosts"
+import { getAgentTippingPosts, getThreadPosts } from "@/data/dbPosts"
 import {
   PostWithTagsCategoriesReactionsPaymentsUser,
   TypePostOrder,
 } from "@/data/types"
+import { Post } from "@prisma/client"
 
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import Loading from "@/components/Button/Loading"
@@ -30,6 +31,7 @@ export function AgentTipGrid({
   const [isLoadMoreDisabled, setIsLoadMoreDisabled] = useState(
     initialPosts.length < pageSize
   )
+  const [threadPosts, setThreadPosts] = useState<any[]>([])
 
   const loadMorePosts = useCallback(async () => {
     if (isLoadMoreDisabled || isLoading) return
@@ -60,14 +62,35 @@ export function AgentTipGrid({
 
   useEffect(() => {
     setIsLoadMoreDisabled(posts.length >= totalPostCount)
+
+    async function getThreadPostsAsync() {
+      const threadPosts = await Promise.all(
+        posts.map(async (post) => {
+          const threadPosts = await getThreadPosts(post.id)
+          return threadPosts
+        })
+      )
+      setThreadPosts(threadPosts)
+    }
+    getThreadPostsAsync()
   }, [posts, totalPostCount])
 
   return (
     <div className="mt-8">
       <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
-        {posts.map((post, index) => (
-          <Card11Wag key={index} post={post} />
-        ))}
+        {posts.map((post, index) => {
+          return (
+            <div className="flex flex-col overflow-scroll">
+              {post.id}
+              {post.discordLink}
+              threadPosts:{" "}
+              {threadPosts.find(
+                (threadPost) => threadPost.parentPostId === post.id
+              )}
+              <Card11Wag key={index} post={post} />
+            </div>
+          )
+        })}
       </div>
       <div className="flex items-center justify-center mt-20">
         {!isLoadMoreDisabled && (

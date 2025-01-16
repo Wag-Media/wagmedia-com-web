@@ -156,3 +156,16 @@ export async function searchAuthors(search: string) {
 
   return authors
 }
+
+export async function getAuthorAvatars() {
+  const authors = await prisma.user.findMany({
+    select: {
+      avatar: true,
+      name: true,
+      accentColor: true,
+    },
+    take: 80,
+  })
+
+  return authors
+}

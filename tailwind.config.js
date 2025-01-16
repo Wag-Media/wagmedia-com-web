@@ -78,6 +78,7 @@ module.exports = {
           5: "hsl(var(--chart-5))",
         },
       },
+      "duration-5000": "5000ms",
       boxShadow: {
         black: "0 0 0 2px rgba(218,102,123,1), 6px 6px 0 0 rgba(218,102,123,1)",
         white: "0 35px 60px -15px rgba(255, 255, 255, 0.1)",
@@ -121,11 +122,24 @@ module.exports = {
             height: "0",
           },
         },
+        "up-down": {
+          "0%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-30%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        "ping-pulse": {
+          "75%, 100%": {
+            transform: "scale(1.4)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "up-down": "up-down 8s infinite",
         blob: "blob 7s infinite",
+        "ping-pulse": "ping-pulse 4s cubic-bezier(0, 0, 0.2, 1) infinite",
       },
     },
   },

@@ -80,8 +80,6 @@ export async function getPosts({
     skip,
   })
 
-  console.log(posts.map((post) => post.createdAt + ": " + post.title))
-
   return posts
 }
 
@@ -355,5 +353,14 @@ export async function getAgentTippingPosts(
     },
   })
 
+  return posts
+}
+
+export async function getThreadPosts(parentId: string) {
+  const posts = await prisma.post.findMany({
+    where: {
+      parentPostId: parentId,
+    },
+  })
   return posts
 }
