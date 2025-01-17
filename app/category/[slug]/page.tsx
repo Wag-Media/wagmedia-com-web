@@ -67,7 +67,7 @@ export default async function PageCategory({
   if (posts.length === 0) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
-        No articles found for {category.name}
+        No articles found for {params.slug}
       </div>
     )
   }
