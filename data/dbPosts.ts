@@ -80,6 +80,8 @@ export async function getPosts({
     skip,
   })
 
+  console.log(posts.map((post) => post.createdAt + ": " + post.title))
+
   return posts
 }
 

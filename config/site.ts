@@ -30,6 +30,11 @@ export const siteConfig = {
       name: "News",
       href: "/polkadot-news",
     },
+    // {
+    //   id: "7",
+    //   name: "Agent Tipping",
+    //   href: "/agent-tipping",
+    // },
     {
       id: "7",
       name: "Agent Tipping",
