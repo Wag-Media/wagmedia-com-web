@@ -38,6 +38,8 @@ export default async function PageCategory({
     redirect("/agent-tipping")
   }
 
+  console.log("slug", params.slug)
+
   const isLanguage = isCategoryNameLanguage(params.slug)
 
   let category
@@ -61,6 +63,14 @@ export default async function PageCategory({
       return { ...post, title }
     })
   )
+
+  if (posts.length === 0) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        No articles found for {category.name}
+      </div>
+    )
+  }
 
   const title = name ? NonAngloCategoryTitle(deslugify(params.slug)) : ""
 

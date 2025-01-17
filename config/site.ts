@@ -21,7 +21,7 @@ export const siteConfig = {
       href: "/newsletter",
     },
     {
-      id: "7",
+      id: "9",
       name: "Creators",
       href: "/creators",
     },
