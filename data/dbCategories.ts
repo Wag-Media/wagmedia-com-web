@@ -293,7 +293,7 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
       isDeleted: false,
       categories: {
         some: {
-          name: decodedName,
+          name: category?.name,
         },
       },
     },
@@ -307,7 +307,7 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
       isDeleted: false,
       categories: {
         some: {
-          name: decodedName,
+          name: category?.name,
         },
       },
     },
@@ -332,7 +332,7 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
       contentType: ContentType.news,
       categories: {
         some: {
-          name: decodedName,
+          name: category?.name,
         },
       },
     },
@@ -346,7 +346,7 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
       contentType: ContentType.news,
       categories: {
         some: {
-          name: decodedName,
+          name: category?.name,
         },
       },
     },

@@ -102,17 +102,14 @@ export const columns: ColumnDef<PaymentOddjob>[] = [
   // },
   {
     id: "createdAt",
-    accessorFn: (row) =>
-      row?.OddJob?.createdAt
-        ? row?.OddJob?.createdAt
-        : row?.OddJob?.firstPaymentAt,
+    accessorFn: (row) => row.OddJob?.firstPaymentAt,
     header: "Datetime",
+
     cell: (props) => {
       const datetime = new Date(props.getValue() as string)
-
       return (
-        <div className="flex flex-row items-center gap-2">
-          {datetime?.toUTCString()}
+        <div className="flex flex-row items-center gap-2 tabular-nums">
+          {datetime.toUTCString().split(" ").slice(1).join(" ")}
         </div>
       )
     },

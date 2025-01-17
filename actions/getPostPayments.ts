@@ -153,10 +153,7 @@ function getOrderBy(
 ): Prisma.PaymentOrderByWithRelationInput[] {
   return sorting.reduce((acc, { id, desc }) => {
     if (id === "createdAt") {
-      acc.push(
-        { Post: { firstPaymentAt: desc ? "desc" : "asc" } },
-        { Post: { createdAt: desc ? "desc" : "asc" } }
-      )
+      acc.push({ Post: { firstPaymentAt: desc ? "desc" : "asc" } })
     } else if (id === "title") {
       acc.push({ Post: { title: desc ? "desc" : "asc" } })
     } else if (id === "director") {

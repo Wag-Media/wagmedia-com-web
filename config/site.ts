@@ -21,7 +21,7 @@ export const siteConfig = {
       href: "/newsletter",
     },
     {
-      id: "7",
+      id: "9",
       name: "Creators",
       href: "/creators",
     },
@@ -30,6 +30,11 @@ export const siteConfig = {
       name: "News",
       href: "/polkadot-news",
     },
+    // {
+    //   id: "7",
+    //   name: "Agent Tipping",
+    //   href: "/agent-tipping",
+    // },
     {
       id: "5",
       name: "Audit",

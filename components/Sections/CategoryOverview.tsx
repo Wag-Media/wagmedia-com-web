@@ -7,6 +7,7 @@ import { ContentType } from "@prisma/client"
 import { getPostFlag, postHasFlag } from "@/lib/utils"
 import Badge from "@/components/Badge/Badge"
 import Heading from "@/components/Heading/Heading"
+import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
 import Button from "../Button/Button"
 import Card11Wag from "../Card11/Card11Wag"
@@ -23,20 +24,25 @@ export interface SectionMagazine11Props {
   contentType?: ContentType
 }
 
-const CategoryOverview: FC<SectionMagazine11Props> = ({
+const CategoryOverview: FC<SectionMagazine11Props> = async ({
   categories = [],
   className = "",
   heading = "Explore all Polkadot Article Categories",
   desc = "Polkadot Ecosystem Articles grouped by Category",
   contentType = ContentType.article,
 }) => {
-  const renderListByCat = (
+  const renderListByCat = async (
     category: expectedCategoryType[number] & {
       _count: { posts: number }
       link?: string
     }
   ) => {
-    const posts = category.posts
+    const posts = await Promise.all(
+      category.posts.map(async (post) => {
+        const title = await replaceAuthorLinks(post.title, false)
+        return { ...post, title }
+      })
+    )
     const postsCount = category._count?.posts
 
     const categoryHref = category.link ?? `/category/${category.slug}`

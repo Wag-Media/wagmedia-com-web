@@ -12,7 +12,7 @@ const Logo: React.FC<LogoProps> = ({ img = logoImg }) => {
   return (
     <Link
       href="/"
-      className="ttnc-logo inline-block text-primary-600 flex-shrink h-full py-3"
+      className="inline-block w-12 h-16 py-3 ttnc-logo text-primary-600"
     >
       <Image src={logoImg} alt="logo" className="w-auto h-full" />
     </Link>

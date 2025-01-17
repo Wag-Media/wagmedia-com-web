@@ -2,7 +2,7 @@ import React, { FC, useMemo } from "react"
 import Image from "next/image"
 import { ReactionWithUserAndEmoji } from "@/data/types"
 import { ContentEarnings } from "@prisma/client"
-import { Coins, ThumbsUp } from "lucide-react"
+import { Coins, MessageCircleHeart, Smile, ThumbsUp } from "lucide-react"
 
 import { totalEarnings } from "../../utils/totalPostEarnings"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
@@ -63,7 +63,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
       <HoverCard openDelay={0}>
         <HoverCardTrigger>
           <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
-            <ThumbsUp size={20} strokeWidth={2} color="#999" />
+            <MessageCircleHeart size={20} strokeWidth={2} color="#999" />
             {likeCount}
           </div>
         </HoverCardTrigger>

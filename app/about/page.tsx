@@ -21,10 +21,10 @@ const PageAbout = ({}) => {
       {/* ======== BG GLASS ======== */}
       <BgGlassmorphism />
 
-      <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
+      <div className="container py-16 space-y-16 lg:py-28 lg:space-y-28">
         <div className={`nc-SectionHero relative`}>
-          <div className="flex flex-col lg:flex-row space-y-14 lg:space-y-0 lg:space-x-10 rtl:space-x-reverse items-center relative text-center lg:text-left">
-            <div className="w-screen max-w-full xl:max-w-lg space-y-5 lg:space-y-7">
+          <div className="relative flex flex-col items-center text-center lg:flex-row space-y-14 lg:space-y-0 lg:space-x-10 rtl:space-x-reverse lg:text-left">
+            <div className="w-screen max-w-full space-y-5 xl:max-w-lg lg:space-y-7">
               <h2 className="text-3xl !leading-tight font-semibold text-neutral-900 md:text-4xl xl:text-5xl dark:text-neutral-100">
                 👋 About WagMedia
               </h2>
@@ -67,19 +67,19 @@ const PageAbout = ({}) => {
           >
             🥳 How to Join
           </h2>
-          <div className="flex flex-col lg:flex-row space-y-14 lg:space-y-0 items-start relative text-center lg:text-left justify-between">
-            <div className="w-screen max-w-full xl:max-w-lg space-y-5 lg:space-y-7">
+          <div className="relative flex flex-col items-start justify-between text-center lg:flex-row space-y-14 lg:space-y-0 lg:text-left">
+            <div className="w-screen max-w-full space-y-5 xl:max-w-lg lg:space-y-7">
               <ol className="list-decimal ml-4 space-y-2 flex flex-col [&amp;>li]:gap-[1ch] [counter-reset:list-decimal] [&amp;>li]:flex [&amp;>li]:flex-row [&amp;>li>.bullet]:tabular-nums [&amp;>li>.bullet]:whitespace-nowrap [&amp;>li>.bullet]:list-decimal [&amp;>li>.bullet]:before:h-[1lh] [&amp;>li>.bullet]:before:leading-[inherit] [&amp;>li>.bullet]:before:flex [&amp;>li>.bullet]:text-dark/6 [&amp;>li>div_div]:mt-0 dark:[&amp;>li>.bullet]:text-light/6 max-w-3xl w-full mx-auto decoration-primary/6 page-api-block:ml-0 text-left">
                 <li value="1" className="leading-normal">
                   <div
                     data-value="1"
-                    className="bullet ListItem_olListItemBullet__9X19L text-base"
+                    className="text-base bullet ListItem_olListItemBullet__9X19L"
                   ></div>
-                  <div className="space-y-2 flex-1 flex flex-col">
+                  <div className="flex flex-col flex-1 space-y-2">
                     <p className="max-w-3xl w-full mx-auto decoration-primary/6 leading-normal min-h-[1lh] flip-heading-hash">
                       First you must enter the discord through{" "}
                       <a
-                        className="underline underline-offset-2 text-primary hover:text-primary-700 transition-colors "
+                        className="underline transition-colors underline-offset-2 text-primary hover:text-primary-700 "
                         href="https://discord.gg/FjMpPdwRaC"
                       >
                         <span className="text-blue-500">this handy link</span>
@@ -90,9 +90,9 @@ const PageAbout = ({}) => {
                 <li value="2" className="leading-normal">
                   <div
                     data-value="2"
-                    className="bullet ListItem_olListItemBullet__9X19L text-base"
+                    className="text-base bullet ListItem_olListItemBullet__9X19L"
                   ></div>
-                  <div className="space-y-2 flex-1 flex flex-col">
+                  <div className="flex flex-col flex-1 space-y-2">
                     <p className="max-w-3xl w-full mx-auto decoration-primary/6 leading-normal min-h-[1lh] flip-heading-hash">
                       Our server uses a bot to verify your addresses and hand
                       out rewards. Be sure to allow private messages to allow{" "}
@@ -102,7 +102,7 @@ const PageAbout = ({}) => {
                         </span>
                       </i>{" "}
                       to reach out and register your reward addresses.
-                      <span className="mt-4 block">
+                      <span className="block mt-4">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           alt=""
@@ -115,14 +115,14 @@ const PageAbout = ({}) => {
                           height="934"
                         />
                       </span>
-                      <p className="italic text-center w-full text-sm">
+                      <p className="w-full text-sm italic text-center">
                         (Personal Settings &gt; Privacy &amp; Safety&gt;Allow
                         direct messages from server members)
                       </p>
-                      <strong className="font-bold block text-center w-full my-4">
+                      <strong className="block w-full my-4 font-bold text-center">
                         OR
                       </strong>
-                      <div className="text-center flex justify-center">
+                      <div className="flex justify-center text-center">
                         <span className="mt-4 block max-w-[300px]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
@@ -137,7 +137,7 @@ const PageAbout = ({}) => {
                           />
                         </span>
                       </div>
-                      <p className="italic text-center w-full text-sm">
+                      <p className="w-full text-sm italic text-center">
                         (Server Settings &gt; Allow Direct Messages)
                       </p>
                     </p>
@@ -146,9 +146,9 @@ const PageAbout = ({}) => {
                 <li value="3" className="leading-normal">
                   <div
                     data-value="3"
-                    className="bullet ListItem_olListItemBullet__9X19L text-base"
+                    className="text-base bullet ListItem_olListItemBullet__9X19L"
                   ></div>
-                  <div className="space-y-2 flex-1 flex flex-col">
+                  <div className="flex flex-col flex-1 space-y-2">
                     <p className="max-w-3xl w-full mx-auto decoration-primary/6 leading-normal min-h-[1lh] flip-heading-hash">
                       React with an emoji on the message in{" "}
                       <span className="text-red-500">
@@ -161,9 +161,9 @@ const PageAbout = ({}) => {
                 <li value="4" className="leading-normal">
                   <div
                     data-value="4"
-                    className="bullet ListItem_olListItemBullet__9X19L text-base"
+                    className="text-base bullet ListItem_olListItemBullet__9X19L"
                   ></div>
-                  <div className="space-y-2 flex-1 flex flex-col">
+                  <div className="flex flex-col flex-1 space-y-2">
                     <p className="max-w-3xl w-full mx-auto decoration-primary/6 leading-normal min-h-[1lh] flip-heading-hash">
                       The Concierge will DM you. Message him{" "}
                       <i className="font-italic">!wagmi </i>and he offer you
@@ -174,9 +174,9 @@ const PageAbout = ({}) => {
                 <li value="5" className="leading-normal">
                   <div
                     data-value="5"
-                    className="bullet ListItem_olListItemBullet__9X19L text-base"
+                    className="text-base bullet ListItem_olListItemBullet__9X19L"
                   ></div>
-                  <div className="space-y-2 flex-1 flex flex-col">
+                  <div className="flex flex-col flex-1 space-y-2">
                     <p className="max-w-3xl w-full mx-auto decoration-primary/6 leading-normal min-h-[1lh] flip-heading-hash">
                       Once you have been verified, introduce yourself in the{" "}
                       <span className="text-red-500">
@@ -189,8 +189,8 @@ const PageAbout = ({}) => {
                 </li>
               </ol>
             </div>
-            <div className="flex-grow text-right flex justify-right flex-col lg:ml-48 w-full max-w-md">
-              <h3 className="text-xl mb-6">
+            <div className="flex flex-col flex-grow w-full max-w-md text-right justify-right lg:ml-48">
+              <h3 className="mb-6 text-xl">
                 Watch this Video Tutorial on how to join
               </h3>
               {/* <Image className="w-full" src={rightImg} alt="" /> */}
@@ -201,7 +201,7 @@ const PageAbout = ({}) => {
                 style={{ aspectRatio: "16/9" }}
               />
 
-              <h3 className="text-xl mb-6 mt-12">What is WagMedia?</h3>
+              <h3 className="mt-12 mb-6 text-xl">What is WagMedia?</h3>
               <YouTubeEmbedDisplay
                 url="https://www.youtube.com/watch?v=MLZmbo-ZsHk"
                 width="100%"
@@ -214,7 +214,7 @@ const PageAbout = ({}) => {
 
         <SectionFounder />
 
-        <div className="nc-SectionFounder relative">
+        <div className="relative nc-SectionFounder">
           <Heading desc="">💲 Funding History</Heading>
           <div className="">
             WM was originally funded via the Kusama treasury, here are more
@@ -237,10 +237,10 @@ const PageAbout = ({}) => {
             both received in 2022. Currently WagMedia is operating under{" "}
             <a
               className="underline"
-              href="https://polkadot.subsquare.io/referenda/365"
+              href="https://polkadot.subsquare.io/referenda/1130"
               rel="nofollow"
             >
-              Polkadot OpenGov Referendum 365
+              Polkadot OpenGov Referendum 1130
             </a>
             .
           </div>
