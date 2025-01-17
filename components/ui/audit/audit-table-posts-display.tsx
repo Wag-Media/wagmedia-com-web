@@ -75,10 +75,9 @@ export const columns: ColumnDef<PaymentFull>[] = [
   },
   {
     id: "createdAt",
-    accessorFn: (row) => {
-      return row?.Post?.firstPaymentAt || row?.Post?.createdAt
-    },
+    accessorFn: (row) => row.Post?.firstPaymentAt,
     header: "Datetime",
+
     cell: (props) => {
       const datetime = new Date(props.getValue() as string)
       return (
@@ -88,6 +87,7 @@ export const columns: ColumnDef<PaymentFull>[] = [
       )
     },
   },
+
   {
     id: "recipient",
     accessorFn: (payment) => payment.Post?.user.name,
