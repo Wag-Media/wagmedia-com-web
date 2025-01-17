@@ -69,6 +69,10 @@ export default function RootLayout({
           </div>
         </Providers>
         <Analytics />
+        <div className="fixed inset-0 z-10 overflow-hidden pointer-events-none">
+          <div className="absolute backdrop-blur-md top-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#FF2670] to-[#ffac07] opacity-80 animate-line-horizontal"></div>
+          <div className="absolute backdrop-blur-md bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[#7916F3] to-transparent opacity-80 animate-line-horizontal-reverse"></div>
+        </div>
       </body>
     </html>
   )

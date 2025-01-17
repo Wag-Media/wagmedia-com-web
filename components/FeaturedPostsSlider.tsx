@@ -15,6 +15,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
+import { ImageGood } from "./WagImage/NewWagImage"
+
 export interface PostDisplayType {
   id: string
   title: string
@@ -49,11 +51,12 @@ export function FeaturedPostsSlider({ posts }: { posts: PostDisplayType[] }) {
               <Card className="h-full overflow-hidden">
                 <CardContent className="p-0">
                   <div className="relative aspect-[16/9]">
-                    <img
+                    <ImageGood
                       src={post.image || "/placeholder.svg"}
                       alt={post.title}
                       className="object-cover w-full h-full"
                       sizes="(min-width: 1024px) 50vw, 100vw"
+                      priority
                     />
                   </div>
                   <div className="p-4">

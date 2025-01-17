@@ -3,6 +3,8 @@ import { getAuthors } from "@/data/dbAuthors"
 
 import { Card, CardContent } from "@/components/ui/card"
 
+import { ImageGood } from "./WagImage/NewWagImage"
+
 const creators = [
   {
     id: 1,
@@ -113,17 +115,16 @@ export function ContentCreators({ creators }: { creators: Creator[] }) {
             >
               <CardContent className="p-4">
                 <div className="flex items-center space-x-4">
-                  <div className="relative w-16 h-16">
-                    <Image
-                      src={creator.avatar || "/placeholder.svg"}
-                      alt={creator.name || ""}
-                      fill
-                      className="w-16 h-16 rounded-full"
-                      sizes="64px"
-                    />
-                  </div>
+                  <ImageGood
+                    src={creator.avatar || "/placeholder.svg"}
+                    alt={creator.name || ""}
+                    className="flex-shrink-0 w-12 h-12 rounded-full"
+                    sizes="64px"
+                    width={40}
+                    height={40}
+                  />
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-base font-semibold text-gray-900 dark:text-white line-clamp-1">
                       {creator.name}
                     </h3>
                     {/* <p className="text-sm text-gray-600 dark:text-slate-300">

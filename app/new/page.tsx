@@ -1,7 +1,9 @@
 import { getAuthorAvatars, getAuthors } from "@/data/dbAuthors"
 import { getFeaturedPosts, getPosts } from "@/data/dbPosts"
 
+import { fontInter, fontRubik, fontUnbounded } from "@/lib/fonts"
 import { slugify } from "@/lib/slug"
+import { cn } from "@/lib/utils"
 import { ContentCreators } from "@/components/ContentCreators"
 import { FeaturedPostsSlider } from "@/components/FeaturedPostsSlider"
 import { FontPicker } from "@/components/FontPicker"
@@ -69,7 +71,7 @@ export default async function Page() {
   const creators = await getAuthors({ limit: 10 })
 
   return (
-    <div className="flex flex-col min-h-svh">
+    <div className={cn("flex flex-col min-h-svh", fontRubik.className)}>
       <main className="flex-grow">
         <Hero />
 

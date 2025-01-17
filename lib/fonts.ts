@@ -2,8 +2,9 @@ import {
   JetBrains_Mono as FontMono,
   Inter as FontSans,
   Inter,
-  Unbounded,
+  Rubik,
   // Poppins as FontSans,
+  Unbounded,
 } from "next/font/google"
 
 export const fontSans = FontSans({
@@ -25,4 +26,9 @@ export const fontInter = Inter({
 export const fontUnbounded = Unbounded({
   subsets: ["latin"],
   variable: "--font-unbounded",
+})
+
+export const fontRubik = Rubik({
+  subsets: ["latin"],
+  variable: "--font-rubik",
 })

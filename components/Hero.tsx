@@ -3,6 +3,12 @@ import { getAuthorAvatars } from "@/data/dbAuthors"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 import { HeroBackground } from "./HeroBackground"
 
@@ -15,7 +21,32 @@ export async function Hero() {
       <div className="container relative z-10">
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl font-unbounded">
-            Empower Your Voice <br /> in the Web3 Revolution
+            Empowering Your Voice in{" "}
+            <TooltipProvider delayDuration={100}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <span className="cursor-pointer bg-gradient-to-r from-[#FF2670] to-[#ffac07] text-transparent bg-clip-text">
+                    Web3
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent className="px-6 py-4 text-left">
+                  <p className="text-sm font-light tracking-normal">
+                    Web3 is an idea for a new iteration of the World Wide Web
+                    which incorporates concepts such as decentralization,
+                    blockchain technologies, and token-based economics. <br />
+                    <br />
+                    The term &quot;web3&quot; was coined in 2014 by Ethereum
+                    co-founder and{" "}
+                    <span className="text-[var(--polkadot-pink)]">
+                      Polkadot{" "}
+                    </span>
+                    founder Gavin Wood, and the idea gained interest in 2021
+                    from cryptocurrency enthusiasts, large technology companies,
+                    and venture capital firms.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </h1>
           <p className="mb-6 text-2xl font-light text-gray-700 dark:text-white font-unbounded">
             Your content, your audience, your rewards.
@@ -43,7 +74,7 @@ export async function Hero() {
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button
               size="lg"
-              className="w-full sm:w-auto bg-[#FF2670] text-white hover:bg-[#E4FF07] hover:text-black"
+              className="w-full sm:w-auto bg-gradient-to-r from-[#ffac07] to-[#FF2670] text-white hover:bg-gradient-to-r hover:scale-105 transition-all duration-500"
             >
               Start Creating
               <ArrowRight className="w-5 h-5 ml-2" />

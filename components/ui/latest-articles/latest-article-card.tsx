@@ -5,6 +5,7 @@ import { DollarSign, MessageCircleHeart } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { PostDisplayType } from "@/components/FeaturedPostsSlider"
+import { ImageGood } from "@/components/WagImage/NewWagImage"
 
 export const LatestArticlesCard = ({
   article,
@@ -17,8 +18,8 @@ export const LatestArticlesCard = ({
       className="relative overflow-hidden transition-all duration-300 rounded-sm hover:shadow-lg hover:scale-[1.02] hover:cursor-pointer"
     >
       <CardContent className="flex flex-col h-full p-0">
-        <div className="relative aspect-[4/3]">
-          <div className="absolute flex flex-wrap gap-2 mb-2 top-2 left-2">
+        <div className="relative aspect-[16/9]">
+          <div className="absolute z-10 flex flex-wrap gap-2 mb-2 top-2 left-2">
             {article.categories.slice(0, 3).map((cat, index) => (
               <Link href={`/category/${cat.slug}`} key={index}>
                 <Badge
@@ -31,7 +32,7 @@ export const LatestArticlesCard = ({
               </Link>
             ))}
           </div>
-          <img
+          <ImageGood
             src={article.image || "/placeholder.svg"}
             alt={article.title}
             className="object-cover w-full h-full"
@@ -50,7 +51,7 @@ export const LatestArticlesCard = ({
               {article.author?.avatar ? (
                 <img
                   src={article.author.avatar}
-                  alt={article.author.name || ""}
+                  alt={article.author.name}
                   className="w-5 h-5 rounded-full"
                 />
               ) : null}

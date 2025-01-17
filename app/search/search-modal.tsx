@@ -56,7 +56,7 @@ export function SearchModal() {
     <>
       {" "}
       <button
-        className="flex items-center self-center justify-center w-12 h-12 text-2xl rounded-full text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl backdrop-blur-md"
+        className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 focus:outline-none dark:text-neutral-300 md:text-3xl hover:text-black dark:hover:text-white`}
         onClick={() => setIsOpen(true)}
       >
         <svg
