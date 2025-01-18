@@ -384,12 +384,6 @@ export async function getMemes(
           emoji: true,
         },
       },
-      reactions: {
-        include: {
-          user: true,
-          emoji: true,
-        },
-      },
       payments: true,
       user: true,
       embeds: true,

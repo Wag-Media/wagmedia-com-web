@@ -16,7 +16,7 @@ type Meme = {
   id: string
   title: string
   image: string
-  author: string
+  author: string | null
   width?: number
   height?: number
   categories: {
@@ -24,7 +24,6 @@ type Meme = {
     name: string
   }[]
   date: string
-  reactions: Reaction[]
   fundsReceived: number
 }
 

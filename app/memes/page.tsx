@@ -7,7 +7,6 @@ import { MemeGrid } from "./meme-grid"
 export default async function MemesPage() {
   const dbMemes = await getMemes()
 
-  console.log(dbMemes.map((meme) => meme.embeds))
   const memes = dbMemes.map((meme) => ({
     id: meme.id,
     title: meme.title,
@@ -19,8 +18,7 @@ export default async function MemesPage() {
       slug: slugify(category.name),
       name: category.name,
     })),
-    date: meme.createdAt,
-    reactions: meme.reactions,
+    date: meme.createdAt.toISOString(),
     fundsReceived: meme.payments.reduce(
       (acc, payment) => acc + payment.amount,
       0
