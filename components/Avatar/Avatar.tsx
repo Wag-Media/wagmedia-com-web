@@ -2,8 +2,6 @@
 
 import React, { FC, useEffect, useState } from "react"
 import Image, { StaticImageData } from "next/image"
-import { avatarColors } from "@/contains/contants"
-import { _getAvatarRd } from "@/contains/fakeData"
 
 export interface AvatarProps {
   containerClassName?: string

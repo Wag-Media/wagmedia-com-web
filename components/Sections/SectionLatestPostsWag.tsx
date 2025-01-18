@@ -4,7 +4,7 @@ import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import Heading from "@/components/Heading/Heading"
 import Pagination from "@/components/Pagination/Pagination"
-import WidgetAuthors from "@/components/WidgetAuthors/WidgetAuthors"
+// import WidgetAuthors from "@/components/WidgetAuthors/WidgetAuthors"
 import WidgetCategories from "@/components/WidgetCategories/WidgetCategories"
 // import WidgetPosts from "@/components/WidgetPosts/WidgetPosts"
 import WidgetTags from "@/components/WidgetTags/WidgetTags"
@@ -72,15 +72,15 @@ const SectionLatestWagPosts: FC<SectionLatestWagPostsProps> = ({
           <div className={`grid gap-6 md:gap-8 ${gridClass}`}>
             {posts.map(renderCard)}
           </div>
-          <div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col mt-12 space-y-5 md:mt-20 sm:space-y-0 sm:space-x-3 rtl:space-x-reverse sm:flex-row sm:justify-between sm:items-center">
             <Pagination />
             <ButtonPrimary>Show me more</ButtonPrimary>
           </div>
         </div>
-        <div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-2/5 lg:ps-10 xl:ps-0 xl:w-1/3 ">
+        <div className="w-full mt-24 space-y-7 lg:mt-0 lg:w-2/5 lg:ps-10 xl:ps-0 xl:w-1/3 ">
           <WidgetTags />
           <WidgetCategories />
-          <WidgetAuthors />
+          {/* <WidgetAuthors /> */}
           {/* <WidgetPosts /> */}
         </div>
       </div>

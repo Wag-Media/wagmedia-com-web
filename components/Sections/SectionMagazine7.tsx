@@ -1,13 +1,8 @@
 import React, { FC } from "react"
-import { DEMO_POSTS_GALLERY } from "@/data/posts"
 import {
   PostDataType,
   PostWithTagsCategoriesReactionsPaymentsUser,
 } from "@/data/types"
-
-import Card10 from "@/components/Card10/Card10"
-import Card10V3 from "@/components/Card10/Card10V3"
-import Heading from "@/components/Heading/Heading"
 
 import Card10V3Wag from "../Card10/Card10V3Wag"
 

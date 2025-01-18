@@ -9,7 +9,6 @@ import {
 } from "@heroicons/react/24/outline"
 
 import { useThemeMode } from "@/hooks/useThemeMode"
-import Header2 from "@/components/Header/Header2"
 import HeaderLogged from "@/components/Header/HeaderLogged"
 import SwitchDarkMode2 from "@/components/SwitchDarkMode/SwitchDarkMode2"
 

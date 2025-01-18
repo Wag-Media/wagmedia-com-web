@@ -1,13 +1,8 @@
 import React, { FC } from "react"
-import { DEMO_CATEGORIES } from "@/data/taxonomies"
 import { CategoryWithCount } from "@/data/types"
 
 import CardCategory1 from "@/components/CardCategory1/CardCategory1"
 import WidgetHeading1 from "@/components/WidgetHeading1/WidgetHeading1"
-
-// const categoriesDemo: TaxonomyType[] = DEMO_CATEGORIES.filter(
-//   (_, i) => i > 7 && i < 13
-// )
 
 const categoriesDemo: CategoryWithCount[] = []
 

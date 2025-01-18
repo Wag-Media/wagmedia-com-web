@@ -1,5 +1,4 @@
 import React, { FC } from "react"
-import { DEMO_CATEGORIES } from "@/data/taxonomies"
 import { CategoryWithCount, TaxonomyType } from "@/data/types"
 
 import CardCategory1 from "@/components/CardCategory1/CardCategory1"

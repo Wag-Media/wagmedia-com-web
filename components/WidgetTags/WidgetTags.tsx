@@ -1,19 +1,17 @@
-import React, { FC } from "react";
-import Tag from "@/components/Tag/Tag";
-import WidgetHeading1 from "@/components/WidgetHeading1/WidgetHeading1";
-import { TaxonomyType } from "@/data/types";
-import { DEMO_TAGS } from "@/data/taxonomies";
+import React, { FC } from "react"
+import { TaxonomyType } from "@/data/types"
 
-const tagsDemo = DEMO_TAGS.filter((_, i) => i < 9);
+import Tag from "@/components/Tag/Tag"
+import WidgetHeading1 from "@/components/WidgetHeading1/WidgetHeading1"
 
 export interface WidgetTagsProps {
-  className?: string;
-  tags?: TaxonomyType[];
+  className?: string
+  tags?: TaxonomyType[]
 }
 
 const WidgetTags: FC<WidgetTagsProps> = ({
   className = "bg-neutral-100 dark:bg-neutral-800",
-  tags = tagsDemo,
+  tags = [],
 }) => {
   return (
     <div className={`nc-WidgetTags rounded-lg overflow-hidden ${className}`}>
@@ -23,11 +21,11 @@ const WidgetTags: FC<WidgetTagsProps> = ({
       />
       <div className="flex flex-wrap p-4 xl:p-5">
         {tags.map((tag) => (
-          <Tag className="mr-2 mb-2" key={tag.id} tag={tag} />
+          <Tag className="mb-2 mr-2" key={tag.id} tag={tag} />
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default WidgetTags;
+export default WidgetTags

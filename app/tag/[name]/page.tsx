@@ -2,10 +2,7 @@ import React, { FC } from "react"
 import { getCategories } from "@/data/dbCategories"
 import { getPostsByTagId } from "@/data/dbPosts"
 import { getTagByName } from "@/data/dbTags"
-import { DEMO_POSTS } from "@/data/posts"
-import { PostDataType } from "@/data/types"
 
-import ArchiveFilterListBox from "@/components/ArchiveFilterListBox/ArchiveFilterListBox"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 
@@ -37,7 +34,7 @@ export default async function PageTag({
   return (
     <div className={`nc-PageArchive`}>
       {/* HEADER */}
-      <div className="w-full px-2 xl:max-w-screen-2xl mx-auto">
+      <div className="w-full px-2 mx-auto xl:max-w-screen-2xl">
         <div className="relative aspect-[16/13] sm:aspect-[9/4] xl:aspect-[5] rounded-lg md:rounded-[40px] overflow-hidden z-0">
           {/* <Image
             alt="archive"
@@ -48,7 +45,7 @@ export default async function PageTag({
           /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-neutral-400">Tag</span>
-            <h2 className="inline-block align-middle text-5xl font-semibold md:text-7xl my-4">
+            <h2 className="inline-block my-4 text-5xl font-semibold align-middle md:text-7xl">
               {tag.name}
             </h2>
             <span className="block text-xl">{posts.length} Posts</span>
@@ -57,28 +54,28 @@ export default async function PageTag({
       </div>
       {/* ====================== END HEADER ====================== */}
 
-      <div className="container pt-10 pb-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
+      <div className="container pt-10 pb-16 space-y-16 lg:pb-28 lg:pt-20 lg:space-y-28">
         <div>
           <div className="flex flex-col sm:justify-between sm:flex-row">
             <div className="flex space-x-2.5 rtl:space-x-reverse">
               {/* <ModalCategories categories={categories} /> */}
               {/* <ModalTags tags={DEMO_TAGS} /> */}
             </div>
-            <div className="block my-4 border-b w-full border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
+            <div className="block w-full my-4 border-b border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
             {/* <div className="flex justify-end">
               <ArchiveFilterListBox lists={FILTERS} />
             </div> */}
           </div>
 
           {/* LOOP ITEMS */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-8 lg:mt-10">
+          <div className="grid gap-6 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 lg:mt-10">
             {posts?.map((post) => (
               <Card11Wag key={post.id} post={post} />
             ))}
           </div>
 
           {/* PAGINATIONS */}
-          {/* <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
+          {/* <div className="flex flex-col mt-12 space-y-5 lg:mt-16 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
             <Pagination />
             <ButtonPrimary>Show me more</ButtonPrimary>
           </div> */}
@@ -91,7 +88,7 @@ export default async function PageTag({
           <SectionGridCategoryBox
             categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
           />
-          <div className="text-center mx-auto mt-10 md:mt-16">
+          <div className="mx-auto mt-10 text-center md:mt-16">
             <ButtonSecondary loading>Show me more</ButtonSecondary>
           </div>
         </div> */}
