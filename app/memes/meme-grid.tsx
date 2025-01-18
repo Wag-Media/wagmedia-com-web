@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { Copy, DollarSign, Heart, Star, ThumbsUp } from "lucide-react"
+import { Coins, Copy, DollarSign, Heart, Star, ThumbsUp } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -16,7 +16,10 @@ type Meme = {
   id: string
   title: string
   image: string
-  author: string | null
+  author: {
+    name: string
+    avatar: string
+  } | null
   width?: number
   height?: number
   categories: {
@@ -30,13 +33,9 @@ type Meme = {
 export function MemeGrid({ memes }: { memes: Meme[] }) {
   const copyMemeToClipboard = async (meme: Meme) => {
     try {
-      const response = await fetch(meme.image)
-      const blob = await response.blob()
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          [blob.type]: blob,
-        }),
-      ])
+      await navigator.clipboard.writeText(meme.image)
+
+      console.log("Meme copied!", meme.image)
       //   toast({
       //     title: "Meme copied!",
       //     description: "The meme has been copied to your clipboard.",
@@ -57,7 +56,7 @@ export function MemeGrid({ memes }: { memes: Meme[] }) {
         return (
           <Card
             key={meme.id}
-            className="relative inline-block w-full mb-4 overflow-hidden rounded-sm group break-inside-avoid-column"
+            className="relative w-full mb-4 overflow-hidden rounded-sm group break-inside-avoid-column"
           >
             <CardContent className="p-0">
               <div className="relative">
@@ -75,12 +74,30 @@ export function MemeGrid({ memes }: { memes: Meme[] }) {
                   }}
                   sizes="(min-width: 1536px) 16.67vw, (min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 33.33vw, 50vw"
                 />
-                <div className="absolute inset-0 flex flex-col justify-between p-4 transition-opacity duration-300 bg-black opacity-0 bg-opacity-70 group-hover:opacity-100">
-                  <div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-4 text-center transition-opacity duration-300 bg-black opacity-0 bg-opacity-70 group-hover:opacity-100">
+                  <div className="flex flex-col gap-1 text-sm text-white">
                     <h3 className="mb-2 text-lg font-bold text-white font-unbounded line-clamp-2">
                       {meme.title}
                     </h3>
-                    <div className="flex flex-wrap gap-2 mb-2">
+                    <time className="text-white">
+                      {new Date(meme.date).toLocaleDateString()}
+                    </time>
+                    <div className="flex items-center justify-center">
+                      <Image
+                        src={meme.author?.avatar || "/placeholder.svg"}
+                        alt={meme.author?.name || "Unknown"}
+                        width={20}
+                        height={20}
+                        className="mr-2 rounded-full"
+                      />
+                      <span>{meme.author?.name}</span>
+                    </div>
+                    <span className="flex items-center justify-center text-sm font-medium text-pink-500">
+                      <Coins className="w-4 h-4 mr-1" />
+                      {meme.fundsReceived}
+                    </span>
+
+                    {/* <div className="flex flex-wrap gap-2 mb-2">
                       {meme.categories.map((category, index) => (
                         <Badge
                           key={index}
@@ -90,28 +107,9 @@ export function MemeGrid({ memes }: { memes: Meme[] }) {
                           {category.name}
                         </Badge>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
-                  <div className="text-white">
-                    <div className="flex items-center justify-between mb-2 text-sm">
-                      <span>{meme.author}</span>
-                      <time>{new Date(meme.date).toLocaleDateString()}</time>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        {/* {meme.reactions.map((reaction, index) => (
-                        <span key={index} className="flex items-center text-sm">
-                          {reaction.emoji}
-                          <span className="ml-1">{reaction.count}</span>
-                        </span>
-                      ))} */}
-                      </div>
-                      <span className="flex items-center text-sm font-medium">
-                        <DollarSign className="w-4 h-4 mr-1" />
-                        {meme.fundsReceived.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
+
                   <button
                     onClick={() => copyMemeToClipboard(meme)}
                     className="absolute p-2 transition-opacity duration-300 bg-white rounded-full opacity-0 top-2 right-2 group-hover:opacity-100"
