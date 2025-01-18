@@ -41,6 +41,11 @@ export const siteConfig = {
       href: "/agent-tipping",
     },
     {
+      id: "8",
+      name: "Memes",
+      href: "/memes",
+    },
+    {
       id: "5",
       name: "Audit",
       href: "/audit",

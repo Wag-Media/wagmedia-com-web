@@ -357,3 +357,45 @@ export async function getAgentTippingPosts(
 
   return posts
 }
+
+export async function getMemes(
+  skip: number = 0,
+  take: number = 12
+): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
+  const posts = await prisma.post.findMany({
+    skip,
+    take,
+    where: {
+      isPublished: true,
+      isDeleted: false,
+      categories: {
+        some: {
+          name: "Meme",
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      tags: true,
+      categories: {
+        include: {
+          emoji: true,
+        },
+      },
+      reactions: {
+        include: {
+          user: true,
+          emoji: true,
+        },
+      },
+      payments: true,
+      user: true,
+      embeds: true,
+      earnings: true,
+    },
+  })
+
+  return posts
+}

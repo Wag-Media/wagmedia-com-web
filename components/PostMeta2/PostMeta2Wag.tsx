@@ -1,13 +1,10 @@
 import React, { FC } from "react"
 import Link from "next/link"
-import { DEMO_POSTS } from "@/data/posts"
-import { CategoryWithCount, PostDataType } from "@/data/types"
+import { PostDataType } from "@/data/types"
 import { Category, User } from "@prisma/client"
 
 import { slugify } from "@/lib/slug"
 import Avatar from "@/components/Avatar/Avatar"
-
-const metaDemo: PostMeta2WagProps["meta"] = DEMO_POSTS[0]
 
 export interface PostMeta2WagProps {
   className?: string
@@ -22,7 +19,6 @@ export interface PostMeta2WagProps {
 
 const PostMeta2Wag: FC<PostMeta2WagProps> = ({
   className = "leading-none",
-  meta = metaDemo,
   hiddenCategories = false,
   size = "normal",
   avatarRounded,
