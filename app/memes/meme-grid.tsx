@@ -52,7 +52,7 @@ export function MemeGrid({ memes }: { memes: Meme[] }) {
   }
 
   return (
-    <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 [column-fill:_balance] h-full">
+    <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 [column-fill:_balance] h-full">
       {memes.map((meme) => {
         return (
           <Card

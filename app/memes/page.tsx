@@ -1,8 +1,15 @@
+import { Metadata } from "next"
 import { getMemes } from "@/data/dbPosts"
-
 import { slugify } from "@/lib/slug"
-
 import { MemeGrid } from "./meme-grid"
+
+export const revalidate = 60
+
+export const metadata: Metadata = {
+  title: "Polkadot Memes",
+  description:
+    "By the community, for the community, about the community. Powered by WagMedia.",
+}
 
 export default async function MemesPage() {
   const dbMemes = await getMemes()
