@@ -48,12 +48,12 @@ const Card11Wag: FC<Card11Props> = ({
 
   return (
     <div
-      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-xl overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
+      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-sm overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
       <div
-        className={`block flex-shrink-0 relative w-full rounded-t-lg overflow-hidden z-10 ${ratio}`}
+        className={`block flex-shrink-0 relative w-full rounded-t-sm overflow-hidden z-10 ${ratio}`}
       >
         <div>
           <PostFeaturedWagMedia

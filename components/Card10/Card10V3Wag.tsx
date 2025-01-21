@@ -2,16 +2,7 @@
 
 import React, { FC, useState } from "react"
 import Link from "next/link"
-import {
-  PostDataType,
-  PostWithTagsCategoriesReactionsPaymentsUser,
-} from "@/data/types"
-
-import CardAuthor2 from "@/components/CardAuthor2/CardAuthor2"
-import CategoryBadgeList from "@/components/CategoryBadgeList/CategoryBadgeList"
-import NcImage from "@/components/NcImage/NcImage"
-import PostCardSaveAction from "@/components/PostCardSaveAction/PostCardSaveAction"
-import PostFeaturedMedia from "@/components/PostFeaturedMedia/PostFeaturedMedia"
+import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 
 import CategoryBadgeListWag from "../CategoryBadgeList/CategoryBadgeListWag"
 import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta"
@@ -28,21 +19,7 @@ const Card10V3Wag: FC<Card10V3WagProps> = ({
   post,
   galleryType = 1,
 }) => {
-  const {
-    id,
-    title,
-    content,
-    slug,
-    tags,
-    categories,
-    reactions,
-    payments,
-    embeds,
-    createdAt,
-    discordLink,
-    user,
-    earnings,
-  } = post
+  const { title, categories } = post
 
   const href = `/post/${post.slug}`
 
@@ -54,7 +31,7 @@ const Card10V3Wag: FC<Card10V3WagProps> = ({
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div className="relative z-0 flex-shrink-0 block w-full overflow-hidden rounded-lg group aspect-w-16 aspect-h-16 sm:aspect-h-9">
+      <div className="relative z-0 flex-shrink-0 block w-full overflow-hidden rounded-sm group aspect-w-16 aspect-h-16 sm:aspect-h-9">
         <div>
           <PostFeaturedWagMedia
             post={post}

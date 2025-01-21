@@ -83,7 +83,7 @@ export function SearchModal() {
         </svg>
       </button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[600px] p-0">
+        <DialogContent className="sm:max-w-[600px] p-0 rounded-sm">
           <SearchInput value={query} onChange={handleSearch} />
           {query === "?" ? (
             <div className="px-6 text-sm text-center py-14 sm:px-14">
@@ -117,7 +117,7 @@ export function SearchModal() {
               </div>
             )
           )}
-          <DialogFooter className="flex flex-wrap items-center flex-row !justify-start bg-gray-50 dark:bg-gray-900 py-2.5 px-4 text-xs text-gray-700 dark:text-gray-100 rounded-b-md">
+          <DialogFooter className="flex flex-wrap items-center flex-row !justify-start bg-gray-50 dark:bg-gray-900 py-2.5 px-4 text-xs text-gray-700 dark:text-gray-100 rounded-b-sm">
             Type{" "}
             <kbd
               className={cn(

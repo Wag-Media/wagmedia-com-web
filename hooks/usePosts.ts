@@ -8,7 +8,6 @@ export async function fetchPosts(search: string) {
     search,
     contentType: "article",
   })
-  console.log("posts", posts)
   return posts
 }
 

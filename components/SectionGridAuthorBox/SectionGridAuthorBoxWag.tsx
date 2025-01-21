@@ -1,7 +1,6 @@
 import React, { FC } from "react"
-import { PostAuthorType, UserWithPosts } from "@/data/types"
+import { UserWithPosts } from "@/data/types"
 
-import CardAuthorBox from "@/components/CardAuthorBox/CardAuthorBox"
 import Heading from "@/components/Heading/Heading"
 
 import CardAuthorBoxWag from "../CardAuthorBox/CardAuthorBoxWag"
