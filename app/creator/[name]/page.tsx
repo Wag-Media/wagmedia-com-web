@@ -6,6 +6,54 @@ import { AuthorPage } from "./AuthorPage"
 
 export const revalidate = 20
 
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { name: string }
+}) => {
+  if (!params.name || params.name === "") {
+    return {
+      title: "Creator - WagMedia",
+      description:
+        "Discover the latest Polkadot news and insights from our creators.",
+    }
+  }
+
+  const creator = await getAuthor(params.name)
+
+  if (!creator) {
+    return {
+      title: "Creator Not Found - WagMedia",
+      description:
+        "Discover the latest Polkadot news and insights from our creators.",
+    }
+  }
+
+  return {
+    title: `Creator: ${creator.name} - WagMedia`,
+    description:
+      creator.bio ||
+      "Discover the latest Polkadot news and insights from our creators.",
+  }
+}
+
+export const generateStaticParams = async () => {
+  try {
+    const creators = await getAuthorsList()
+
+    if (!creators) return []
+
+    return creators
+      .filter((creator) => creator && creator.name)
+      .map((creator) => ({
+        name: creator.name,
+      }))
+  } catch (error) {
+    console.error("Error generating static params:", error)
+    return []
+  }
+}
+
 const PageAuthor = async ({ params }: { params: { name: string } }) => {
   if (!params.name || params.name === "") {
     return {

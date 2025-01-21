@@ -81,7 +81,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
   // };
 
   const getColorClass = (hasHover = true) => {
-    switch (categories[0].name) {
+    switch (categories?.[0]?.name) {
       case "OpenGov":
         return `text-pink-800 bg-pink-100/50 ${
           hasHover ? "hover:bg-pink-800/50" : ""
@@ -177,7 +177,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
           className={`absolute text-3xl inset-0 bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center ${getColorClass()}`}
         >
           <span className={`pr-2`}>✦</span>
-          {post.categories[0]?.name}
+          {post.categories?.[0]?.name}
         </div>
       )}
       {/* {renderContent()} */}
