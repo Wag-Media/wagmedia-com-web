@@ -1,20 +1,17 @@
-import { getAgentTippingPosts, getNewsletterPosts } from "@/data/dbPosts"
+import { getAgentTippingPosts} from "@/data/dbPosts"
 import { ContentEarnings, Payment } from "@prisma/client"
 
 import { AgentTipGrid } from "@/components/ui/post-grid/AgentTipGrid"
-import PostGrid from "@/components/ui/post-grid/PostGrid"
-import { PostGridDisplay } from "@/components/ui/post-grid/PostGridDisplay"
-import Card10V3Wag from "@/components/Card10/Card10V3Wag"
 import Heading from "@/components/Heading/Heading"
-import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
-import SectionMagazine7 from "@/components/Sections/SectionMagazine7"
 
 import { replaceAuthorLinks } from "../post/[slug]/util"
 
+export const revalidate = 60
+
 export const metadata = {
-  title: "WagMedia Newsletter",
+  title: "Agent Tipping",
   description:
-    "🎉 Thanks for reading WagMedia Weekly! Subscribe for free to receive new posts and support our work.",
+    "Ecosystem actors who were rewarded for their positive contributions to the Polkadot ecosystem",
 }
 
 export default async function PageCategories() {
