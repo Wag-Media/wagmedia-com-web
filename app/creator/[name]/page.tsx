@@ -38,13 +38,20 @@ export const generateMetadata = async ({
 }
 
 export const generateStaticParams = async () => {
-  const creators = await getAuthorsList()
+  try {
+    const creators = await getAuthorsList()
 
-  return creators
-    .filter((creator) => creator.name)
-    .map((creator) => ({
-      name: creator.name,
-    }))
+    if (!creators) return []
+
+    return creators
+      .filter((creator) => creator && creator.name)
+      .map((creator) => ({
+        name: creator.name,
+      }))
+  } catch (error) {
+    console.error("Error generating static params:", error)
+    return []
+  }
 }
 
 const PageAuthor = async ({ params }: { params: { name: string } }) => {
