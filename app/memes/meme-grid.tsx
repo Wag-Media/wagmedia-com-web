@@ -27,7 +27,7 @@ type Meme = {
     name: string
   }[]
   date: string
-  fundsReceived: number
+  fundsReceived: string
 }
 
 export function MemeGrid({ memes }: { memes: Meme[] }) {

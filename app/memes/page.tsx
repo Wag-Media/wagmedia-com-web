@@ -23,8 +23,8 @@ export default async function MemesPage() {
     width: meme.embeds[0]?.width ?? 0,
     height: meme.embeds[0]?.height ?? 0,
     author: {
-      name: meme.user.name,
-      avatar: meme.user.avatar,
+      name: meme.user.name || "",
+      avatar: meme.user.avatar || "/placeholder.svg",
     },
     categories: meme.categories.map((category) => ({
       slug: slugify(category.name),
