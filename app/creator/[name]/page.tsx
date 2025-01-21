@@ -11,11 +11,28 @@ export const generateMetadata = async ({
 }: {
   params: { name: string }
 }) => {
+  if (!params.name || params.name === "") {
+    return {
+      title: "Creator - WagMedia",
+      description:
+        "Discover the latest Polkadot news and insights from our creators.",
+    }
+  }
+
   const creator = await getAuthor(params.name)
+
+  if (!creator) {
+    return {
+      title: "Creator Not Found - WagMedia",
+      description:
+        "Discover the latest Polkadot news and insights from our creators.",
+    }
+  }
+
   return {
-    title: `Creator: ${creator?.name} - WagMedia`,
+    title: `Creator: ${creator.name} - WagMedia`,
     description:
-      creator?.bio ||
+      creator.bio ||
       "Discover the latest Polkadot news and insights from our creators.",
   }
 }
