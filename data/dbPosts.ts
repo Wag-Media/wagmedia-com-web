@@ -1,6 +1,6 @@
 import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
-import { Prisma } from "@prisma/client"
+import { ContentEarnings, Payment, Prisma } from "@prisma/client"
 import _ from "lodash"
 
 import {
@@ -317,12 +317,16 @@ export const getPostBySlug = cache(async (slug: string) => {
 export async function getAgentTippingPosts(
   skip: number = 0,
   take: number = 12
-): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
+): Promise<
+  (PostWithTagsCategoriesReactionsPaymentsUser & {
+    threadPayments: Payment[]
+  })[]
+> {
   const posts = await prisma.post.findMany({
     skip,
     take,
     where: {
-      isPublished: true,
+      // isPublished: true,
       isDeleted: false,
       categories: {
         some: {
@@ -350,6 +354,7 @@ export async function getAgentTippingPosts(
       user: true,
       embeds: true,
       earnings: true,
+      threadPayments: true,
     },
   })
 

@@ -1,4 +1,5 @@
 import { getAgentTippingPosts, getNewsletterPosts } from "@/data/dbPosts"
+import { ContentEarnings, Payment } from "@prisma/client"
 
 import { AgentTipGrid } from "@/components/ui/post-grid/AgentTipGrid"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
@@ -18,10 +19,31 @@ export const metadata = {
 
 export default async function PageCategories() {
   const posts = await getAgentTippingPosts()
+
   const postsWithLinks = await Promise.all(
     posts.map(async (post) => {
       const title = await replaceAuthorLinks(post.title, false)
-      return { ...post, title }
+      const earnings: ContentEarnings[] = post.threadPayments.reduce(
+        (acc: ContentEarnings[], curr: Payment) => {
+          const existing = acc.find((e) => e.unit === curr.unit)
+          if (existing) {
+            existing.totalAmount = (existing.totalAmount || 0) + curr.amount
+            curr.amount
+          } else {
+            acc.push({
+              totalAmount: curr.amount,
+              unit: curr.unit,
+              postId: curr.postId,
+              oddJobId: curr.oddJobId,
+              id: curr.id,
+            })
+          }
+          return acc
+        },
+        []
+      )
+
+      return { ...post, title, earnings }
     })
   )
 
@@ -31,6 +53,7 @@ export default async function PageCategories() {
         Agent Tipping
       </Heading>
 
+      {/* <pre>{JSON.stringify(posts, null, 2)}</pre> */}
       <AgentTipGrid
         initialPosts={postsWithLinks}
         totalPostCount={posts.length}
