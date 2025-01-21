@@ -1,9 +1,71 @@
 import fs from "fs"
 import path from "path"
+import readline from "readline"
 import { glob } from "glob"
 
 interface FileMap {
   [key: string]: Set<string>
+}
+
+interface Options {
+  delete: boolean
+}
+
+// Parse command line arguments
+function parseArgs(): Options {
+  const args = process.argv.slice(2)
+  return {
+    delete: args.includes("--delete"),
+  }
+}
+
+// Create readline interface for user input
+function createInterface() {
+  return readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  })
+}
+
+// Prompt for confirmation
+async function confirmDeletion(files: string[]): Promise<boolean> {
+  const rl = createInterface()
+
+  console.log("\nThe following files will be deleted:")
+  files.forEach((file) =>
+    console.log(`- ${path.relative(process.cwd(), file)}`)
+  )
+
+  return new Promise((resolve) => {
+    rl.question(
+      "\nAre you sure you want to delete these files? (y/N): ",
+      (answer) => {
+        rl.close()
+        resolve(answer.toLowerCase() === "y")
+      }
+    )
+  })
+}
+
+// Delete files
+async function deleteFiles(files: string[]) {
+  const confirmed = await confirmDeletion(files)
+
+  if (!confirmed) {
+    console.log("Deletion cancelled")
+    return
+  }
+
+  files.forEach((file) => {
+    try {
+      fs.unlinkSync(file)
+      console.log(`Deleted: ${path.relative(process.cwd(), file)}`)
+    } catch (error) {
+      console.error(`Error deleting ${file}:`, error)
+    }
+  })
+
+  console.log(`\nSuccessfully deleted ${files.length} files`)
 }
 
 function getAllFiles() {
@@ -83,6 +145,10 @@ function findUnusedFiles() {
   // Build dependency graph
   allFiles.forEach((file) => {
     try {
+      // Check if file is a directory
+      const stats = fs.statSync(file)
+      if (stats.isDirectory()) return
+
       const content = fs.readFileSync(file, "utf-8")
       const imports = extractImports({ content, filePath: file })
 
@@ -94,14 +160,20 @@ function findUnusedFiles() {
         for (const ext of possibleExtensions) {
           const testPath = `${importPath}${ext}`
           if (fs.existsSync(testPath)) {
-            resolvedPath = testPath
-            break
+            const testStats = fs.statSync(testPath)
+            if (testStats.isFile()) {
+              resolvedPath = testPath
+              break
+            }
           }
           // Try index files
           const indexPath = path.join(importPath, `index${ext}`)
           if (fs.existsSync(indexPath)) {
-            resolvedPath = indexPath
-            break
+            const indexStats = fs.statSync(indexPath)
+            if (indexStats.isFile()) {
+              resolvedPath = indexPath
+              break
+            }
           }
         }
 
@@ -112,17 +184,27 @@ function findUnusedFiles() {
           }
         }
       })
-    } catch (error) {
-      console.error(`Error processing file ${file}:`, error)
+    } catch (error: any) {
+      if (error.code !== "EISDIR") {
+        console.error(`Error processing file ${file}:`, error)
+      }
     }
   })
 
   // Find files not imported anywhere (except by themselves)
   const unusedFiles = allFiles.filter((file) => {
-    const importedBy = reverseDependencyGraph[file] || new Set()
-    return (
-      importedBy.size === 0 || (importedBy.size === 1 && importedBy.has(file))
-    )
+    try {
+      const stats = fs.statSync(file)
+      if (stats.isDirectory()) return false
+
+      const importedBy = reverseDependencyGraph[file] || new Set()
+      return (
+        importedBy.size === 0 || (importedBy.size === 1 && importedBy.has(file))
+      )
+    } catch (error) {
+      console.error(`Error checking file ${file}:`, error)
+      return false
+    }
   })
 
   // Filter out Next.js special files
@@ -146,15 +228,26 @@ function findUnusedFiles() {
   return actuallyUnusedFiles
 }
 
-// Run the script
-const unusedFiles = findUnusedFiles()
-console.log("Unused files:")
-if (unusedFiles.length === 0) {
-  console.log("No unused files found!")
-} else {
+// Update the main execution
+async function main() {
+  const options = parseArgs()
+  const unusedFiles = findUnusedFiles()
+
+  console.log("Unused files:")
+  if (unusedFiles.length === 0) {
+    console.log("No unused files found!")
+    return
+  }
+
   unusedFiles.forEach((file) => {
-    // Show relative path from project root
     console.log(`- ${path.relative(process.cwd(), file)}`)
   })
   console.log(`\nTotal: ${unusedFiles.length} unused files`)
+
+  if (options.delete) {
+    await deleteFiles(unusedFiles)
+  }
 }
+
+// Run the script
+main().catch(console.error)
