@@ -1,20 +1,13 @@
 import React, { FC, ReactNode, Suspense } from "react"
 import { getTotalPostCount } from "@/data/dbPosts"
-import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
-import { prisma } from "@/prisma/prisma"
-import { ArrowRightIcon } from "lucide-react"
 
-import Button from "@/components/Button/Button"
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
-import Card11Wag from "@/components/Card11/Card11Wag"
-import Heading from "@/components/Heading/Heading"
-import Nav from "@/components/Nav/Nav"
+import { Button } from "@/components/ui/button"
 import { fetchPosts } from "@/app/actions/fetchPosts"
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
-import { revalidate } from "../../../app/(home)/page"
-import { Skeleton } from "../skeleton"
+import { Tabs, TabsList, TabsTrigger } from "../tabs"
 import { PostGridDisplay } from "./PostGridDisplay"
+import PostGridSkeleton from "./PostGridSkeleton"
 
 export interface PostGridProps {
   currentPage?: number
@@ -45,33 +38,53 @@ export default async function PostGrid({
   )
 
   const totalPostCount = await getTotalPostCount()
-  // const [tabActive, setTabActive] = useState<string>(tabs[0])
-
-  // const handleClickTab = (item: string) => {
-  //   if (item === tabActive) {
-  //     return
-  //   }
-  //   setTabActive(item)
-  // }
-
-  const subHeading = (
-    <>
-      Discover <span className="font-semibold">{`${totalPostCount}`}</span>{" "}
-      Polkadot related posts
-    </>
-  )
 
   return (
-    <div className={`nc-SectionGridPosts relative ${className}`}>
-      <h2 className="mt-8 text-5xl font-bold">Explore our latest Articles</h2>
-      <p className="mt-3 text-lg text-gray-500">
-        Discover <Suspense fallback="...">{totalPostCount}</Suspense> Polkadot
-        related articles by our community authors
-      </p>
-      <PostGridDisplay
-        initialPosts={postsWithLinks}
-        totalPostCount={totalPostCount}
-      />
-    </div>
+    <section className="py-16">
+      <div className="container max-w-[1400px]">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col items-center gap-4 mb-8">
+            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+              Explore our latest Articles
+            </h2>
+            <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">
+              Discover <Suspense fallback="...">{totalPostCount}</Suspense>{" "}
+              Polkadot related articles by our community authors
+            </p>
+            <Tabs defaultValue="latest" className="relative w-full max-w-md">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FF2670]/10 to-[#7916F3]/10 rounded-lg"></div>
+              <TabsList className="relative z-10 grid w-full grid-cols-3">
+                <TabsTrigger value="latest" className="font-sans">
+                  Latest
+                </TabsTrigger>
+                <TabsTrigger value="popular" className="font-sans">
+                  Popular
+                </TabsTrigger>
+                <TabsTrigger value="trending" className="font-sans">
+                  Trending
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          <Suspense fallback={<PostGridSkeleton />}>
+            <PostGridDisplay
+              initialPosts={postsWithLinks}
+              totalPostCount={totalPostCount}
+            />
+          </Suspense>
+
+          <div className="flex justify-center mt-8">
+            <Button
+              variant="outline"
+              size="lg"
+              className="min-w-[200px] bg-white text-[#FF2670] hover:bg-[#7916F3] hover:text-white border-[#FF2670] font-sans"
+            >
+              Load More
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }

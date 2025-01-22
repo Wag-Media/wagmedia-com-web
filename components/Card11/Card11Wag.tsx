@@ -48,7 +48,7 @@ const Card11Wag: FC<Card11Props> = ({
 
   return (
     <div
-      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-sm overflow-hidden bg-white dark:bg-neutral-900 ${className}`}
+      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-sm overflow-hidden bg-white dark:bg-neutral-900 ${className} hover:shadow-lg transition-all duration-300`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >

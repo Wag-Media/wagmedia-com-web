@@ -121,11 +121,24 @@ module.exports = {
             height: "0",
           },
         },
+        avatar: {
+          "0%": {
+            transform: "translate(0, 0)",
+          },
+          "50%": {
+            transform: "translate(0, 20px)",
+          },
+          "100%": {
+            transform: "translate(0, 0)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         blob: "blob 7s infinite",
+        avatar: "avatar 13s ease-in-out infinite",
+        "ping-slow": "ping 3s cubic-bezier(0, 0, 0.2, 1) infinite",
       },
     },
   },

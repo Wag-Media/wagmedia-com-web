@@ -156,3 +156,19 @@ export async function searchAuthors(search: string) {
 
   return authors
 }
+
+export async function getAuthorAvatars() {
+  const authors = await prisma.user.findMany({
+    select: {
+      avatar: true,
+      name: true,
+    },
+    take: 30,
+    orderBy: {
+      posts: {
+        _count: "desc",
+      },
+    },
+  })
+  return authors
+}

@@ -14,6 +14,17 @@ export function linkTextsToAnchorTags(text: string): string {
   )
 }
 
+export function removeLinks(text: string): string {
+  const urlPattern =
+    /((https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))/gi
+  return text.replace(urlPattern, "")
+}
+
+export function removeHtmlTags(text: string): string {
+  const htmlTagPattern = /<[^>]*>?/gi
+  return text.replace(htmlTagPattern, "")
+}
+
 export function removeSocialMediaEmbeds(text: string): string {
   // Patterns to match social media URLs/embeds
   const patterns = [

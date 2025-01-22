@@ -86,9 +86,9 @@ export function PostGridDisplay({
   }
 
   return (
-    <div className="mt-8">
+    <div className="">
       <div className="flex justify-between mb-4">
-        <Nav
+        {/* <Nav
           className=""
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base"
         >
@@ -108,7 +108,7 @@ export function PostGridDisplay({
               {label}
             </div>
           ))}
-        </Nav>
+        </Nav> */}
         {/* <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
           <span>View all</span>
           <ArrowRightIcon className="w-6 h-6 ms-3 rtl:rotate-180" />
