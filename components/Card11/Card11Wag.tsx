@@ -2,18 +2,8 @@
 
 import React, { FC, useState } from "react"
 import Link from "next/link"
-import {
-  PostDataType,
-  PostWithTagsCategoriesReactionsPaymentsUser,
-  ReactionWithUserAndEmoji,
-} from "@/data/types"
-import {
-  Category,
-  ContentEarnings,
-  Embed,
-  Reaction,
-  User,
-} from "@prisma/client"
+import { ReactionWithUserAndEmoji } from "@/data/types"
+import { Category, ContentEarnings, Embed, User } from "@prisma/client"
 
 import { removeHtmlTags, removeLinks } from "@/app/post/[slug]/util"
 
@@ -31,7 +21,7 @@ export interface Card11Props {
     earnings: ContentEarnings[]
     slug: string
     embeds: Embed[]
-    user: User
+    user?: Pick<User, "avatar" | "name">
     createdAt: Date
     content: string
   }
@@ -40,18 +30,17 @@ export interface Card11Props {
   showReactions?: boolean
 }
 
-const Card11Wag: FC<Card11Props> = ({
+export default function Card11Wag({
   className = "",
   post,
-  hiddenAuthor = false,
   ratio = "aspect-w-16 aspect-h-9",
   showReactions = true,
-}) => {
+}: Card11Props) {
   const { categories, reactions, earnings } = post
 
   return (
     <div
-      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-sm overflow-hidden bg-white dark:bg-neutral-900 ${className} hover:shadow-lg transition-all duration-300 hover:border-pink-500`}
+      className={`nc-Card11 shadow-sm border-[1.5px] relative flex flex-col group rounded-sm overflow-hidden ${className} hover:shadow-lg transition-all duration-300 hover:border-pink-500`}
     >
       <div
         className={`block flex-shrink-0 relative w-full overflow-hidden z-10 ${ratio}`}
@@ -68,15 +57,13 @@ const Card11Wag: FC<Card11Props> = ({
       <div className="flex flex-col h-full p-4 space-y-3">
         <div className="relative flex-1">
           <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
-          <PostCardWagMeta meta={{ ...post }} />
-
-          <h3 className="mb-2 leading-tight text-gray-900 text-normal font-unbounded">
+          <PostCardWagMeta user={post.user} createdAt={post.createdAt} />
+          <h3 className="mb-2 leading-tight text-gray-900 dark:text-white text-normal font-unbounded">
             {post.title}
           </h3>
           {post?.content && (
-            <p className="text-sm text-gray-600 line-clamp-2">
-              {removeLinks(removeHtmlTags(post.content)).slice(0, 200)}
-              ...
+            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+              {removeLinks(removeHtmlTags(post.content))}
             </p>
           )}
         </div>
@@ -94,5 +81,3 @@ const Card11Wag: FC<Card11Props> = ({
     </div>
   )
 }
-
-export default Card11Wag

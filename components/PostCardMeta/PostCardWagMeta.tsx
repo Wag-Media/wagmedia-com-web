@@ -4,24 +4,25 @@ import {
   PostDataType,
   PostWithTagsCategoriesReactionsPaymentsUser,
 } from "@/data/types"
+import { User } from "@prisma/client"
 
 import Avatar from "@/components/Avatar/Avatar"
 
 export interface PostCardWagProps {
   className?: string
-  meta: Pick<PostWithTagsCategoriesReactionsPaymentsUser, "user" | "createdAt">
+  user: Pick<User, "avatar" | "name"> | undefined
+  createdAt: Date
   hiddenAvatar?: boolean
   avatarSize?: string
 }
 
 const PostCardWagMeta: FC<PostCardWagProps> = ({
   className = "text-xs leading-none",
-  meta,
+  user,
+  createdAt,
   hiddenAvatar = false,
   avatarSize = "h-7 w-7 text-sm",
 }) => {
-  const { user, createdAt } = meta
-
   return (
     <div
       className={`nc-PostCardWag inline-flex items-center flex-wrap text-neutral-800 dark:text-neutral-200 ${className}`}

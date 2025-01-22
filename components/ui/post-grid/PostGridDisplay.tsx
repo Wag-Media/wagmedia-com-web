@@ -6,14 +6,12 @@ import {
   TypePostOrder,
 } from "@/data/types"
 
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import Loading from "@/components/Button/Loading"
 import Card11Wag from "@/components/Card11/Card11Wag"
-import Nav from "@/components/Nav/Nav"
 import { fetchPosts } from "@/app/actions/fetchPosts"
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
-import { cn } from "../../../utils/cn"
+import { Button } from "../button"
 
 export function PostGridDisplay({
   initialPosts,
@@ -119,11 +117,17 @@ export function PostGridDisplay({
           <Card11Wag key={index} post={post} />
         ))}
       </div>
-      <div className="flex items-center justify-center mt-20">
+      <div className="flex items-center justify-center mt-10">
         {!isLoadMoreDisabled && (
-          <ButtonPrimary onClick={loadMorePosts} disabled={isLoading}>
+          <Button
+            onClick={loadMorePosts}
+            disabled={isLoading}
+            variant="outline"
+            size="lg"
+            className="min-w-[200px] bg-background text-[#FF2670] hover:bg-[#FF2670] hover:text-white font-sans"
+          >
             Show me more {isLoading && <Loading className="ml-2" />}
-          </ButtonPrimary>
+          </Button>
         )}
       </div>
     </div>

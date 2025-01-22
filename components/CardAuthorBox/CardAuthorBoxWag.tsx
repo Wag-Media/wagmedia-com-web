@@ -19,7 +19,7 @@ const CardAuthorBoxWag: FC<CardAuthorBoxProps> = ({
   return (
     <Link
       href={`/creator/${name}`}
-      className={`nc-CardAuthorBox flex flex-col items-center justify-center text-center px-3 py-5 sm:px-6 sm:py-7 rounded-sm bg-gray-50 hover:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 ${className}`}
+      className={`nc-CardAuthorBox flex flex-col items-center justify-center text-center px-3 py-5 sm:px-6 sm:py-7 rounded-sm shadow-sm hover:shadow-lg border-[1.5px] transition-all duration-300 ${className}`}
     >
       <Avatar
         sizeClass="w-20 h-20 text-2xl"
@@ -35,12 +35,11 @@ const CardAuthorBoxWag: FC<CardAuthorBoxProps> = ({
           className={`block mt-1 text-sm text-neutral-500 dark:text-neutral-400`}
         ></span>
       </div>
-      <div className="flex items-center justify-center px-4 py-2 mt-4 text-xs font-medium leading-none rounded-full bg-neutral-100 dark:bg-neutral-800">
+      <div className="flex items-center justify-center px-4 py-2 text-xs font-medium leading-none ">
         {totalEarnings.toFixed(2)} DOT earned
       </div>
-      <div className="flex items-center justify-center px-4 py-2 mt-4 text-xs font-medium leading-none rounded-full bg-neutral-100 dark:bg-neutral-800">
+      <div className="flex items-center justify-center px-4 py-2 text-xs font-medium leading-none ">
         {postCount} Posts
-        <ArrowRightIcon className="w-5 h-5 text-yellow-600 ms-3" />
       </div>
     </Link>
   )

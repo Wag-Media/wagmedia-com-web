@@ -10,6 +10,7 @@ export function UserInfo({
   author,
   date,
   title,
+  link,
 }: {
   author: {
     name: string | null
@@ -17,13 +18,14 @@ export function UserInfo({
   }
   date?: Date
   title?: string
+  link?: string | null
 }) {
   return (
     <div
       className={`flex items-center text-xs flex-wrap text-neutral-700 text-left dark:text-neutral-200`}
     >
       <Link
-        href={`/creator/${author.name}`}
+        href={link || `/creator/${author.name}`}
         className="flex items-center space-x-2 rtl:space-x-reverse"
       >
         <Avatar
@@ -35,7 +37,7 @@ export function UserInfo({
       <div className="ms-3">
         <div className="flex items-center">
           <Link
-            href={`/creator/${author.name}`}
+            href={link || `/creator/${author.name}`}
             className="block text-sm font-semibold"
           >
             {title ?? author.name}

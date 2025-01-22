@@ -97,11 +97,13 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                       <UserInfo
                         author={tipRecipient}
                         title={`Recipient: ${tipRecipient.name}`}
+                        link={post.discordLink}
                       />
                       <UserInfo
                         author={post.user}
                         date={post.createdAt}
-                        title={`Directed by ${post.user.name}`}
+                        title={`Rewarded by ${post.user.name}`}
+                        link={post.discordLink}
                       />
                     </>
                   ) : (

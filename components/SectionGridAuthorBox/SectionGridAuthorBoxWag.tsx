@@ -16,10 +16,10 @@ const SectionGridAuthorBoxWag: FC<SectionGridAuthorBoxProps> = ({
 }) => {
   return (
     <div className={`nc-SectionGridAuthorBox relative ${className}`}>
-      <Heading desc="Based on rewards received" isCenter>
+      <h2 className="mb-8 text-3xl font-bold text-center text-gray-900 dark:text-white">
         Top WagMedia Content Creators
-      </Heading>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-8 ">
+      </h2>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-4 ">
         {authors.map((author) => (
           <CardAuthorBoxWag key={author.id} author={author} />
         ))}

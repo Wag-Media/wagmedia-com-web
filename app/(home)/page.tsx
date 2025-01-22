@@ -67,7 +67,7 @@ const PageHome = async ({
     <div className="flex flex-col min-h-svh">
       <main className="flex-grow">
         <Hero authorAvatars={authorAvatars} />
-        <section className="py-12 sm:py-16 lg:py-20">
+        <section className="py-12 sm:py-12 lg:py-20">
           <div className="container">
             <h2 className="mb-8 text-3xl font-bold text-center text-gray-900 dark:text-white">
               Featured Posts
@@ -84,17 +84,18 @@ const PageHome = async ({
         </Suspense>
         <div className="container relative">
           <div className="relative px-4 pb-16 md:px-8 lg:px-12">
-            <BackgroundSection />
             <SectionGridAuthorBoxWag
               className="py-8 lg:py-16"
               authors={authors}
             />
-            <SectionBecomeAnAuthor className="">
-              <ButtonPrimary className="mt-8" href="/about#join">
-                Join WagMedia
-              </ButtonPrimary>
-            </SectionBecomeAnAuthor>
           </div>
+        </div>
+        <SectionBecomeAnAuthor className="">
+          <ButtonPrimary className="mt-8" href="/about#join">
+            Join WagMedia
+          </ButtonPrimary>
+        </SectionBecomeAnAuthor>
+        <div className="container ">
           <Suspense fallback={<PostGridSkeleton />}>
             <NewsGrid
               currentPage={currentPage}
@@ -103,8 +104,6 @@ const PageHome = async ({
               heading="Explore our latest posts"
             />
           </Suspense>
-        </div>
-        <div className="container ">
           <SectionSubscribe2 className="pt-16 lg:pt-28" />
         </div>
       </main>

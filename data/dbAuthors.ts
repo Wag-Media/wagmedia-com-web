@@ -163,7 +163,7 @@ export async function getAuthorAvatars() {
       avatar: true,
       name: true,
     },
-    take: 30,
+    take: 20,
     orderBy: {
       posts: {
         _count: "desc",

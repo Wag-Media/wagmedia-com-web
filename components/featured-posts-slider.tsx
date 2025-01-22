@@ -37,8 +37,8 @@ export function FeaturedPostsSlider({
           {featuredPosts.map(
             (post: PostWithTagsCategoriesReactionsPaymentsUser) => (
               <CarouselItem key={post.id} className="md:basis-1/2 xl:basis-1/3">
-                <Card className="overflow-hidden transition-all duration-500 rounded-sm hover:shadow-lg hover:border-[#FF2670] border-2 h-full">
-                  <CardContent className="p-0">
+                <Card className="overflow-hidden transition-all duration-500 rounded-sm hover:shadow-lg hover:border-[#FF2670] h-full border-[1.5px]">
+                  <CardContent className="flex flex-col h-full p-0">
                     <div className="relative aspect-[16/9]">
                       <WagImage
                         containerClassName="w-full h-full"
@@ -51,22 +51,18 @@ export function FeaturedPostsSlider({
                         priority
                       />
                     </div>
-                    <div className="p-4">
+                    <div className="flex flex-col flex-1 p-4">
                       <CategoryBadgeListWag
                         categories={post.categories.slice(0, 4)}
                         className="mb-2"
                         itemClass="mr-0.5"
                       />
-                      <h3 className="mb-2 text-lg text-gray-900 text-normal font-unbounded">
+                      <h3 className="mb-2 text-lg text-gray-900 dark:text-white text-normal font-unbounded">
                         {post.title}
                       </h3>
                       {post?.content && (
-                        <p className="mb-4 text-sm text-gray-600 line-clamp-2">
-                          {removeLinks(removeHtmlTags(post.content)).slice(
-                            0,
-                            200
-                          )}
-                          ...
+                        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+                          {removeLinks(removeHtmlTags(post.content))}
                         </p>
                       )}
                       <Link

@@ -126,7 +126,7 @@ module.exports = {
             transform: "translate(0, 0) rotate(0deg)",
           },
           "25%": {
-            transform: "translate(15px, 10px) rotate(2deg)",
+            transform: "translate(15px, 10px) rotate(4deg)",
           },
           "50%": {
             transform: "translate(-5px, 20px) rotate(-1deg)",
@@ -143,7 +143,7 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         blob: "blob 7s infinite",
-        avatar: "avatar 15s ease-in-out infinite",
+        avatar: "avatar 19s ease-in-out infinite",
         "ping-slow": "ping 3s cubic-bezier(0, 0, 0.2, 1) infinite",
       },
     },

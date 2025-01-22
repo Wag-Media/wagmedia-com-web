@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils"
 import Heading from "@/components/Heading/Heading"
 
 export default function PricingLayout({

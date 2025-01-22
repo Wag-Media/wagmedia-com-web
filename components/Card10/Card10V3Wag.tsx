@@ -33,11 +33,7 @@ const Card10V3Wag: FC<Card10V3WagProps> = ({
     >
       <div className="relative z-0 flex-shrink-0 block w-full overflow-hidden rounded-sm group aspect-w-16 aspect-h-16 sm:aspect-h-9">
         <div>
-          <PostFeaturedWagMedia
-            post={post}
-            isHover={isHover}
-            className="h-[330px]"
-          />
+          <PostFeaturedWagMedia post={post} className="h-[330px]" />
         </div>
 
         <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
@@ -56,7 +52,7 @@ const Card10V3Wag: FC<Card10V3WagProps> = ({
             {title}
           </Link>
         </h2>
-        <PostCardWagMeta meta={{ ...post }} />
+        <PostCardWagMeta user={post.user} createdAt={post.createdAt} />
       </div>
     </div>
   )

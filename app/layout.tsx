@@ -62,7 +62,7 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="">
         <Providers>
-          <div className="text-base text-neutral-900 dark:text-neutral-200">
+          <div className="overflow-hidden text-base text-neutral-900 dark:text-neutral-200">
             <SiteHeader />
             {children}
             <Footer />

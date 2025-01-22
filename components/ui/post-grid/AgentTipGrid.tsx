@@ -6,24 +6,21 @@ import {
   PostWithTagsCategoriesReactionsPaymentsUser,
   TypePostOrder,
 } from "@/data/types"
-import { Payment } from "@prisma/client"
+import { Payment, User } from "@prisma/client"
 
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import Loading from "@/components/Button/Loading"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
+import { Button } from "../button"
+
 export function AgentTipGrid({
   initialPosts,
   totalPostCount,
-  contentType = "article",
 }: {
   initialPosts: (PostWithTagsCategoriesReactionsPaymentsUser & {
     threadPayments: Payment[]
-    recipient?: {
-      name: string | null
-      avatar: string | null
-    }
+    recipient?: Pick<User, "avatar" | "name">
   })[]
   totalPostCount: number
   contentType?: "article" | "news"
@@ -72,7 +69,6 @@ export function AgentTipGrid({
     <div className="mt-8">
       <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
         {posts.map((post, index) => (
-          // <pre>{JSON.stringify(post, null, 2)}</pre>
           <Card11Wag
             key={index}
             post={{ ...post, user: post.recipient }}
@@ -82,9 +78,9 @@ export function AgentTipGrid({
       </div>
       <div className="flex items-center justify-center mt-20">
         {!isLoadMoreDisabled && (
-          <ButtonPrimary onClick={loadMorePosts} disabled={isLoading}>
+          <Button onClick={loadMorePosts} disabled={isLoading}>
             Show me more {isLoading && <Loading className="ml-2" />}
-          </ButtonPrimary>
+          </Button>
         )}
       </div>
     </div>

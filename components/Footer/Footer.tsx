@@ -15,126 +15,151 @@ export interface WidgetFooterMenu {
   menus: CustomLink[]
 }
 
-const widgetMenus: WidgetFooterMenu[] = [
-  {
-    id: "5",
-    title: "Getting started",
-    menus: [
-      { href: "/", label: "Installation" },
-      { href: "/", label: "Release Notes" },
-      { href: "/", label: "Upgrade Guide" },
-      { href: "/", label: "Browser Support" },
-      { href: "/", label: "Editor Support" },
-    ],
-  },
-  {
-    id: "1",
-    title: "Explore",
-    menus: [
-      { href: "/", label: "Design features" },
-      { href: "/", label: "Prototyping" },
-      { href: "/", label: "Design systems" },
-      { href: "/", label: "Pricing" },
-      { href: "/", label: "Customers" },
-    ],
-  },
-  {
-    id: "2",
-    title: "Resources",
-    menus: [
-      { href: "/", label: "Best practices" },
-      { href: "/", label: "Support" },
-      { href: "/", label: "Developers" },
-      { href: "/", label: "Learn design" },
-      { href: "/", label: "What's new" },
-    ],
-  },
-  {
-    id: "4",
-    title: "Community",
-    menus: [
-      { href: "/", label: "Discussion Forums" },
-      { href: "/", label: "Code of Conduct" },
-      { href: "/", label: "Community Resources" },
-      { href: "/", label: "Contributing" },
-      { href: "/", label: "Concurrent Mode" },
-    ],
-  },
-]
-
 const Footer: React.FC = () => {
-  const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
-    return (
-      <div key={index} className="text-sm">
-        <h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
-          {menu.title}
-        </h2>
-        <ul className="mt-5 space-y-4">
-          {menu.menus.map((item, index) => (
-            <li key={index}>
-              <a
-                key={index}
-                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
-                href={item.href}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
-
   return (
-    <>
-      {/* music player */}
-      {/* <MusicPlayer /> */}
-
-      {/* footer */}
-      <div className="nc-Footer relative py-8 lg:py-16 border-t border-neutral-200 dark:border-neutral-700">
-        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 lg:grid-cols-5 lg:gap-x-10 items-center">
-          <div className="col-span-1 lg:col-span-1 h-24 w-24 lg:h-48 lg:w-48">
-            <Logo />
-          </div>
-          <div className="col-span-3 lg:col-span-3">
-            <p className="text-neutral-500 dark:text-neutral-400 max-w-md">
-              WagMedia is a decentralized media initiative that offers the
-              platform for creators to earn tokens for their content.
+    <footer className="py-12 bg-gray-50 dark:bg-gray-950">
+      <div className="container">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+          <div className="max-w-md md:col-span-2">
+            <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
+              About WagMedia
+            </h3>
+            <p className="mb-4">Your ideas, your audience, your rewards.</p>
+            <p className="text-gray-600 dark:text-gray-400">
+              Decentralizing the story of Polkadot and Kusama through
+              community-driven content creation and curation.
             </p>
-            <Link
-              href="https://polkadot.network/"
-              className="flex items-center mt-2"
-            >
-              <span
-                className={cn(
-                  fontUnbounded.className,
-                  "text-xl md:text-3xl lg:text-4xl"
-                )}
-              >
-                Powered by
-              </span>
-              <Icons.polkadotLogo className="h-16 w-auto" />
-            </Link>
           </div>
-          <div className="col-span-3 lg:col-span-1">
-            <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
-              {siteConfig.navMenuItems.map((item, index) => (
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
+              Quick Links
+            </h3>
+            <ul className="space-y-2">
+              <li>
                 <Link
-                  key={index}
-                  href={item.href}
-                  className="block mr-3 lg:mr-0"
+                  href="/terms"
+                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
                 >
-                  {item.name}
+                  Terms of Service
                 </Link>
-              ))}
-            </nav>
+              </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
+                >
+                  FAQ
+                </Link>
+              </li>
+            </ul>
           </div>
-
-          {/* {widgetMenus.map(renderWidgetMenuItem)} */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
+              Connect
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <a
+                  href="https://twitter.com/wagmedia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://discord.gg/wagmedia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
+                >
+                  Discord
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/wagmedia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
+                >
+                  GitHub
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center pt-8 mt-8 text-center text-gray-500 dark:text-gray-400">
+          <div className="flex flex-row items-center justify-center">
+            <p>&copy; {new Date().getFullYear()}</p>
+            <Logo className="w-16 h-16 py-0 mx-4" />
+            <p>All rights reserved.</p>
+          </div>
+          <Link
+            href="https://polkadot.network/"
+            className="flex items-center mt-2 group"
+          >
+            <span
+              className={cn(
+                fontUnbounded.className,
+                "text-xl md:text-3xl lg:text-4xl group-hover:text-[#FF2670]"
+              )}
+            >
+              Powered by
+            </span>
+            <Icons.polkadotLogo className="w-auto h-16 group-hover:text-[#FF2670]" />
+          </Link>
         </div>
       </div>
-    </>
+    </footer>
+    // <div className="relative py-8 border-t nc-Footer lg:py-16 border-neutral-200 dark:border-neutral-700">
+    //   <div className="container grid items-center grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 lg:grid-cols-5 lg:gap-x-10">
+    //     <div className="w-24 h-24 col-span-1 lg:col-span-1 lg:h-48 lg:w-48">
+    //       <Logo />
+    //     </div>
+    //     <div className="col-span-3 lg:col-span-3">
+    //       <p className="max-w-md text-neutral-500 dark:text-neutral-400">
+    //         WagMedia is a decentralized media initiative that offers the
+    //         platform for creators to earn tokens for their content.
+    //       </p>
+    //       <Link
+    //         href="https://polkadot.network/"
+    //         className="flex items-center mt-2"
+    //       >
+    //         <span
+    //           className={cn(
+    //             fontUnbounded.className,
+    //             "text-xl md:text-3xl lg:text-4xl"
+    //           )}
+    //         >
+    //           Powered by
+    //         </span>
+    //         <Icons.polkadotLogo className="w-auto h-16" />
+    //       </Link>
+    //     </div>
+    //     <div className="col-span-3 lg:col-span-1">
+    //       <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
+    //         {siteConfig.navMenuItems.map((item, index) => (
+    //           <Link key={index} href={item.href} className="block mr-3 lg:mr-0">
+    //             {item.name}
+    //           </Link>
+    //         ))}
+    //       </nav>
+    //     </div>
+
+    //     {/* {widgetMenus.map(renderWidgetMenuItem)} */}
+    //   </div>
+    // </div>
   )
 }
 

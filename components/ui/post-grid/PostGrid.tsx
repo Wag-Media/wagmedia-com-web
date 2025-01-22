@@ -25,7 +25,7 @@ export default async function PostGrid({
   const totalPostCount = await getTotalPostCount()
 
   return (
-    <section className="py-16">
+    <section className="py-12">
       <div className="container max-w-[1400px]">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col items-center gap-4 mb-8">
@@ -66,16 +66,6 @@ export default async function PostGrid({
                 />
               </TabsContent>
             </Tabs>
-          </div>
-
-          <div className="flex justify-center mt-8">
-            <Button
-              variant="outline"
-              size="lg"
-              className="min-w-[200px] bg-white text-[#FF2670] hover:bg-[#7916F3] hover:text-white border-[#FF2670] font-sans"
-            >
-              Load More
-            </Button>
           </div>
         </div>
       </div>

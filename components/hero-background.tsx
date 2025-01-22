@@ -36,7 +36,7 @@ const PRESET_POSITIONS = [
   { x: 18, y: 92 },
   { x: 85, y: 95 },
   { x: 5, y: 75 },
-  { x: 95, y: 25 },
+  { x: 89, y: 25 },
   { x: 25, y: 55 },
   { x: 79, y: 34 },
   { x: 22, y: 75 },
@@ -92,7 +92,7 @@ export function HeroBackground({
 
       setVisibleIds((prev) => [...prev, currentIndex])
       currentIndex++
-    }, 800)
+    }, 500)
 
     return () => clearInterval(interval)
   }, [authorAvatars])
@@ -108,7 +108,7 @@ export function HeroBackground({
       {avatarData?.map((avatar) => (
         <div
           key={avatar.id}
-          className={`absolute ${
+          className={`absolute animate-avatar ${
             visibleIds.includes(avatar.id) ? "opacity-100" : "opacity-0"
           }`}
           style={{
@@ -116,7 +116,6 @@ export function HeroBackground({
             height: `${avatarDimension}px`,
             left: `${avatar.x}%`,
             top: `${avatar.y}%`,
-            transform: `translateY(${scrollY * avatar.speedMultiplier}px)`,
             animationDelay: `${avatar.id * 313}ms`,
             transitionProperty: "all",
             transitionDuration: "1000ms",
@@ -127,6 +126,8 @@ export function HeroBackground({
               width: `${avatarDimension}px`,
               height: `${avatarDimension}px`,
               transform: `translateY(${scrollY * avatar.speedMultiplier}px)`,
+              transition: "transform 0.1s ease-out",
+              opacity: 0,
             }}
           >
             <div
@@ -139,6 +140,12 @@ export function HeroBackground({
               alt={`${avatar.name} Avatar`}
               className={`relative z-10 object-cover w-[${avatarDimension}px] h-[${avatarDimension}px] rounded-full text-[0px]`}
               priority
+              onLoad={(e) => {
+                const parent = e.currentTarget.parentElement
+                if (parent) {
+                  parent.style.opacity = "1"
+                }
+              }}
             />
           </div>
         </div>
