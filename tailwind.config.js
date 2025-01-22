@@ -123,13 +123,19 @@ module.exports = {
         },
         avatar: {
           "0%": {
-            transform: "translate(0, 0)",
+            transform: "translate(0, 0) rotate(0deg)",
+          },
+          "25%": {
+            transform: "translate(15px, 10px) rotate(2deg)",
           },
           "50%": {
-            transform: "translate(0, 20px)",
+            transform: "translate(-5px, 20px) rotate(-1deg)",
+          },
+          "75%": {
+            transform: "translate(-10px, 5px) rotate(1deg)",
           },
           "100%": {
-            transform: "translate(0, 0)",
+            transform: "translate(0, 0) rotate(0deg)",
           },
         },
       },
@@ -137,7 +143,7 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         blob: "blob 7s infinite",
-        avatar: "avatar 13s ease-in-out infinite",
+        avatar: "avatar 15s ease-in-out infinite",
         "ping-slow": "ping 3s cubic-bezier(0, 0, 0.2, 1) infinite",
       },
     },

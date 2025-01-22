@@ -21,7 +21,31 @@ interface Avatar {
   avatar: string | null
   name: string | null
   color: string
+  speedMultiplier: number
 }
+
+const PRESET_POSITIONS = [
+  { x: 5, y: 15 },
+  { x: 75, y: 85 },
+  { x: 12, y: 85 },
+  { x: 88, y: 82 },
+  { x: 8, y: 45 },
+  { x: 92, y: 55 },
+  { x: 15, y: 5 },
+  { x: 82, y: 8 },
+  { x: 18, y: 92 },
+  { x: 85, y: 95 },
+  { x: 5, y: 75 },
+  { x: 95, y: 25 },
+  { x: 25, y: 55 },
+  { x: 79, y: 34 },
+  { x: 22, y: 75 },
+  { x: 78, y: 72 },
+  { x: 35, y: 8 },
+  { x: 65, y: 5 },
+  { x: 32, y: 92 },
+  { x: 68, y: 95 },
+]
 
 export function HeroBackground({
   authorAvatars = [],
@@ -29,41 +53,30 @@ export function HeroBackground({
   authorAvatars: Pick<User, "avatar" | "name">[]
 }) {
   const avatarDimension = 45
-
   const [avatarData, setAvatarData] = useState<Avatar[]>([])
   const [visibleIds, setVisibleIds] = useState<number[]>([])
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY)
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   useEffect(() => {
     if (authorAvatars.length === 0) return
 
-    const padding = avatarDimension + 30
-    const safePercentageX = (padding / window.innerWidth) * 100
-    const safePercentageY = (padding / window.innerHeight) * 100
-
-    const centerSafeZoneStart = 25
-    const centerSafeZoneEnd = 75
-
-    const generatePosition = () => {
-      let x, y
-      do {
-        x = safePercentageX + Math.random() * (100 - 2 * safePercentageX)
-        y = safePercentageY + Math.random() * (100 - 2 * safePercentageY)
-      } while (
-        x > centerSafeZoneStart &&
-        x < centerSafeZoneEnd &&
-        y > centerSafeZoneStart &&
-        y < centerSafeZoneEnd
-      )
-      return { x, y }
-    }
-
-    const initialAvatars = Array.from({ length: 20 }, (_, i) => ({
+    const initialAvatars = PRESET_POSITIONS.map((position, i) => ({
       id: i,
-      x: generatePosition().x,
-      y: generatePosition().y,
-      avatar: authorAvatars[i].avatar,
-      name: authorAvatars[i].name,
+      x: position.x,
+      y: position.y,
+      avatar: authorAvatars[i]?.avatar ?? null,
+      name: authorAvatars[i]?.name ?? null,
       color: colors[Math.floor(Math.random() * colors.length)],
+      speedMultiplier: 0.0 + Math.random() * 0.2,
     }))
 
     setAvatarData(initialAvatars)
@@ -79,38 +92,54 @@ export function HeroBackground({
 
       setVisibleIds((prev) => [...prev, currentIndex])
       currentIndex++
-    }, 1500)
+    }, 500)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [authorAvatars])
 
   return (
-    <div className="absolute inset-0 z-0">
+    <div
+      className="absolute inset-0 z-0"
+      style={{
+        transform: `translateY(${scrollY * 0.2}px)`,
+        transition: "transform 0.1s ease-out",
+      }}
+    >
       {avatarData?.map((avatar) => (
         <div
           key={avatar.id}
           className={`absolute w-[${avatarDimension}px] h-[${avatarDimension}px] animate-avatar ${
-            visibleIds.includes(avatar.id) ? "opacity-80" : "opacity-0"
+            visibleIds.includes(avatar.id) ? "opacity-100" : "opacity-0"
           }`}
           style={{
             left: `${avatar.x}%`,
             top: `${avatar.y}%`,
+            transform: `translateY(${scrollY * avatar.speedMultiplier}px)`,
             animationDelay: `${avatar.id * 313}ms`,
             transitionProperty: "all",
             transitionDuration: "1000ms",
           }}
         >
           <div
-            className={`absolute inset-[2px] ${avatar.color} rounded-full animate-ping-slow opacity-50 dark:opacity-100`}
-          ></div>
-          <Image
-            width={avatarDimension}
-            height={avatarDimension}
-            src={avatar.avatar || "/placeholder.svg"}
-            alt={`${avatar.name} Avatar`}
-            className={`relative z-10 object-cover w-[${avatarDimension}px] h-[${avatarDimension}px] rounded-full text-[0px]`}
-            priority
-          />
+            style={{
+              width: `${avatarDimension}px`,
+              height: `${avatarDimension}px`,
+              transform: `translateY(${scrollY * avatar.speedMultiplier}px)`,
+              transition: "transform 0.1s ease-out",
+            }}
+          >
+            <div
+              className={`absolute inset-[2px] ${avatar.color} rounded-full animate-ping-slow opacity-50 dark:opacity-100`}
+            ></div>
+            <Image
+              width={avatarDimension}
+              height={avatarDimension}
+              src={avatar.avatar || "/placeholder.svg"}
+              alt={`${avatar.name} Avatar`}
+              className={`relative z-10 object-cover w-[${avatarDimension}px] h-[${avatarDimension}px] rounded-full text-[0px]`}
+              priority
+            />
+          </div>
         </div>
       ))}
     </div>
