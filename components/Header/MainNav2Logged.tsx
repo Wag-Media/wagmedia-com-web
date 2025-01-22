@@ -17,19 +17,19 @@ export interface MainNav2LoggedProps {}
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const renderContent = () => {
     return (
-      <div className="flex justify-between h-20">
+      <div className="flex justify-center h-16">
         <div className="flex items-center lg:hidden ">
           <MenuBar />
         </div>
 
         <div className="flex items-center flex-1 lg:flex-none">
-          <div className="flex items-center h-16 pl-3 border rounded-full backdrop-blur-md border-background/50 bg-background/50">
+          <div className="flex items-center h-12 pl-[4px] border-2 rounded-full backdrop-blur-md border-background/50 bg-background/50">
             <Logo />
-            <NavigationWag className="z-10 hidden h-16 p-3 lg:flex" />
+            <NavigationWag className="z-10 hidden h-12 p-3 lg:flex" />
           </div>
         </div>
 
-        <div className="flex items-center justify-end text-slate-700 dark:text-slate-100">
+        <div className="absolute right-0 flex items-center text-slate-700 dark:text-slate-100">
           <div className="flex h-16 p-3 rounded-full">
             <SearchModal />
             {/* <NotifyDropdown /> */}

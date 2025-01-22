@@ -26,59 +26,16 @@ export interface PostFeaturedWagMediaProps {
     slug: string
     embeds: Embed[]
   }
-  isHover?: boolean
 }
 
 const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
   className = "w-full h-full",
   post,
-  isHover = false,
 }) => {
   const { title, categories, reactions, embeds } = post
 
-  const isPostMedia = () => embeds && embeds.length > 0
   const firstEmbed = embeds?.[0] ?? null
   const featuredImage = firstEmbed?.embedImage
-
-  // const renderGallerySlider = () => {
-  //   if (!galleryImgs) return null;
-  //   return (
-  //     <GallerySlider
-  //       href={href}
-  //       galleryImgs={galleryImgs}
-  //       className="absolute inset-0 z-10"
-  //       galleryClass="absolute inset-0"
-  //       ratioClass="absolute inset-0"
-  //     />
-  //   );
-  // };
-
-  // const renderContent = () => {
-  //   // GALLERY
-  //   if (postType === "gallery") {
-  //     return renderGallerySlider();
-  //   }
-
-  //   // VIDEO
-  //   if (postType === "video" && !!videoUrl && isHover) {
-  //     return <MediaVideo isHover videoUrl={videoUrl} />;
-  //   }
-
-  //   // AUDIO
-  //   if (postType === "audio" && !!audioUrl) {
-  //     return <MediaAudio post={post} />;
-  //   }
-
-  //   // ICON
-  //   return isPostMedia() ? (
-  //     <span className="absolute inset-0 flex items-center justify-center ">
-  //       <PostTypeFeaturedIcon
-  //         className="transition-transform transform cursor-pointer hover:scale-105"
-  //         postType={postType}
-  //       />
-  //     </span>
-  //   ) : null;
-  // };
 
   const getColorClass = (hasHover = true) => {
     switch (categories?.[0]?.name) {
@@ -143,7 +100,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
   }
 
   return (
-    <div className={`nc-PostFeaturedMedia relative ${className}`}>
+    <div className={`nc-PostFeaturedMedia group relative ${className}`}>
       {featuredImage ? (
         <div
           className={`bg-cover bg-center w-full h-full`}
@@ -155,7 +112,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
             <Image
               alt={title}
               fill
-              className="object-contain backdrop-blur-lg "
+              className="object-contain backdrop-blur-lg"
               src={featuredImage}
               sizes="(max-width: 600px) 480px, 800px"
             />
@@ -166,7 +123,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
               <img
                 src={featuredImage}
                 alt={title}
-                className="absolute object-contain w-full h-full backdrop-blur-lg "
+                className="absolute object-contain w-full h-full backdrop-blur-lg"
                 sizes="(max-width: 600px) 480px, 800px"
               />
             </div>
@@ -184,7 +141,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
       {/* {postType !== "gallery" && ( */}
       <Link
         href={`/post/${post.slug}`}
-        className={`block absolute inset-0 bg-black/20 transition-opacity opacity-0 group-hover:opacity-100`}
+        className={`block absolute inset-0 bg-purple-500/50 transition-opacity opacity-0`}
       />
       {/* )} */}
     </div>

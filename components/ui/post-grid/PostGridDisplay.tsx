@@ -114,7 +114,7 @@ export function PostGridDisplay({
           <ArrowRightIcon className="w-6 h-6 ms-3 rtl:rotate-180" />
         </Button> */}
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {posts.map((post, index) => (
           <Card11Wag key={index} post={post} />
         ))}

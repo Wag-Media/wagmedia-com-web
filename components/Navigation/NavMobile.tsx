@@ -9,7 +9,7 @@ import _ from "lodash"
 import { siteConfig } from "@/config/site"
 import ButtonClose from "@/components/ButtonClose/ButtonClose"
 import Logo from "@/components/Logo/Logo"
-import SwitchDarkMode from "@/components/switch-dark-mode"
+import { SwitchDarkMode } from "@/components/switch-dark-mode"
 import { Disclosure } from "@/app/headlessui"
 
 import { NavItemType } from "./NavigationItem"
@@ -21,14 +21,6 @@ export interface NavMobileProps {
   onClickClose?: () => void
 }
 
-const NAV: NavItemType[] = [
-  {
-    id: randomId(),
-    href: "/",
-    name: "Home",
-  },
-]
-
 const NavMobile: React.FC<NavMobileProps> = ({
   data = siteConfig.navMenuItems,
   onClickClose,
@@ -38,7 +30,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
     itemClass = " pl-3 text-neutral-900 dark:text-neutral-200 font-medium "
   ) => {
     return (
-      <ul className="nav-mobile-sub-menu ps-6 pb-1 text-base">
+      <ul className="pb-1 text-base nav-mobile-sub-menu ps-6">
         {item.children?.map((i, index) => (
           <Disclosure key={index} as="li">
             <Link
@@ -63,7 +55,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
                     className="flex justify-end flex-grow"
                   >
                     <ChevronDownIcon
-                      className="ms-2 h-4 w-4 text-slate-500"
+                      className="w-4 h-4 ms-2 text-slate-500"
                       aria-hidden="true"
                     />
                   </Disclosure.Button>
@@ -105,7 +97,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
           </span>
           {item.children && (
             <span
-              className="block flex-grow"
+              className="flex-grow block"
               onClick={(e) => e.preventDefault()}
             >
               <Disclosure.Button
@@ -113,7 +105,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
                 className="flex justify-end flex-grow"
               >
                 <ChevronDownIcon
-                  className="ms-2 h-4 w-4 text-neutral-500"
+                  className="w-4 h-4 ms-2 text-neutral-500"
                   aria-hidden="true"
                 />
               </Disclosure.Button>
@@ -161,12 +153,12 @@ const NavMobile: React.FC<NavMobileProps> = ({
         method="POST"
         className="flex-1 text-slate-900 dark:text-slate-200"
       >
-        <div className="bg-slate-50 dark:bg-slate-800 flex items-center space-x-1 rtl:space-x-reverse py-2 px-4 rounded-xl h-full">
+        <div className="flex items-center h-full px-4 py-2 space-x-1 bg-slate-50 dark:bg-slate-800 rtl:space-x-reverse rounded-xl">
           {renderMagnifyingGlassIcon()}
           <input
             type="search"
             placeholder="Type and press enter"
-            className="border-none bg-transparent focus:outline-none focus:ring-0 w-full text-sm "
+            className="w-full text-sm bg-transparent border-none focus:outline-none focus:ring-0 "
           />
         </div>
         <input type="submit" hidden value="" />
@@ -175,18 +167,18 @@ const NavMobile: React.FC<NavMobileProps> = ({
   }
 
   return (
-    <div className="overflow-y-auto w-full h-screen py-2 transition transform shadow-lg ring-1 dark:ring-neutral-700 bg-white dark:bg-neutral-900 divide-y-2 divide-neutral-100 dark:divide-neutral-800">
-      <div className="py-6 px-5">
+    <div className="w-full h-screen py-2 overflow-y-auto transition transform bg-white divide-y-2 shadow-lg ring-1 dark:ring-neutral-700 dark:bg-neutral-900 divide-neutral-100 dark:divide-neutral-800">
+      <div className="px-5 py-6">
         <div className="w-24 h-24">
           <Logo />
         </div>
-        <div className="flex flex-col mt-5 text-slate-600 dark:text-slate-300 text-sm">
+        <div className="flex flex-col mt-5 text-sm text-slate-600 dark:text-slate-300">
           <span>
             WagMedia is shaping the Future of Blockchain Media Creation on
             Polkadot and Kusama
           </span>
 
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex items-center justify-between mt-4">
             {/* <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" /> */}
             <button
               className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl`}
@@ -201,13 +193,13 @@ const NavMobile: React.FC<NavMobileProps> = ({
             </span>
           </div>
         </div>
-        <span className="absolute end-2 top-2 p-1">
+        <span className="absolute p-1 end-2 top-2">
           <ButtonClose onClick={onClickClose} />
         </span>
 
         {/* <div className="mt-5">{renderSearchForm()}</div> */}
       </div>
-      <ul className="flex flex-col py-6 px-2 space-y-1 rtl:space-x-reverse">
+      <ul className="flex flex-col px-2 py-6 space-y-1 rtl:space-x-reverse">
         {data.map(_renderItem)}
       </ul>
     </div>

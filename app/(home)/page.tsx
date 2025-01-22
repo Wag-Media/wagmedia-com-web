@@ -1,39 +1,67 @@
 import React, { Suspense } from "react"
 import { getAuthorAvatars, getAuthors } from "@/data/dbAuthors"
-import { getFeaturedPosts } from "@/data/dbPosts"
+import { getFeaturedPosts, getTotalPostCount } from "@/data/dbPosts"
 
 import NewsGrid from "@/components/ui/post-grid/NewsGrid"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
 import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
-import { Hero } from "@/components/Hero"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
 import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 import { FeaturedPostsSlider } from "@/components/featured-posts-slider"
+import { Hero } from "@/components/hero"
 
 import { fetchPosts } from "../actions/fetchPosts"
+import { replaceAuthorLinks } from "../post/[slug]/util"
 
 export const revalidate = 600 // seconds
 
 const PageHome = async ({
   searchParams,
 }: {
-  searchParams: { search?: string; page?: string }
+  searchParams: { articles?: string; search?: string; page?: string }
 }) => {
+  const articles = searchParams?.articles || "latest"
   const search = searchParams?.search || ""
   const currentPage = Number(searchParams?.page) || 1
 
-  const [authors, featuredPosts, latestPosts, authorAvatars] =
-    await Promise.all([
-      getAuthors({ limit: 10 }),
-      getFeaturedPosts(),
-      fetchPosts({
-        search,
-      }),
-      getAuthorAvatars(),
-    ])
+  const [
+    authors,
+    featuredPosts,
+    latestPosts,
+    popularPosts,
+    totalPostCount,
+    authorAvatars,
+  ] = await Promise.all([
+    getAuthors({ limit: 10 }),
+    getFeaturedPosts(),
+    fetchPosts({
+      search,
+      orderBy: "latest",
+    }),
+    fetchPosts({
+      search,
+      orderBy: "reactions",
+    }),
+    getTotalPostCount(),
+    getAuthorAvatars(),
+  ])
+
+  const processedLatestPosts = await Promise.all(
+    latestPosts.map(async (post) => {
+      const title = await replaceAuthorLinks(post.title, false)
+      return { ...post, title }
+    })
+  )
+
+  const processedPopularPosts = await Promise.all(
+    popularPosts.map(async (post) => {
+      const title = await replaceAuthorLinks(post.title, false)
+      return { ...post, title }
+    })
+  )
 
   return (
     <div className="flex flex-col min-h-svh">
@@ -49,10 +77,9 @@ const PageHome = async ({
         </section>
         <Suspense fallback={<PostGridSkeleton />}>
           <PostGrid
-            currentPage={currentPage}
-            search={search}
-            className="pt-16 pb-16 lg:pb-28"
-            heading="Explore our latest posts"
+            articleOrder={articles}
+            popularPosts={processedPopularPosts}
+            latestPosts={processedLatestPosts}
           />
         </Suspense>
         <div className="container relative">

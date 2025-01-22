@@ -2,10 +2,16 @@ import React, { FC, useMemo } from "react"
 import Image from "next/image"
 import { ReactionWithUserAndEmoji } from "@/data/types"
 import { ContentEarnings } from "@prisma/client"
-import { Coins, MessageCircleHeart, Smile, ThumbsUp } from "lucide-react"
+import { MessageCircleHeart } from "lucide-react"
 
 import { totalEarnings } from "../../utils/totalPostEarnings"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
+import { Button } from "../ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip"
 
 export interface PostCardLikeAndCommentWagProps {
   className?: string
@@ -15,6 +21,7 @@ export interface PostCardLikeAndCommentWagProps {
   likeCount?: number
   reactions?: ReactionWithUserAndEmoji[]
   earnings?: ContentEarnings[]
+  withCounts?: boolean
 }
 
 interface GroupedReaction {
@@ -32,6 +39,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
   reactions = [],
   likeCount = 0,
   earnings = [],
+  withCounts = true,
 }) => {
   let total = totalEarnings(earnings)
 
@@ -60,7 +68,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
 
   return (
     <div className="flex items-center justify-between w-full space-x-2">
-      <HoverCard openDelay={0}>
+      {/* <HoverCard openDelay={0}>
         <HoverCardTrigger>
           <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
             <MessageCircleHeart size={20} strokeWidth={2} color="#999" />
@@ -96,10 +104,56 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
             )}
           </ul>
         </HoverCardContent>
-      </HoverCard>
+      </HoverCard> */}
+      <TooltipProvider>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger asChild>
+            <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
+              <MessageCircleHeart size={20} strokeWidth={2} color="#999" />
+              {likeCount}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <ul
+              className={`flex flex-wrap max-w-sm ${
+                withCounts ? "gap-4" : "gap-2"
+              }`}
+            >
+              {groupedReactions.slice(0, sliceAfter).map((group) => (
+                <li key={group.emojiId} className="inline-block">
+                  {group.emojiUrl ? (
+                    <Image
+                      src={group.emojiUrl}
+                      alt={group.emojiId}
+                      width={20}
+                      height={20}
+                      className="inline-block p-0 m-0 mr-1"
+                    />
+                  ) : (
+                    <span className="align-middle text-[20px] mr-1">
+                      {group.emojiId}
+                    </span>
+                  )}
+                  {withCounts && (
+                    <span className="text-sm text-gray-500">
+                      x{group.count}
+                    </span>
+                  )}
+                </li>
+              ))}
+              {groupedReactions.length > sliceAfter && (
+                <li className="inline-block">
+                  <span className="text-sm text-gray-500">
+                    +{groupedReactions.length - 3}
+                  </span>
+                </li>
+              )}
+            </ul>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       {total && parseFloat(total) > 0 && (
-        <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
-          <Coins strokeWidth={2} size={20} color="#999" />
+        <div className="flex items-center gap-2 text-xs text-pink-500 rounded-full cursor-default">
           {total}
         </div>
       )}

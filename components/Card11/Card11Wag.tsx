@@ -15,6 +15,8 @@ import {
   User,
 } from "@prisma/client"
 
+import { removeHtmlTags, removeLinks } from "@/app/post/[slug]/util"
+
 import CategoryBadgeListWag from "../CategoryBadgeList/CategoryBadgeListWag"
 import PostCardLikeAndCommentWag from "../PostCardLikeAndComment/PostCardLikeAndCommentWag"
 import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta"
@@ -31,6 +33,7 @@ export interface Card11Props {
     embeds: Embed[]
     user: User
     createdAt: Date
+    content: string
   }
   ratio?: string
   hiddenAuthor?: boolean
@@ -42,25 +45,17 @@ const Card11Wag: FC<Card11Props> = ({
   hiddenAuthor = false,
   ratio = "aspect-w-16 aspect-h-9",
 }) => {
-  const { title, categories, reactions, earnings, slug } = post
-
-  const [isHover, setIsHover] = useState(false)
+  const { categories, reactions, earnings } = post
 
   return (
     <div
-      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-sm overflow-hidden bg-white dark:bg-neutral-900 ${className} hover:shadow-lg transition-all duration-300`}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      className={`nc-Card11 shadow-sm border-2 relative flex flex-col group rounded-sm overflow-hidden bg-white dark:bg-neutral-900 ${className} hover:shadow-lg transition-all duration-300 hover:border-pink-500`}
     >
       <div
-        className={`block flex-shrink-0 relative w-full rounded-t-sm overflow-hidden z-10 ${ratio}`}
+        className={`block flex-shrink-0 relative w-full overflow-hidden z-10 ${ratio}`}
       >
         <div>
-          <PostFeaturedWagMedia
-            post={post}
-            isHover={isHover}
-            className="h-[200px]"
-          />
+          <PostFeaturedWagMedia post={post} className="h-[200px]" />
         </div>
       </div>
 
@@ -73,11 +68,15 @@ const Card11Wag: FC<Card11Props> = ({
           <Link href={`/post/${post.slug}`} className="absolute inset-0"></Link>
           <PostCardWagMeta meta={{ ...post }} />
 
-          <h3 className="block text-base font-semibold nc-card-title text-neutral-900 dark:text-neutral-100">
-            <span className="h-12 line-clamp-2" title={title}>
-              {title}
-            </span>
+          <h3 className="mb-2 leading-tight text-gray-900 text-normal font-unbounded">
+            {post.title}
           </h3>
+          {post?.content && (
+            <p className="text-sm text-gray-600 line-clamp-2">
+              {removeLinks(removeHtmlTags(post.content)).slice(0, 200)}
+              ...
+            </p>
+          )}
         </div>
         <div className="flex items-end justify-between mt-auto">
           <PostCardLikeAndCommentWag
@@ -85,8 +84,8 @@ const Card11Wag: FC<Card11Props> = ({
             likeCount={reactions.length}
             earnings={earnings}
             reactions={reactions}
+            withCounts={false}
           />
-          {/* <PostCardSaveAction className="relative" /> */}
         </div>
       </div>
     </div>

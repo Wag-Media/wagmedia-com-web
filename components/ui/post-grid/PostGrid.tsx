@@ -1,42 +1,27 @@
 import React, { FC, ReactNode, Suspense } from "react"
+import Link from "next/link"
 import { getTotalPostCount } from "@/data/dbPosts"
+import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 
 import { Button } from "@/components/ui/button"
 import { fetchPosts } from "@/app/actions/fetchPosts"
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
-import { Tabs, TabsList, TabsTrigger } from "../tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs"
 import { PostGridDisplay } from "./PostGridDisplay"
 import PostGridSkeleton from "./PostGridSkeleton"
 
 export interface PostGridProps {
-  currentPage?: number
-  search?: string
-  className?: string
-  gridClass?: string
-  heading?: ReactNode
-  headingIsCenter?: boolean
+  articleOrder?: string
+  latestPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  popularPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
 }
 
 export default async function PostGrid({
-  search,
-  currentPage = 0,
-  className = "",
-  gridClass = "",
-  heading,
-  headingIsCenter,
+  articleOrder,
+  latestPosts,
+  popularPosts,
 }: PostGridProps) {
-  const posts = await fetchPosts({
-    search,
-  })
-
-  const postsWithLinks = await Promise.all(
-    posts.map(async (post) => {
-      const title = await replaceAuthorLinks(post.title, false)
-      return { ...post, title }
-    })
-  )
-
   const totalPostCount = await getTotalPostCount()
 
   return (
@@ -45,34 +30,43 @@ export default async function PostGrid({
         <div className="flex flex-col gap-8">
           <div className="flex flex-col items-center gap-4 mb-8">
             <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
-              Explore our latest Articles
+              Explore {articleOrder} Polkadot Articles
             </h2>
-            <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">
+            <p className="my-2 text-lg text-gray-500 dark:text-gray-400">
               Discover <Suspense fallback="...">{totalPostCount}</Suspense>{" "}
-              Polkadot related articles by our community authors
+              articles, from a multitude of categories and tags, created by our
+              community authors
             </p>
-            <Tabs defaultValue="latest" className="relative w-full max-w-md">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FF2670]/10 to-[#7916F3]/10 rounded-lg"></div>
-              <TabsList className="relative z-10 grid w-full grid-cols-3">
+            <Tabs
+              defaultValue={articleOrder}
+              className="relative flex flex-col items-center w-full"
+            >
+              <TabsList className="relative z-10 grid w-full max-w-md grid-cols-2">
                 <TabsTrigger value="latest" className="font-sans">
-                  Latest
+                  <Link href={`?articles=latest`} scroll={false}>
+                    Latest
+                  </Link>
                 </TabsTrigger>
                 <TabsTrigger value="popular" className="font-sans">
-                  Popular
-                </TabsTrigger>
-                <TabsTrigger value="trending" className="font-sans">
-                  Trending
+                  <Link href={`?articles=popular`} scroll={false}>
+                    Popular
+                  </Link>
                 </TabsTrigger>
               </TabsList>
+              <TabsContent value="latest">
+                <PostGridDisplay
+                  initialPosts={latestPosts}
+                  totalPostCount={totalPostCount}
+                />
+              </TabsContent>
+              <TabsContent value="popular">
+                <PostGridDisplay
+                  initialPosts={popularPosts}
+                  totalPostCount={totalPostCount}
+                />
+              </TabsContent>
             </Tabs>
           </div>
-
-          <Suspense fallback={<PostGridSkeleton />}>
-            <PostGridDisplay
-              initialPosts={postsWithLinks}
-              totalPostCount={totalPostCount}
-            />
-          </Suspense>
 
           <div className="flex justify-center mt-8">
             <Button
