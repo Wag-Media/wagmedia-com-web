@@ -1,4 +1,4 @@
-import { getAgentTippingPosts} from "@/data/dbPosts"
+import { getAgentTippingPosts } from "@/data/dbPosts"
 import { ContentEarnings, Payment } from "@prisma/client"
 
 import { AgentTipGrid } from "@/components/ui/post-grid/AgentTipGrid"
@@ -49,8 +49,6 @@ export default async function PageCategories() {
       <Heading desc="Ecosystem actors who were rewarded for their positive contributions to the Polkadot ecosystem">
         Agent Tipping
       </Heading>
-
-      {/* <pre>{JSON.stringify(posts, null, 2)}</pre> */}
       <AgentTipGrid
         initialPosts={postsWithLinks}
         totalPostCount={posts.length}

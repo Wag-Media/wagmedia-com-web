@@ -26,22 +26,24 @@ const PostCardWagMeta: FC<PostCardWagProps> = ({
     <div
       className={`nc-PostCardWag inline-flex items-center flex-wrap text-neutral-800 dark:text-neutral-200 ${className}`}
     >
-      <Link
-        href={`/creator/${user.name}`}
-        className="relative flex items-center space-x-2 rtl:space-x-reverse"
-      >
-        {!hiddenAvatar && user.avatar && user.name && (
-          <Avatar
-            radius="rounded-full"
-            sizeClass={avatarSize}
-            imgUrl={user.avatar}
-            userName={user.name}
-          />
-        )}
-        <span className="block font-medium text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white">
-          {user.name}
-        </span>
-      </Link>
+      {user && (
+        <Link
+          href={`/creator/${user.name}`}
+          className="relative flex items-center space-x-2 rtl:space-x-reverse"
+        >
+          {!hiddenAvatar && user.avatar && user.name && (
+            <Avatar
+              radius="rounded-full"
+              sizeClass={avatarSize}
+              imgUrl={user.avatar}
+              userName={user.name}
+            />
+          )}
+          <span className="block font-medium text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white">
+            {user.name}
+          </span>
+        </Link>
+      )}
       <>
         <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
           ·

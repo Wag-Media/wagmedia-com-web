@@ -22,6 +22,7 @@ export interface PostCardLikeAndCommentWagProps {
   reactions?: ReactionWithUserAndEmoji[]
   earnings?: ContentEarnings[]
   withCounts?: boolean
+  showReactions?: boolean
 }
 
 interface GroupedReaction {
@@ -40,6 +41,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
   likeCount = 0,
   earnings = [],
   withCounts = true,
+  showReactions = true,
 }) => {
   let total = totalEarnings(earnings)
 
@@ -105,53 +107,55 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
           </ul>
         </HoverCardContent>
       </HoverCard> */}
-      <TooltipProvider>
-        <Tooltip delayDuration={0}>
-          <TooltipTrigger asChild>
-            <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
-              <MessageCircleHeart size={20} strokeWidth={2} color="#999" />
-              {likeCount}
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <ul
-              className={`flex flex-wrap max-w-sm ${
-                withCounts ? "gap-4" : "gap-2"
-              }`}
-            >
-              {groupedReactions.slice(0, sliceAfter).map((group) => (
-                <li key={group.emojiId} className="inline-block">
-                  {group.emojiUrl ? (
-                    <Image
-                      src={group.emojiUrl}
-                      alt={group.emojiId}
-                      width={20}
-                      height={20}
-                      className="inline-block p-0 m-0 mr-1"
-                    />
-                  ) : (
-                    <span className="align-middle text-[20px] mr-1">
-                      {group.emojiId}
-                    </span>
-                  )}
-                  {withCounts && (
+      {showReactions && (
+        <TooltipProvider>
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
+                <MessageCircleHeart size={20} strokeWidth={2} color="#999" />
+                {likeCount}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <ul
+                className={`flex flex-wrap max-w-sm ${
+                  withCounts ? "gap-4" : "gap-2"
+                }`}
+              >
+                {groupedReactions.slice(0, sliceAfter).map((group) => (
+                  <li key={group.emojiId} className="inline-block">
+                    {group.emojiUrl ? (
+                      <Image
+                        src={group.emojiUrl}
+                        alt={group.emojiId}
+                        width={20}
+                        height={20}
+                        className="inline-block p-0 m-0 mr-1"
+                      />
+                    ) : (
+                      <span className="align-middle text-[20px] mr-1">
+                        {group.emojiId}
+                      </span>
+                    )}
+                    {withCounts && (
+                      <span className="text-sm text-gray-500">
+                        x{group.count}
+                      </span>
+                    )}
+                  </li>
+                ))}
+                {groupedReactions.length > sliceAfter && (
+                  <li className="inline-block">
                     <span className="text-sm text-gray-500">
-                      x{group.count}
+                      +{groupedReactions.length - 3}
                     </span>
-                  )}
-                </li>
-              ))}
-              {groupedReactions.length > sliceAfter && (
-                <li className="inline-block">
-                  <span className="text-sm text-gray-500">
-                    +{groupedReactions.length - 3}
-                  </span>
-                </li>
-              )}
-            </ul>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                  </li>
+                )}
+              </ul>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
       {total && parseFloat(total) > 0 && (
         <div className="flex items-center gap-2 text-xs text-pink-500 rounded-full cursor-default">
           {total}

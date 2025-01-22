@@ -37,6 +37,7 @@ export interface Card11Props {
   }
   ratio?: string
   hiddenAuthor?: boolean
+  showReactions?: boolean
 }
 
 const Card11Wag: FC<Card11Props> = ({
@@ -44,6 +45,7 @@ const Card11Wag: FC<Card11Props> = ({
   post,
   hiddenAuthor = false,
   ratio = "aspect-w-16 aspect-h-9",
+  showReactions = true,
 }) => {
   const { categories, reactions, earnings } = post
 
@@ -85,6 +87,7 @@ const Card11Wag: FC<Card11Props> = ({
             earnings={earnings}
             reactions={reactions}
             withCounts={false}
+            showReactions={showReactions}
           />
         </div>
       </div>

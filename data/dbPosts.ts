@@ -320,13 +320,17 @@ export async function getAgentTippingPosts(
 ): Promise<
   (PostWithTagsCategoriesReactionsPaymentsUser & {
     threadPayments: Payment[]
+    recipient?: {
+      name: string | null
+      avatar: string | null
+    }
   })[]
 > {
-  const posts = await prisma.post.findMany({
+  // First get the tipping posts
+  const tippingPosts = await prisma.post.findMany({
     skip,
     take,
     where: {
-      // isPublished: true,
       isDeleted: false,
       categories: {
         some: {
@@ -358,7 +362,31 @@ export async function getAgentTippingPosts(
     },
   })
 
-  return posts
+  // Then for each tipping post, find its child post (the one that's being tipped)
+  const postsWithRecipients = await Promise.all(
+    tippingPosts.map(async (post) => {
+      const threadPost = await prisma.post.findFirst({
+        where: {
+          parentPostId: post.id,
+        },
+        include: {
+          user: {
+            select: {
+              name: true,
+              avatar: true,
+            },
+          },
+        },
+      })
+
+      return {
+        ...post,
+        recipient: threadPost?.user ?? undefined,
+      }
+    })
+  )
+
+  return postsWithRecipients
 }
 
 export async function getMemes(

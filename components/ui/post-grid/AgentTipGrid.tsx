@@ -6,6 +6,7 @@ import {
   PostWithTagsCategoriesReactionsPaymentsUser,
   TypePostOrder,
 } from "@/data/types"
+import { Payment } from "@prisma/client"
 
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import Loading from "@/components/Button/Loading"
@@ -17,13 +18,26 @@ export function AgentTipGrid({
   totalPostCount,
   contentType = "article",
 }: {
-  initialPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  initialPosts: (PostWithTagsCategoriesReactionsPaymentsUser & {
+    threadPayments: Payment[]
+    recipient?: {
+      name: string | null
+      avatar: string | null
+    }
+  })[]
   totalPostCount: number
   contentType?: "article" | "news"
 }) {
   const pageSize = 12
-  const [posts, setPosts] =
-    useState<PostWithTagsCategoriesReactionsPaymentsUser[]>(initialPosts)
+  const [posts, setPosts] = useState<
+    (PostWithTagsCategoriesReactionsPaymentsUser & {
+      threadPayments: Payment[]
+      recipient?: {
+        name: string | null
+        avatar: string | null
+      }
+    })[]
+  >(initialPosts)
   const [currentPage, setCurrentPage] = useState(0) // Start from page 0 for correct API offset calculation
   const [orderBy, setOrderBy] = useState<TypePostOrder>("latest") // Start from page 0 for correct API offset calculation
   const [isLoading, setIsLoading] = useState(false)
@@ -37,14 +51,6 @@ export function AgentTipGrid({
     setIsLoading(true)
 
     const newPosts = await getAgentTippingPosts(currentPage + 1, pageSize)
-
-    // const newPosts = await fetchPosts({
-    //   page: currentPage + 1,
-    //   pageSize: pageSize, // Correct parameter if API expects pageSize instead of take
-    //   search: "", // Pass any actual search criteria needed
-    //   orderBy,
-    //   contentType,
-    // })
 
     const postsWithLinks = await Promise.all(
       newPosts.map(async (post) => {
@@ -66,7 +72,12 @@ export function AgentTipGrid({
     <div className="mt-8">
       <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
         {posts.map((post, index) => (
-          <Card11Wag key={index} post={post} />
+          // <pre>{JSON.stringify(post, null, 2)}</pre>
+          <Card11Wag
+            key={index}
+            post={{ ...post, user: post.recipient }}
+            showReactions={false}
+          />
         ))}
       </div>
       <div className="flex items-center justify-center mt-20">

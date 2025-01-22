@@ -92,7 +92,7 @@ export function HeroBackground({
 
       setVisibleIds((prev) => [...prev, currentIndex])
       currentIndex++
-    }, 500)
+    }, 800)
 
     return () => clearInterval(interval)
   }, [authorAvatars])
@@ -108,10 +108,12 @@ export function HeroBackground({
       {avatarData?.map((avatar) => (
         <div
           key={avatar.id}
-          className={`absolute w-[${avatarDimension}px] h-[${avatarDimension}px] animate-avatar ${
+          className={`absolute ${
             visibleIds.includes(avatar.id) ? "opacity-100" : "opacity-0"
           }`}
           style={{
+            width: `${avatarDimension}px`,
+            height: `${avatarDimension}px`,
             left: `${avatar.x}%`,
             top: `${avatar.y}%`,
             transform: `translateY(${scrollY * avatar.speedMultiplier}px)`,
@@ -125,7 +127,6 @@ export function HeroBackground({
               width: `${avatarDimension}px`,
               height: `${avatarDimension}px`,
               transform: `translateY(${scrollY * avatar.speedMultiplier}px)`,
-              transition: "transform 0.1s ease-out",
             }}
           >
             <div

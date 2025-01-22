@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { prisma } from "@/prisma/prisma"
-import { Embed, Tag } from "@prisma/client"
+import { Embed, Tag, User } from "@prisma/client"
 
 import CategoryBadgeListWag from "@/components/CategoryBadgeList/CategoryBadgeListWag"
 import PostMeta2Wag from "@/components/PostMeta2/PostMeta2Wag"
@@ -11,6 +11,7 @@ import SingleMetaAction2 from "../SingleMetaAction2"
 import SingleTitle from "../SingleTitle"
 import { SinglePostEmbeds } from "./SinglePostEmbeds"
 import { SinglePostReactions } from "./SinglePostReactions"
+import { UserInfo } from "./user-info"
 import {
   getEmbedType,
   linkTextsToAnchorTags,
@@ -39,8 +40,27 @@ export async function SinglePostContent({ slug }: { slug: string }) {
     },
   })
 
+  let tipRecipient: Pick<User, "name" | "avatar"> | null = null
+
   if (!post) {
     return <div>No post found.</div>
+  }
+
+  if (post.categories.find((c) => c.name === "Tip")) {
+    const threadPost = await prisma.post.findFirst({
+      where: {
+        parentPostId: post.id,
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    })
+    tipRecipient = threadPost?.user ?? null
   }
 
   const { title, user, embeds, earnings, reactions } = post
@@ -70,22 +90,37 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                   categories={post.categories}
                 />
                 <SingleTitle title={sanitizedTitle} />
-
                 <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
                 <div className="flex flex-col justify-between space-y-5 sm:flex-row sm:items-end sm:space-y-0 sm:space-x-5 rtl:space-x-reverse">
-                  <PostMeta2Wag
-                    size="large"
-                    className="flex-shrink-0 leading-none"
-                    hiddenCategories
-                    avatarRounded="rounded-full shadow-inner"
-                    author={post.user}
-                    date={post.createdAt}
-                    categories={post.categories}
-                  />
-                  <SingleMetaAction2
-                    earnings={earnings}
-                    reactions={reactions}
-                  />
+                  {tipRecipient ? (
+                    <>
+                      <UserInfo
+                        author={tipRecipient}
+                        title={`Recipient: ${tipRecipient.name}`}
+                      />
+                      <UserInfo
+                        author={post.user}
+                        date={post.createdAt}
+                        title={`Directed by ${post.user.name}`}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <PostMeta2Wag
+                        size="large"
+                        className="flex-shrink-0 leading-none"
+                        hiddenCategories
+                        avatarRounded="rounded-full shadow-inner"
+                        author={post.user}
+                        date={post.createdAt}
+                        categories={post.categories}
+                      />
+                      <SingleMetaAction2
+                        earnings={earnings}
+                        reactions={reactions}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -174,10 +209,12 @@ export async function SinglePostContent({ slug }: { slug: string }) {
               </div>
             </div>
           )}
-          <div>
-            <h3 className="mb-2 font-bold">Reactions</h3>
-            <SinglePostReactions reactions={post.reactions} />
-          </div>
+          {!tipRecipient && (
+            <div>
+              <h3 className="mb-2 font-bold">Reactions</h3>
+              <SinglePostReactions reactions={post.reactions} />
+            </div>
+          )}
           {/* <div>
             <b>Payments:</b>
             <ul>
@@ -192,9 +229,11 @@ export async function SinglePostContent({ slug }: { slug: string }) {
         </div>
       </article>
       <div className="max-w-screen-md mx-auto my-8 border-t border-b border-neutral-100 dark:border-neutral-700"></div>
-      <div className="max-w-screen-md px-2 mx-auto my-4 mb-12 md:px-0">
-        <SingleAuthor author={user} />
-      </div>
+      {!tipRecipient && (
+        <div className="max-w-screen-md px-2 mx-auto my-4 mb-12 md:px-0">
+          <SingleAuthor author={user} />
+        </div>
+      )}
 
       {/* RELATED POSTS */}
       {/* <SingleRelatedPosts /> */}
