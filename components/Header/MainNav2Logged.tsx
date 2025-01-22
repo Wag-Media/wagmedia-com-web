@@ -10,7 +10,7 @@ import MenuBar from "@/components/MenuBar/MenuBar"
 import { SearchModal } from "@/app/search/search-modal"
 
 import NavigationWag from "../Navigation/NavigationWag"
-import SwitchDarkMode from "../SwitchDarkMode/SwitchDarkMode"
+import { SwitchDarkMode } from "../switch-dark-mode"
 
 export interface MainNav2LoggedProps {}
 

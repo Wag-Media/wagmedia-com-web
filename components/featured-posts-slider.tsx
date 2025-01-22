@@ -1,14 +1,9 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { getFeaturedPosts } from "@/data/dbPosts"
-import {
-  ChevronLeft,
-  ChevronRight,
-  GalleryHorizontalEndIcon,
-} from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/types/prisma"
 import { Card, CardContent } from "@/components/ui/card"

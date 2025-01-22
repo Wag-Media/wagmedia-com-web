@@ -9,7 +9,7 @@ import _ from "lodash"
 import { siteConfig } from "@/config/site"
 import ButtonClose from "@/components/ButtonClose/ButtonClose"
 import Logo from "@/components/Logo/Logo"
-import SwitchDarkMode from "@/components/SwitchDarkMode/SwitchDarkMode"
+import SwitchDarkMode from "@/components/switch-dark-mode"
 import { Disclosure } from "@/app/headlessui"
 
 import { NavItemType } from "./NavigationItem"
