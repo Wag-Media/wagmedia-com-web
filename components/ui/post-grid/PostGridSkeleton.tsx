@@ -7,28 +7,10 @@ import Nav from "@/components/Nav/Nav"
 import { Skeleton } from "../skeleton"
 
 export default async function PostGridSkeleton({ cols = 4 }) {
-  const tabs = ["Latest", "Most Reactions", "Trending"]
   const posts = Array.from({ length: 12 })
 
   return (
     <div className={`nc-SectionGridPosts relative`}>
-      <div className="flex justify-between mb-4">
-        {/* <Nav
-          className="sm:space-x-2 rtl:space-x-reverse"
-          containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base"
-        >
-          {tabs.map((item, index) => (
-            // <NavItem key={index}>{item}</NavItem>
-            <div className="p-2 border-2 rounded-full" key={index}>
-              {item}
-            </div>
-          ))}
-        </Nav> */}
-        {/* <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
-          <span>View all</span>
-          <ArrowRightIcon className="w-6 h-6 ms-3 rtl:rotate-180" />
-        </Button> */}
-      </div>
       <div className="mt-8">
         <div
           className={`grid gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-${cols} lg:gap-8 xl:grid-cols-${cols}`}

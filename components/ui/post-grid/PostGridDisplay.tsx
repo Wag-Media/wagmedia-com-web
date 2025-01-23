@@ -85,33 +85,6 @@ export function PostGridDisplay({
 
   return (
     <div className="">
-      <div className="flex justify-between mb-4">
-        {/* <Nav
-          className=""
-          containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base"
-        >
-          {tabs.map(({ id, label }, index) => (
-            // <NavItem key={index}>{item}</NavItem>
-            <div
-              className={cn(
-                "py-2 !mr-4 font-semibold border-b-2 rounded-none cursor-pointer",
-                {
-                  "border-black": id === orderBy,
-                  "border-transparent": id !== orderBy,
-                }
-              )}
-              key={index}
-              onClick={() => handleClickTab(id)}
-            >
-              {label}
-            </div>
-          ))}
-        </Nav> */}
-        {/* <Button className="!hidden md:!flex" pattern="white" sizeClass="px-6">
-          <span>View all</span>
-          <ArrowRightIcon className="w-6 h-6 ms-3 rtl:rotate-180" />
-        </Button> */}
-      </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {posts.map((post, index) => (
           <Card11Wag key={index} post={post} />

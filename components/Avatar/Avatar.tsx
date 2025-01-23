@@ -1,6 +1,6 @@
 "use client"
 
-import React, { FC, useEffect, useState } from "react"
+import React from "react"
 import Image, { StaticImageData } from "next/image"
 
 export interface AvatarProps {

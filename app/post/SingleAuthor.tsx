@@ -1,6 +1,5 @@
 import React from "react"
 import Link from "next/link"
-import { UserWithPosts } from "@/data/types"
 import { User } from "@prisma/client"
 
 import Avatar from "@/components/Avatar/Avatar"
@@ -10,7 +9,7 @@ export function SingleAuthor({ author }: { author: User }) {
   const href = `/creator/${name}`
 
   return (
-    <div className="nc-SingleAuthor flex">
+    <div className="flex nc-SingleAuthor">
       <Link href={href}>
         <Avatar
           imgUrl={avatar || "/img/default-avatar.png"}
@@ -18,8 +17,8 @@ export function SingleAuthor({ author }: { author: User }) {
           sizeClass="h-12 w-12 text-lg sm:text-xl sm:h-24 sm:w-24"
         />
       </Link>
-      <div className="flex flex-col ml-3 max-w-lg sm:ml-5">
-        <span className="text-xs text-neutral-400 uppercase tracking-wider">
+      <div className="flex flex-col max-w-lg ml-3 sm:ml-5">
+        <span className="text-xs tracking-wider uppercase text-neutral-400">
           WRITTEN BY
         </span>
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
@@ -28,7 +27,7 @@ export function SingleAuthor({ author }: { author: User }) {
         <span className="block mt-1 text-sm text-neutral-500 sm:text-base dark:text-neutral-300">
           {bio || "No bio available."}
         </span>
-        <Link className="text-primary-6000 font-medium mt-2" href={href}>
+        <Link className="mt-2 font-medium text-primary-6000" href={href}>
           Visit Author Page
         </Link>
       </div>

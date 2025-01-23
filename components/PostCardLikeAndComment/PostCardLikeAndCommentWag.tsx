@@ -70,43 +70,6 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
 
   return (
     <div className="flex items-center justify-between w-full space-x-2">
-      {/* <HoverCard openDelay={0}>
-        <HoverCardTrigger>
-          <div className="flex items-center gap-2 text-xs rounded-full cursor-default">
-            <MessageCircleHeart size={20} strokeWidth={2} color="#999" />
-            {likeCount}
-          </div>
-        </HoverCardTrigger>
-        <HoverCardContent>
-          <ul className="flex flex-wrap gap-4">
-            {groupedReactions.slice(0, sliceAfter).map((group) => (
-              <li key={group.emojiId} className="inline-block">
-                {group.emojiUrl ? (
-                  <Image
-                    src={group.emojiUrl}
-                    alt={group.emojiId}
-                    width={20}
-                    height={20}
-                    className="inline-block p-0 m-0 mr-1"
-                  />
-                ) : (
-                  <span className="align-middle text-[20px] mr-1">
-                    {group.emojiId}
-                  </span>
-                )}
-                <span className="text-sm text-gray-500">x{group.count}</span>
-              </li>
-            ))}
-            {groupedReactions.length > sliceAfter && (
-              <li className="inline-block">
-                <span className="text-sm text-gray-500">
-                  +{groupedReactions.length - 3}
-                </span>
-              </li>
-            )}
-          </ul>
-        </HoverCardContent>
-      </HoverCard> */}
       {showReactions && (
         <TooltipProvider>
           <Tooltip delayDuration={0}>

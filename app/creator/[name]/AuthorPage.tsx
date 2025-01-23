@@ -1,8 +1,6 @@
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { getAuthor } from "@/data/dbAuthors"
-import { getPostsByAuthor } from "@/data/dbPosts"
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 import { User } from "@prisma/client"
 import { Globe, TwitterIcon } from "lucide-react"
@@ -32,7 +30,6 @@ export async function AuthorPage({
 
   return (
     <div className={`nc-PageAuthor `}>
-      {/* HEADER */}
       <div className="w-full">
         <div className="relative w-full h-40 2xl:h-60">
           {author?.banner ? (
@@ -114,63 +111,18 @@ export async function AuthorPage({
           </div>
         </div>
       </div>
-      {/* ====================== END HEADER ====================== */}
       <div className="container py-8 space-y-8 lg:pb-28 lg:pt-8 lg:space-y-8">
         <main>
-          {/* TABS FILTER */}
           <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row">
-            {/* <Nav className="sm:space-x-2 rtl:space-x-reverse">
-            {TABS.map((item, index) => (
-              <NavItem
-                key={index}
-                isActive={tabActive === item}
-                onClick={() => handleClickTab(item)}
-              >
-                {item}
-              </NavItem>
-            ))}
-          </Nav> */}
             <div className="block w-full my-4 border-b border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
-            {/* <div className="flex justify-end">
-              <ArchiveFilterListBox lists={FILTERS} />
-            </div> */}
           </div>
 
-          {/* LOOP ITEMS */}
           <div className="grid gap-6 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 lg:mt-10">
             {posts?.map((post, index) => (
               <Card11Wag key={index} post={post} />
-              // <>{JSON.stringify(post, null, 2)}</>
             ))}
           </div>
-
-          {/* PAGINATION */}
-          {/* <div className="flex flex-col mt-12 space-y-5 lg:mt-16 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-            <Pagination /> */}
-          {/* <ButtonPrimary>Show me more</ButtonPrimary> */}
-          {/* </div> */}
         </main>
-
-        {/* === SECTION 5 === */}
-        {/* <div className="relative py-16">
-          <BackgroundSection />
-          <SectionGridCategoryBox
-            categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
-          />
-          <div className="mx-auto mt-10 text-center md:mt-16">
-            <ButtonSecondary>Show me more</ButtonSecondary>
-          </div>
-        </div> */}
-
-        {/* === SECTION 5 === */}
-        {/* <SectionSliderNewAuthors
-          heading="Top elite authors"
-          subHeading="Discover our elite writers"
-          authors={DEMO_AUTHORS.filter((_, i) => i < 10)}
-        /> */}
-
-        {/* SUBCRIBES */}
-        {/* <SectionSubscribe2 /> */}
       </div>
     </div>
   )
