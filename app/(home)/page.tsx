@@ -1,12 +1,19 @@
 import React, { Suspense } from "react"
-import { getAuthorAvatars, getAuthors } from "@/data/dbAuthors"
-import { getFeaturedPosts, getTotalPostCount } from "@/data/dbPosts"
+import {
+  getAuthorAvatars,
+  getAuthors,
+  getTotalAuthorCount,
+} from "@/data/dbAuthors"
+import {
+  getFeaturedPosts,
+  getTotalPostCount,
+  getTotalPostPaymentAmount,
+} from "@/data/dbPosts"
 
 import { Headline } from "@/components/ui/headline"
 import NewsGrid from "@/components/ui/post-grid/NewsGrid"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
-import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
 import { FeaturedPostsSlider } from "@/components/featured-posts-slider"
@@ -33,7 +40,9 @@ const PageHome = async ({
     latestPosts,
     popularPosts,
     totalPostCount,
+    totalAuthorCount,
     authorAvatars,
+    totalPostPaymentAmount,
   ] = await Promise.all([
     getAuthors({ limit: 10 }),
     getFeaturedPosts(),
@@ -46,7 +55,9 @@ const PageHome = async ({
       orderBy: "reactions",
     }),
     getTotalPostCount(),
+    getTotalAuthorCount(),
     getAuthorAvatars(),
+    getTotalPostPaymentAmount(),
   ])
 
   const processedLatestPosts = await Promise.all(
@@ -66,7 +77,12 @@ const PageHome = async ({
   return (
     <div className="flex flex-col min-h-svh">
       <main className="flex-grow">
-        <Hero authorAvatars={authorAvatars} />
+        <Hero
+          authorAvatars={authorAvatars}
+          totalPostCount={totalPostCount}
+          totalAuthorCount={totalAuthorCount}
+          totalPostPaymentAmount={totalPostPaymentAmount._sum.amount}
+        />
         <section className="py-12 sm:py-12 lg:py-20">
           <div className="container">
             <Headline level="h2">Featured Posts</Headline>

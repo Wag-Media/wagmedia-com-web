@@ -8,9 +8,22 @@ import { HeroBackground } from "./hero-background"
 
 export function Hero({
   authorAvatars,
+  totalPostCount,
+  totalAuthorCount,
+  totalPostPaymentAmount,
 }: {
   authorAvatars: Pick<User, "avatar" | "name">[]
+  totalPostCount: number
+  totalAuthorCount: number
+  totalPostPaymentAmount: number | null
 }) {
+  // instead of having 32 authors, have 30+ instead of 141 posts, have 100+, 163 = 150+
+
+  const roundedTotalAuthorCount = Math.round(totalAuthorCount / 10) * 10
+  const roundedTotalPostCount = Math.round(totalPostCount / 10) * 10
+  const roundedTotalPostPaymentAmount =
+    Math.round(totalPostPaymentAmount / 10) * 10
+
   return (
     <section className="relative pt-24 pb-16">
       <HeroBackground authorAvatars={authorAvatars} />
@@ -36,17 +49,19 @@ export function Hero({
 
           <div className="relative flex justify-center mb-8 space-x-8">
             <div className="text-center">
-              <p className="text-4xl font-bold text-[#7916F3]">500+</p>
+              <p className="text-4xl font-bold">{roundedTotalAuthorCount}+</p>
               <p className="text-gray-600 dark:text-gray-400">
                 Independent Creators
               </p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-bold text-[#7916F3]">1M+</p>
+              <p className="text-4xl font-bold">{roundedTotalPostCount}+</p>
               <p className="text-gray-600 dark:text-gray-400">Posts Created</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-bold text-[#7916F3]">$5M+</p>
+              <p className="text-4xl font-bold">
+                ${roundedTotalPostPaymentAmount.toFixed(0)}+
+              </p>
               <p className="text-gray-600 dark:text-gray-400">
                 Paid to Creators
               </p>

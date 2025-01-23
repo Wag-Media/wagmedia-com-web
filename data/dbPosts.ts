@@ -430,3 +430,17 @@ export async function getMemes(
 
   return posts
 }
+
+export async function getTotalPostPaymentAmount() {
+  const totalPostPayments = await prisma.payment.aggregate({
+    where: {
+      Post: {
+        isPublished: true,
+      },
+    },
+    _sum: {
+      amount: true,
+    },
+  })
+  return totalPostPayments
+}

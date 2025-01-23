@@ -172,3 +172,16 @@ export async function getAuthorAvatars() {
   })
   return authors
 }
+
+export async function getTotalAuthorCount() {
+  const totalAuthorCount = await prisma.user.count({
+    where: {
+      posts: {
+        some: {
+          isPublished: true,
+        },
+      },
+    },
+  })
+  return totalAuthorCount
+}
