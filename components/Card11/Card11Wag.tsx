@@ -40,7 +40,7 @@ export default function Card11Wag({
 
   return (
     <div
-      className={`nc-Card11 shadow-sm border-[1.5px] relative flex flex-col group rounded-sm overflow-hidden ${className} hover:shadow-lg transition-all duration-300 hover:border-pink-500`}
+      className={`nc-Card11 shadow-sm border-[1.5px] relative flex flex-col group rounded-sm overflow-hidden ${className} hover:shadow-lg transition-all duration-300 hover:border-[var(--polkadot-pink)]`}
     >
       <div
         className={`block flex-shrink-0 relative w-full overflow-hidden z-10 ${ratio}`}

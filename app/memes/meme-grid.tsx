@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Coins, Copy, DollarSign, Heart, Star, ThumbsUp } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
 type Reaction = {
@@ -110,12 +111,13 @@ export function MemeGrid({ memes }: { memes: Meme[] }) {
                     </div> */}
                   </div>
 
-                  <button
+                  <Button
                     onClick={() => copyMemeToClipboard(meme)}
-                    className="absolute p-2 transition-opacity duration-300 bg-white rounded-full opacity-0 top-2 right-2 group-hover:opacity-100"
+                    className="absolute p-2 transition-opacity duration-300 opacity-0 top-2 right-2 group-hover:opacity-100"
                   >
-                    <Copy className="w-4 h-4 text-black" />
-                  </button>
+                    Copy Meme
+                    <Copy className="w-3 h-3 ml-2" />
+                  </Button>
                 </div>
               </div>
             </CardContent>

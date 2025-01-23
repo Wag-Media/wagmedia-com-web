@@ -1,11 +1,13 @@
+import { Metadata } from "next"
 import Link from "next/link"
 import { getAuthors } from "@/data/dbAuthors"
 
-import Button from "@/components/Button/Button"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CardAuthorBoxWag from "@/components/CardAuthorBox/CardAuthorBoxWag"
 import Heading from "@/components/Heading/Heading"
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Creators",
   description: "Explore all Polkadot Content Creators",
 }
@@ -41,42 +43,32 @@ export default async function PageCreators({
       >
         WagMedia Content Creators
       </Heading>
-      <p className="mb-8 text-center text-neutral-500">
-        <Link href="/about#join">
-          <Button pattern="primary">
-            Become a Creator and get rewarded for your content
-          </Button>
-        </Link>
-      </p>
-      <div className="flex items-center justify-end">
-        <div className="flex items-center gap-2 mb-8">
-          <span className="text-sm text-neutral-500">Order By</span>
-          <Link href={`/creators`}>
-            <Button
-              pattern={sort === "name" || !sort ? "default" : "secondary"}
-            >
-              Name
-            </Button>
-          </Link>
-          <Link href={`/creators?sort=rewards`}>
-            <Button
-              pattern={sort === "rewards" ? "default" : "secondary"}
-              className="text-sm"
-            >
-              Rewards
-            </Button>
-          </Link>
-          <Link href={`/creators?sort=posts`}>
-            <Button pattern={sort === "posts" ? "default" : "secondary"}>
-              Posts
-            </Button>
-          </Link>
+      <div className="flex flex-col items-center justify-end">
+        <Tabs
+          defaultValue={"name"}
+          className="relative flex flex-col items-center mb-8"
+        >
+          <TabsList className="relative z-10 grid w-full grid-cols-4">
+            <div className="ml-2 text-sm font-bold border-r">Order By</div>
+            <TabsTrigger value="name" className="ml-1 font-sans">
+              <Link href={`/creators`}>Name</Link>
+            </TabsTrigger>
+            <TabsTrigger value="rewards" className="font-sans">
+              <Link href={`/creators?sort=rewards`}>Rewards</Link>
+            </TabsTrigger>
+            <TabsTrigger value="posts" className="font-sans">
+              <Link href={`/creators/?sort=posts`}>Posts</Link>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <div className="grid grid-cols-2 gap-4 mb-8 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {sortedAuthors.map((author) => (
+            <CardAuthorBoxWag key={author.id} author={author} />
+          ))}
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {sortedAuthors.map((author) => (
-          <CardAuthorBoxWag key={author.id} author={author} />
-        ))}
+        <Link href="/about#join">
+          <Button>Become a Creator and get rewarded for your content</Button>
+        </Link>
       </div>
     </div>
   )

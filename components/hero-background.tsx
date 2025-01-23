@@ -5,13 +5,13 @@ import Image from "next/image"
 import { User } from "@prisma/client"
 
 const colors = [
-  "bg-red-500",
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-yellow-500",
-  "bg-purple-500",
-  "bg-pink-500",
-  "bg-indigo-500",
+  "border-red-500",
+  "border-blue-500",
+  "border-green-500",
+  "border-yellow-500",
+  "border-purple-500",
+  "border-pink-500",
+  "border-indigo-500",
 ]
 
 interface Avatar {
@@ -131,7 +131,7 @@ export function HeroBackground({
             }}
           >
             <div
-              className={`absolute inset-[2px] ${avatar.color} rounded-full animate-ping-slow opacity-50 dark:opacity-100`}
+              className={`absolute inset-[2px] ${avatar.color} border-2 rounded-full animate-ping-slow opacity-50 dark:opacity-100`}
             ></div>
             <Image
               width={avatarDimension}

@@ -1,8 +1,9 @@
-import React, { FC, ReactNode, Suspense } from "react"
+import { ReactNode } from "react"
 import { getPosts, getTotalPostCount } from "@/data/dbPosts"
 
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
+import { Headline } from "../headline"
 import { PostGridDisplay } from "./PostGridDisplay"
 
 export interface NewsGridProps {
@@ -16,11 +17,7 @@ export interface NewsGridProps {
 
 export default async function NewsGrid({
   search,
-  currentPage = 0,
   className = "",
-  gridClass = "",
-  heading,
-  headingIsCenter,
 }: NewsGridProps) {
   const posts = await getPosts({
     search,
@@ -36,14 +33,13 @@ export default async function NewsGrid({
 
   return (
     <div className={`nc-SectionGridPosts relative ${className}`}>
-      <h2 className="mt-8 text-5xl font-bold">
+      <Headline
+        level="h2"
+        className="mt-16"
+        subtitle={`Explore ${totalPostCount} Polkadot ecosystem news uncovered by our news finders program, conveniently bundled together in one place.`}
+      >
         What&apos;s the news and updates about the Polkadot ecosystem?
-      </h2>
-      <p className="mt-3 text-lg text-gray-500">
-        Explore <Suspense fallback="...">{totalPostCount}</Suspense> Polkadot
-        ecosystem news uncovered by our news finders program, conveniently
-        bundled together in one place.
-      </p>
+      </Headline>
       <PostGridDisplay
         initialPosts={postsWithLinks}
         totalPostCount={totalPostCount}

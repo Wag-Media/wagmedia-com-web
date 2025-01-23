@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="https://twitter.com/wagmedia"
+                  href="https://x.com/thatMediaWag"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
@@ -78,7 +78,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="https://discord.gg/wagmedia"
+                  href="https://discord.com/invite/dTnkwXgJXT"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="https://github.com/wagmedia"
+                  href="https://github.com/Wag-Media"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
@@ -99,15 +99,15 @@ const Footer: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center pt-8 mt-8 text-center text-gray-500 dark:text-gray-400">
+        <div className="flex flex-row items-center justify-between pt-8 mt-8 text-center text-gray-500 dark:text-gray-400">
           <div className="flex flex-row items-center justify-center">
             <p>&copy; {new Date().getFullYear()}</p>
-            <Logo className="w-16 h-16 py-0 mx-4" />
+            <Logo className="w-10 h-10 py-0 mx-2" />
             <p>All rights reserved.</p>
           </div>
           <Link
             href="https://polkadot.network/"
-            className="flex items-center mt-2 group"
+            className="flex items-center group"
           >
             <span
               className={cn(

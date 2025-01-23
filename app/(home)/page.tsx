@@ -2,16 +2,16 @@ import React, { Suspense } from "react"
 import { getAuthorAvatars, getAuthors } from "@/data/dbAuthors"
 import { getFeaturedPosts, getTotalPostCount } from "@/data/dbPosts"
 
+import { Headline } from "@/components/ui/headline"
 import NewsGrid from "@/components/ui/post-grid/NewsGrid"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection"
 import ButtonPrimary from "@/components/Button/ButtonPrimary"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
-import SectionSubscribe2 from "@/components/SectionSubscribe2/SectionSubscribe2"
 import { FeaturedPostsSlider } from "@/components/featured-posts-slider"
 import { Hero } from "@/components/hero"
+import { SectionSubscribeNewsletter } from "@/components/section-subscribe-newsletter"
 
 import { fetchPosts } from "../actions/fetchPosts"
 import { replaceAuthorLinks } from "../post/[slug]/util"
@@ -69,9 +69,7 @@ const PageHome = async ({
         <Hero authorAvatars={authorAvatars} />
         <section className="py-12 sm:py-12 lg:py-20">
           <div className="container">
-            <h2 className="mb-8 text-3xl font-bold text-center text-gray-900 dark:text-white">
-              Featured Posts
-            </h2>
+            <Headline level="h2">Featured Posts</Headline>
             <FeaturedPostsSlider featuredPosts={featuredPosts} />
           </div>
         </section>
@@ -90,11 +88,7 @@ const PageHome = async ({
             />
           </div>
         </div>
-        <SectionBecomeAnAuthor className="">
-          <ButtonPrimary className="mt-8" href="/about#join">
-            Join WagMedia
-          </ButtonPrimary>
-        </SectionBecomeAnAuthor>
+        <SectionBecomeAnAuthor />
         <div className="container ">
           <Suspense fallback={<PostGridSkeleton />}>
             <NewsGrid
@@ -104,8 +98,8 @@ const PageHome = async ({
               heading="Explore our latest posts"
             />
           </Suspense>
-          <SectionSubscribe2 className="pt-16 lg:pt-28" />
         </div>
+        <SectionSubscribeNewsletter />
       </main>
     </div>
   )

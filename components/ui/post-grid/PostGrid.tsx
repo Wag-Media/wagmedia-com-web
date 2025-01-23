@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { fetchPosts } from "@/app/actions/fetchPosts"
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
+import { Headline } from "../headline"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs"
 import { PostGridDisplay } from "./PostGridDisplay"
 import PostGridSkeleton from "./PostGridSkeleton"
@@ -29,14 +30,12 @@ export default async function PostGrid({
       <div className="container max-w-[1400px]">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col items-center gap-4 mb-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+            <Headline
+              level="h2"
+              subtitle={`Discover ${totalPostCount} articles, from a multitude of categories and tags, created by our community creators`}
+            >
               Explore {articleOrder} Polkadot Articles
-            </h2>
-            <p className="my-2 text-lg text-gray-500 dark:text-gray-400">
-              Discover <Suspense fallback="...">{totalPostCount}</Suspense>{" "}
-              articles, from a multitude of categories and tags, created by our
-              community authors
-            </p>
+            </Headline>
             <Tabs
               defaultValue={articleOrder}
               className="relative flex flex-col items-center w-full"

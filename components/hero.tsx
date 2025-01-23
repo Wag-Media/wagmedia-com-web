@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { User } from "@prisma/client"
 import { ArrowRight } from "lucide-react"
 
@@ -53,20 +54,24 @@ export function Hero({
           </div>
 
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Button
-              size="lg"
-              className="group transition-all duration-300  w-full sm:w-auto bg-[#FF2670] text-white hover:bg-[#7916F3] hover:text-white hover:scale-105"
-            >
-              Start Creating
-              <ArrowRight className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-1" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto border-[#FF2670] text-[#FF2670] bg-background/80 hover:border-[#7916F3] hover:text-[#7916F3]"
-            >
-              Learn More
-            </Button>
+            <Link href="/about#join">
+              <Button
+                size="lg"
+                className="group transition-all duration-300  w-full sm:w-auto bg-[#FF2670] text-white hover:bg-[#7916F3] hover:text-white hover:scale-105"
+              >
+                Start Creating
+                <ArrowRight className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-1" />
+              </Button>
+            </Link>
+            <Link href="/about">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto border-[#FF2670] text-[#FF2670] bg-background/80 hover:border-[#7916F3] hover:text-[#7916F3]"
+              >
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

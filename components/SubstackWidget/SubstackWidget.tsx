@@ -8,11 +8,11 @@ const SubstackWidget = ({ className }: { className?: string }) => {
     //@ts-ignore
     window.CustomSubstackWidget = {
       substackUrl: "wagmediaweekly.substack.com",
-      placeholder: "example@gmail.com",
+      placeholder: "Enter your email",
       buttonText: "Subscribe",
       theme: "custom",
       colors: {
-        primary: "#e6007a",
+        primary: "#E4FF07",
         input: "#fff",
         email: "#000",
         text: "#000",
