@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className="flex flex-row items-center justify-between pt-8 mt-8 text-center text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col items-center justify-between pt-8 mt-8 text-center text-gray-500 md:flex-row dark:text-gray-400">
           <div className="flex flex-row items-center justify-center">
             <p>&copy; {new Date().getFullYear()}</p>
             <Logo className="w-10 h-10 py-0 mx-2" />

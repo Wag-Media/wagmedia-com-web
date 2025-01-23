@@ -126,7 +126,7 @@ module.exports = {
             transform: "translate(0, 0) rotate(0deg)",
           },
           "25%": {
-            transform: "translate(15px, 10px) rotate(4deg)",
+            transform: "translate(15px, 10px) rotate(2deg)",
           },
           "50%": {
             transform: "translate(-5px, 20px) rotate(-1deg)",

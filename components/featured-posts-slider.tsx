@@ -78,7 +78,7 @@ export function FeaturedPostsSlider({
             )
           )}
         </CarouselContent>
-        <div className="flex justify-center gap-2 mt-4">
+        <div className="flex justify-center gap-2 md:mt-4">
           <CarouselPrevious
             variant="outline"
             size="icon"
