@@ -17,7 +17,7 @@ export default function Loading() {
             </div> */}
           </div>
           <Heading
-            desc={`Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Polkadot.`}
+            desc={`Our extensive range of categories will help you identify content of interest, enabling you to deepen your understanding of Blockchain in general and Polkadot in particular.`}
           >
             Explore Curated Polkadot Content
           </Heading>

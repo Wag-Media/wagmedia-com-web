@@ -300,7 +300,7 @@ export async function getCategoryWithArticlesAndNews(slug: string) {
   })
 
   const articles = await prisma.post.findMany({
-    take: 12,
+    take: 11,
     where: {
       contentType: ContentType.article,
       isPublished: true,
@@ -395,7 +395,6 @@ export async function getLanguageWithArticlesAndNews(slug: string) {
 
   const language = {
     ...category,
-    name,
     articles: category?.articles.filter((article) => {
       const flag = getPostFlag(article)
       return flag && flagMatchesLanguage(flag, slug)

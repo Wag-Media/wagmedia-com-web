@@ -7,28 +7,50 @@ export function Headline({
   className,
   level = "h2",
   subtitle,
+  subtitleClassName,
+  containerClassName,
 }: {
   children: React.ReactNode
   className?: string
+  containerClassName?: string
   subtitle?: React.ReactNode
+  subtitleClassName?: string
   level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
 }) {
   return (
     <div
       className={cn(
         "flex flex-col items-center gap-4 mb-10 text-center",
-        className
+        containerClassName
       )}
     >
       {createElement(
         level,
         {
-          className: "text-3xl font-bold text-gray-900 dark:text-white",
+          className: cn(
+            {
+              "text-4xl font-bold text-gray-900 dark:text-white":
+                level === "h1",
+              "text-2xl font-bold text-gray-900 dark:text-white":
+                level === "h2",
+            },
+            className
+          ),
         },
         children
       )}
       {subtitle && (
-        <p className="text-lg text-gray-500 dark:text-gray-400">{subtitle}</p>
+        <p
+          className={cn(
+            {
+              "text-lg text-gray-500 dark:text-gray-400": level === "h1",
+              "text-base text-gray-500 dark:text-gray-400": level === "h2",
+            },
+            subtitleClassName
+          )}
+        >
+          {subtitle}
+        </p>
       )}
     </div>
   )

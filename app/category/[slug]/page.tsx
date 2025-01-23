@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import { redirect } from "next/navigation"
+import { categoryDescriptions } from "@/data/category-descriptions"
 import {
   getCategoriesNames,
   getCategoryWithArticlesAndNews,
@@ -7,6 +8,7 @@ import {
 } from "@/data/dbCategories"
 
 import { deslugify, slugify } from "@/lib/slug"
+import { Headline } from "@/components/ui/headline"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import Heading from "@/components/Heading/Heading"
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
@@ -37,8 +39,6 @@ export default async function PageCategory({
   if (params.slug === "tip") {
     redirect("/agent-tipping")
   }
-
-  console.log("slug", params.slug)
 
   const isLanguage = isCategoryNameLanguage(params.slug)
 
@@ -91,16 +91,23 @@ export default async function PageCategory({
           {/* LOOP ITEMS */}
           {!posts?.length ? null : (
             <>
-              <Heading
-                desc={`Read ${articlesCount} articles${
-                  newsCount ? ` and ${newsCount} news` : ""
-                } on Polkadot ${
-                  isLanguage ? `in ${title}` : category.name
-                } written by our community creators`}
-              >
+              <Headline level="h1" containerClassName="mb-16">
                 {title} Articles
-              </Heading>
-              <div className="grid gap-6 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 lg:mt-4">
+              </Headline>
+              <div className="grid gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:mt-4">
+                <div className="pr-4 text-right">
+                  <p className="w-full text-gray-600 dark:text-gray-400">
+                    {category?.name &&
+                      categoryDescriptions[
+                        category.name.toLowerCase() as keyof typeof categoryDescriptions
+                      ]}
+                  </p>
+                  <p className="w-full mt-4 text-sm text-gray-600 dark:text-gray-400">{`Read a total of ${articlesCount} articles${
+                    newsCount ? ` and ${newsCount} news` : ""
+                  } on Polkadot ${
+                    isLanguage ? `in ${title}` : category.name
+                  } written by our community creators`}</p>
+                </div>
                 {posts?.map((post) => (
                   <Card11Wag key={post.id} post={post} />
                 ))}
@@ -115,7 +122,7 @@ export default async function PageCategory({
               >
                 {deslugify(params.slug)} News
               </Heading>
-              <div className="grid gap-6 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 lg:mt-4">
+              <div className="grid gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:mt-4">
                 {news?.map((post) => (
                   <Card11Wag key={post.id} post={post} />
                 ))}
@@ -128,28 +135,6 @@ export default async function PageCategory({
             {/* <ButtonPrimary>Show me more</ButtonPrimary> */}
           </div>
         </div>
-
-        {/* MORE SECTIONS */}
-        {/* === SECTION 5 === */}
-        {/* <div className="relative py-16">
-          <BackgroundSection />
-          <SectionGridCategoryBox
-            categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
-          />
-          <div className="mx-auto mt-10 text-center md:mt-16">
-            <ButtonSecondary loading>Show me more</ButtonSecondary>
-          </div>
-        </div> */}
-
-        {/* === SECTION 5 === */}
-        {/* <SectionSliderNewAuthors
-          heading="Top elite authors"
-          subHeading="Discover our elite writers"
-          authors={DEMO_AUTHORS.filter((_, i) => i < 10)}
-        /> */}
-
-        {/* SUBCRIBES */}
-        {/* <SectionSubscribe2 /> */}
       </div>
     </div>
   )

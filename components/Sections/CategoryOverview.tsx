@@ -1,16 +1,23 @@
 import React, { FC } from "react"
 import Link from "next/link"
+import { categoryDescriptions } from "@/data/category-descriptions"
 import { getCategoryOverview } from "@/data/dbCategories"
 import { ArrowRightIcon } from "@heroicons/react/24/solid"
 import { ContentType } from "@prisma/client"
 
 import { getPostFlag, postHasFlag } from "@/lib/utils"
-import Badge from "@/components/Badge/Badge"
+import { Badge } from "@/components/ui/badge"
 import Heading from "@/components/Heading/Heading"
-import { replaceAuthorLinks } from "@/app/post/[slug]/util"
+import {
+  removeHtmlTags,
+  removeLinks,
+  replaceAuthorLinks,
+} from "@/app/post/[slug]/util"
 
-import Button from "../Button/Button"
 import Card11Wag from "../Card11/Card11Wag"
+import PostCardWagMeta from "../PostCardMeta/PostCardWagMeta"
+import { Button } from "../ui/button"
+import { Headline } from "../ui/headline"
 
 type expectedCategoryType = Awaited<ReturnType<typeof getCategoryOverview>> & {
   slug?: string
@@ -48,54 +55,71 @@ const CategoryOverview: FC<SectionMagazine11Props> = async ({
     const categoryHref = category.link ?? `/category/${category.slug}`
 
     return (
-      <div key={category.id} className={`flex flex-col space-y-4`}>
+      <div key={category.id} className={`flex flex-col`}>
         {category.name && (
-          <>
-            <h2 className="mb-0 text-3xl font-bold">{category.name}</h2>
-            <p className="pt-0 mt-0">{`${postsCount} Total ${
-              contentType === ContentType.article ? "Articles" : "News"
-            } in ${category.name}`}</p>
-          </>
+          <Headline
+            level="h2"
+            containerClassName="mb-4"
+            subtitle={
+              categoryDescriptions[
+                category.name.toLowerCase() as keyof typeof categoryDescriptions
+              ]
+            }
+            subtitleClassName="text-sm text-left line-clamp-3"
+            // subtitle={`${postsCount} Total ${
+            //   contentType === ContentType.article ? "Articles" : "News"
+            // } in ${category.name}`}
+          >
+            {category.name}
+          </Headline>
         )}
+
         <div className="flex flex-col h-full">
           {posts[0] && <Card11Wag post={posts[0]} />}
-          <ul className="mt-4 space-y-3">
+          <ul className="mx-4 mt-4 space-y-3">
             {posts
               .filter((_, i) => i > 0 && i < 5)
               .map((post) => {
                 const flag = getPostFlag(post)
                 return (
-                  <li key={post.id}>
-                    <h2 className="flex items-start space-x-4 font-medium nc-card-title rtl:space-x-reverse">
-                      {flag ? (
-                        <span className="ml-2 text-xl">
-                          {getPostFlag(post)}
-                        </span>
-                      ) : (
-                        <span className="w-2 h-2 !p-0 rounded flex-shrink-0 mt-2 ml-3 bg-gray-300"></span>
-                      )}
-                      <Link
-                        href={`/post/${post.slug}`}
-                        title={post.title}
-                        className="flex"
-                      >
+                  <li key={post.id} className="">
+                    <Link
+                      href={`/post/${post.slug}`}
+                      title={post.title}
+                      className="flex flex-col"
+                    >
+                      <h4 className="flex items-center mb-1 leading-tight text-gray-900 dark:text-white text-normal font-unbounded">
+                        {flag ? (
+                          <span className="mr-2 text-xl">
+                            {getPostFlag(post)}
+                          </span>
+                        ) : null}
                         {post.title}
-                      </Link>
-                    </h2>
+                      </h4>
+                      <div className="flex flex-row justify-between">
+                        <PostCardWagMeta
+                          user={post.user}
+                          createdAt={post.createdAt}
+                          avatarSize="h-5 w-5 text-sm"
+                        />
+                      </div>
+                    </Link>
                   </li>
                 )
               })}
           </ul>
         </div>
-        <div className="flex items-center justify-between !mt-8 !mb-8">
+        <div className="flex items-center justify-start my-6">
           {/* @ts-ignore */}
-          <Button href={categoryHref}>
-            <span>
-              See all {category.name}{" "}
-              {contentType === ContentType.article ? "Articles" : "News"}
-            </span>
-            <ArrowRightIcon className="ms-1.5 w-3 h-3" />
-          </Button>
+          <Link href={categoryHref}>
+            <Button variant="ghost" className="text-[var(--polkadot-pink)]">
+              <span>
+                See all {postsCount} {category.name}{" "}
+                {contentType === ContentType.article ? "Articles" : "News"}
+              </span>
+              <ArrowRightIcon className="ms-1.5 w-3 h-3" />
+            </Button>
+          </Link>
         </div>
       </div>
     )
@@ -103,9 +127,9 @@ const CategoryOverview: FC<SectionMagazine11Props> = async ({
 
   return (
     <div className={`nc-SectionMagazine11 relative ${className}`}>
-      <Heading as="h1" desc={desc}>
+      <Headline level="h1" subtitle={desc}>
         {heading}
-      </Heading>
+      </Headline>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-4 md:gap-7">
         {categories.map((cate, i) => renderListByCat(cate))}
       </div>
