@@ -26,40 +26,42 @@ const Footer: React.FC = () => {
             </h3>
             <p className="mb-4">Your ideas, your audience, your rewards.</p>
             <p className="text-gray-600 dark:text-gray-400">
-              Decentralizing the story of Polkadot and Kusama through
-              community-driven content creation and curation.
+              WagMedia is a decentralized media initiative that offers the
+              platform for creators to earn tokens for their content.
             </p>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
               Quick Links
             </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
-                >
-                  FAQ
-                </Link>
-              </li>
-            </ul>
+            <div className="flex flex-row gap-4">
+              <ul className="space-y-2">
+                {siteConfig.navMenuItems.slice(0, 5).map((item, index) => (
+                  <li key={index}>
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <ul className="space-y-2">
+                {siteConfig.navMenuItems.slice(5).map((item, index) => (
+                  <li key={index}>
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className="text-gray-600 hover:text-[#FF2670] dark:text-gray-400 dark:hover:text-[#FF2670]"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
@@ -150,7 +152,7 @@ const Footer: React.FC = () => {
     //     <div className="col-span-3 lg:col-span-1">
     //       <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
     //         {siteConfig.navMenuItems.map((item, index) => (
-    //           <Link key={index} href={item.href} className="block mr-3 lg:mr-0">
+    //           <Link key={index} href={item.href}
     //             {item.name}
     //           </Link>
     //         ))}

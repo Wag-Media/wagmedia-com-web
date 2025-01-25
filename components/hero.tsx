@@ -22,7 +22,7 @@ export function Hero({
   const roundedTotalAuthorCount = Math.round(totalAuthorCount / 10) * 10
   const roundedTotalPostCount = Math.round(totalPostCount / 10) * 10
   const roundedTotalPostPaymentAmount =
-    Math.round(totalPostPaymentAmount || 0 / 10) * 10
+    Math.round(totalPostPaymentAmount || 0 / 100) * 100
 
   return (
     <section className="relative pt-24 pb-16">

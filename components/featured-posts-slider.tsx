@@ -61,9 +61,11 @@ export function FeaturedPostsSlider({
                         {post.title}
                       </h3>
                       {post?.content && (
-                        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
-                          {removeLinks(removeHtmlTags(post.content))}
-                        </p>
+                        <div className="flex-1">
+                          <p className="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+                            {removeLinks(removeHtmlTags(post.content))}
+                          </p>
+                        </div>
                       )}
                       <Link
                         href={`/post/${post.slug}`}

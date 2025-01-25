@@ -43,14 +43,11 @@ export async function AuthorPage({
               priority
             />
           ) : (
-            <div
-              className={`absolute w-full h-full`}
-              style={{ background: author?.accentColor ?? "transparent" }}
-            />
+            <div className={`absolute w-full h-full`} />
           )}
         </div>
         <div className="container -mt-10 lg:-mt-16">
-          <div className="relative flex flex-col p-5 bg-white border rounded-md dark:bg-neutral-900 dark:border-neutral-700 lg:p-8 md:rounded-xl md:flex-row">
+          <div className="relative flex flex-col p-5 rounded-sm dark:border-neutral-700 lg:p-8 md:rounded-xl md:flex-row">
             <div className="flex-shrink-0 w-32 mt-12 lg:w-40 sm:mt-0">
               <div className="relative z-0 inline-flex items-center justify-center flex-shrink-0 w-20 h-20 overflow-hidden text-xl font-semibold uppercase rounded-full shadow-2xl wil-avatar text-neutral-100 lg:text-2xl lg:w-36 lg:h-36 ring-4 ring-white dark:ring-0">
                 {author?.avatar && (
@@ -74,37 +71,39 @@ export async function AuthorPage({
                 </span>
                 <p className="block text-md">{author?.bio}</p>
 
-                {author?.domain && (
-                  <Link
-                    href={author.domain}
-                    className="flex flex-row items-center"
-                  >
-                    <Globe className="flex-shrink-0 w-4 h-4 mr-2" />
-                    <span className="truncate text-neutral-700 dark:text-neutral-300">
-                      {author.domain}
-                    </span>
-                  </Link>
-                )}
-                {author?.twitterUsername && (
-                  <Link
-                    href={`https://x.com/${author?.twitterUsername}`}
-                    className="flex flex-row items-center"
-                  >
-                    <TwitterIcon className="flex-shrink-0 w-4 h-4 mr-2" />
-                    <span className="truncate text-neutral-700 dark:text-neutral-300">
-                      {author.twitterUsername}
-                    </span>
-                  </Link>
-                )}
-                <div>
-                  {userRoles.map((role) => (
-                    <span
-                      className="inline-block p-0.5 px-2 text-sm rounded-full border border-neutral-200"
-                      key={role}
+                <div className="flex flex-row gap-4">
+                  {author?.domain && (
+                    <Link
+                      href={author.domain}
+                      className="flex flex-row items-center"
                     >
-                      {role}
-                    </span>
-                  ))}
+                      <Globe className="flex-shrink-0 w-4 h-4 mr-2" />
+                      <span className="truncate text-neutral-700 dark:text-neutral-300">
+                        {author.domain}
+                      </span>
+                    </Link>
+                  )}
+                  {author?.twitterUsername && (
+                    <Link
+                      href={`https://x.com/${author?.twitterUsername}`}
+                      className="flex flex-row items-center"
+                    >
+                      <TwitterIcon className="flex-shrink-0 w-4 h-4 mr-2" />
+                      <span className="truncate text-neutral-700 dark:text-neutral-300">
+                        {author.twitterUsername}
+                      </span>
+                    </Link>
+                  )}
+                  <div>
+                    {userRoles.map((role) => (
+                      <span
+                        className="inline-block p-0.5 px-2 text-sm rounded-full border border-neutral-200"
+                        key={role}
+                      >
+                        {role}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -117,7 +116,7 @@ export async function AuthorPage({
             <div className="block w-full my-4 border-b border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
           </div>
 
-          <div className="grid gap-6 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8 lg:mt-10">
+          <div className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:mt-10">
             {posts?.map((post, index) => (
               <Card11Wag key={index} post={post} />
             ))}
