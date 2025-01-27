@@ -4,6 +4,7 @@ import { ContentEarnings, Payment } from "@prisma/client"
 import { AgentTipGrid } from "@/components/ui/post-grid/AgentTipGrid"
 import Heading from "@/components/Heading/Heading"
 
+import { totalEarnings } from "../../utils/totalPostEarnings"
 import { replaceAuthorLinks } from "../post/[slug]/util"
 
 export const revalidate = 60
@@ -44,15 +45,16 @@ export default async function PageCategories() {
     })
   )
 
+  const paidPosts = postsWithLinks.filter((post) =>
+    post.earnings.some((earning) => earning.totalAmount > 0)
+  )
+
   return (
     <div className="container relative py-8 lg:py-16">
       <Heading desc="Ecosystem actors who were rewarded for their positive contributions to the Polkadot ecosystem">
         Agent Tipping
       </Heading>
-      <AgentTipGrid
-        initialPosts={postsWithLinks}
-        totalPostCount={posts.length}
-      />
+      <AgentTipGrid initialPosts={paidPosts} totalPostCount={posts.length} />
     </div>
   )
 }

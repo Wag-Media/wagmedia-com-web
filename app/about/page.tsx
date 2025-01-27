@@ -87,7 +87,7 @@ export default function PageAbout() {
         <div className="container px-4 mx-auto">
           <div className="grid gap-8 mb-12 md:grid-cols-2">
             <div>
-              <h3 className="mb-4 text-2xl font-semibold">
+              <h3 className="mb-4 text-2xl font-semibold" id="join">
                 1. How to Join WagMedia
               </h3>
               <div className="relative overflow-hidden rounded-lg aspect-video">

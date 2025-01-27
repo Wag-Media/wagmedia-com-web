@@ -8,7 +8,7 @@ import Avatar from "@/components/Avatar/Avatar"
 
 export function UserInfo({
   author,
-  date,
+  description,
   title,
   link,
 }: {
@@ -16,7 +16,7 @@ export function UserInfo({
     name: string | null
     avatar: string | null
   }
-  date?: Date
+  description?: React.ReactNode
   title?: string
   link?: string | null
 }) {
@@ -43,10 +43,10 @@ export function UserInfo({
             {title ?? author.name}
           </Link>
         </div>
-        {date && (
+        {description && (
           <div className="text-xs mt-[6px]">
             <span className="text-neutral-700 dark:text-neutral-300">
-              {date.toDateString()}
+              {description}
             </span>
           </div>
         )}
