@@ -1,8 +1,14 @@
 import Link from "next/link"
 import { prisma } from "@/prisma/prisma"
 import { ContentEarnings, Embed, Payment, Tag, User } from "@prisma/client"
+import orderBy from "lodash"
 
+import { Headline } from "@/components/ui/headline"
+import { AgentTipGrid } from "@/components/ui/post-grid/AgentTipGrid"
+import Card11Wag from "@/components/Card11/Card11Wag"
 import CategoryBadgeListWag from "@/components/CategoryBadgeList/CategoryBadgeListWag"
+import PostCardWagMeta from "@/components/PostCardMeta/PostCardWagMeta"
+import PostFeaturedWagMedia from "@/components/PostFeaturedMedia/PostFeaturedWagMedia"
 import PostMeta2Wag from "@/components/PostMeta2/PostMeta2Wag"
 import { WagImage } from "@/components/WagImage/WagImage"
 
@@ -15,6 +21,8 @@ import { UserInfo } from "./user-info"
 import {
   getEmbedType,
   linkTextsToAnchorTags,
+  removeHtmlTags,
+  removeLinks,
   removeSocialMediaEmbeds,
   replaceAuthorLinks,
 } from "./util"
@@ -38,6 +46,26 @@ export async function SinglePostContent({ slug }: { slug: string }) {
       user: true,
       embeds: true,
       threadPayments: true,
+    },
+  })
+
+  const relatedPosts = await prisma.post.findMany({
+    where: {
+      user: {
+        id: post?.user.id,
+      },
+      id: {
+        not: post?.id,
+      },
+      isPublished: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 3,
+    include: {
+      user: true,
+      embeds: true,
     },
   })
 
@@ -103,10 +131,10 @@ export async function SinglePostContent({ slug }: { slug: string }) {
   const sanitizedTitle = await replaceAuthorLinks(post.title, false)
 
   return (
-    <div className={`nc-PageSingle pt-8 lg:pt-16`}>
+    <div className={`nc-PageSingle pt-8 lg:pt-16 mb-20`}>
       <article className={`nc-PageSingle pt-8 lg:pt-16 space-y-10 px-4`}>
         <header className="rounded-xl">
-          <div className="max-w-screen-md mx-auto">
+          <div className="max-w-screen-lg mx-auto">
             <div className={`nc-SingleHeader`}>
               <div className="space-y-5">
                 <CategoryBadgeListWag
@@ -263,15 +291,59 @@ export async function SinglePostContent({ slug }: { slug: string }) {
           </div> */}
         </div>
       </article>
-      <div className="max-w-screen-md mx-auto my-8 border-t border-b border-neutral-100 dark:border-neutral-700"></div>
+      <div className="max-w-screen-lg mx-auto my-8 border-t border-b border-neutral-100 dark:border-neutral-700"></div>
       {!tipRecipient && (
-        <div className="max-w-screen-md px-2 mx-auto my-4 mb-12 md:px-0">
-          <SingleAuthor author={user} />
-        </div>
-      )}
+        <>
+          <div className="max-w-screen-lg px-2 mx-auto my-4 mb-12 md:px-0">
+            <SingleAuthor author={user} />
+            <div className="flex flex-col mt-16">
+              <div className="flex flex-col">
+                <Headline>More from this author</Headline>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {relatedPosts.length > 0 &&
+                    relatedPosts.map((post) => (
+                      <div
+                        className={`nc-Card12 shadow-sm border-[1.5px] relative flex flex-col group rounded-sm overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-[var(--polkadot-pink)]`}
+                      >
+                        <div
+                          className={`block flex-shrink-0 relative w-full overflow-hidden z-10 aspect-w-16 aspect-h-9`}
+                        >
+                          <div>
+                            <PostFeaturedWagMedia
+                              post={post}
+                              className="h-[200px]"
+                            />
+                          </div>
+                        </div>
 
-      {/* RELATED POSTS */}
-      {/* <SingleRelatedPosts /> */}
+                        <div className="flex flex-col h-full p-4 space-y-3">
+                          <div className="relative flex-1">
+                            <Link
+                              href={`/post/${post.slug}`}
+                              className="absolute inset-0"
+                            ></Link>
+                            <PostCardWagMeta
+                              user={post.user}
+                              createdAt={post.createdAt}
+                            />
+                            <h3 className="mb-2 leading-tight text-gray-900 dark:text-white text-normal font-unbounded">
+                              {post.title}
+                            </h3>
+                            {post?.content && (
+                              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+                                {removeLinks(removeHtmlTags(post.content))}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

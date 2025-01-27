@@ -2,6 +2,7 @@ import React from "react"
 import Link from "next/link"
 import { User } from "@prisma/client"
 
+import { Headline } from "@/components/ui/headline"
 import Avatar from "@/components/Avatar/Avatar"
 
 export function SingleAuthor({ author }: { author: User }) {
@@ -24,9 +25,11 @@ export function SingleAuthor({ author }: { author: User }) {
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
           <Link href={href}>{name}</Link>
         </h2>
-        <span className="block mt-1 text-sm text-neutral-500 sm:text-base dark:text-neutral-300">
-          {bio || "No bio available."}
-        </span>
+        {bio && (
+          <span className="block mt-1 text-sm text-neutral-500 sm:text-base dark:text-neutral-300">
+            {bio}
+          </span>
+        )}
         <Link className="mt-2 font-medium text-primary-6000" href={href}>
           Visit Author Page
         </Link>

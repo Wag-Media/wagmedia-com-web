@@ -12,7 +12,7 @@ import { getEmbedType } from "./util"
 
 export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
   return (
-    <div className="nc-SinglePostEmbeds overflow-hidden">
+    <div className="overflow-hidden nc-SinglePostEmbeds">
       {embeds.map((embed, index) => {
         const embedType = getEmbedType(embed.embedUrl)
 
@@ -20,7 +20,10 @@ export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
           const tweetId = embed.embedUrl?.split("/").pop()
 
           return (
-            <div key={index} className="nc-SinglePostEmbeds__twitter">
+            <div
+              key={index}
+              className="flex justify-center nc-SinglePostEmbeds__twitter"
+            >
               {tweetId && <Tweet id={tweetId} />}
             </div>
           )
@@ -30,7 +33,7 @@ export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
           return (
             <div
               key={index}
-              className="nc-SinglePostEmbeds__youtube rounded-xl aspect-w-16 aspect-h-9 overflow-hidden"
+              className="overflow-hidden nc-SinglePostEmbeds__youtube rounded-xl aspect-w-16 aspect-h-9"
             >
               <YouTubeEmbed
                 url={embed.embedUrl}
@@ -46,7 +49,7 @@ export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
           return (
             <div
               key={index}
-              className="nc-SinglePostEmbeds__instagram overflow-hidden w-full"
+              className="w-full overflow-hidden nc-SinglePostEmbeds__instagram"
             >
               <InstagramEmbed
                 url={embed.embedUrl}
@@ -61,7 +64,7 @@ export function SinglePostEmbeds({ embeds }: { embeds: Embed[] }) {
           return (
             <div
               key={index}
-              className="nc-SinglePostEmbeds__tiktok overflow-hidden w-full"
+              className="w-full overflow-hidden nc-SinglePostEmbeds__tiktok"
             >
               <TikTokEmbed
                 url={embed.embedUrl}
