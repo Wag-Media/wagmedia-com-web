@@ -40,7 +40,7 @@ export default async function PostGrid({
               defaultValue={articleOrder}
               className="relative flex flex-col items-center w-full"
             >
-              <TabsList className="relative z-10 grid w-full max-w-md grid-cols-2">
+              <TabsList className="relative z-10 grid w-full max-w-md grid-cols-2 mb-2">
                 <TabsTrigger value="latest" className="font-sans">
                   <Link href={`?articles=latest`} scroll={false}>
                     Latest
