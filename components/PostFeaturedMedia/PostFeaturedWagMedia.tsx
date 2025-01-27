@@ -20,11 +20,11 @@ export interface PostFeaturedWagMediaProps {
   className?: string
   post: {
     title: string
-    categories: Category[]
-    reactions: Reaction[]
-    earnings: ContentEarnings[]
+    categories?: Category[]
+    reactions?: Reaction[]
+    earnings?: ContentEarnings[]
     slug: string
-    embeds: Embed[]
+    embeds?: Embed[]
   }
 }
 
