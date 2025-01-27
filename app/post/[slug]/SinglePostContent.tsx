@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { prisma } from "@/prisma/prisma"
-import { Embed, Tag, User } from "@prisma/client"
+import { ContentEarnings, Embed, Payment, Tag, User } from "@prisma/client"
 
 import CategoryBadgeListWag from "@/components/CategoryBadgeList/CategoryBadgeListWag"
 import PostMeta2Wag from "@/components/PostMeta2/PostMeta2Wag"
@@ -37,10 +37,12 @@ export async function SinglePostContent({ slug }: { slug: string }) {
       earnings: true,
       user: true,
       embeds: true,
+      threadPayments: true,
     },
   })
 
   let tipRecipient: Pick<User, "name" | "avatar"> | null = null
+  let threadEarnings: ContentEarnings[] = []
 
   if (!post) {
     return <div>No post found.</div>
@@ -61,6 +63,28 @@ export async function SinglePostContent({ slug }: { slug: string }) {
       },
     })
     tipRecipient = threadPost?.user ?? null
+  }
+
+  if (tipRecipient) {
+    threadEarnings = post.threadPayments.reduce(
+      (acc: ContentEarnings[], curr: Payment) => {
+        const existing = acc.find((e) => e.unit === curr.unit)
+        if (existing) {
+          existing.totalAmount = (existing.totalAmount || 0) + curr.amount
+          curr.amount
+        } else {
+          acc.push({
+            totalAmount: curr.amount,
+            unit: curr.unit,
+            postId: curr.postId,
+            oddJobId: curr.oddJobId,
+            id: curr.id,
+          })
+        }
+        return acc
+      },
+      []
+    )
   }
 
   const { title, user, embeds, earnings, reactions } = post
@@ -99,7 +123,13 @@ export async function SinglePostContent({ slug }: { slug: string }) {
                         title={`Recipient: ${tipRecipient.name}`}
                         link={post.discordLink}
                         description={
-                          <span className="text-pink-500 text-md">X DOT</span>
+                          <span className="text-pink-500 text-md">
+                            {threadEarnings.map((earning) => (
+                              <span key={earning.id}>
+                                {earning.totalAmount} {earning.unit}
+                              </span>
+                            ))}
+                          </span>
                         }
                       />
                       <UserInfo
