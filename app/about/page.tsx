@@ -184,7 +184,7 @@ export default function PageAbout() {
       </section>
 
       {/* Funding History Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16">
         <div className="container max-w-3xl px-4 mx-auto">
           <h2 className="mb-8 text-3xl font-bold text-center font-unbounded">
             Our Funding Journey
