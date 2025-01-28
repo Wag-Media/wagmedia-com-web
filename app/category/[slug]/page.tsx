@@ -7,7 +7,7 @@ import {
 } from "@/data/dbCategories"
 import { getPostsByCategoryId, getPostsByLanguage } from "@/data/dbPosts"
 import { TypePostOrder } from "@/data/types"
-import { countryFlags, getFlagByLanguage } from "@/data/util"
+import { getFlagByLanguage } from "@/data/util"
 import { prisma } from "@/prisma/prisma"
 import { Category } from "@prisma/client"
 

@@ -183,6 +183,8 @@ export async function getPostsByAuthor(
 export async function getPostsByAuthorCount(authorName: string) {
   const count = await prisma.post.count({
     where: {
+      isPublished: true,
+      isDeleted: false,
       user: {
         name: authorName,
       },
