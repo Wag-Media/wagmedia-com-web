@@ -95,9 +95,9 @@ export function PostGridDisplay({
         ))}
       </div>
       <div className="flex items-center justify-center mt-10">
-        totalPostCount:{totalPostCount}
+        {/* totalPostCount:{totalPostCount}
         posts.length:{posts.length}
-        currentPage:{currentPage}
+        currentPage:{currentPage} */}
         {!isLoadMoreDisabled && (
           <Button
             onClick={loadMorePosts}
