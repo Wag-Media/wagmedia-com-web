@@ -38,7 +38,6 @@ export default async function OpengraphImage({
         style={{
           ...{
             fontSize: 128,
-            background: "white",
             width: "100%",
             height: "100%",
             display: "flex",
@@ -47,6 +46,8 @@ export default async function OpengraphImage({
             flexDirection: "column",
             textAlign: "center",
             padding: 20,
+            background:
+              "radial-gradient(circle at 120% 30%, #f0ff23, #ffea00, #ffd400, #ffbd13, #ffa62a, #ff8e3c, #ff754e, #ff5c5e, #ff436e, #ff2a7e, #fd118d, #e9009b)",
           },
           ...style,
         }}

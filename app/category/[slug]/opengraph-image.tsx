@@ -11,8 +11,5 @@ export default async function Image({ params }: { params: { slug: string } }) {
   return await OpengraphImage({
     title: deslugify(params.slug),
     subtitle: "WagMedia Content Category",
-    style: {
-      background: "#FF2670",
-    },
   })
 }

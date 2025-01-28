@@ -14,7 +14,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
     title: deslugify(slug),
     subtitle: "WagMedia Polkadot Post",
     style: {
-      background: "#FF2670",
       fontSize: 80,
     },
   })
