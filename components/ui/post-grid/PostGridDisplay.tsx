@@ -3,9 +3,12 @@
 import { useCallback, useEffect, useState } from "react"
 import {
   PostWithTagsCategoriesReactionsPaymentsUser,
+  ReactionWithUserAndEmoji,
   TypePostOrder,
 } from "@/data/types"
+import { Category, ContentEarnings, Embed, User } from "@prisma/client"
 
+import { cn } from "@/lib/utils"
 import Loading from "@/components/Button/Loading"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import { fetchPosts } from "@/app/actions/fetchPosts"
@@ -13,20 +16,41 @@ import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
 import { Button } from "../button"
 
+interface PostProps {
+  title: string
+  categories: Category[]
+  reactions: ReactionWithUserAndEmoji[]
+  earnings: ContentEarnings[]
+  slug: string
+  embeds: Embed[]
+  user?: Pick<User, "avatar" | "name">
+  createdAt: Date
+  content: string
+}
+
 export function PostGridDisplay({
   initialPosts,
   totalPostCount,
-  contentType = "article",
+  loadMorePostsPromise,
+  introCard,
+  containerClassName,
 }: {
-  initialPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  initialPosts: PostProps[]
+  loadMorePostsPromise: (
+    page: number,
+    orderBy?: TypePostOrder,
+    search?: string,
+    contentType?: "article" | "news"
+  ) => Promise<PostProps[]>
   totalPostCount: number
   contentType?: "article" | "news"
+  introCard?: React.ReactNode
+  containerClassName?: string
 }) {
   const pageSize = 12
-  const [posts, setPosts] =
-    useState<PostWithTagsCategoriesReactionsPaymentsUser[]>(initialPosts)
-  const [currentPage, setCurrentPage] = useState(0) // Start from page 0 for correct API offset calculation
-  const [orderBy, setOrderBy] = useState<TypePostOrder>("latest") // Start from page 0 for correct API offset calculation
+  const [posts, setPosts] = useState<PostProps[]>(initialPosts)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [orderBy, setOrderBy] = useState<TypePostOrder>("latest")
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadMoreDisabled, setIsLoadMoreDisabled] = useState(
     initialPosts.length < pageSize
@@ -36,61 +60,44 @@ export function PostGridDisplay({
     if (isLoadMoreDisabled || isLoading) return
 
     setIsLoading(true)
-    const newPosts = await fetchPosts({
-      page: currentPage + 1,
-      pageSize: pageSize, // Correct parameter if API expects pageSize instead of take
-      search: "", // Pass any actual search criteria needed
-      orderBy,
-      contentType,
-    })
-
-    const postsWithLinks = await Promise.all(
-      newPosts.map(async (post) => {
-        const title = await replaceAuthorLinks(post.title, false)
-        return { ...post, title }
-      })
-    )
-
-    setCurrentPage(currentPage + 1)
-    setPosts((prev) => [...prev, ...postsWithLinks])
-    setIsLoading(false)
-  }, [currentPage, isLoading, isLoadMoreDisabled, orderBy])
+    try {
+      const newPosts = await loadMorePostsPromise(currentPage + 1, orderBy, "")
+      setCurrentPage(currentPage + 1)
+      setPosts((prev) => [...prev, ...newPosts])
+    } catch (error) {
+      console.error("Failed to load more posts:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [
+    currentPage,
+    isLoading,
+    isLoadMoreDisabled,
+    orderBy,
+    loadMorePostsPromise,
+  ])
 
   useEffect(() => {
     setIsLoadMoreDisabled(posts.length >= totalPostCount)
   }, [posts, totalPostCount])
 
-  const tabs: { id: TypePostOrder; label: string }[] = [
-    { id: "latest", label: "Latest" },
-    { id: "reactions", label: "Most Reactions" },
-  ]
-
-  const handleClickTab = async (id: TypePostOrder) => {
-    console
-    if (id === orderBy) {
-      return
-    }
-    setOrderBy(id)
-    setIsLoading(true)
-    const newPosts = await fetchPosts({
-      page: 0,
-      pageSize: pageSize, // Correct parameter if API expects pageSize instead of take
-      search: "", // Pass any actual search criteria needed
-      orderBy: id,
-      contentType,
-    })
-    setPosts([...newPosts])
-    setIsLoading(false)
-  }
-
   return (
-    <div className="">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div>
+      <div
+        className={cn(
+          "grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+          containerClassName
+        )}
+      >
+        {introCard}
         {posts.map((post, index) => (
           <Card11Wag key={index} post={post} />
         ))}
       </div>
       <div className="flex items-center justify-center mt-10">
+        totalPostCount:{totalPostCount}
+        posts.length:{posts.length}
+        currentPage:{currentPage}
         {!isLoadMoreDisabled && (
           <Button
             onClick={loadMorePosts}

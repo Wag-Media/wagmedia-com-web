@@ -133,7 +133,7 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
         <div
           className={`absolute text-3xl inset-0 bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center ${getColorClass()}`}
         >
-          <span className={`pr-2`}>✦</span>
+          <span className={`pr-2`}>◦</span>
           {post.categories?.[0]?.name}
         </div>
       )}

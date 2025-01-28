@@ -13,6 +13,7 @@ import {
 import { Headline } from "@/components/ui/headline"
 import NewsGrid from "@/components/ui/post-grid/NewsGrid"
 import PostGrid from "@/components/ui/post-grid/PostGrid"
+import { PostGridDisplay } from "@/components/ui/post-grid/PostGridDisplay"
 import PostGridSkeleton from "@/components/ui/post-grid/PostGridSkeleton"
 import SectionBecomeAnAuthor from "@/components/SectionBecomeAnAuthor/SectionBecomeAnAuthor"
 import SectionGridAuthorBoxWag from "@/components/SectionGridAuthorBox/SectionGridAuthorBoxWag"
@@ -36,13 +37,15 @@ const PageHome = async ({
 
   const [
     authors,
-    featuredPosts,
-    latestPosts,
-    popularPosts,
+    featuredArticles,
+    latestArticles,
+    popularArticles,
     totalPostCount,
     totalAuthorCount,
     authorAvatars,
     totalPostPaymentAmount,
+    latestNews,
+    totalNewsPostCount,
   ] = await Promise.all([
     getAuthors({ limit: 10 }),
     getFeaturedPosts(),
@@ -58,17 +61,45 @@ const PageHome = async ({
     getTotalAuthorCount(),
     getAuthorAvatars(),
     getTotalPostPaymentAmount(),
+    fetchPosts({
+      contentType: "news",
+    }),
+    getTotalPostCount("news"),
   ])
 
-  const processedLatestPosts = await Promise.all(
-    latestPosts.map(async (post) => {
+  async function loadMorePosts(currentPage: number) {
+    "use server"
+    return fetchPosts({
+      orderBy: "latest",
+      page: currentPage,
+    })
+  }
+
+  async function loadMoreNews(currentPage: number) {
+    "use server"
+    return fetchPosts({
+      orderBy: "latest",
+      page: currentPage,
+      contentType: "news",
+    })
+  }
+
+  const processedLatestArticles = await Promise.all(
+    latestArticles.map(async (post) => {
       const title = await replaceAuthorLinks(post.title, false)
       return { ...post, title }
     })
   )
 
-  const processedPopularPosts = await Promise.all(
-    popularPosts.map(async (post) => {
+  const processedPopularArticles = await Promise.all(
+    popularArticles.map(async (post) => {
+      const title = await replaceAuthorLinks(post.title, false)
+      return { ...post, title }
+    })
+  )
+
+  const processedNews = await Promise.all(
+    latestNews.map(async (post) => {
       const title = await replaceAuthorLinks(post.title, false)
       return { ...post, title }
     })
@@ -86,14 +117,15 @@ const PageHome = async ({
         <section className="py-12 sm:py-12 lg:py-20">
           <div className="container">
             <Headline level="h2">Featured Posts</Headline>
-            <FeaturedPostsSlider featuredPosts={featuredPosts} />
+            <FeaturedPostsSlider featuredPosts={featuredArticles} />
           </div>
         </section>
         <Suspense fallback={<PostGridSkeleton />}>
           <PostGrid
-            articleOrder={articles}
-            popularPosts={processedPopularPosts}
-            latestPosts={processedLatestPosts}
+            initialLatestPosts={processedLatestArticles}
+            initialPopularPosts={processedPopularArticles}
+            loadMoreLatestPostsPromise={loadMorePosts}
+            loadMorePopularPostsPromise={loadMorePosts}
           />
         </Suspense>
         <div className="container relative">
@@ -108,10 +140,9 @@ const PageHome = async ({
         <div className="container ">
           <Suspense fallback={<PostGridSkeleton />}>
             <NewsGrid
-              currentPage={currentPage}
-              search={search}
-              className="pt-16 pb-16 lg:pb-28"
-              heading="Explore our latest posts"
+              initialPosts={processedNews}
+              loadMoreNewsPromise={loadMoreNews}
+              totalPostCount={totalNewsPostCount}
             />
           </Suspense>
         </div>

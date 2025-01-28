@@ -4,15 +4,19 @@ import { categoryDescriptions } from "@/data/category-descriptions"
 import {
   getCategoriesNames,
   getCategoryWithArticlesAndNews,
-  getLanguageWithArticlesAndNews,
 } from "@/data/dbCategories"
+import { getPostsByCategoryId, getPostsByLanguage } from "@/data/dbPosts"
+import { TypePostOrder } from "@/data/types"
+import { countryFlags, getFlagByLanguage } from "@/data/util"
+import { prisma } from "@/prisma/prisma"
+import { Category } from "@prisma/client"
 
 import { deslugify, slugify } from "@/lib/slug"
 import { Headline } from "@/components/ui/headline"
-import Card11Wag from "@/components/Card11/Card11Wag"
-import Heading from "@/components/Heading/Heading"
+import { PostGridDisplay } from "@/components/ui/post-grid/PostGridDisplay"
 import { replaceAuthorLinks } from "@/app/post/[slug]/util"
 
+import CategoryIntroCard from "./category-intro-card"
 import { NonAngloCategoryTitle, isCategoryNameLanguage } from "./util"
 
 export async function generateStaticParams() {
@@ -41,30 +45,96 @@ export default async function PageCategory({
   }
 
   const isLanguage = isCategoryNameLanguage(params.slug)
+  const flag = getFlagByLanguage(params.slug)
 
-  let category
+  const nonAngloCategoryId = await prisma.category.findFirst({
+    where: {
+      name: "Non Anglo",
+    },
+  })
 
-  // as language is not a real category, we need to handle it differently
-  if (isLanguage) {
-    category = await getLanguageWithArticlesAndNews(params.slug)
-  } else {
-    category = await getCategoryWithArticlesAndNews(params.slug)
-  }
+  const category = await getCategoryWithArticlesAndNews(
+    isLanguage ? nonAngloCategoryId?.name! : params.slug
+  )
 
-  if (!category || !category.name) {
+  if (!category || !category.name || !category.id) {
     return <>not found</>
   }
 
-  const { articles, news, name, articlesCount, newsCount } = category
+  const { name, articlesCount, newsCount } = category
 
-  const posts = await Promise.all(
-    articles.map(async (post) => {
-      const title = await replaceAuthorLinks(post.title, false)
-      return { ...post, title }
-    })
+  let initialArticles = isLanguage
+    ? await getPostsByLanguage({ flag, page: 0, pageSize: 11 })
+    : await getPostsByCategoryId(
+        isLanguage ? nonAngloCategoryId?.id! : category.id!,
+        "article",
+        0,
+        11
+      )
+
+  initialArticles = await Promise.all(
+    initialArticles.map(async (post) => ({
+      ...post,
+      title: await replaceAuthorLinks(post.title, false),
+    }))
   )
 
-  if (posts.length === 0) {
+  let initialNews = await getPostsByCategoryId(category.id!, "news", 0, 11)
+
+  initialNews = await Promise.all(
+    initialNews.map(async (post) => ({
+      ...post,
+      title: await replaceAuthorLinks(post.title, false),
+    }))
+  )
+
+  const loadMoreArticles = async (
+    page: number,
+    orderBy?: any,
+    search?: string,
+    contentType?: "article" | "news"
+  ) => {
+    "use server"
+
+    const posts = await getPostsByCategoryId(
+      category.id!,
+      contentType || "article",
+      11 + (page - 1) * 12,
+      12
+    )
+
+    // Process titles with author links
+    return await Promise.all(
+      posts.map(async (post) => {
+        const title = await replaceAuthorLinks(post.title, false)
+        return { ...post, title }
+      })
+    )
+  }
+
+  const loadMoreNews = async (
+    page: number,
+    orderBy?: TypePostOrder,
+    search?: string,
+    contentType: "article" | "news" = "news"
+  ) => {
+    "use server"
+    const posts = await getPostsByCategoryId(
+      category.id!,
+      contentType,
+      page * 12,
+      12
+    )
+
+    return Promise.all(
+      posts.map(async (post) => ({
+        ...post,
+        title: await replaceAuthorLinks(post.title, false),
+      }))
+    )
+  }
+
+  if (initialArticles.length === 0) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         No articles found for {params.slug}
@@ -75,66 +145,43 @@ export default async function PageCategory({
   const title = name ? NonAngloCategoryTitle(deslugify(params.slug)) : ""
 
   return (
-    <div className={`nc-PageArchive`}>
-      <div className="container pt-10 pb-16 space-y-16 lg:pb-28 lg:pt-20 lg:space-y-28">
-        <div>
-          <div className="flex flex-col sm:justify-between sm:flex-row">
-            <div className="flex space-x-2.5 rtl:space-x-reverse">
-              {/* <ModalCategories categories={categories} /> */}
-              {/* <ModalTags tags={DEMO_TAGS} /> */}
-            </div>
-            <div className="block w-full my-4 border-b border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
-            {/* <div className="flex justify-end">
-              <ArchiveFilterListBox lists={FILTERS} />
-            </div> */}
-          </div>
-          {/* LOOP ITEMS */}
-          {!posts?.length ? null : (
-            <>
-              <Headline level="h1" containerClassName="mb-16">
-                {title} Articles
-              </Headline>
-              <div className="grid gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:mt-4">
-                <div className="pr-4 text-right">
-                  <p className="w-full text-gray-600 dark:text-gray-400">
-                    {category?.name &&
-                      categoryDescriptions[
-                        category.name.toLowerCase() as keyof typeof categoryDescriptions
-                      ]}
-                  </p>
-                  <p className="w-full mt-4 text-sm text-gray-600 dark:text-gray-400">{`Read a total of ${articlesCount} articles${
-                    newsCount ? ` and ${newsCount} news` : ""
-                  } on Polkadot ${
-                    isLanguage ? `in ${title}` : category.name
-                  } written by our community creators`}</p>
-                </div>
-                {posts?.map((post) => (
-                  <Card11Wag key={post.id} post={post} />
-                ))}
-              </div>
-            </>
-          )}
-          {!news?.length ? null : (
-            <>
-              <Heading
-                desc={`Read decentralized news on Polkadot ${category.name}, collected from the web by our community finders`}
-                className="mt-24 mb-12"
-              >
-                {deslugify(params.slug)} News
-              </Heading>
-              <div className="grid gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:mt-4">
-                {news?.map((post) => (
-                  <Card11Wag key={post.id} post={post} />
-                ))}
-              </div>
-            </>
-          )}
-          {/* PAGINATIONS */}
-          <div className="flex flex-col mt-12 space-y-5 lg:mt-16 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
-            {/* <Pagination /> */}
-            {/* <ButtonPrimary>Show me more</ButtonPrimary> */}
-          </div>
-        </div>
+    <div className="container pt-10 pb-16 space-y-16 lg:pb-28 lg:pt-20 lg:space-y-28">
+      <div>
+        {!initialArticles?.length ? null : (
+          <>
+            <Headline level="h1" containerClassName="mb-16">
+              {title} Articles
+            </Headline>
+            <PostGridDisplay
+              initialPosts={initialArticles}
+              introCard={
+                <CategoryIntroCard
+                  category={category as Category}
+                  articlesCount={articlesCount}
+                  newsCount={newsCount}
+                  isLanguage={isLanguage}
+                  title={title}
+                />
+              }
+              totalPostCount={articlesCount}
+              loadMorePostsPromise={loadMoreArticles}
+              contentType="article"
+            />
+          </>
+        )}
+        {newsCount > 0 && (
+          <>
+            <Headline level="h2" containerClassName="my-16">
+              {deslugify(params.slug)} News
+            </Headline>
+            <PostGridDisplay
+              initialPosts={initialNews}
+              totalPostCount={newsCount}
+              loadMorePostsPromise={loadMoreNews}
+              contentType="news"
+            />
+          </>
+        )}
       </div>
     </div>
   )

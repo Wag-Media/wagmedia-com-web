@@ -1,12 +1,16 @@
+"use server"
+
 import { cache } from "react"
 import { prisma } from "@/prisma/prisma"
 import { ContentEarnings, Payment, Prisma } from "@prisma/client"
+import { countries } from "country-emoji"
 import _ from "lodash"
 
 import {
   PostWithTagsCategoriesReactionsPaymentsUser,
   TypePostOrder,
 } from "./types"
+import { allFlagEmojis } from "./util"
 
 export async function getPosts({
   skip = 0,
@@ -135,10 +139,14 @@ export async function getFeaturedPosts(): Promise<
 }
 
 export async function getPostsByAuthor(
-  authorName: string
+  authorName: string,
+  skip: number = 0,
+  take: number = 12
 ): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
   const decodedAuthorName = decodeURIComponent(authorName)
   const posts = await prisma.post.findMany({
+    skip,
+    take,
     where: {
       isPublished: true,
       isDeleted: false,
@@ -172,11 +180,76 @@ export async function getPostsByAuthor(
   return posts
 }
 
+export async function getPostsByAuthorCount(authorName: string) {
+  const count = await prisma.post.count({
+    where: {
+      user: {
+        name: authorName,
+      },
+    },
+  })
+  return count
+}
+
+export async function getPostsByLanguage({
+  flag,
+  page = 0,
+  pageSize = 12,
+}: {
+  flag?: string
+  page?: number
+  pageSize?: number
+}) {
+  const posts = await prisma.post.findMany({
+    skip: page * pageSize,
+    take: pageSize,
+    where: {
+      categories: {
+        some: {
+          name: "Non Anglo",
+        },
+      },
+      reactions: {
+        some: {
+          emoji: {
+            id: {
+              equals: flag,
+            },
+          },
+        },
+      },
+    },
+    include: {
+      tags: true,
+      categories: {
+        include: {
+          emoji: true,
+        },
+      },
+      reactions: {
+        include: {
+          user: true,
+          emoji: true,
+        },
+      },
+      payments: true,
+      user: true,
+      embeds: true,
+      earnings: true,
+    },
+  })
+  return posts
+}
+
 export async function getPostsByCategoryId(
   categoryId: number,
-  contentType: "article" | "news" = "article"
+  contentType: "article" | "news" = "article",
+  skip: number = 0,
+  take: number = 12
 ): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
   const posts = await prisma.post.findMany({
+    skip: skip,
+    take: take,
     where: {
       isPublished: true,
       isDeleted: false,
@@ -315,26 +388,34 @@ export const getPostBySlug = cache(async (slug: string) => {
 })
 
 export async function getAgentTippingPosts(
-  skip: number = 0,
-  take: number = 12
-): Promise<
-  (PostWithTagsCategoriesReactionsPaymentsUser & {
+  page: number = 0,
+  pageSize: number = 12
+): Promise<{
+  totalCount: number
+  posts: (PostWithTagsCategoriesReactionsPaymentsUser & {
     threadPayments: Payment[]
     recipient?: {
       name: string | null
       avatar: string | null
     }
   })[]
-> {
+}> {
   // First get the tipping posts
   const tippingPosts = await prisma.post.findMany({
-    skip,
-    take,
+    skip: page * pageSize,
+    take: pageSize,
     where: {
       isDeleted: false,
       categories: {
         some: {
           name: "Tip",
+        },
+      },
+      threadPayments: {
+        some: {
+          amount: {
+            gt: 0,
+          },
         },
       },
     },
@@ -358,7 +439,27 @@ export async function getAgentTippingPosts(
       user: true,
       embeds: true,
       earnings: true,
-      threadPayments: true,
+      threadPayments: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  })
+
+  const totalCount = await prisma.post.count({
+    where: {
+      isDeleted: false,
+      categories: {
+        some: { name: "Tip" },
+      },
+      threadPayments: {
+        some: {
+          amount: {
+            gt: 0,
+          },
+        },
+      },
     },
   })
 
@@ -386,16 +487,33 @@ export async function getAgentTippingPosts(
     })
   )
 
-  return postsWithRecipients
+  return {
+    totalCount,
+    posts: postsWithRecipients,
+  }
+}
+
+export async function getAgentTippingPostsCount() {
+  const count = await prisma.post.count({
+    where: {
+      isDeleted: false,
+      categories: {
+        some: {
+          name: "Tip",
+        },
+      },
+    },
+  })
+  return count
 }
 
 export async function getMemes(
-  skip: number = 0,
-  take: number = 12
+  page: number = 0,
+  pageSize: number = 100
 ): Promise<PostWithTagsCategoriesReactionsPaymentsUser[]> {
   const posts = await prisma.post.findMany({
-    skip,
-    take,
+    skip: page * pageSize,
+    take: pageSize,
     where: {
       isPublished: true,
       isDeleted: false,

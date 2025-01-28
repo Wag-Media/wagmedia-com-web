@@ -5,6 +5,8 @@ import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 import { User } from "@prisma/client"
 import { Globe, TwitterIcon } from "lucide-react"
 
+import PostGrid from "@/components/ui/post-grid/PostGrid"
+import { PostGridDisplay } from "@/components/ui/post-grid/PostGridDisplay"
 import Card11Wag from "@/components/Card11/Card11Wag"
 import NcImage from "@/components/NcImage/NcImage"
 
@@ -111,17 +113,17 @@ export async function AuthorPage({
         </div>
       </div>
       <div className="container py-8 space-y-8 lg:pb-28 lg:pt-8 lg:space-y-8">
-        <main>
-          <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row">
-            <div className="block w-full my-4 border-b border-neutral-300 dark:border-neutral-500 sm:hidden"></div>
-          </div>
-
-          <div className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:mt-10">
-            {posts?.map((post, index) => (
-              <Card11Wag key={index} post={post} />
-            ))}
-          </div>
-        </main>
+        <PostGridDisplay
+          initialPosts={posts}
+          totalPostCount={posts.length}
+          loadMorePostsPromise={() => Promise.resolve([])}
+          contentType="article"
+        />
+        {/* <div className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:mt-10">
+          {posts?.map((post, index) => (
+            <Card11Wag key={index} post={post} />
+          ))}
+        </div> */}
       </div>
     </div>
   )

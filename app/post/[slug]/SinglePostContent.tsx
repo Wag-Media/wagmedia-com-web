@@ -1,11 +1,8 @@
 import Link from "next/link"
 import { prisma } from "@/prisma/prisma"
 import { ContentEarnings, Embed, Payment, Tag, User } from "@prisma/client"
-import orderBy from "lodash"
 
 import { Headline } from "@/components/ui/headline"
-import { AgentTipGrid } from "@/components/ui/post-grid/AgentTipGrid"
-import Card11Wag from "@/components/Card11/Card11Wag"
 import CategoryBadgeListWag from "@/components/CategoryBadgeList/CategoryBadgeListWag"
 import PostCardWagMeta from "@/components/PostCardMeta/PostCardWagMeta"
 import PostFeaturedWagMedia from "@/components/PostFeaturedMedia/PostFeaturedWagMedia"
@@ -23,7 +20,6 @@ import {
   linkTextsToAnchorTags,
   removeHtmlTags,
   removeLinks,
-  removeSocialMediaEmbeds,
   replaceAuthorLinks,
 } from "./util"
 

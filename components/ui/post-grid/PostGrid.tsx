@@ -1,27 +1,32 @@
-import React, { FC, ReactNode, Suspense } from "react"
+import React from "react"
 import Link from "next/link"
 import { getTotalPostCount } from "@/data/dbPosts"
 import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 
-import { Button } from "@/components/ui/button"
-import { fetchPosts } from "@/app/actions/fetchPosts"
-import { replaceAuthorLinks } from "@/app/post/[slug]/util"
-
 import { Headline } from "../headline"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs"
 import { PostGridDisplay } from "./PostGridDisplay"
-import PostGridSkeleton from "./PostGridSkeleton"
 
 export interface PostGridProps {
-  articleOrder?: string
-  latestPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
-  popularPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  initialLatestPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  initialPopularPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  loadMoreLatestPostsPromise: (
+    currentPage: number,
+    orderBy?: string,
+    search?: string
+  ) => Promise<PostWithTagsCategoriesReactionsPaymentsUser[]>
+  loadMorePopularPostsPromise: (
+    currentPage: number,
+    search?: string,
+    orderBy?: string
+  ) => Promise<PostWithTagsCategoriesReactionsPaymentsUser[]>
 }
 
 export default async function PostGrid({
-  articleOrder,
-  latestPosts,
-  popularPosts,
+  initialLatestPosts,
+  initialPopularPosts,
+  loadMoreLatestPostsPromise,
+  loadMorePopularPostsPromise,
 }: PostGridProps) {
   const totalPostCount = await getTotalPostCount()
 
@@ -34,10 +39,10 @@ export default async function PostGrid({
               level="h2"
               subtitle={`Discover ${totalPostCount} articles, from a multitude of categories and tags, created by our community creators`}
             >
-              Explore {articleOrder} Polkadot Articles
+              Explore latest Polkadot Articles
             </Headline>
             <Tabs
-              defaultValue={articleOrder}
+              defaultValue="latest"
               className="relative flex flex-col items-center w-full"
             >
               <TabsList className="relative z-10 grid w-full max-w-md grid-cols-2 mb-2">
@@ -54,14 +59,16 @@ export default async function PostGrid({
               </TabsList>
               <TabsContent value="latest">
                 <PostGridDisplay
-                  initialPosts={latestPosts}
+                  initialPosts={initialLatestPosts}
                   totalPostCount={totalPostCount}
+                  loadMorePostsPromise={loadMoreLatestPostsPromise}
                 />
               </TabsContent>
               <TabsContent value="popular">
                 <PostGridDisplay
-                  initialPosts={popularPosts}
+                  initialPosts={initialPopularPosts}
                   totalPostCount={totalPostCount}
+                  loadMorePostsPromise={loadMorePopularPostsPromise}
                 />
               </TabsContent>
             </Tabs>

@@ -1,38 +1,25 @@
-import { ReactNode } from "react"
-import { getPosts, getTotalPostCount } from "@/data/dbPosts"
-
-import { replaceAuthorLinks } from "@/app/post/[slug]/util"
+import { PostWithTagsCategoriesReactionsPaymentsUser } from "@/data/types"
 
 import { Headline } from "../headline"
 import { PostGridDisplay } from "./PostGridDisplay"
 
 export interface NewsGridProps {
-  currentPage?: number
-  search?: string
-  className?: string
-  gridClass?: string
-  heading?: ReactNode
-  headingIsCenter?: boolean
+  initialPosts: PostWithTagsCategoriesReactionsPaymentsUser[]
+  totalPostCount: number
+  loadMoreNewsPromise: (
+    currentPage: number,
+    orderBy?: string,
+    search?: string
+  ) => Promise<PostWithTagsCategoriesReactionsPaymentsUser[]>
 }
 
 export default async function NewsGrid({
-  search,
-  className = "",
+  initialPosts,
+  totalPostCount,
+  loadMoreNewsPromise,
 }: NewsGridProps) {
-  const posts = await getPosts({
-    search,
-    contentType: "news",
-  })
-  const postsWithLinks = await Promise.all(
-    posts.map(async (post) => {
-      const title = await replaceAuthorLinks(post.title, false)
-      return { ...post, title }
-    })
-  )
-  const totalPostCount = await getTotalPostCount("news")
-
   return (
-    <div className={`nc-SectionGridPosts relative ${className}`}>
+    <div className={`nc-SectionGridPosts relative pt-16 pb-16 lg:pb-28`}>
       <Headline
         level="h2"
         className="mt-16"
@@ -41,8 +28,9 @@ export default async function NewsGrid({
         What&apos;s the news and updates about the Polkadot ecosystem?
       </Headline>
       <PostGridDisplay
-        initialPosts={postsWithLinks}
+        initialPosts={initialPosts}
         totalPostCount={totalPostCount}
+        loadMorePostsPromise={loadMoreNewsPromise}
         contentType="news"
       />
     </div>
