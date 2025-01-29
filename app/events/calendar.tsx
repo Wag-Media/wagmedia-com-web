@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { DiscordIcon } from "@/images/icons"
 import {
   CalendarIcon,
@@ -71,9 +72,9 @@ const events = [
   },
   {
     id: 4,
-    date: "April 12th, 2024",
+    date: "April 12th, 2025",
     time: "3:00 PM",
-    datetime: "2024-04-12T15:00",
+    datetime: "2025-04-12T15:00",
     name: "NFT Art Gallery Opening",
     description:
       "Exclusive gallery opening featuring digital artworks from renowned NFT artists. Live minting session and artist meet-and-greet.",
@@ -85,9 +86,9 @@ const events = [
   },
   {
     id: 5,
-    date: "April 18th, 2024",
+    date: "April 18th, 2025",
     time: "1:00 PM",
-    datetime: "2024-04-18T13:00",
+    datetime: "2025-04-18T13:00",
     name: "Blockchain Security Workshop",
     description:
       "Hands-on workshop covering smart contract security, audit techniques, and best practices for secure blockchain development.",
@@ -155,21 +156,16 @@ function getFirstDayOfMonth(year: number, month: number) {
   return new Date(year, month, 1).getDay()
 }
 
-function generateCalendarDays() {
-  const today = new Date()
-  const currentYear = today.getFullYear()
-  const currentMonth = today.getMonth()
-  const currentDate = today.getDate()
-
-  const daysInMonth = getDaysInMonth(currentYear, currentMonth)
-  const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth)
+function generateCalendarDays(year: number, month: number) {
+  const daysInMonth = getDaysInMonth(year, month)
+  const firstDayOfMonth = getFirstDayOfMonth(year, month)
 
   // Get last days of previous month to fill the first week
-  const daysInPrevMonth = getDaysInMonth(currentYear, currentMonth - 1)
+  const daysInPrevMonth = getDaysInMonth(year, month - 1)
   const prevMonthDays = Array.from(
     { length: (firstDayOfMonth + 6) % 7 },
     (_, i) => ({
-      date: `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(
+      date: `${year}-${String(month).padStart(2, "0")}-${String(
         daysInPrevMonth - ((firstDayOfMonth + 6) % 7) + i + 1
       ).padStart(2, "0")}`,
       isCurrentMonth: false,
@@ -178,12 +174,16 @@ function generateCalendarDays() {
   )
 
   // Current month days
+  const today = new Date()
   const currentMonthDays = Array.from({ length: daysInMonth }, (_, i) => ({
-    date: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(
+    date: `${year}-${String(month + 1).padStart(2, "0")}-${String(
       i + 1
     ).padStart(2, "0")}`,
     isCurrentMonth: true,
-    isToday: i + 1 === currentDate,
+    isToday:
+      i + 1 === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear(),
   }))
 
   // Calculate how many days we need from next month
@@ -191,7 +191,7 @@ function generateCalendarDays() {
   const remainingDays =
     totalDays - prevMonthDays.length - currentMonthDays.length
   const nextMonthDays = Array.from({ length: remainingDays }, (_, i) => ({
-    date: `${currentYear}-${String(currentMonth + 2).padStart(2, "0")}-${String(
+    date: `${year}-${String(month + 2).padStart(2, "0")}-${String(
       i + 1
     ).padStart(2, "0")}`,
     isCurrentMonth: false,
@@ -210,14 +210,29 @@ function getEventsForDate(date: string) {
   })
 }
 
-export default function Calendar() {
+interface CalendarProps {
+  selectedMonth: string // Format: "MM-YYYY"
+}
+
+export function Calendar({ selectedMonth }: CalendarProps) {
+  const [month, year] = selectedMonth.split("-").map(Number)
   const [isLoading, setIsLoading] = useState(false)
   const [displayedEvents, setDisplayedEvents] = useState(events.slice(0, 5))
   const [isLoadMoreDisabled, setIsLoadMoreDisabled] = useState(false)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const today = new Date()
   const currentMonth = today.toLocaleString("default", { month: "long" })
-  const days = generateCalendarDays()
+  const days = generateCalendarDays(year, month - 1)
+
+  const selectedMonthAsDate = new Date(year, month - 1)
+  console.log("selectedMonthAsDate", selectedMonthAsDate)
+
+  // Update your month navigation to use the URL
+  const router = useRouter()
+
+  function handleMonthChange(newMonth: string) {
+    router.push(`/events/${newMonth}`)
+  }
 
   async function loadMoreEvents() {
     if (isLoadMoreDisabled || isLoading) return
@@ -241,14 +256,57 @@ export default function Calendar() {
 
   return (
     <div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           Upcoming Events
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="h-6 py-0 pl-2 pr-0 text-lg font-semibold text-pink-500 hover:bg-transparent hover:text-pink-600"
+              >
+                in{" "}
+                {selectedMonthAsDate.toLocaleString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              {Array.from({ length: 13 }, (_, index) => {
+                const date = new Date()
+                const currentMonth = date.getMonth()
+                const currentYear = date.getFullYear()
+
+                const monthDate = new Date(currentYear, currentMonth + index, 1)
+                const monthStr = String(monthDate.getMonth() + 1).padStart(
+                  2,
+                  "0"
+                )
+                const yearStr = monthDate.getFullYear().toString()
+                const monthParam = `${monthStr}-${yearStr}`
+
+                const monthYear = monthDate.toLocaleString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })
+
+                return (
+                  <DropdownMenuItem
+                    key={monthYear}
+                    onClick={() => handleMonthChange(monthParam)}
+                  >
+                    {monthYear}
+                  </DropdownMenuItem>
+                )
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </h2>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="w-8 h-8">
-              <Filter className="size-3" />
+              <Filter className="stroke-3 size-4" />
               <span className="sr-only">Filter events</span>
             </Button>
           </DropdownMenuTrigger>
@@ -257,7 +315,9 @@ export default function Calendar() {
               All Events
             </DropdownMenuItem>
             {uniqueCategories.map((category) => (
-              <DropdownMenuItem key={category}>{category}</DropdownMenuItem>
+              <DropdownMenuItem key={category}>
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -267,16 +327,33 @@ export default function Calendar() {
           <div className="flex items-center text-gray-900 dark:text-gray-100">
             <button
               type="button"
+              onClick={() => {
+                const prevMonth = month === 1 ? 12 : month - 1
+                const prevYear = month === 1 ? year - 1 : year
+                handleMonthChange(
+                  `${String(prevMonth).padStart(2, "0")}-${prevYear}`
+                )
+              }}
               className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
             >
               <span className="sr-only">Previous month</span>
               <ChevronLeftIcon className="size-5" aria-hidden="true" />
             </button>
             <div className="flex-auto text-sm font-semibold">
-              {currentMonth}
+              {selectedMonthAsDate.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
             </div>
             <button
               type="button"
+              onClick={() => {
+                const nextMonth = month === 12 ? 1 : month + 1
+                const nextYear = month === 12 ? year + 1 : year
+                handleMonthChange(
+                  `${String(nextMonth).padStart(2, "0")}-${nextYear}`
+                )
+              }}
               className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
             >
               <span className="sr-only">Next month</span>

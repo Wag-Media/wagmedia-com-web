@@ -17,7 +17,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
   }, [error])
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="container flex flex-col items-center justify-center gap-4 px-4 py-16 text-center">
         <ExclamationTriangleIcon className="w-12 h-12 text-destructive" />
         <h2 className="text-2xl font-bold tracking-tight">
