@@ -31,40 +31,60 @@ export default async function OpengraphImage({
     new URL("../public/wagmedia-logo.png", import.meta.url)
   ).then((res) => res.arrayBuffer())
 
+  const meshSrc = await fetch(
+    new URL("../public/mesh-360.png", import.meta.url)
+  ).then((res) => res.arrayBuffer())
+
   return new ImageResponse(
     (
       // ImageResponse JSX element
       <div
         style={{
           ...{
-            fontSize: 128,
+            fontSize: 110,
             width: "100%",
             height: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
+            gap: 20,
             textAlign: "center",
-            padding: 20,
+            color: "white",
             background:
               "radial-gradient(circle at 120% 30%, #f0ff23, #ffea00, #ffd400, #ffbd13, #ffa62a, #ff8e3c, #ff754e, #ff5c5e, #ff436e, #ff2a7e, #fd118d, #e9009b)",
           },
           ...style,
         }}
       >
-        {title}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          style={{
+            height: "100%",
+            width: "100%",
+            left: 0,
+            top: 0,
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+          }}
+          alt="Mesh"
+          src={meshSrc as unknown as string}
+        />
+        <div>{title}</div>
         <div style={{ fontSize: 32 }}>{subtitle}</div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           style={{
-            height: "80px",
+            height: "100px",
             position: "absolute",
-            bottom: 20,
-            right: 20,
+            bottom: 40,
+            right: 40,
           }}
           alt="Wagmedia Logo"
           src={logoSrc as unknown as string}
         />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
       </div>
     ),
     // ImageResponse options
