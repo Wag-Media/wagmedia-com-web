@@ -21,6 +21,11 @@ export const siteConfig = {
       href: "/newsletter",
     },
     {
+      id: "14",
+      name: "Events",
+      href: "/events",
+    },
+    {
       id: "9",
       name: "Creators",
       href: "/creators",

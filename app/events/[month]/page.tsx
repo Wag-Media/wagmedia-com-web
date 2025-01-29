@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { Headline } from "@/components/ui/headline"
@@ -6,6 +7,11 @@ import { Calendar } from "../calendar"
 
 interface PageProps {
   params: { month: string }
+}
+
+export const metadata: Metadata = {
+  title: "Polkadot Events Calendar",
+  description: "Never miss an event in web3",
 }
 
 function getDefaultMonth() {
