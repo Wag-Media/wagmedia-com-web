@@ -54,10 +54,25 @@ export function generateCalendarDays(year: number, month: number) {
   return [...prevMonthDays, ...currentMonthDays, ...nextMonthDays]
 }
 
-export function getEventsForDate(events: Array<PolkadotEvent>, date: string) {
+export function getEventsForDate(
+  events: Array<PolkadotEvent>,
+  dateStr: string
+): Array<PolkadotEvent> {
+  const date = new Date(dateStr)
+  date.setHours(0, 0, 0, 0)
+
   return events.filter((event) => {
-    const eventDate = new Date(event.datetime)
-    const compareDate = new Date(date)
-    return eventDate.toDateString() === compareDate.toDateString()
+    // Handle all-day and multi-day events
+    if (!event.startDate) return false
+
+    const startDate = new Date(event.startDate)
+    startDate.setHours(0, 0, 0, 0)
+
+    const endDate = event.endDate
+      ? new Date(event.endDate)
+      : new Date(startDate)
+    endDate.setHours(23, 59, 59, 999)
+
+    return date >= startDate && date <= endDate
   })
 }

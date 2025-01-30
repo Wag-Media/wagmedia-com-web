@@ -29,7 +29,6 @@ export function MonthSelector({ selectedMonthAsDate }: MonthSelectorProps) {
           variant="ghost"
           className="h-6 px-1 py-0 ml-1 text-lg font-semibold text-pink-500 hover:bg-transparent hover:text-pink-600 focus-visible:bg-pink-100/50 focus-visible:ring-1 focus-visible:ring-pink-500 focus-visible:ring-offset-0"
         >
-          in{" "}
           {selectedMonthAsDate.toLocaleString("en-US", {
             month: "long",
             year: "numeric",
