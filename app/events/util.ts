@@ -1,4 +1,4 @@
-import { PolkadotEvent } from "./calendar"
+import { PolkadotEvent } from "@prisma/client"
 
 // Add these utility functions at the top of the file
 export function getDaysInMonth(year: number, month: number) {

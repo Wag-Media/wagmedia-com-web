@@ -33,6 +33,7 @@ export default async function PageCategories() {
               postId: curr.postId,
               oddJobId: curr.oddJobId,
               id: curr.id,
+              eventId: curr.eventId,
             })
           }
           return acc
@@ -70,6 +71,7 @@ export default async function PageCategories() {
                 postId: curr.postId,
                 oddJobId: curr.oddJobId,
                 id: curr.id,
+                eventId: curr.eventId,
               })
             }
             return acc

@@ -103,6 +103,7 @@ export async function SinglePostContent({ slug }: { slug: string }) {
             postId: curr.postId,
             oddJobId: curr.oddJobId,
             id: curr.id,
+            eventId: curr.eventId,
           })
         }
         return acc
