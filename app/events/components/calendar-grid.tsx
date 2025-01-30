@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { DiscordIcon } from "@/images/icons"
 import { PolkadotEvent } from "@prisma/client"
+import { TooltipPortal } from "@radix-ui/react-tooltip"
 import {
   CalendarIcon,
   ChevronLeftIcon,
@@ -118,42 +119,48 @@ export function CalendarGrid({
                   </button>
                 </TooltipTrigger>
                 {hasEvents && (
-                  <TooltipContent side="bottom" className="p-2 max-w-[300px]">
-                    <div className="space-y-2">
-                      {dayEvents.map((event) => (
-                        <div
-                          key={event.id}
-                          className="flex flex-row gap-2 text-sm"
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={event.image ?? "/placeholder.svg"}
-                            alt={event.title}
-                            className="flex-none rounded-sm size-12"
-                          />
-                          <div className="flex flex-col justify-center gap-0.5 text-left">
-                            <div className="font-semibold">{event.title}</div>
-                            <div className="text-xs text-muted-foreground">
-                              {event.isAllDay
-                                ? "All day"
-                                : event.startsAt?.toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}
-                              {event.location && ` - ${event.location}`}
+                  <TooltipPortal>
+                    <TooltipContent
+                      side="bottom"
+                      className="p-2 max-w-[300px]"
+                      sideOffset={5}
+                    >
+                      <div className="space-y-2">
+                        {dayEvents.map((event) => (
+                          <div
+                            key={event.id}
+                            className="flex flex-row gap-2 text-sm"
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={event.image ?? "/placeholder.svg"}
+                              alt={event.title}
+                              className="flex-none rounded-sm size-12"
+                            />
+                            <div className="flex flex-col justify-center gap-0.5 text-left">
+                              <div className="font-semibold">{event.title}</div>
+                              <div className="text-xs text-muted-foreground">
+                                {event.isAllDay
+                                  ? "All day"
+                                  : event.startsAt?.toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
+                                {event.location && ` - ${event.location}`}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  </TooltipContent>
+                        ))}
+                      </div>
+                    </TooltipContent>
+                  </TooltipPortal>
                 )}
               </Tooltip>
             </TooltipProvider>
           )
         })}
       </div>
-      <div className="sticky top-12">
+      <div className="sticky z-40 top-12">
         <Link href="https://discord.com/channels/916926605056696341/945838967914389594">
           <Button className="w-full px-3 py-2 mt-8 text-sm font-semibold transition-all duration-300 rounded-md shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 hover:scale-[1.01]">
             Add event <DiscordIcon className="ml-2 size-4" />
