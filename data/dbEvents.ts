@@ -19,6 +19,15 @@ export const getEvents = async ({
       startsAt: {
         gte: fromDate,
       },
+      ...(category
+        ? {
+            tags: {
+              some: {
+                name: category,
+              },
+            },
+          }
+        : {}),
     },
     orderBy: {
       startsAt: "asc",
@@ -29,12 +38,27 @@ export const getEvents = async ({
   return events
 }
 
-export const getTotalEvents = async ({ fromDate }: { fromDate: Date }) => {
+export const getTotalEvents = async ({
+  fromDate,
+  category,
+}: {
+  fromDate: Date
+  category?: string
+}) => {
   const totalEvents = await prisma.polkadotEvent.count({
     where: {
       startsAt: {
         gte: fromDate,
       },
+      ...(category
+        ? {
+            tags: {
+              some: {
+                name: category,
+              },
+            },
+          }
+        : {}),
     },
   })
   return totalEvents

@@ -9,15 +9,16 @@ import { MonthSelector } from "./components/month-selector"
 
 interface CalendarProps {
   selectedMonth: string // Format: "MM-YYYY"
+  category?: string
 }
 
-export async function Calendar({ selectedMonth }: CalendarProps) {
+export async function Calendar({ selectedMonth, category }: CalendarProps) {
   const [month, year] = selectedMonth.split("-").map(Number)
   const selectedMonthAsDate = new Date(year, month - 1)
 
   const [events, totalEvents] = await Promise.all([
-    getEvents({ fromDate: selectedMonthAsDate }),
-    getTotalEvents({ fromDate: selectedMonthAsDate }),
+    getEvents({ fromDate: selectedMonthAsDate, category }),
+    getTotalEvents({ fromDate: selectedMonthAsDate, category }),
   ])
 
   async function loadMoreEvents(page: number, category?: string) {

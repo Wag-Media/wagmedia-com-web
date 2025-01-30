@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import { redirect } from "next/navigation"
 
 import { Headline } from "@/components/ui/headline"
 
@@ -7,12 +6,14 @@ import { Calendar } from "../calendar"
 
 interface PageProps {
   params: { month: string }
+  searchParams: { category?: string }
 }
 
 export const metadata: Metadata = {
   title: "Polkadot Events Calendar",
   description: "Never miss an event in web3",
 }
+export const revalidate = 30
 
 function getDefaultMonth() {
   const date = new Date()
@@ -39,7 +40,7 @@ function validateMonth(month?: string) {
   return getDefaultMonth()
 }
 
-export default function EventsPage({ params }: PageProps) {
+export default function EventsPage({ params, searchParams }: PageProps) {
   const month = params?.month
 
   const validatedMonth = validateMonth(month)
@@ -51,7 +52,10 @@ export default function EventsPage({ params }: PageProps) {
       <Headline level="h1" subtitle="Never miss an event in web3">
         Polkadot Events Calendar
       </Headline>
-      <Calendar selectedMonth={validatedMonth} />
+      <Calendar
+        selectedMonth={validatedMonth}
+        category={searchParams?.category}
+      />
     </div>
   )
 }

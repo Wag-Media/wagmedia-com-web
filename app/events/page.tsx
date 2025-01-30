@@ -2,6 +2,8 @@ import { Headline } from "@/components/ui/headline"
 
 import { Calendar } from "./calendar"
 
+export const revalidate = 30
+
 function getDefaultMonth() {
   const date = new Date()
   return `${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()}`
