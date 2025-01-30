@@ -29,8 +29,7 @@ export function Headline({
         {
           className: cn(
             {
-              "text-4xl font-bold text-gray-900 dark:text-white":
-                level === "h1",
+              "text-xl md:text-4xl lg:text-5xl font-bold": level === "h1",
               "text-2xl font-bold text-gray-900 dark:text-white":
                 level === "h2",
             },
