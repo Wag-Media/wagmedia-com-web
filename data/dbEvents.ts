@@ -38,6 +38,20 @@ export const getEvents = async ({
   return events
 }
 
+export const getEventCategories = async (fromDate: Date) => {
+  const categories = await prisma.polkadotEvent.findMany({
+    where: {
+      startsAt: {
+        gte: fromDate,
+      },
+    },
+    select: {
+      tags: true,
+    },
+  })
+  return categories.map((event) => event.tags.map((tag) => tag.name))
+}
+
 export const getTotalEvents = async ({
   fromDate,
   category,

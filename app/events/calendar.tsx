@@ -1,5 +1,10 @@
 import { Suspense } from "react"
-import { getEvents, getEventsByMonth, getTotalEvents } from "@/data/dbEvents"
+import {
+  getEventCategories,
+  getEvents,
+  getEventsByMonth,
+  getTotalEvents,
+} from "@/data/dbEvents"
 import { PolkadotEvent, Tag } from "@prisma/client"
 
 import { CalendarGrid } from "./components/calendar-grid"
@@ -13,12 +18,16 @@ interface CalendarProps {
 }
 
 export async function Calendar({ selectedMonth, category }: CalendarProps) {
+  // Add a cache-busting key to force re-render when category changes
+  const key = `${selectedMonth}-${category ?? "all"}`
+
   const [month, year] = selectedMonth.split("-").map(Number)
   const selectedMonthAsDate = new Date(year, month - 1)
 
-  const [events, totalEvents] = await Promise.all([
+  const [events, totalEvents, eventCategories] = await Promise.all([
     getEvents({ fromDate: selectedMonthAsDate, category }),
     getTotalEvents({ fromDate: selectedMonthAsDate, category }),
+    getEventCategories(selectedMonthAsDate),
   ])
 
   async function loadMoreEvents(page: number, category?: string) {
@@ -32,13 +41,14 @@ export async function Calendar({ selectedMonth, category }: CalendarProps) {
   }
 
   const uniqueCategories = Array.from(
-    new Set(events.flatMap((event) => event.tags.map((tag) => tag.name)))
+    new Set(eventCategories.flatMap((category) => category))
   )
     .filter(Boolean)
     .sort()
 
   return (
-    <div>
+    // Add key prop to force re-render when category changes
+    <div key={key}>
       <div className="flex items-center">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           Upcoming Events from

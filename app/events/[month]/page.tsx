@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "Polkadot Events Calendar",
   description: "Never miss an event in web3",
 }
+
 export const revalidate = 30
 
 function getDefaultMonth() {
@@ -21,7 +22,6 @@ function getDefaultMonth() {
 }
 
 function validateMonth(month?: string) {
-  console.log("month", month)
   if (!month) return getDefaultMonth()
 
   // Validate format MM-YYYY
@@ -32,8 +32,18 @@ function validateMonth(month?: string) {
   const monthNum = parseInt(monthStr)
   const yearNum = parseInt(yearStr)
 
-  // Check if month is between 1-12 and year is reasonable
-  if (monthNum >= 1 && monthNum <= 12 && yearNum >= 2024 && yearNum <= 2026) {
+  const currentYear = new Date().getFullYear()
+  // Allow 10 years in the past and 10 years in the future
+  const minYear = currentYear - 10
+  const maxYear = currentYear + 10
+
+  // Check if month is between 1-12 and year is within reasonable range
+  if (
+    monthNum >= 1 &&
+    monthNum <= 12 &&
+    yearNum >= minYear &&
+    yearNum <= maxYear
+  ) {
     return month
   }
 

@@ -3,11 +3,9 @@
 import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { PolkadotEvent, Tag } from "@prisma/client"
-import { Calendar, Calendar1, CalendarX2, Loader2, MapPin } from "lucide-react"
+import { Calendar, CalendarX2, Loader2, MapPin } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-
-import { size } from "../../../components/opengraph-image"
 
 interface EventsListProps {
   initialEvents: Array<PolkadotEvent & { tags: Tag[] }>
