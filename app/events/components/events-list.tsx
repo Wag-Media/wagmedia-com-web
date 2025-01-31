@@ -127,8 +127,8 @@ export function EventsList({
                     <p className="mt-2 text-gray-600 dark:text-gray-300">
                       {event.description}
                     </p>
-                    <dl className="flex flex-col mt-2 text-gray-500 dark:text-gray-400 xl:flex-row">
-                      <div className="flex items-start gap-x-3">
+                    <dl className="flex flex-col mt-2 text-gray-500 dark:text-gray-400">
+                      <div className="flex items-start gap-x-2">
                         <dt className="mt-0.5">
                           <span className="sr-only">Date</span>
                           <Calendar
@@ -143,7 +143,7 @@ export function EventsList({
                           })}
                         </dd>
                       </div>
-                      <div className="mt-2 flex items-start gap-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400/50 xl:pl-3.5">
+                      <div className="flex items-start mt-2 gap-x-2">
                         <dt className="mt-0.5">
                           <span className="sr-only">Location</span>
                           <MapPin
