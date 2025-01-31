@@ -51,8 +51,6 @@ export const metadata = {
 
 export const revalidate = 4320 // 72 hours
 
-const queryClient = new QueryClient()
-
 export default function RootLayout({
   children,
 }: {

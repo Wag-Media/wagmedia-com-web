@@ -18,7 +18,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-import { generateCalendarDays, getEventsForDate } from "../util"
+import {
+  formatEventDates,
+  generateCalendarDays,
+  getEventsForDate,
+} from "../util"
+import { EventCardSmall } from "./event-card-small"
 
 interface CalendarGridProps {
   selectedMonthAsDate: Date
@@ -127,29 +132,7 @@ export function CalendarGrid({
                     >
                       <div className="space-y-2">
                         {dayEvents.map((event) => (
-                          <div
-                            key={event.id}
-                            className="flex flex-row gap-2 text-sm"
-                          >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={event.image ?? "/placeholder.svg"}
-                              alt={event.title}
-                              className="flex-none rounded-sm size-12"
-                            />
-                            <div className="flex flex-col justify-center gap-0.5 text-left">
-                              <div className="font-semibold">{event.title}</div>
-                              <div className="text-xs text-muted-foreground">
-                                {event.isAllDay
-                                  ? "All day"
-                                  : event.startsAt?.toLocaleTimeString([], {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    })}
-                                {event.location && ` - ${event.location}`}
-                              </div>
-                            </div>
-                          </div>
+                          <EventCardSmall event={event} key={event.id} />
                         ))}
                       </div>
                     </TooltipContent>
@@ -175,25 +158,7 @@ export function CalendarGrid({
             <ol className="mt-4 space-y-4 top-24">
               {events.slice(0, 3).map((event) => (
                 <li key={event.id} className="flex items-center gap-x-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={event.image ?? "/placeholder.svg"}
-                    alt=""
-                    className="flex-none rounded-sm size-12"
-                  />
-                  <div className="flex-auto min-w-0">
-                    <p className="text-sm font-semibold text-left text-gray-900 truncate dark:text-gray-100">
-                      {event.title}
-                    </p>
-                    <div className="flex items-center mt-1 text-xs text-gray-500 dark:text-gray-400 gap-x-2">
-                      <CalendarIcon className="flex-none w-2 h-2 size-2" />
-                      <span className="truncate">
-                        {event.startsAt?.toLocaleString()}
-                      </span>
-                      <MapPin className="flex-none ml-1 size-2" />
-                      <span className="truncate">{event.location}</span>
-                    </div>
-                  </div>
+                  <EventCardSmall event={event} />
                 </li>
               ))}
             </ol>

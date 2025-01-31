@@ -7,6 +7,9 @@ import { Calendar, CalendarX2, Loader2, MapPin } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
+import { formatEventDates } from "../util"
+import { EventListItem } from "./event-list-item"
+
 interface EventsListProps {
   initialEvents: Array<PolkadotEvent & { tags: Tag[] }>
   totalEvents: number
@@ -14,48 +17,6 @@ interface EventsListProps {
     page: number,
     category?: string
   ) => Promise<Array<PolkadotEvent & { tags: Tag[] }>>
-}
-
-function formatEventDates({
-  startsAt,
-  endsAt,
-}: {
-  startsAt?: Date | null
-  endsAt?: Date | null
-}) {
-  if (!startsAt) return ""
-
-  const formatDate = (date: Date) => {
-    return date.toLocaleString("en-US", {
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hourCycle: "h23",
-    })
-  }
-
-  const formatTimeOnly = (date: Date) => {
-    return date.toLocaleString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hourCycle: "h23",
-    })
-  }
-
-  const isSameDay =
-    endsAt &&
-    startsAt.getUTCFullYear() === endsAt.getUTCFullYear() &&
-    startsAt.getUTCMonth() === endsAt.getUTCMonth() &&
-    startsAt.getUTCDate() === endsAt.getUTCDate()
-
-  const startStr = `${formatDate(startsAt)} UTC`
-
-  if (!endsAt) return startStr
-
-  if (isSameDay) return `${startStr} - ${formatTimeOnly(endsAt)} UTC`
-
-  return `${startStr} - ${formatDate(endsAt)} UTC`
 }
 
 export function EventsList({
@@ -107,66 +68,7 @@ export function EventsList({
         <>
           <ol className="divide-y divide-gray-100 dark:divide-gray-800 text-sm/6">
             {events.map((event) => (
-              <li
-                key={event.id}
-                className="relative flex flex-col py-6 gap-x-6 xl:static lg:grid lg:grid-cols-4 lg:items-start"
-              >
-                <div className="flex gap-x-6 lg:col-span-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={event.image ?? "/placeholder.svg"}
-                    alt={event.title}
-                    className="flex-none object-cover rounded-sm size-28"
-                  />
-                  <div className="flex-auto">
-                    <h3 className="pr-10 text-lg font-semibold text-gray-900 dark:text-gray-100 xl:pr-0">
-                      <a href={event.link || ""} className="hover:underline">
-                        {event.title}
-                      </a>
-                    </h3>
-                    <p className="mt-2 text-gray-600 dark:text-gray-300">
-                      {event.description}
-                    </p>
-                    <dl className="flex flex-col mt-2 text-gray-500 dark:text-gray-400">
-                      <div className="flex items-start gap-x-2">
-                        <dt className="mt-0.5">
-                          <span className="sr-only">Date</span>
-                          <Calendar
-                            className="text-gray-400 size-5"
-                            aria-hidden="true"
-                          />
-                        </dt>
-                        <dd>
-                          {formatEventDates({
-                            startsAt: event.startsAt,
-                            endsAt: event.endsAt,
-                          })}
-                        </dd>
-                      </div>
-                      <div className="flex items-start mt-2 gap-x-2">
-                        <dt className="mt-0.5">
-                          <span className="sr-only">Location</span>
-                          <MapPin
-                            className="text-gray-400 size-5"
-                            aria-hidden="true"
-                          />
-                        </dt>
-                        <dd>{event.location}</dd>
-                      </div>
-                    </dl>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-4 cursor-default lg:mt-0 lg:justify-end lg:self-start">
-                  {event.tags.map((tag) => (
-                    <span
-                      key={tag.name}
-                      className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 rounded-md dark:text-gray-300 bg-gray-50 dark:bg-gray-800 ring-1 ring-inset ring-gray-500/10 dark:ring-gray-400/20"
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
-                </div>
-              </li>
+              <EventListItem event={event} key={event.id} />
             ))}
           </ol>
           <div className="flex items-center justify-center mt-10">

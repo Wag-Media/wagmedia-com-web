@@ -76,3 +76,47 @@ export function getEventsForDate(
     return date >= startDate && date <= endDate
   })
 }
+
+export function formatEventDates({
+  startDate,
+  endDate,
+  withDate = true,
+}: {
+  startDate: Date | null
+  endDate: Date | null
+  withDate?: boolean
+}) {
+  // Early return for invalid dates
+  if (!startDate || !endDate) return ""
+
+  // Format options for date display - using UTC methods
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }
+
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "UTC",
+  }
+
+  // Format dates
+  const formattedStartDate = startDate.toLocaleDateString("en-US", dateOptions)
+  const formattedEndDate = endDate.toLocaleDateString("en-US", dateOptions)
+  const formattedStartTime = startDate.toLocaleTimeString("en-US", timeOptions)
+  const formattedEndTime = endDate.toLocaleTimeString("en-US", timeOptions)
+
+  // Same day event
+  if (formattedStartDate === formattedEndDate)
+    return `${withDate ? formattedStartDate : ""} ${formattedStartTime} - ${
+      withDate ? formattedEndDate : ""
+    } ${formattedEndTime} UTC`
+
+  // Different days event
+  return `${withDate ? formattedStartDate : ""} ${formattedStartTime} - ${
+    withDate ? formattedEndDate : ""
+  } ${formattedEndTime} UTC`
+}
