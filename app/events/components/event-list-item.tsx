@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { PolkadotEvent } from "@prisma/client"
 import { Calendar, MapPin } from "lucide-react"
 
@@ -14,17 +15,27 @@ export function EventListItem({
       className="relative flex flex-col py-6 gap-x-6 xl:static lg:grid lg:grid-cols-4 lg:items-start"
     >
       <div className="flex gap-x-6 lg:col-span-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={event.image ?? "/placeholder.svg"}
-          alt={event.title}
-          className="flex-none object-cover rounded-sm size-28"
-        />
+        <Link
+          href={event.link || ""}
+          target="_blank"
+          className="flex-none hover:opacity-80 size-28 w-28"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={event.image ?? "/placeholder.svg"}
+            alt={event.title}
+            className="flex-none object-cover rounded-sm size-28"
+          />
+        </Link>
         <div className="flex-auto">
           <h3 className="pr-10 text-lg font-semibold text-gray-900 dark:text-gray-100 xl:pr-0">
-            <a href={event.link || ""} className="hover:underline">
+            <Link
+              href={event.link || ""}
+              target="_blank"
+              className="hover:underline"
+            >
               {event.title}
-            </a>
+            </Link>
           </h3>
           <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-4">
             {event.description}

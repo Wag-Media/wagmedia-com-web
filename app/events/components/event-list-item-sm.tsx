@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { PolkadotEvent } from "@prisma/client"
 import { CalendarIcon, MapPin } from "lucide-react"
 
@@ -5,12 +6,17 @@ import { formatEventDates } from "../util"
 
 export function EventCardSmall({ event }: { event: PolkadotEvent }) {
   return (
-    <div key={event.id} className="flex flex-row gap-2 text-sm">
+    <Link
+      key={event.id}
+      href={event.link || ""}
+      className="flex flex-row gap-2 text-sm"
+      target="_blank"
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={event.image ?? "/placeholder.svg"}
         alt={event.title}
-        className="flex-none rounded-sm size-16"
+        className="flex-none object-cover rounded-sm size-16"
       />
       <div className="flex flex-col justify-center gap-0.5 text-left">
         <div className="font-semibold">{event.title}</div>
@@ -33,6 +39,6 @@ export function EventCardSmall({ event }: { event: PolkadotEvent }) {
           )}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

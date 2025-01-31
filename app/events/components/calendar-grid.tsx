@@ -23,7 +23,7 @@ import {
   generateCalendarDays,
   getEventsForDate,
 } from "../util"
-import { EventCardSmall } from "./event-card-small"
+import { EventCardSmall } from "./event-list-item-sm"
 
 interface CalendarGridProps {
   selectedMonthAsDate: Date
