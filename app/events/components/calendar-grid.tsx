@@ -113,13 +113,24 @@ export function CalendarGrid({
                     <time
                       dateTime={day.date}
                       className={cn(
-                        "mx-auto flex size-7 items-center justify-center rounded-full"
+                        "mx-auto flex size-7 items-center justify-center rounded-full",
+                        day.date === new Date().toISOString().split("T")[0] &&
+                          "bg-[var(--polkadot-pink)] text-white font-semibold"
                       )}
                     >
                       {day.date.split("-")[2].replace(/^0/, "")}
                     </time>
                     {hasEvents && (
-                      <span className="absolute -translate-x-1/2 bg-indigo-600 rounded-full bottom-1 left-1/2 size-1" />
+                      <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5">
+                        {[...Array(Math.min(dayEvents.length, 5))].map(
+                          (_, i) => (
+                            <span
+                              key={i}
+                              className="size-1 rounded-full bg-[var(--polkadot-purple)]"
+                            />
+                          )
+                        )}
+                      </div>
                     )}
                   </button>
                 </TooltipTrigger>
@@ -143,7 +154,7 @@ export function CalendarGrid({
           )
         })}
       </div>
-      <div className="sticky z-40 top-12">
+      <div className="sticky top-12">
         <Link href="https://discord.com/channels/916926605056696341/945838967914389594">
           <Button className="w-full px-3 py-2 mt-8 text-sm font-semibold transition-all duration-300 rounded-md shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 hover:scale-[1.01]">
             Add event <DiscordIcon className="ml-2 size-4" />

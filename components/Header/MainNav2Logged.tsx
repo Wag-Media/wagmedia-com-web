@@ -1,5 +1,3 @@
-"use client"
-
 import React, { FC } from "react"
 import Link from "next/link"
 import { DiscordIcon } from "@/images/icons"
@@ -23,7 +21,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         </div>
 
         <div className="flex items-center flex-1 lg:flex-none">
-          <div className="flex items-center h-12 pl-[4px] border-2 rounded-full backdrop-blur-md border-background/50 bg-background/50">
+          <div className="flex items-center h-12 pl-[4px] rounded-full backdrop-blur-lg shadow-sm">
             <Logo />
             <NavigationWag className="z-10 hidden h-12 p-3 lg:flex" />
           </div>

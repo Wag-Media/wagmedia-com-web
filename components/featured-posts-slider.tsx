@@ -25,7 +25,7 @@ export function FeaturedPostsSlider({
   featuredPosts: Awaited<ReturnType<typeof getFeaturedPosts>>
 }) {
   return (
-    <div className="relative w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <div className="relative w-full mx-auto md:px-4 max-w-7xl sm:px-6 lg:px-8">
       <Carousel
         opts={{
           align: "start",
@@ -33,7 +33,7 @@ export function FeaturedPostsSlider({
         }}
         className="relative z-10 w-full [&>div]:pt-4 [&>div]:pb-6"
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
+        <CarouselContent className="md:-ml-4">
           {featuredPosts.map(
             (post: PostWithTagsCategoriesReactionsPaymentsUser) => (
               <CarouselItem key={post.id} className="md:basis-1/2 xl:basis-1/3">

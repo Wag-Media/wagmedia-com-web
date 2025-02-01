@@ -7,6 +7,7 @@ import { GeistSans } from "geist/font/sans"
 
 import Footer from "@/components/Footer/Footer"
 import SiteHeader from "@/components/SiteHeader"
+import { Bg } from "@/components/bg"
 
 import Providers from "./providers"
 
