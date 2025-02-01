@@ -113,7 +113,7 @@ export function CalendarGrid({
                     <time
                       dateTime={day.date}
                       className={cn(
-                        "mx-auto flex size-7 items-center justify-center rounded-full",
+                        "mx-auto flex size-6 items-center justify-center rounded-full",
                         day.date === new Date().toISOString().split("T")[0] &&
                           "bg-[var(--polkadot-pink)] text-white font-semibold"
                       )}

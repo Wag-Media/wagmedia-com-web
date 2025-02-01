@@ -105,8 +105,10 @@ export function HeroBackground({
         transition: "transform 0.1s ease-out",
       }}
     >
-      {/* @eslint-disable-next-line tailwindcss/no-contradicting-classname */}
-      <div className="hidden animate-avatar-1 animate-avatar-2 animate-avatar-3 animate-avatar-4" />
+      <div className="hidden animate-avatar-1" />
+      <div className="hidden animate-avatar-2" />
+      <div className="hidden animate-avatar-3" />
+      <div className="hidden animate-avatar-4" />
 
       {avatarData?.map((avatar) => (
         <div
