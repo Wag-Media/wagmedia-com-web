@@ -99,18 +99,21 @@ export function HeroBackground({
 
   return (
     <div
-      className="absolute inset-0 z-0"
+      className="absolute inset-0 z-0 opacity-50"
       style={{
         transform: `translateY(${scrollY * 0.2}px)`,
         transition: "transform 0.1s ease-out",
       }}
     >
+      {/* @eslint-disable-next-line tailwindcss/no-contradicting-classname */}
+      <div className="hidden animate-avatar-1 animate-avatar-2 animate-avatar-3 animate-avatar-4" />
+
       {avatarData?.map((avatar) => (
         <div
           key={avatar.id}
-          className={`absolute animate-avatar ${
-            visibleIds.includes(avatar.id) ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute ${`animate-avatar-${
+            ((avatar.id % 4) + 1) as 1 | 2 | 3 | 4
+          }`} ${visibleIds.includes(avatar.id) ? "opacity-100" : "opacity-0"}`}
           style={{
             width: `${avatarDimension}px`,
             height: `${avatarDimension}px`,
@@ -132,6 +135,9 @@ export function HeroBackground({
           >
             <div
               className={`absolute inset-[2px] ${avatar.color} border-2 rounded-full animate-ping-slow opacity-50 dark:opacity-100`}
+              style={{
+                animationDelay: `${avatar.id * 200}ms`,
+              }}
             ></div>
             <Image
               width={avatarDimension}

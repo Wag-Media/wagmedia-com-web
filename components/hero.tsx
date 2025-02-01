@@ -25,7 +25,7 @@ export function Hero({
     Math.round(totalPostPaymentAmount || 0 / 100) * 100
 
   return (
-    <section className="relative pb-16 pt-28">
+    <section className="relative pb-16 pt-36">
       <HeroBackground authorAvatars={authorAvatars} />
       <div className="container relative z-10">
         <div className="text-center">

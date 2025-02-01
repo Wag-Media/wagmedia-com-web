@@ -62,6 +62,7 @@ export default function RootLayout({
       <body className="">
         <Providers>
           <div className="text-base text-neutral-900 dark:text-neutral-200">
+            <Bg />
             <SiteHeader />
             {children}
             <Footer />

@@ -2,6 +2,6 @@
 
 export function Bg() {
   return (
-    <div className="absolute inset-0 bg-[radial-gradient(100%_50%_at_50%_40%,var(--polkadot-pink)_-200%,#fff_100%)] dark:bg-[radial-gradient(100%_50%_at_50%_40%,var(--polkadot-pink)_-200%,#000_100%)]"></div>
+    <div className="absolute inset-0 -z-10 bg-[image:linear-gradient(to_bottom_right,rgba(255,255,255,0%)_0%,#FFFFFF_100%),linear-gradient(to_bottom,rgba(255,255,255,0%)_0%,#FFFFFF_100%),linear-gradient(to_bottom_right,#ff267044_0%,#7916F3_100%)] dark:bg-[image:linear-gradient(to_bottom_right,rgba(0,0,0,0%)_0%,#000_100%),linear-gradient(to_bottom,rgba(0,0,0,0%)_0%,#000_100%),linear-gradient(to_bottom_right,#ff267088_0%,#7916F3_100%)] bg-[length:101%_100%] bg-no-repeat "></div>
   )
 }
