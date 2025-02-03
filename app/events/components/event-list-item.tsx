@@ -133,7 +133,6 @@ export function EventListItem({
           Add to Calendar
         </Button>
       </div>
-      <pre>{JSON.stringify(event, null, 2)}</pre>
     </li>
   )
 }
