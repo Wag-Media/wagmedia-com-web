@@ -42,7 +42,7 @@ export function EventListItem({
   return (
     <li
       key={event.id}
-      className="relative flex flex-col py-6 gap-x-6 xl:static lg:grid lg:grid-cols-4 lg:items-start"
+      className="relative flex flex-col py-6 group gap-x-6 xl:static lg:grid lg:grid-cols-4 lg:items-start"
     >
       <div className="flex gap-x-6 lg:col-span-3">
         <Link
@@ -80,6 +80,7 @@ export function EventListItem({
                 {formatEventDates({
                   startDate: event.startsAt,
                   endDate: event.endsAt,
+                  withTime: !event.isAllDay,
                 })}
               </dd>
             </div>
@@ -127,7 +128,7 @@ export function EventListItem({
           variant="outline"
           size="sm"
           onClick={handleExport}
-          className="flex items-center self-end h-6 gap-2 text-xs w-36"
+          className="flex items-center self-end h-6 gap-2 text-xs transition-opacity duration-200 opacity-0 w-36 group-hover:opacity-100"
         >
           <CalendarArrowDown className="size-4" />
           Add to Calendar
