@@ -62,18 +62,37 @@ export function getEventsForDate(
   date.setHours(0, 0, 0, 0)
 
   return events.filter((event) => {
-    // Handle all-day and multi-day events
     if (!event.startDate) return false
 
     const startDate = new Date(event.startDate)
     startDate.setHours(0, 0, 0, 0)
 
-    const endDate = event.endDate
-      ? new Date(event.endDate)
-      : new Date(startDate)
+    // For recurring events, use recurrenceEndDate if available, otherwise use endDate
+    const endDate =
+      event.recurrencePattern && event.recurrenceEndDate
+        ? new Date(event.recurrenceEndDate)
+        : event.endDate
+        ? new Date(event.endDate)
+        : new Date(startDate)
     endDate.setHours(23, 59, 59, 999)
 
-    return date >= startDate && date <= endDate
+    // Check if date is within the overall event range
+    if (date < startDate || date > endDate) return false
+
+    // Handle non-recurring events
+    if (!event.recurrencePattern) return true
+
+    // Handle recurring events based on pattern
+    switch (event.recurrencePattern) {
+      case "weekly":
+        return date.getDay() === startDate.getDay()
+      case "monthly":
+        return date.getDate() === startDate.getDate()
+      case "daily":
+        return true
+      default:
+        return false
+    }
   })
 }
 
@@ -81,15 +100,53 @@ export function formatEventDates({
   startDate,
   endDate,
   withDate = true,
+  withTime = true,
 }: {
   startDate: Date | null
   endDate: Date | null
   withDate?: boolean
+  withTime?: boolean
 }) {
-  // Early return for invalid dates
-  if (!startDate || !endDate) return ""
+  // Handle cases where only one date is provided
+  if (!startDate && !endDate) return ""
+  if (startDate && !endDate) {
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC",
+    }
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: "UTC",
+    }
+    const formattedDate = startDate.toLocaleDateString("en-US", dateOptions)
+    const formattedTime = startDate.toLocaleTimeString("en-US", timeOptions)
+    return `${withDate ? formattedDate : ""} ${
+      withTime ? `${formattedTime} UTC` : ""
+    }`.trim()
+  }
+  if (!startDate && endDate) {
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC",
+    }
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: "UTC",
+    }
+    const formattedDate = endDate.toLocaleDateString("en-US", dateOptions)
+    const formattedTime = endDate.toLocaleTimeString("en-US", timeOptions)
+    return `${withDate ? formattedDate : ""} ${
+      withTime ? `${formattedTime} UTC` : ""
+    }`.trim()
+  }
 
-  // Format options for date display - using UTC methods
+  // Rest of the existing function for when both dates are present
   const dateOptions: Intl.DateTimeFormatOptions = {
     month: "short",
     day: "numeric",
@@ -104,19 +161,101 @@ export function formatEventDates({
   }
 
   // Format dates
-  const formattedStartDate = startDate.toLocaleDateString("en-US", dateOptions)
-  const formattedEndDate = endDate.toLocaleDateString("en-US", dateOptions)
-  const formattedStartTime = startDate.toLocaleTimeString("en-US", timeOptions)
-  const formattedEndTime = endDate.toLocaleTimeString("en-US", timeOptions)
+  const formattedStartDate = startDate
+    ? startDate.toLocaleDateString("en-US", dateOptions)
+    : ""
+  const formattedEndDate = endDate
+    ? endDate.toLocaleDateString("en-US", dateOptions)
+    : ""
+  const formattedStartTime = startDate
+    ? startDate.toLocaleTimeString("en-US", timeOptions)
+    : ""
+  const formattedEndTime = endDate
+    ? endDate.toLocaleTimeString("en-US", timeOptions)
+    : ""
 
   // Same day event
   if (formattedStartDate === formattedEndDate)
-    return `${withDate ? formattedStartDate : ""} ${formattedStartTime} - ${
-      withDate ? formattedEndDate : ""
-    } ${formattedEndTime} UTC`
+    return `${withDate ? formattedStartDate : ""} ${
+      withTime ? `${formattedStartTime} - ${formattedEndTime} UTC` : ""
+    }`.trim()
 
   // Different days event
-  return `${withDate ? formattedStartDate : ""} ${formattedStartTime} - ${
-    withDate ? formattedEndDate : ""
-  } ${formattedEndTime} UTC`
+  return `${withDate ? formattedStartDate : ""} ${
+    withTime ? `${formattedStartTime}` : ""
+  } - ${withDate ? formattedEndDate : ""} ${
+    withTime ? `${formattedEndTime} UTC` : ""
+  }`.trim()
+}
+
+function generateRRule(
+  recurrencePattern: string | null,
+  recurrenceEndDate: Date | null
+): string {
+  if (!recurrencePattern) return ""
+
+  const rruleBase = "RRULE:FREQ="
+  const untilPart = recurrenceEndDate
+    ? `;UNTIL=${
+        recurrenceEndDate.toISOString().replace(/[-:]/g, "").split(".")[0]
+      }Z`
+    : ""
+
+  switch (recurrencePattern.toLowerCase()) {
+    case "daily":
+      return `${rruleBase}DAILY${untilPart}`
+    case "weekly":
+      return `${rruleBase}WEEKLY${untilPart}`
+    case "monthly":
+      return `${rruleBase}MONTHLY${untilPart}`
+    default:
+      return ""
+  }
+}
+
+interface ICalEventParams {
+  title: string
+  description: string
+  location: string
+  startDate: Date
+  endDate: Date | null
+  recurrencePattern: string | null
+  recurrenceEndDate?: Date | null
+}
+
+export function generateICalEvent({
+  title,
+  description,
+  location,
+  startDate,
+  endDate,
+  recurrencePattern,
+  recurrenceEndDate,
+}: ICalEventParams): string {
+  const now = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+  const start = startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+  const end = endDate
+    ? endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+    : start
+
+  const rrule = generateRRule(recurrencePattern, endDate)
+
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Polkadot Events//EN",
+    "BEGIN:VEVENT",
+    `UID:${crypto.randomUUID()}`,
+    `DTSTAMP:${now}`,
+    `DTSTART:${start}`,
+    `DTEND:${end}`,
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${description.replace(/\n/g, "\\n")}`,
+    `LOCATION:${location}`,
+    rrule,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ]
+    .filter(Boolean)
+    .join("\r\n")
 }

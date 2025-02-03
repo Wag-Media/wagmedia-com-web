@@ -1,14 +1,44 @@
 import Link from "next/link"
 import { PolkadotEvent } from "@prisma/client"
-import { Calendar, MapPin } from "lucide-react"
+import {
+  Calendar,
+  CalendarArrowDown,
+  CalendarSync,
+  Download,
+  MapPin,
+} from "lucide-react"
 
-import { formatEventDates } from "../util"
+import { Button } from "@/components/ui/button"
+
+import { formatEventDates, generateICalEvent } from "../util"
 
 export function EventListItem({
   event,
 }: {
   event: PolkadotEvent & { tags: { name: string }[] }
 }) {
+  function handleExport() {
+    if (!event.title || !event.description || !event.location) return
+    if (!event.startsAt) return
+
+    const icalData = generateICalEvent({
+      title: event.title,
+      description: event.description,
+      location: event.location,
+      startDate: event.startsAt,
+      endDate: event.endsAt,
+      recurrencePattern: event.recurrencePattern,
+    })
+
+    const blob = new Blob([icalData], { type: "text/calendar;charset=utf-8" })
+    const link = document.createElement("a")
+    link.href = window.URL.createObjectURL(blob)
+    link.download = `${event.title.toLowerCase().replace(/\s+/g, "-")}.ics`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   return (
     <li
       key={event.id}
@@ -53,6 +83,25 @@ export function EventListItem({
                 })}
               </dd>
             </div>
+            {event?.recurrencePattern && (
+              <div className="flex items-start mt-1 gap-x-2">
+                <dt className="mt-0.5">
+                  <span className="sr-only">Recurrence</span>
+                  <CalendarSync
+                    className="text-gray-400 size-5"
+                    aria-hidden="true"
+                  />
+                </dt>
+                <dd>
+                  {event.recurrencePattern} until{" "}
+                  {formatEventDates({
+                    startDate: null,
+                    endDate: event.recurrenceEndDate,
+                    withTime: false,
+                  })}
+                </dd>
+              </div>
+            )}
             <div className="flex items-start mt-1 gap-x-2">
               <dt className="mt-0.5">
                 <span className="sr-only">Location</span>
@@ -63,16 +112,28 @@ export function EventListItem({
           </dl>
         </div>
       </div>
-      <div className="flex flex-wrap gap-2 mt-4 cursor-default lg:mt-0 lg:justify-end lg:self-start">
-        {event.tags.map((tag) => (
-          <span
-            key={tag.name}
-            className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 rounded-md dark:text-gray-300 bg-gray-50 dark:bg-gray-800 ring-1 ring-inset ring-gray-500/10 dark:ring-gray-400/20"
-          >
-            {tag.name}
-          </span>
-        ))}
+      <div className="flex flex-col flex-wrap justify-between h-full gap-2 mt-4 lg:mt-0">
+        <div className="flex flex-wrap self-end gap-2">
+          {event.tags.map((tag) => (
+            <span
+              key={tag.name}
+              className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 rounded-md cursor-default dark:text-gray-300 bg-gray-50 dark:bg-gray-800 ring-1 ring-inset ring-gray-500/10 dark:ring-gray-400/20"
+            >
+              {tag.name}
+            </span>
+          ))}
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleExport}
+          className="flex items-center self-end h-6 gap-2 text-xs w-36"
+        >
+          <CalendarArrowDown className="size-4" />
+          Add to Calendar
+        </Button>
       </div>
+      <pre>{JSON.stringify(event, null, 2)}</pre>
     </li>
   )
 }

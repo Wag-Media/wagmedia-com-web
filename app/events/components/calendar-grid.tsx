@@ -62,7 +62,7 @@ export function CalendarGrid({
           </Button>
         </Link>
         <div className="flex-auto text-sm font-semibold">
-          {selectedMonthAsDate.toLocaleString("default", {
+          {selectedMonthAsDate.toLocaleString("en-US", {
             month: "long",
             year: "numeric",
           })}
@@ -137,7 +137,7 @@ export function CalendarGrid({
                 {hasEvents && (
                   <TooltipPortal>
                     <TooltipContent
-                      side="bottom"
+                      side="left"
                       className="p-2 max-w-[300px]"
                       sideOffset={5}
                     >

@@ -16,9 +16,35 @@ export const getEvents = async ({
       tags: true,
     },
     where: {
-      startsAt: {
-        gte: fromDate,
-      },
+      OR: [
+        // Non-recurring events
+        {
+          startsAt: {
+            gte: fromDate,
+          },
+          recurrencePattern: null,
+        },
+        // Recurring events - include both current and future recurring events
+        {
+          AND: [
+            {
+              OR: [
+                // Include recurring events that have already started
+                { startsAt: { lte: fromDate } },
+                // Include recurring events that will start in the future
+                { startsAt: { gte: fromDate } },
+              ],
+            },
+            {
+              OR: [
+                { recurrenceEndDate: { gte: fromDate } },
+                { recurrenceEndDate: null },
+              ],
+            },
+            { recurrencePattern: { not: null } },
+          ],
+        },
+      ],
       ...(category
         ? {
             tags: {
