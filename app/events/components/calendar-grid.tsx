@@ -89,7 +89,9 @@ export function CalendarGrid({
       </div>
       <div className="grid grid-cols-7 gap-px mt-2 text-sm bg-gray-200 rounded-lg shadow dark:bg-gray-800 isolate ring-1 ring-gray-200 dark:ring-gray-800">
         {days.map((day, dayIdx) => {
-          const dayEvents = getEventsForDate(events, day.date)
+          const dayEvents = day.isCurrentMonth
+            ? getEventsForDate(events, day.date)
+            : []
           const hasEvents = dayEvents.length > 0
 
           return (
