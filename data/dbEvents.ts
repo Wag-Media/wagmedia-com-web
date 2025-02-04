@@ -16,6 +16,7 @@ export const getEvents = async ({
       tags: true,
     },
     where: {
+      isPublished: true,
       OR: [
         // Non-recurring events
         {
@@ -90,6 +91,7 @@ export const getTotalEvents = async ({
       startsAt: {
         gte: fromDate,
       },
+      isPublished: true,
       ...(category
         ? {
             tags: {
@@ -118,6 +120,7 @@ export const getEventsByMonth = async ({
 }) => {
   const events = await prisma.polkadotEvent.findMany({
     where: {
+      isPublished: true,
       startDate: {
         gte: new Date(year, month - 1),
         lt: new Date(year, month),

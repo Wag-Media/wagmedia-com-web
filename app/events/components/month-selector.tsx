@@ -35,7 +35,10 @@ export function MonthSelector({ selectedMonthAsDate }: MonthSelectorProps) {
           })}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent
+        align="center"
+        className="w-48 border-[var(--polkadot-pink)] shadow-md backdrop-blur-md"
+      >
         {Array.from({ length: 13 }, (_, index) => {
           const date = new Date()
           const currentMonth = date.getMonth()
@@ -55,7 +58,7 @@ export function MonthSelector({ selectedMonthAsDate }: MonthSelectorProps) {
             <DropdownMenuItem
               key={monthYear}
               onClick={() => handleMonthChange(monthParam)}
-              className={cn("cursor-pointer", {
+              className={cn("cursor-pointer hover:!bg-[var(--polkadot-pink)]", {
                 "text-pink-500":
                   selectedMonthAsDate.getMonth() === monthDate.getMonth() &&
                   selectedMonthAsDate.getFullYear() === monthDate.getFullYear(),

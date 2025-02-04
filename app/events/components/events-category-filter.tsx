@@ -41,16 +41,22 @@ export function EventsCategoryFilter({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-6 py-0 pl-1 pr-1 text-lg font-semibold text-purple-500 hover:bg-transparent hover:text-purple-600 focus-visible:bg-purple-100/50 focus-visible:ring-1 focus-visible:ring-purple-500 focus-visible:ring-offset-0"
+          className="h-6 py-0 pl-1 pr-1 text-lg font-semibold text-purple-500 hover:bg-transparent hover:text-purple-600 focus-visible:bg-purple-100/50 focus-visible:ring-1 focus-visible:ring-purple-500 focus-visible:ring-offset-0 "
         >
           {currentCategory
             ? `categorized ${currentCategory}`
             : "in all categories"}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px]">
+      <DropdownMenuContent
+        align="end"
+        className="w-[200px] backdrop-blur-md border-[var(--polkadot-purple)]"
+      >
         {currentCategory && (
-          <DropdownMenuItem onClick={handleClearFilter}>
+          <DropdownMenuItem
+            onClick={handleClearFilter}
+            className="cursor-pointer hover:!bg-purple-500"
+          >
             Clear filter
           </DropdownMenuItem>
         )}
@@ -58,7 +64,7 @@ export function EventsCategoryFilter({
           <DropdownMenuItem
             key={category}
             onClick={() => handleCategorySelect(category)}
-            className={cn("cursor-pointer", {
+            className={cn("cursor-pointer hover:!bg-purple-500", {
               "text-purple-500": currentCategory === category,
             })}
           >

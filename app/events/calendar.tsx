@@ -66,19 +66,19 @@ export async function Calendar({ selectedMonth, category }: CalendarProps) {
         </h2>
       </div>
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
-        <CalendarGrid
-          selectedMonthAsDate={selectedMonthAsDate}
-          events={events}
-          month={month}
-          year={year}
-        />
-        <div className="mt-4 text-sm/6 lg:col-span-7 xl:col-span-8">
+        <div className="text-sm/6 lg:col-span-7 xl:col-span-8 lg:mt-4">
           <EventsList
             initialEvents={events}
             totalEvents={totalEvents}
             loadMoreEvents={loadMoreEvents}
           />
         </div>
+        <CalendarGrid
+          selectedMonthAsDate={selectedMonthAsDate}
+          events={events}
+          month={month}
+          year={year}
+        />
       </div>
     </div>
   )

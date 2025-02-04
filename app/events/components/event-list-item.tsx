@@ -67,16 +67,19 @@ export function EventListItem({
               {event.title}
             </Link>
           </h3>
-          <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-4">
+          <p className="mt-2 text-gray-700 dark:text-gray-300 line-clamp-4">
             {event.description}
           </p>
-          <dl className="flex flex-col mt-2 text-gray-500 dark:text-gray-400">
+          <dl className="flex flex-col mt-2 text-gray-700 dark:text-gray-300 font-sem">
             <div className="flex items-start gap-x-2">
               <dt className="mt-0.5">
                 <span className="sr-only">Date</span>
-                <Calendar className="text-gray-400 size-5" aria-hidden="true" />
+                <Calendar
+                  className="text-gray-700 dark:text-gray-300 size-5"
+                  aria-hidden="true"
+                />
               </dt>
-              <dd>
+              <dd className="font-semibold">
                 {formatEventDates({
                   startDate: event.startsAt,
                   endDate: event.endsAt,
@@ -85,11 +88,11 @@ export function EventListItem({
               </dd>
             </div>
             {event?.recurrencePattern && (
-              <div className="flex items-start mt-1 gap-x-2">
+              <div className="flex items-start mt-1 text-gray-700 gap-x-2 dark:text-gray-300">
                 <dt className="mt-0.5">
                   <span className="sr-only">Recurrence</span>
                   <CalendarSync
-                    className="text-gray-400 size-5"
+                    className="text-gray-700 dark:text-gray-300 size-5"
                     aria-hidden="true"
                   />
                 </dt>
@@ -106,7 +109,10 @@ export function EventListItem({
             <div className="flex items-start mt-1 gap-x-2">
               <dt className="mt-0.5">
                 <span className="sr-only">Location</span>
-                <MapPin className="text-gray-400 size-5" aria-hidden="true" />
+                <MapPin
+                  className="text-gray-700 dark:text-gray-300 size-5"
+                  aria-hidden="true"
+                />
               </dt>
               <dd>{event.location}</dd>
             </div>
@@ -118,7 +124,7 @@ export function EventListItem({
           {event.tags.map((tag) => (
             <span
               key={tag.name}
-              className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 rounded-md cursor-default dark:text-gray-300 bg-gray-50 dark:bg-gray-800 ring-1 ring-inset ring-gray-500/10 dark:ring-gray-400/20"
+              className="inline-flex items-center px-2 py-1 text-xs font-medium text-purple-700 transition-all duration-200 rounded-md cursor-default bg-gradient-to-tr from-purple-50 to-purple-100 dark:from-purple-900/30 dark:text-purple-300 hover:scale-105"
             >
               {tag.name}
             </span>

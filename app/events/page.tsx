@@ -26,7 +26,10 @@ export default function EventsPage() {
 
   return (
     <div className="container relative py-4 mx-auto md:py-8 lg:py-16">
-      <Headline level="h1" subtitle="Never miss an event in web3">
+      <Headline
+        level="h1"
+        subtitle="Discover Web3 events across the Polkadot network"
+      >
         Polkadot Events Calendar
       </Headline>
       <Calendar selectedMonth={currentMonth} />
