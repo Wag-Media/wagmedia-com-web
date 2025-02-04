@@ -27,22 +27,33 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
       >
         {siteConfig.navMenuItems.map((item) => (
           <li key={item.id} className="relative group">
-            <div
-              className={`flex items-center px-4 py-2 text-sm cursor-pointer hover:text-pink-600 ${
-                isActiveLink(item) ? "text-pink-600" : ""
-              }`}
-            >
-              {item.name}
-              {item.children && <ChevronDownIcon className="w-3 h-3 ms-1" />}
-            </div>
+            {item.children ? (
+              <div
+                className={`flex items-center px-4 py-2 text-sm cursor-pointer hover:text-pink-600 ${
+                  isActiveLink(item) ? "text-pink-600" : ""
+                }`}
+              >
+                {item.name}
+                <ChevronDownIcon className="w-3 h-3 ms-1" />
+              </div>
+            ) : (
+              <Link
+                href={item.href}
+                className={`flex items-center px-4 py-2 text-sm hover:text-pink-600 ${
+                  isActiveLink(item) ? "text-pink-600" : ""
+                }`}
+              >
+                {item.name}
+              </Link>
+            )}
 
             {item.children && (
-              <ul className="absolute group-hover:block top-full left-0 backdrop-blur-md bg-background/50 shadow-lg rounded-lg py-2 min-w-[200px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <ul className="absolute hidden group-hover:block top-full left-0 backdrop-blur-md bg-background/50 shadow-lg rounded-lg py-2 min-w-[200px]">
                 {item.children.map((child) => (
-                  <li key={child.id} className="relative group/child">
+                  <li key={child.id}>
                     <Link
                       href={child.href}
-                      className={`flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-neutral-800 ${
+                      className={`block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-neutral-800 ${
                         pathname.includes(child.href) ? "text-pink-600" : ""
                       }`}
                     >

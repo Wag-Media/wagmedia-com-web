@@ -55,6 +55,11 @@ export const siteConfig = {
       ],
     },
     {
+      id: "202",
+      name: "Events",
+      href: "/events",
+    },
+    {
       id: "5",
       name: "About",
       href: "/about",
