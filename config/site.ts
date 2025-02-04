@@ -7,58 +7,69 @@ export const siteConfig = {
   navMenuItems: [
     {
       id: "1",
-      name: "Categories",
-      href: "/categories",
+      name: "Discover",
+      href: "/discover",
+      children: [
+        {
+          id: "1",
+          name: "Categories",
+          href: "/categories",
+        },
+        {
+          id: "4",
+          name: "News",
+          href: "/polkadot-news",
+        },
+        {
+          id: "8",
+          name: "Memes",
+          href: "/memes",
+        },
+      ],
     },
     {
-      id: "2",
-      name: "Non-Anglo",
-      href: "/non-anglo",
-    },
-    {
-      id: "3",
-      name: "Newsletter",
-      href: "/newsletter",
-    },
-    {
-      id: "14",
-      name: "Events",
-      href: "/events",
-    },
-    {
-      id: "9",
-      name: "Creators",
-      href: "/creators",
-    },
-    {
-      id: "4",
-      name: "News",
-      href: "/polkadot-news",
-    },
-    // {
-    //   id: "7",
-    //   name: "Agent Tipping",
-    //   href: "/agent-tipping",
-    // },
-    {
-      id: "7",
-      name: "Agent Tipping",
-      href: "/agent-tipping",
-    },
-    {
-      id: "8",
-      name: "Memes",
-      href: "/memes",
+      id: "201",
+      name: "Community",
+      href: "/community",
+      children: [
+        {
+          id: "2",
+          name: "Non-Anglo",
+          href: "/non-anglo",
+        },
+        {
+          id: "3",
+          name: "Newsletter",
+          href: "/newsletter",
+        },
+        {
+          id: "9",
+          name: "Creators",
+          href: "/creators",
+        },
+        {
+          id: "7",
+          name: "Agent Tipping",
+          href: "/agent-tipping",
+        },
+      ],
     },
     {
       id: "5",
-      name: "Audit",
-      href: "/audit",
-    },
-    {
-      id: "6",
       name: "About",
       href: "/about",
+      children: [
+        {
+          id: "115",
+          name: "Audit",
+          href: "/audit",
+        },
+        {
+          id: "116",
+          name: "About WagMedia",
+          href: "/about",
+        },
+      ],
     },
   ],
   mainNav: [
