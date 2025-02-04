@@ -1,5 +1,6 @@
 import { Headline } from "@/components/ui/headline"
 
+import { formatMonthYear } from "./[month]/page"
 import { Calendar } from "./calendar"
 
 export const revalidate = 30
@@ -7,6 +8,17 @@ export const revalidate = 30
 function getDefaultMonth() {
   const date = new Date()
   return `${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()}`
+}
+
+export const metadata = {
+  title: {
+    absolute: `Polkadot Events Calendar - ${formatMonthYear(
+      getDefaultMonth()
+    )}`,
+  },
+  description: `Polkadot Events Calendar for ${formatMonthYear(
+    getDefaultMonth()
+  )}`,
 }
 
 export default function EventsPage() {

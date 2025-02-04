@@ -9,7 +9,7 @@ interface PageProps {
   searchParams: { category?: string }
 }
 
-function formatMonthYear(monthStr: string) {
+export function formatMonthYear(monthStr: string) {
   const [month, year] = monthStr.split("-")
   const date = new Date(parseInt(year), parseInt(month) - 1)
   return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
