@@ -3,11 +3,10 @@
 import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { PolkadotEvent, Tag } from "@prisma/client"
-import { Calendar, CalendarX2, Loader2, MapPin } from "lucide-react"
+import { CalendarX2, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
-import { formatEventDates } from "../util"
 import { EventListItem } from "./event-list-item"
 
 interface EventsListProps {
@@ -53,12 +52,12 @@ export function EventsList({
     <>
       {events.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2 py-16 text-center">
-          <CalendarX2 className="text-gray-400 size-12" />
+          <CalendarX2 className="text-gray-400 size-8" />
           <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
             No events found
           </p>
           <p className="mt-1 mb-2 text-sm text-gray-500 dark:text-gray-400">
-            Check back later for upcoming events
+            Check back later for upcoming events or
           </p>
           <Button size="sm" className="min-w-[200px]">
             <Link href="/events">Go back to current month</Link>

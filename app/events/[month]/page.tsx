@@ -9,9 +9,45 @@ interface PageProps {
   searchParams: { category?: string }
 }
 
-export const metadata: Metadata = {
-  title: "Polkadot Events Calendar",
-  description: "Never miss an event in web3",
+function formatMonthYear(monthStr: string) {
+  const [month, year] = monthStr.split("-")
+  const date = new Date(parseInt(year), parseInt(month) - 1)
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" })
+}
+
+export const generateMetadata = ({ params }: { params: { month: string } }) => {
+  const formattedDate = formatMonthYear(validateMonth(params.month))
+  return {
+    title: `Polkadot Events Calendar - ${formattedDate}`,
+    description: `Polkadot Events Calendar for ${formattedDate}`,
+  }
+}
+
+export async function generateStaticParams() {
+  const now = new Date()
+  const months: string[] = []
+
+  // Get first date (3 months ago)
+  const startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1)
+  // Get last date (12 months from now)
+  const endDate = new Date(now.getFullYear(), now.getMonth() + 12, 1)
+
+  // Create current date to iterate
+  let currentDate = startDate
+  while (currentDate < endDate) {
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0")
+    const year = currentDate.getFullYear()
+    months.push(`${month}-${year}`)
+
+    // Move to next month
+    currentDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      1
+    )
+  }
+
+  return months.map((month) => ({ month }))
 }
 
 export const revalidate = 30
