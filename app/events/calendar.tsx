@@ -3,6 +3,7 @@ import {
   getEventCategories,
   getEvents,
   getEventsByMonth,
+  getFeaturedEvents,
   getTotalEvents,
 } from "@/data/dbEvents"
 import { PolkadotEvent, Tag } from "@prisma/client"
@@ -24,11 +25,13 @@ export async function Calendar({ selectedMonth, category }: CalendarProps) {
   const [month, year] = selectedMonth.split("-").map(Number)
   const selectedMonthAsDate = new Date(year, month - 1)
 
-  const [events, totalEvents, eventCategories] = await Promise.all([
-    getEvents({ fromDate: selectedMonthAsDate, category }),
-    getTotalEvents({ fromDate: selectedMonthAsDate, category }),
-    getEventCategories(selectedMonthAsDate),
-  ])
+  const [events, totalEvents, eventCategories, featuredEvents] =
+    await Promise.all([
+      getEvents({ fromDate: selectedMonthAsDate, category }),
+      getTotalEvents({ fromDate: selectedMonthAsDate, category }),
+      getEventCategories(selectedMonthAsDate),
+      getFeaturedEvents(selectedMonthAsDate),
+    ])
 
   async function loadMoreEvents(page: number, category?: string) {
     "use server"
@@ -78,6 +81,7 @@ export async function Calendar({ selectedMonth, category }: CalendarProps) {
           events={events}
           month={month}
           year={year}
+          featuredEvents={featuredEvents}
         />
       </div>
     </div>

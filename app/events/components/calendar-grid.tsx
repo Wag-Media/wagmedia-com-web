@@ -30,6 +30,7 @@ interface CalendarGridProps {
   events: Array<PolkadotEvent>
   month: number
   year: number
+  featuredEvents: Array<PolkadotEvent>
 }
 
 export function CalendarGrid({
@@ -37,6 +38,7 @@ export function CalendarGrid({
   events,
   month,
   year,
+  featuredEvents,
 }: CalendarGridProps) {
   const days = generateCalendarDays(year, month - 1)
 
@@ -162,14 +164,14 @@ export function CalendarGrid({
             Add event <DiscordIcon className="ml-2 size-4" />
           </Button>
         </Link>
-        {events.length > 0 && (
+        {featuredEvents.length > 0 && (
           <>
             <h4 className="mt-8 text-base font-semibold text-left text-gray-900 dark:text-gray-100">
               🔥 Featured Events
             </h4>
 
             <ol className="mt-4 space-y-4 top-24">
-              {events.slice(0, 3).map((event) => (
+              {featuredEvents.map((event) => (
                 <li key={event.id} className="flex items-center gap-x-3">
                   <EventCardSmall event={event} />
                 </li>

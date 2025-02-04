@@ -65,6 +65,23 @@ export const getEvents = async ({
   return events
 }
 
+export const getFeaturedEvents = async (fromDate: Date) => {
+  const events = await prisma.polkadotEvent.findMany({
+    where: {
+      isPublished: true,
+      startsAt: {
+        gte: fromDate,
+      },
+      isFeatured: true,
+    },
+    orderBy: {
+      startsAt: "asc",
+    },
+    take: 5,
+  })
+  return events
+}
+
 export const getEventCategories = async (fromDate: Date) => {
   const categories = await prisma.polkadotEvent.findMany({
     where: {
