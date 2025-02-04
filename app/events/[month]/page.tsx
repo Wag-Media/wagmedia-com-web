@@ -91,8 +91,6 @@ export default function EventsPage({ params, searchParams }: PageProps) {
 
   const validatedMonth = validateMonth(month)
 
-  console.log("validatedMonth", validatedMonth)
-
   return (
     <div className="container relative py-4 mx-auto md:py-8 lg:py-16 ">
       <Headline level="h1" subtitle="Never miss an event in web3">
