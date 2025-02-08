@@ -1,6 +1,5 @@
 import React, { FC } from "react"
 import Link from "next/link"
-import { PostDataType } from "@/data/types"
 import { Category } from "@prisma/client"
 
 import { slugify } from "@/lib/slug"

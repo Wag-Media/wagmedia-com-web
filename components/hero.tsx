@@ -25,7 +25,7 @@ export function Hero({
     Math.round(totalPostPaymentAmount || 0 / 100) * 100
 
   return (
-    <section className="relative pb-16 pt-36">
+    <section className="relative pt-12 pb-16 md:pt-36">
       <HeroBackground authorAvatars={authorAvatars} />
       <div className="container relative z-10">
         <div className="text-center">
@@ -35,10 +35,10 @@ export function Hero({
               Web3
             </span>
           </h1>
-          <p className="mb-6 text-2xl font-light text-gray-700 dark:text-gray-300 font-unbounded">
+          <p className="mb-6 text-xl font-light text-gray-700 md:text-2xl dark:text-gray-300 font-unbounded">
             Your ideas, your audience, your rewards.
           </p>
-          <p className="max-w-3xl mx-auto mb-8 text-xl text-gray-600 dark:text-gray-400 sm:mb-12">
+          <p className="max-w-3xl mx-auto mb-8 text-base text-gray-600 md:text-xl dark:text-gray-400 sm:mb-12">
             Join{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2670] to-[#7916F3]">
               WagMedia
@@ -47,7 +47,7 @@ export function Hero({
             the future of blockchain and Web3 content.
           </p>
 
-          <div className="relative flex justify-center mb-8 space-x-8">
+          <div className="relative flex flex-col justify-center mb-8 space-y-4 md:space-y-0 md:space-x-8 md:flex-row">
             <div className="text-center">
               <p className="text-4xl font-bold">{roundedTotalAuthorCount}+</p>
               <p className="text-gray-600 dark:text-gray-400">

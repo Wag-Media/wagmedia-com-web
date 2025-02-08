@@ -21,7 +21,7 @@ const SectionGridAuthorBoxWag: FC<SectionGridAuthorBoxProps> = ({
       <Headline level="h2" subtitle="Based on rewards received">
         Top WagMedia Content Creators
       </Headline>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-4 ">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-4 ">
         {authors.map((author) => (
           <CardAuthorBoxWag key={author.id} author={author} />
         ))}

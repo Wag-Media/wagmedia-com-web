@@ -109,59 +109,21 @@ const Footer: React.FC = () => {
           </div>
           <Link
             href="https://polkadot.network/"
-            className="flex items-center group"
+            className="flex flex-col items-center mt-4 group md:flex-row md:mt-0"
           >
             <span
               className={cn(
                 fontUnbounded.className,
-                "text-xl md:text-3xl lg:text-4xl group-hover:text-[#FF2670]"
+                "text-lg md:text-xl lg:text-2xl group-hover:text-[#FF2670]"
               )}
             >
               Powered by
             </span>
-            <Icons.polkadotLogo className="w-auto h-16 group-hover:text-[#FF2670]" />
+            <Icons.polkadotLogo className="w-auto h-12 group-hover:text-[#FF2670]" />
           </Link>
         </div>
       </div>
     </footer>
-    // <div className="relative py-8 border-t nc-Footer lg:py-16 border-neutral-200 dark:border-neutral-700">
-    //   <div className="container grid items-center grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 lg:grid-cols-5 lg:gap-x-10">
-    //     <div className="w-24 h-24 col-span-1 lg:col-span-1 lg:h-48 lg:w-48">
-    //       <Logo />
-    //     </div>
-    //     <div className="col-span-3 lg:col-span-3">
-    //       <p className="max-w-md text-neutral-500 dark:text-neutral-400">
-    //         WagMedia is a decentralized media initiative that offers the
-    //         platform for creators to earn tokens for their content.
-    //       </p>
-    //       <Link
-    //         href="https://polkadot.network/"
-    //         className="flex items-center mt-2"
-    //       >
-    //         <span
-    //           className={cn(
-    //             fontUnbounded.className,
-    //             "text-xl md:text-3xl lg:text-4xl"
-    //           )}
-    //         >
-    //           Powered by
-    //         </span>
-    //         <Icons.polkadotLogo className="w-auto h-16" />
-    //       </Link>
-    //     </div>
-    //     <div className="col-span-3 lg:col-span-1">
-    //       <nav className="flex text-md text-neutral-6000 dark:text-neutral-300 items-center lg:space-x-0 rtl:space-x-reverse lg:flex-col lg:space-y-2.5 lg:items-end flex-wrap">
-    //         {siteConfig.navMenuItems.map((item, index) => (
-    //           <Link key={index} href={item.href}
-    //             {item.name}
-    //           </Link>
-    //         ))}
-    //       </nav>
-    //     </div>
-
-    //     {/* {widgetMenus.map(renderWidgetMenuItem)} */}
-    //   </div>
-    // </div>
   )
 }
 
