@@ -7,7 +7,7 @@ import SubstackWidget from "./SubstackWidget/SubstackWidget"
 
 export function SectionSubscribeNewsletter() {
   return (
-    <section className="py-16 bg-gradient-to-r from-[#FF2670] to-[#7916F3] text-white">
+    <section className="py-16 bg-gradient-to-tr from-[var(--secondary-color)] via-purple-950 to-[var(--primary-color)] text-white">
       <div className="container max-w-4xl px-4 mx-auto">
         <div className="mb-8 text-center">
           <h2 className="mb-4 text-3xl font-bold">

@@ -31,7 +31,7 @@ export function Hero({
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl font-unbounded">
             Empower Your Voice in{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2670] to-[#7916F3]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-tr from-[#FF1F8C] to-[#38B6FF]">
               Web3
             </span>
           </h1>
@@ -39,12 +39,8 @@ export function Hero({
             Your ideas, your audience, your rewards.
           </p>
           <p className="max-w-3xl mx-auto mb-8 text-base text-gray-600 md:text-xl dark:text-gray-400 sm:mb-12">
-            Join{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2670] to-[#7916F3]">
-              WagMedia
-            </span>{" "}
-            to share groundbreaking stories, unleash your creativity, and shape
-            the future of blockchain and Web3 content.
+            Join WagMedia to share groundbreaking stories, unleash your
+            creativity, and shape the future of blockchain and Web3 content.
           </p>
 
           <div className="relative flex flex-col justify-center mb-8 space-y-4 md:space-y-0 md:space-x-8 md:flex-row">
@@ -72,7 +68,7 @@ export function Hero({
             <Link href="/about#join">
               <Button
                 size="lg"
-                className="group transition-all duration-300  w-full sm:w-auto bg-[#FF2670] text-white hover:bg-[#7916F3] hover:text-white hover:scale-105"
+                className="w-full group sm:w-auto gradient-button-primary"
               >
                 Start Creating
                 <ArrowRight className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-1" />
@@ -82,7 +78,7 @@ export function Hero({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-[#FF2670] text-[#FF2670] bg-background/80 hover:border-[#7916F3] hover:text-[#7916F3]"
+                className="w-full sm:w-auto gradient-button-outline"
               >
                 Learn More
               </Button>

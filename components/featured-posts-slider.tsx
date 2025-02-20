@@ -37,8 +37,8 @@ export function FeaturedPostsSlider({
           {featuredPosts.map(
             (post: PostWithTagsCategoriesReactionsPaymentsUser) => (
               <CarouselItem key={post.id} className="md:basis-1/2 xl:basis-1/3">
-                <Card className="overflow-hidden transition-all duration-500 rounded-sm hover:shadow-lg hover:border-[#FF2670] h-full border-[1.5px]">
-                  <CardContent className="flex flex-col h-full p-0">
+                <div className="h-full gradient-border-card">
+                  <div className="gradient-border-content">
                     <div className="relative aspect-[16/9]">
                       <WagImage
                         containerClassName="w-full h-full"
@@ -69,13 +69,13 @@ export function FeaturedPostsSlider({
                       )}
                       <Link
                         href={`/post/${post.slug}`}
-                        className="text-[#FF2670] hover:text-[#7916F3] transition-colors duration-200 "
+                        className="text-[#FF2670] hover:text-[#7916F3] transition-colors duration-200"
                       >
                         Read more →
                       </Link>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </CarouselItem>
             )
           )}

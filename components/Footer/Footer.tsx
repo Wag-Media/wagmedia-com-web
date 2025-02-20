@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
       <div className="container">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="max-w-md md:col-span-2">
-            <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
+            <h3 className="text-lg font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[var(--secondary-color)] via-purple-800 to-[var(--primary-color)]">
               About WagMedia
             </h3>
             <p className="mb-4">Your ideas, your audience, your rewards.</p>
@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
+            <h3 className="text-lg font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[var(--secondary-color)] via-purple-800 to-[var(--primary-color)]">
               Quick Links
             </h3>
             <div className="flex flex-row gap-4">
@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-[#FF2670]">
+            <h3 className="text-lg font-semibold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[var(--secondary-color)] via-purple-800 to-[var(--primary-color)]">
               Connect
             </h3>
             <ul className="space-y-2">
@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
         <div className="flex flex-col items-center justify-between pt-8 mt-8 text-center text-gray-500 md:flex-row dark:text-gray-400">
           <div className="flex flex-row items-center justify-center">
             <p>&copy; {new Date().getFullYear()}</p>
-            <Logo className="w-10 h-10 py-0 mx-2" />
+            <Logo className="mx-2" />
             <p>All rights reserved.</p>
           </div>
           <Link
@@ -114,12 +114,12 @@ const Footer: React.FC = () => {
             <span
               className={cn(
                 fontUnbounded.className,
-                "text-lg md:text-xl lg:text-2xl group-hover:text-[#FF2670]"
+                "text-lg md:text-xl lg:text-2xl group-hover:text-[var(--primary-color)]"
               )}
             >
               Powered by
             </span>
-            <Icons.polkadotLogo className="w-auto h-12 group-hover:text-[#FF2670]" />
+            <Icons.polkadotLogo className="w-auto h-12 group-hover:text-[var(--primary-color)]" />
           </Link>
         </div>
       </div>

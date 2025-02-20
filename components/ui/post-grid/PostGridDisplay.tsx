@@ -104,7 +104,7 @@ export function PostGridDisplay({
             disabled={isLoading}
             variant="outline"
             size="lg"
-            className="min-w-[200px] bg-background text-[#FF2670] hover:bg-[#FF2670] hover:text-white font-sans"
+            className="min-w-[200px] "
           >
             Show me more {isLoading && <Loading className="ml-2" />}
           </Button>

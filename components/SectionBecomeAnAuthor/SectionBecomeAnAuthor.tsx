@@ -7,7 +7,7 @@ import { Button } from "../ui/button"
 
 export default function SectionBecomeAnAuthor() {
   return (
-    <section className="py-20 bg-gradient-to-r from-[#FF2670] to-[#E4FF07] relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-tr from-[var(--secondary-color)] via-purple-950 to-[var(--primary-color)] relative overflow-hidden">
       <div className="container relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="flex flex-col space-y-8">
@@ -23,7 +23,7 @@ export default function SectionBecomeAnAuthor() {
             <Link href="/about#join" className="mt-2">
               <Button
                 size="lg"
-                className="bg-white text-[#FF2670] hover:bg-[#E4FF07] hover:text-black transition-all duration-300 transform hover:scale-105"
+                className="bg-[var(--primary-color)] text-white hover:bg-[var(--secondary-color)] transition-all duration-300 transform hover:scale-105"
               >
                 Become a Content Creator
                 <ArrowRight className="w-5 h-5 ml-2" />

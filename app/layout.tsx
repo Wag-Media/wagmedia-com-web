@@ -22,7 +22,16 @@ export const metadata = {
   generator: "Next.js",
   applicationName: "WagMedia Web App",
   referrer: "origin-when-cross-origin",
-  keywords: ["Polkadot", "Latest", "News", "Kusama"],
+  keywords: [
+    "Polkadot",
+    "News",
+    "Articles",
+    "Web3",
+    "NFTs",
+    "DeFi",
+    "Blockchain",
+  ],
+
   creator: "@niftesty",
   publisher: "Polkadot Community",
   formatDetection: {
@@ -30,17 +39,7 @@ export const metadata = {
     address: false,
     telephone: false,
   },
-  openGraph: {
-    images: [
-      {
-        url: "https://thewagmedia.com/opengraph-image.png", // Must be an absolute URL
-        width: 1200,
-        height: 630,
-        alt: "WagMedia Polkadot Articles and News",
-      },
-    ],
-    type: "website",
-  },
+
   twitter: {
     card: "summary_large_image",
     title: "WagMedia Polkadot Articles and News",
