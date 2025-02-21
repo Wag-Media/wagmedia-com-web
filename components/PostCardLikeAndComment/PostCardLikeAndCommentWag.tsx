@@ -5,6 +5,7 @@ import { ContentEarnings } from "@prisma/client"
 import { MessageCircleHeart } from "lucide-react"
 
 import { totalEarnings } from "../../utils/totalPostEarnings"
+import { Icons } from "../icons"
 import { Button } from "../ui/button"
 import {
   Tooltip,
@@ -120,8 +121,13 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
         </TooltipProvider>
       )}
       {total && parseFloat(total) > 0 && (
-        <div className="flex items-center gap-2 text-xs text-pink-500 rounded-full cursor-default">
-          {total}
+        <div className="flex items-center gap-1 text-xs text-pink-500 rounded-full cursor-default">
+          {total.replace("DOT", "").trim()}
+          {total.includes("DOT") && (
+            <div className="w-4 h-4">
+              <Icons.polkadotToken />
+            </div>
+          )}
         </div>
       )}
     </div>
