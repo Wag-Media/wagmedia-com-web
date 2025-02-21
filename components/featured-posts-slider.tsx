@@ -69,7 +69,7 @@ export function FeaturedPostsSlider({
                       )}
                       <Link
                         href={`/post/${post.slug}`}
-                        className="text-[#FF2670] hover:text-[#7916F3] transition-colors duration-200"
+                        className="text-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-colors duration-200"
                       >
                         Read more →
                       </Link>

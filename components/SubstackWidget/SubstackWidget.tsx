@@ -12,7 +12,7 @@ const SubstackWidget = ({ className }: { className?: string }) => {
       buttonText: "Subscribe",
       theme: "custom",
       colors: {
-        primary: "#E4FF07",
+        primary: "#03c4f5",
         input: "#fff",
         email: "#000",
         text: "#000",

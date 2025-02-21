@@ -23,7 +23,8 @@ export default function SectionBecomeAnAuthor() {
             <Link href="/about#join" className="mt-2">
               <Button
                 size="lg"
-                className="bg-[var(--primary-color)] text-white hover:bg-[var(--secondary-color)] transition-all duration-300 transform hover:scale-105"
+                variant="secondary"
+                className="bg-[var(--secondary-color)] text-white transition-all hover:bg-[var(--secondary-color)] duration-300 transform hover:scale-105"
               >
                 Become a Content Creator
                 <ArrowRight className="w-5 h-5 ml-2" />
