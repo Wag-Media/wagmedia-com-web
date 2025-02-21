@@ -131,9 +131,9 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
         </div>
       ) : (
         <div
-          className={`absolute text-3xl inset-0 bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center ${getColorClass()}`}
+          className={`absolute text-2xl gap-2 inset-0 items-center justify-center text-gray-600 dark:text-gray-400 flex flex-col`}
         >
-          <span className={`pr-2`}>◦</span>
+          <Image src="/wagmedia-logo.png" alt="logo" width={100} height={100} />
           {post.categories?.[0]?.name}
         </div>
       )}

@@ -126,12 +126,13 @@
   flex-direction: column;
   @apply rounded-sm overflow-hidden
     before:absolute before:inset-0 before:rounded-sm before:transition-all before:duration-300
-    before:bg-gradient-to-r before:from-[#FF1F8C] before:via-[#38B6FF] before:to-[#7EFF73] before:opacity-0 before:hover:opacity-100
+    before:bg-muted
+    before:bg-gradient-to-r hover:before:from-[#FF1F8C] hover:before:via-[#38B6FF] hover:before:to-[#7EFF73]
     after:absolute after:inset-[1.5px] after:rounded-sm after:bg-white after:dark:bg-black
     shadow-sm hover:shadow-lg transition-all duration-300;
 }
 
 /* Inner content wrapper for gradient border */
 .gradient-border-content {
-  @apply relative flex flex-col h-full z-10 p-[1.5px];
+  @apply relative flex flex-col h-full z-10;
 }

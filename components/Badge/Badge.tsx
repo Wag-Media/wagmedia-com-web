@@ -28,7 +28,7 @@ const Badge: FC<BadgeProps> = ({
     </Link>
   ) : (
     <span
-      className={`${CLASSES} backdrop-blur-sm text-pink-100 bg-pink-500/50`}
+      className={`${CLASSES} backdrop-blur-sm text-white bg-blue-400 hover:bg-blue-500`}
     >
       {name === "Jam" ? "JAM" : name}
     </span>
