@@ -554,6 +554,7 @@ export async function getMemes(
 export async function getTotalPostPaymentAmount() {
   const totalPostPayments = await prisma.payment.aggregate({
     where: {
+      oddJobId: null,
       Post: {
         isPublished: true,
       },

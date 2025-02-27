@@ -121,7 +121,7 @@ const PostCardLikeAndCommentWag: FC<PostCardLikeAndCommentWagProps> = ({
         </TooltipProvider>
       )}
       {total && parseFloat(total) > 0 && (
-        <div className="flex items-center gap-1 text-xs text-pink-500 rounded-full cursor-default">
+        <div className="flex items-center gap-1 text-xs text-[#FF2670] rounded-full cursor-default">
           {total.replace("DOT", "").trim()}
           {total.includes("DOT") && (
             <div className="w-4 h-4">
