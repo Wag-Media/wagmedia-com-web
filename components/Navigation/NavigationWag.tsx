@@ -48,7 +48,7 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
             )}
 
             {item.children && (
-              <ul className="absolute hidden group-hover:block top-full left-0 backdrop-blur-md bg-background/50 shadow-lg rounded-lg py-2 min-w-[200px]">
+              <ul className="absolute hidden group-hover:block top-full left-0 bg-background/90 backdrop-blur-md shadow-lg rounded-lg py-2 min-w-[200px] z-10">
                 {item.children.map((child) => (
                   <li key={child.id}>
                     <Link
