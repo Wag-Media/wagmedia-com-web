@@ -49,7 +49,7 @@ export function SearchModal() {
     <>
       {" "}
       <button
-        className="flex items-center self-center justify-center w-12 h-12 text-2xl rounded-full text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl backdrop-blur-md"
+        className="flex items-center self-center justify-center w-12 h-12 text-2xl rounded-full text-neutral-500 hover:text-blue-500 dark:text-neutral-300 dark:hover:text-blue-400 focus:outline-none md:text-3xl "
         onClick={() => setIsOpen(true)}
       >
         <svg

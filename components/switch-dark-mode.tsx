@@ -14,13 +14,16 @@ export function SwitchDarkMode({ className = "" }: SwitchDarkModeProps) {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className={`self-center text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center backdrop-blur-lg mr-0.5 ${className}`}
+      className={`self-center hover:text-blue-500 dark:hover:text-blue-400 text-2xl md:text-3xl w-12 h-12 rounded-full  dark:text-neutral-300 focus:outline-none flex items-center justify-center mr-0.5 ${className}`}
     >
       <span className="sr-only">Enable dark mode</span>
       {theme === "dark" ? (
-        <MoonIcon className="w-5 h-5" aria-hidden="true" />
+        <MoonIcon
+          className="w-5 h-5 fill-current stroke-current"
+          aria-hidden="true"
+        />
       ) : (
-        <SunIcon className="w-5 h-5" aria-hidden="true" />
+        <SunIcon className="w-5 h-5 stroke-current" aria-hidden="true" />
       )}
     </button>
   )

@@ -27,13 +27,13 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
           </div>
         </div>
 
-        <div className="absolute right-0 flex items-center text-slate-700 dark:text-slate-100">
-          <div className="flex h-16 p-3 rounded-full">
+        <div className="absolute flex items-center h-16 right-2 text-slate-700 dark:text-slate-100">
+          <div className="flex h-12 p-2 rounded-full backdrop-blur-lg">
             <SearchModal />
             {/* <NotifyDropdown /> */}
             <SwitchDarkMode />
             <button
-              className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:bg-neutral-100 focus:outline-none dark:text-neutral-300 dark:hover:bg-neutral-800 md:text-3xl backdrop-blur-xl`}
+              className={`flex h-12 w-12 items-center justify-center self-center rounded-full text-2xl text-neutral-500 hover:text-blue-500 dark:text-neutral-300 dark:hover:text-blue-400 focus:outline-none md:text-3xl`}
             >
               <span className="sr-only">Discord</span>
               <Link href={siteConfig.links.discord}>

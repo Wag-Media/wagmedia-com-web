@@ -30,7 +30,9 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
             {item.children ? (
               <div
                 className={`flex items-center px-4 py-2 text-sm cursor-pointer hover:text-blue-800 dark:hover:text-[var(--secondary-color)] ${
-                  isActiveLink(item) ? "text-[var(--secondary-color)]" : ""
+                  isActiveLink(item)
+                    ? "text-blue-800 dark:text-[var(--secondary-color)]"
+                    : ""
                 }`}
               >
                 {item.name}
