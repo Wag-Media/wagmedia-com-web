@@ -21,7 +21,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         </div>
 
         <div className="flex items-center flex-1 lg:flex-none">
-          <div className="flex items-center h-12 pl-[6px] rounded-full backdrop-blur-lg">
+          <div className="flex items-center h-12 pl-[6px] rounded-full md:backdrop-blur-lg">
             <Logo />
             <NavigationWag className="z-10 hidden h-12 p-3 lg:flex" />
           </div>
