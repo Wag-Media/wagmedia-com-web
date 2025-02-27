@@ -13,12 +13,13 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
   return (
     <Link
       href="/"
-      className={cn(
-        "inline-block w-12 h-16 py-3 ttnc-logo text-primary-600",
-        className
-      )}
+      className={cn("inline-block w-12 h-16 py-3 text-primary-600", className)}
     >
-      <Image src={logoImg} alt="logo" className="w-auto h-full" />
+      <Image
+        src={logoImg}
+        alt="logo"
+        className="w-auto h-full p-0.5 brightness-0 dark:brightness-100"
+      />
     </Link>
   )
 }

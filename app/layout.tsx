@@ -18,7 +18,7 @@ export const metadata = {
     default: "WagMedia Polkadot Articles and News",
   },
   description:
-    "Frictionless Decentralized Content Creation Platform For Polkadot",
+    "Decentralized Content Creation Platform For Polkadot - Become a content creator and earn in Polkadot",
   generator: "Next.js",
   applicationName: "WagMedia Web App",
   referrer: "origin-when-cross-origin",
@@ -32,7 +32,7 @@ export const metadata = {
     "Blockchain",
   ],
 
-  creator: "@niftesty",
+  creator: "@thatWagMedia",
   publisher: "Polkadot Community",
   formatDetection: {
     email: false,
@@ -43,9 +43,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "WagMedia Polkadot Articles and News",
-    description:
-      "Frictionless Decentralized Content Creation Platform For Polkadot",
-    creator: "@nextjs",
+    description: "Decentralized Content Creation Platform For Polkadot",
+    creator: "@thatWagMedia",
   },
 }
 

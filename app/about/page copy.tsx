@@ -77,7 +77,7 @@ const PageAbout = ({}) => {
                   ></div>
                   <div className="flex flex-col flex-1 space-y-2">
                     <p className="max-w-3xl w-full mx-auto decoration-primary/6 leading-normal min-h-[1lh] flip-heading-hash">
-                      First you must enter the discord through{" "}
+                      First you must enter our discord server through{" "}
                       <a
                         className="underline transition-colors underline-offset-2 text-primary hover:text-primary-700 "
                         href="https://discord.gg/FjMpPdwRaC"

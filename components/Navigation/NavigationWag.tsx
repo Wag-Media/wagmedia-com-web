@@ -29,8 +29,8 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
           <li key={item.id} className="relative group">
             {item.children ? (
               <div
-                className={`flex items-center px-4 py-2 text-sm cursor-pointer hover:text-pink-600 ${
-                  isActiveLink(item) ? "text-pink-600" : ""
+                className={`flex items-center px-4 py-2 text-sm cursor-pointer hover:text-blue-800 dark:hover:text-[var(--secondary-color)] ${
+                  isActiveLink(item) ? "text-[var(--secondary-color)]" : ""
                 }`}
               >
                 {item.name}
@@ -39,8 +39,8 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
             ) : (
               <Link
                 href={item.href}
-                className={`flex items-center px-4 py-2 text-sm hover:text-pink-600 ${
-                  isActiveLink(item) ? "text-pink-600" : ""
+                className={`flex items-center px-4 py-2 text-sm hover:text-blue-800 dark:hover:text-[var(--secondary-color)] ${
+                  isActiveLink(item) ? "text-blue-800" : ""
                 }`}
               >
                 {item.name}
@@ -53,8 +53,8 @@ const NavigationWag: FC<Props> = ({ className = "flex" }) => {
                   <li key={child.id}>
                     <Link
                       href={child.href}
-                      className={`block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-neutral-800 ${
-                        pathname.includes(child.href) ? "text-pink-600" : ""
+                      className={`block px-4 py-2 text-sm hover:text-blue-800 dark:hover:text-[var(--secondary-color)] ${
+                        pathname.includes(child.href) ? "text-blue-800" : ""
                       }`}
                     >
                       {child.name}

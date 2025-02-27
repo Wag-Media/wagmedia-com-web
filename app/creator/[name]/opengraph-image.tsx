@@ -9,8 +9,6 @@ export default async function Image({ params }: { params: { name: string } }) {
   return await OpengraphImage({
     title: params.name,
     subtitle: "WagMedia Creator",
-    style: {
-      background: "#FF2670",
-    },
   })
 }
+

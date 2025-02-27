@@ -38,10 +38,10 @@ export function FeaturedPostsSlider({
             (post: PostWithTagsCategoriesReactionsPaymentsUser) => (
               <CarouselItem key={post.id} className="md:basis-1/2 xl:basis-1/3">
                 <div className="h-full gradient-border-card">
-                  <div className="gradient-border-content">
-                    <div className="relative aspect-[16/9]">
+                  <div className="flex flex-col h-full gradient-border-content">
+                    <div className="relative w-full aspect-[16/9] overflow-hidden">
                       <WagImage
-                        containerClassName="w-full h-full"
+                        containerClassName="w-full h-full absolute inset-0"
                         image={
                           post.embeds?.[0]?.embedImage || "/placeholder.svg"
                         }
@@ -57,19 +57,21 @@ export function FeaturedPostsSlider({
                         className="mb-2"
                         itemClass="mr-0.5"
                       />
-                      <h3 className="mb-2 text-lg text-gray-900 dark:text-white text-normal font-unbounded">
+                      <h3 className="mb-2 text-lg text-gray-900 dark:text-white text-normal font-unbounded line-clamp-2">
                         {post.title}
                       </h3>
-                      {post?.content && (
-                        <div className="flex-1">
+                      <div className="flex-1">
+                        {post?.content ? (
                           <p className="mb-4 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
                             {removeLinks(removeHtmlTags(post.content))}
                           </p>
-                        </div>
-                      )}
+                        ) : (
+                          <div className="mb-4" />
+                        )}
+                      </div>
                       <Link
                         href={`/post/${post.slug}`}
-                        className="text-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-colors duration-200"
+                        className="text-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-colors duration-200 mt-auto"
                       >
                         Read more →
                       </Link>

@@ -10,12 +10,7 @@ export interface BadgeProps {
   href?: Route
 }
 
-const Badge: FC<BadgeProps> = ({
-  className = "relative",
-  name,
-  color = "blue",
-  href,
-}) => {
+const Badge: FC<BadgeProps> = ({ className = "relative", name, href }) => {
   const CLASSES =
     "nc-Badge inline-flex px-2.5 py-1 rounded-full font-medium text-xs " +
     className
@@ -28,7 +23,7 @@ const Badge: FC<BadgeProps> = ({
     </Link>
   ) : (
     <span
-      className={`${CLASSES} backdrop-blur-sm text-white bg-blue-400 hover:bg-blue-500`}
+      className={`${CLASSES} backdrop-blur-sm text-white bg-blue-600/60 hover:bg-blue-600/80`}
     >
       {name === "Jam" ? "JAM" : name}
     </span>
