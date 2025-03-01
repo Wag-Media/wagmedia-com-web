@@ -55,9 +55,7 @@ export function Hero({
               <p className="text-gray-600 dark:text-gray-400">Posts Created</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-bold">
-                ${roundedTotalPostPaymentAmount.toFixed(0)}+
-              </p>
+              <p className="text-4xl font-bold">{4000}+ DOT</p>
               <p className="text-gray-600 dark:text-gray-400">
                 Paid to Creators
               </p>
