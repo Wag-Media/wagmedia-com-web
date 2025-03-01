@@ -81,7 +81,10 @@ export function HeroBackground({
 
     setAvatarData(initialAvatars)
 
-    let currentIndex = 0
+    // Start with first 5 avatars visible
+    setVisibleIds([0, 1, 2, 3, 4])
+
+    let currentIndex = 5 // Start from the 6th avatar
     const maxAvatars = initialAvatars.length
 
     const interval = setInterval(() => {
@@ -146,7 +149,7 @@ export function HeroBackground({
               height={avatarDimension}
               src={avatar.avatar || "/placeholder.svg"}
               alt={`${avatar.name} Avatar`}
-              className={`relative z-10 object-cover w-[${avatarDimension}px] h-[${avatarDimension}px] rounded-full text-[0px]`}
+              className={`relative shadow-lg z-10 object-cover w-[${avatarDimension}px] h-[${avatarDimension}px] rounded-full text-[0px]`}
               priority
               onLoad={(e) => {
                 const parent = e.currentTarget.parentElement
