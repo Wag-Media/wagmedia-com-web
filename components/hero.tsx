@@ -21,8 +21,10 @@ export function Hero({
 
   const roundedTotalAuthorCount = Math.round(totalAuthorCount / 10) * 10
   const roundedTotalPostCount = Math.round(totalPostCount / 10) * 10
-  const roundedTotalPostPaymentAmount =
-    Math.round(totalPostPaymentAmount || 0 / 100) * 100
+
+  // Round down to nearest 500 and add "+" suffix
+  const totalPostPaymentAmountRounded =
+    Math.floor((totalPostPaymentAmount || 0) / 100) * 100
 
   return (
     <section className="relative pt-12 pb-16 md:pt-36">
@@ -55,7 +57,9 @@ export function Hero({
               <p className="text-gray-600 dark:text-gray-400">Posts Created</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-bold">{4000}+ DOT</p>
+              <p className="text-4xl font-bold">
+                {totalPostPaymentAmountRounded}+ DOT
+              </p>
               <p className="text-gray-600 dark:text-gray-400">
                 Paid to Creators
               </p>

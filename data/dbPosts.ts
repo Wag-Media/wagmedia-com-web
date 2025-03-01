@@ -563,6 +563,6 @@ export async function getTotalPostPaymentAmount() {
       amount: true,
     },
   })
-  console.log("totalPostPayments", totalPostPayments)
+
   return totalPostPayments
 }
