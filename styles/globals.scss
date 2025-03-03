@@ -124,15 +124,15 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  @apply rounded-sm overflow-hidden
-    before:absolute before:inset-0 before:rounded-sm before:transition-all before:duration-300
+  @apply rounded-2xl overflow-hidden
+    before:absolute before:inset-0 before:rounded-2xl before:transition-all before:duration-300
     before:bg-muted
     before:bg-gradient-to-r hover:before:from-[#FF1F8C] hover:before:via-[#38B6FF] hover:before:to-[#7EFF73]
-    after:absolute after:inset-[1.5px] after:rounded-sm after:bg-white after:dark:bg-black
+    after:absolute after:inset-[1.5px] after:rounded-2xl after:bg-white after:dark:bg-black
     shadow-sm hover:shadow-lg transition-all duration-300;
 }
 
 /* Inner content wrapper for gradient border */
 .gradient-border-content {
-  @apply relative flex flex-col h-full z-10;
+  @apply relative flex flex-col h-full z-10 rounded-2xl;
 }

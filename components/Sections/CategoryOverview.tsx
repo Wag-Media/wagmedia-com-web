@@ -112,7 +112,7 @@ const CategoryOverview: FC<SectionMagazine11Props> = async ({
         <div className="flex items-center justify-start my-6">
           {/* @ts-ignore */}
           <Link href={categoryHref}>
-            <Button variant="ghost" className="text-[var(--polkadot-pink)]">
+            <Button variant="ghost" className="text-[var(--secondary-color)]">
               <span>
                 See all {postsCount} {category.name}{" "}
                 {contentType === ContentType.article ? "Articles" : "News"}

@@ -39,7 +39,7 @@ export function FeaturedPostsSlider({
               <CarouselItem key={post.id} className="md:basis-1/2 xl:basis-1/3">
                 <div className="h-full gradient-border-card">
                   <div className="flex flex-col h-full gradient-border-content">
-                    <div className="relative w-full aspect-[16/9] overflow-hidden">
+                    <div className="relative w-[calc(100%-3px)] ml-[1.25px] mt-[1.25px] aspect-[16/9] overflow-hidden rounded-t-2xl">
                       <WagImage
                         containerClassName="w-full h-full absolute inset-0"
                         image={
@@ -71,7 +71,7 @@ export function FeaturedPostsSlider({
                       </div>
                       <Link
                         href={`/post/${post.slug}`}
-                        className="text-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-colors duration-200 mt-auto"
+                        className="text-[var(--secondary-color)] hover:text-blue-500 transition-colors duration-200 mt-auto"
                       >
                         Read more →
                       </Link>

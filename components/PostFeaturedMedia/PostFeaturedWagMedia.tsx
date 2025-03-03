@@ -37,73 +37,11 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
   const firstEmbed = embeds?.[0] ?? null
   const featuredImage = firstEmbed?.embedImage
 
-  const getColorClass = (hasHover = true) => {
-    switch (categories?.[0]?.name) {
-      case "OpenGov":
-        return `text-pink-800 bg-pink-100/50 ${
-          hasHover ? "hover:bg-pink-800/50" : ""
-        }`
-      case "DeFi":
-        return `text-red-800 bg-red-100/50 ${
-          hasHover ? "hover:bg-red-800/50" : ""
-        }`
-      case "NFT":
-        return `text-gray-800 bg-gray-100/50 ${
-          hasHover ? "hover:bg-gray-800/50" : ""
-        }`
-      case "Parachain":
-        return `text-green-800 bg-green-100/50 ${
-          hasHover ? "hover:bg-green-800/50" : ""
-        }`
-      case "Paraverse":
-        return `text-purple-800 bg-purple-100/50 ${
-          hasHover ? "hover:bg-purple-800/50" : ""
-        }`
-      case "Newsletter":
-        return `text-indigo-800 bg-indigo-100/50 ${
-          hasHover ? "hover:bg-indigo-800/50" : ""
-        }`
-      case "Non Anglo":
-      case "Translations":
-        return `text-yellow-800 bg-yellow-100/50 ${
-          hasHover ? "hover:bg-yellow-800/50" : ""
-        }`
-      case "Technical Analysis":
-        return `text-blue-800 bg-blue-100/50 ${
-          hasHover ? "hover:bg-blue-800/50" : ""
-        }`
-      case "Bounty":
-        return `text-orange-800 bg-orange-100/50 ${
-          hasHover ? "hover:bg-orange-800/50" : ""
-        }`
-      case "Tutorials":
-        return `text-teal-800 bg-teal-100/50 ${
-          hasHover ? "hover:bg-teal-800/50" : ""
-        }`
-      case "Video":
-        return `text-lime-800 bg-lime-100/50 ${
-          hasHover ? "hover:bg-lime-800/50" : ""
-        }`
-      case "Wallet":
-        return `text-blue-800 bg-blue-100/50 ${
-          hasHover ? "hover:bg-blue-800/50" : ""
-        }`
-      case "RWA":
-        return `text-purple-800 bg-purple-100/50 ${
-          hasHover ? "hover:bg-purple-800/50" : ""
-        }`
-      default:
-        return `text-pink-800 bg-pink-100/50 ${
-          hasHover ? "hover:bg-pink-800" : ""
-        }`
-    }
-  }
-
   return (
     <div className={`nc-PostFeaturedMedia group relative ${className}`}>
       {featuredImage ? (
         <div
-          className={`bg-cover bg-center w-full h-full`}
+          className={`bg-cover bg-center w-full h-full rounded-t-2xl`}
           style={{
             backgroundImage: `url(${featuredImage})`,
           }}
@@ -112,28 +50,37 @@ const PostFeaturedWagMedia: FC<PostFeaturedWagMediaProps> = ({
             <Image
               alt={title}
               fill
-              className="object-contain backdrop-blur-lg"
+              className="object-contain backdrop-blur-lg rounded-t-2xl"
               src={featuredImage}
               sizes="(max-width: 600px) 480px, 800px"
             />
           ) : (
             <div>
               {/* @ts-ignore */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={featuredImage}
-                alt={title}
-                className="absolute object-contain w-full h-full backdrop-blur-lg"
-                sizes="(max-width: 600px) 480px, 800px"
-              />
+
+              <div className="absolute inset-0 rounded-t-2xl">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={featuredImage}
+                  alt={title}
+                  className="absolute object-contain w-full h-full backdrop-blur-lg "
+                  sizes="(max-width: 600px) 480px, 800px"
+                />
+              </div>
             </div>
           )}
         </div>
       ) : (
         <div
-          className={`absolute text-2xl gap-2 inset-0 items-center justify-center text-gray-600 dark:text-gray-400 flex flex-col`}
+          className={`absolute text-2xl gap-2 inset-0 items-center justify-center text-gray-600 dark:text-gray-400 flex flex-col rounded-t-2xl`}
         >
-          <Image src="/wagmedia-logo.png" alt="logo" width={100} height={100} />
+          <Image
+            src="/wagmedia-logo.png"
+            alt="logo"
+            width={100}
+            height={100}
+            className="rounded-t-2xl"
+          />
           {post.categories?.[0]?.name}
         </div>
       )}
