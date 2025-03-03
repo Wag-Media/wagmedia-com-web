@@ -296,11 +296,11 @@ export async function SinglePostContent({ slug }: { slug: string }) {
             <div className="flex flex-col mt-16">
               <div className="flex flex-col">
                 <Headline>More from this author</Headline>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 gradient-border">
                   {relatedPosts.length > 0 &&
                     relatedPosts.map((post) => (
                       <div
-                        className={`nc-Card12 shadow-sm border-[1.5px] relative flex flex-col group rounded-sm overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-[var(--polkadot-pink)]`}
+                        className={`nc-Card12 shadow-sm border-[1.5px] relative flex flex-col group rounded-sm overflow-hidden hover:shadow-lg transition-all duration-300 gradient-border-content`}
                       >
                         <div
                           className={`block flex-shrink-0 relative w-full overflow-hidden z-10 aspect-w-16 aspect-h-9`}
